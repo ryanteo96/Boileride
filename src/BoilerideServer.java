@@ -49,7 +49,7 @@ public class BoilerideServer {
             InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
 
             JSONParser parser = new JSONParser();
-            JSONObject jsonRequestObj;
+            JSONObject jsonRequestObj = null;
             try {
                 Object requestObj = parser.parse(in);
                 jsonRequestObj = (JSONObject)requestObj;
@@ -58,13 +58,72 @@ public class BoilerideServer {
                 e.printStackTrace();
             }
 
+            if (uri.equals("/user/signup")){
+
+            }
+            else if (uri.equals("/user/verifyemail")){
+
+            }
+            else if (uri.equals("/user/login")){
+
+            }
+            else if (uri.equals("/user/forgotpassword")){
+
+            }
+            else if (uri.equals("/user/resetpassword")){
+
+            }
+            else if (uri.equals("/user/viewaccount")){
+
+            }
+            else if (uri.equals("/user/update")){
+
+            }
+            else if (uri.equals("/user/logout")){
+
+            }
+            else if (uri.equals("/ride/view/request")){
+
+            }
+            else if (uri.equals("/ride/view/offer")){
+
+            }
+            else if (uri.equals("/ride/view/acceptedrequest")){
+
+            }
+            else if (uri.equals("/ride/view/joinedoffer")){
+
+            }
+            else if (uri.equals("/ride/request")){
+
+            }
+            else if (uri.equals("/ride/cancel/request")){
+
+            }
+            else if (uri.equals("/ride/update/request")){
+
+            }
+            else if (uri.equals("/ride/offer")){
+
+            }
+            else if (uri.equals("/ride/cancel/offer")){
+
+            }
+            else if (uri.equals("/ride/update/offer")){
+
+            }
+            else if (uri.equals("/ride/search/request")){
+
+            }
+            else if (uri.equals("/ride/search/offer")){
+
+            }
+            else {
+                System.out.println("Request " + uri + " is not handled");
+            }
+
             JSONObject responseObj = new JSONObject();
-            responseObj.put("age", new Integer(100));
-            JSONArray responseMsg = new JSONArray();
-            responseMsg.add("x");
-            responseMsg.add("y");
-            responseMsg.add("z");
-            responseObj.put("messages", responseMsg);
+            responseObj.put("result", new Integer(0));
             String response = responseObj.toJSONString();
 
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
