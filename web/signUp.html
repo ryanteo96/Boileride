@@ -17,27 +17,30 @@
         <div w3-include-html="signIn.html"></div>
     </head>
         <div class="container">
-                <div id="signUpBox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">   
-                <div class="panel panel-info " >
+                <div id="signUpBox" style="margin-top:50px; padding-top:90px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">   
+                <div class="panel panel-info">
                         <div class="panel-heading">
                                 <div class="panel-title">Sign Up</div>                               
                         </div>     
-                        <div class="panel-body">
-                                <form id="signUpForm" class="form-horizontal" role="form">                             
+                        <div class="panel-body ">
+                                <form id="signUpForm" class="form-horizontal" role="form">    
+                                        <!-- Input field for email -->
                                         <div class="form-group">
-                                            <label for="email" class="col-md-3 control-label">Email</label>
+                                            <label for="email-signUp" class="col-md-3 control-label">Email</label>
                                             <div class="col-md-8">
-                                                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                                <input type="text" class="form-control" name="email-signUp" placeholder="Email Address">
                                             </div>
                                         </div>
 
+                                        <!-- Input field for first name -->
                                         <div class="form-group">
-                                            <label for="firstname" class="col-md-3 control-label">First Name</label>
+                                            <label for="firstname-" class="col-md-3 control-label">First Name</label>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" name="firstName" placeholder="First Name">
                                             </div>
                                         </div>
-
+                                        
+                                        <!-- Input field for last name -->
                                         <div class="form-group">
                                             <label for="lastname" class="col-md-3 control-label">Last Name</label>
                                             <div class="col-md-8">
@@ -45,18 +48,28 @@
                                             </div>
                                         </div>
 
+                                        <!-- Input field for nickname -->
+                                        <div class="form-group">
+                                                <label for="nickname" class="col-md-3 control-label">Nickname</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="nickName" placeholder="Nickname">
+                                                </div>
+                                            </div>
+
+                                        <!-- Input field for passwprd -->   
                                         <div class="form-group">
                                             <label for="password" class="col-md-3 control-label">Password</label>
                                             <div class="col-md-8">
-                                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                                <input type="password-signUp" class="form-control" name="password-signUp" placeholder="Password">
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                                <!-- Button -->                                        
+                                         <!-- Sign in button-->  
+                                        <div class="form-group">                                                                                     
                                                 <div class="col-md-offset-3 col-md-9">
                                                     <button id="btn-signUp" type="button" class="btn btn-info"> Sign Up</button>                                        
-                                                        <p id="txt-accExist"> Already have an account?
+                                                        <p id="txt-accExist" style="position: relative; top:7px; font-size:13px; display:inline;"> 
+                                                            Already have an account?
                                                             <a href="signIn.html">Sign in</a> 
                                                         </p>
                                                                                                   
