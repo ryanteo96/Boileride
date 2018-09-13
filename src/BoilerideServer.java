@@ -20,47 +20,43 @@ import java.util.Iterator;
  *
  * @version September 10, 2018
  */
+
 public class BoilerideServer {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/boileridedb?useSSL=false";
+    static final String DB_URL = "jdbc:mysql://142.93.19.7:3306/boileridedb?useSSL=false";
 
     static final String USER = "backend";
-    static final String PASS = "boileride18";
+    static final String PASS = "Boileride18!";
 
-    static Statement stmt;
+    private Statement stmt;
+    private Connection conn;
+    private DatabaseCommunicator db;
 
-    private static class testHandler implements HttpHandler {
+    private BoilerideServer(){
+        this.stmt = null;
+        this.conn = null;
+        this.db = null;
+    }
+
+    private static class requestHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
 
-            System.out.println(httpExchange.getRequestMethod());
-            System.out.println(httpExchange.getRequestURI());
+            String uri = httpExchange.getRequestURI().toString();
+            System.out.println("Request " + uri + " received");
+
             InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
-//            BufferedReader inbuf = new BufferedReader(in);
-//            String inline;
-//            StringBuffer request = new StringBuffer();
-//            while ((inline = inbuf.readLine()) != null) {
-//                request.append(inline);
-//            }
-//            inbuf.close();
-//            System.out.println(in.toString());
+
             JSONParser parser = new JSONParser();
+            JSONObject jsonRequestObj;
             try {
                 Object requestObj = parser.parse(in);
-                JSONObject jsonObj = (JSONObject)requestObj;
-                System.out.println(jsonObj);
-                System.out.println(jsonObj.get("hate"));
-                JSONArray msg = (JSONArray) jsonObj.get("messages");
-                Iterator<String> iterator = msg.iterator();
-                while (iterator.hasNext()){
-                    System.out.println(iterator.next());
-                }
+                jsonRequestObj = (JSONObject)requestObj;
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-//            String response = "This is the response";
 
             JSONObject responseObj = new JSONObject();
             responseObj.put("age", new Integer(100));
@@ -81,26 +77,22 @@ public class BoilerideServer {
         }
     }
 
-    public static void main(String[] args) {
-
+    private void connect(){
         //Set up connection to database
-        Connection conn = null;
-        stmt = null;
 
         try{
 
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
+            this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            this.stmt = this.conn.createStatement();
+            System.out.println("Connected to database...");
+            this.db = new DatabaseCommunicator(this.conn);
 
             HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
-            server.createContext("/test", new testHandler());
+            server.createContext("/", new requestHandler());
             server.setExecutor(null);
             server.start();
-
-            stmt.close();
-            conn.close();
-
+            System.out.println("Connected to server...");
 
         }catch(SQLException se){
             //Handle errors for JDBC
@@ -115,8 +107,8 @@ public class BoilerideServer {
         }finally {
             //finally block used to close resources
             try {
-                if (stmt != null)
-                    stmt.close();
+                if (this.stmt != null)
+                    this.stmt.close();
             } catch (SQLException se2) {
                 // nothing we can do
             }
@@ -127,5 +119,19 @@ public class BoilerideServer {
                 se.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+
+        BoilerideServer server = new BoilerideServer();
+        server.connect();
+
+//        try {
+//            server.conn.close();
+//            System.out.println("Disconnected from database...");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
     }
 }
