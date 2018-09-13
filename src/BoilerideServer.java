@@ -22,11 +22,11 @@ import java.util.Iterator;
  */
 public class BoilerideServer {
 
-    static final String JDBC_DRIVER = "";
-    static final String DB_URL = "";
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/boileridedb?useSSL=false";
 
-    static final String USER = "";
-    static final String PASS = "";
+    static final String USER = "backend";
+    static final String PASS = "boileride18";
 
     static Statement stmt;
 
