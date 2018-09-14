@@ -15,7 +15,7 @@ public class User
     String phoneNumber = "";
 
 
-    Boolean verifyNickname(String nickname)
+    boolean verifyNickname(String nickname)
     {
         if(nickname.length() < 50)
         {
@@ -23,7 +23,7 @@ public class User
         }
         return false;
     }
-    Boolean verifyEmail(String email)
+    boolean verifyEmail(String email)
     {
         try
         {
@@ -37,7 +37,7 @@ public class User
             return false;
         }
     }
-    Boolean verifyPassword(String password)
+    boolean verifyPassword(String password)
     {
         if(password.length()>6)
         {
@@ -45,7 +45,7 @@ public class User
         }
         return false;
     }
-    Boolean verifyPhone(String phoneNumber)
+    boolean verifyPhone(String phoneNumber)
     {
         for(int i = 0; i<phoneNumber.length();i++)
         {

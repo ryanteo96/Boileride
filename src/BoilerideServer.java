@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.sql.*;
 import java.util.Iterator;
 
+
 /**
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
@@ -48,22 +49,18 @@ public class BoilerideServer {
 
             InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
 
-            JSONParser parser = new JSONParser();
-            JSONObject jsonRequestObj = null;
-            try {
-                Object requestObj = parser.parse(in);
-                jsonRequestObj = (JSONObject)requestObj;
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             if (uri.equals("/user/signup")){
-                String email = jsonRequestObj.get("email").toString();
-                String password = jsonRequestObj.get("password").toString();
-                String nickname = jsonRequestObj.get("nickname").toString();
-                String phone = jsonRequestObj.get("phone").toString();
-                System.out.println("Received: " + email + " " + password + " " + nickname + " " + phone);
+                Object obj = JsonConverter.toObject(in, "UserSignUpRequest");
+
+                // pseudo code, return to client
+                return JsonConverter.toJson(User.signUp(obj));
+
+//                String email = jsonRequestObj.get("email").toString();
+//                String password = jsonRequestObj.get("password").toString();
+//                String nickname = jsonRequestObj.get("nickname").toString();
+//                String phone = jsonRequestObj.get("phone").toString();
+//                System.out.println("Received: " + email + " " + password + " " + nickname + " " + phone);
             }
             else if (uri.equals("/user/verifyemail")){
                 String userid = jsonRequestObj.get("userid").toString();
