@@ -45,4 +45,7 @@ public class UserSignUpRequest {
         phone = ph;
     }
 
+    public String toString(){
+        return email + " " + password + " " + nickname + " " + phone;
+    }
 }

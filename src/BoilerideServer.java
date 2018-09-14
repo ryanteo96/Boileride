@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.sql.*;
 import java.util.Iterator;
 
+import DTO.*;
 
 /**
  * CS 40800 - Project: Boileride
@@ -51,10 +52,11 @@ public class BoilerideServer {
 
 
             if (uri.equals("/user/signup")){
-                Object obj = JsonConverter.toObject(in, "UserSignUpRequest");
-
+                //Turns out we need to put DTO. in front of the class name to make it work
+                Object obj = JsonConverter.toObject(in, "DTO.UserSignUpRequest");
+                System.out.println(obj.toString());
                 // pseudo code, return to client
-                return JsonConverter.toJson(User.signUp(obj));
+                //return JsonConverter.toJson(User.signUp(obj));
 
 //                String email = jsonRequestObj.get("email").toString();
 //                String password = jsonRequestObj.get("password").toString();
@@ -62,172 +64,172 @@ public class BoilerideServer {
 //                String phone = jsonRequestObj.get("phone").toString();
 //                System.out.println("Received: " + email + " " + password + " " + nickname + " " + phone);
             }
-            else if (uri.equals("/user/verifyemail")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String code = jsonRequestObj.get("code").toString();
-                System.out.println("Received: " + userid + " " + code);
-            }
-            else if (uri.equals("/user/login")){
-                String email = jsonRequestObj.get("email").toString();
-                String password = jsonRequestObj.get("password").toString();
-                System.out.println("Received: " + email + " " + password);
-            }
-            else if (uri.equals("/user/forgotpassword")){
-                String email = jsonRequestObj.get("email").toString();
-                System.out.println("Received: " + email);
-            }
-            else if (uri.equals("/user/resetpassword")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String code  = jsonRequestObj.get("code").toString();
-                String newpassword  = jsonRequestObj.get("newpassword").toString();
-                System.out.println("Received: " + userid + " " + code + " " + newpassword);
-            }
-            else if (uri.equals("/user/viewaccount")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/user/update")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String email = jsonRequestObj.get("email").toString();
-                String password = jsonRequestObj.get("password").toString();
-                String nickname = jsonRequestObj.get("nickname").toString();
-                String phone = jsonRequestObj.get("phone").toString();
-                System.out.println("Received: " + userid + " " + email + " " + password + " " + nickname + " " + phone);
-            }
-            else if (uri.equals("/user/logout")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/view/request")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/view/offer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/view/acceptedrequest")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/view/joinedoffer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/request")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String passengers = jsonRequestObj.get("passengers").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-                String price = jsonRequestObj.get("price").toString();
-                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-                        + datentime + " " + passengers + " " + luggage + " " + smoking + " " + foodndrink + " "
-                        + pets + " " + ac + " " + travelingtime + " " + price);
-            }
-            else if (uri.equals("/ride/cancel/request")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/update/request")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String requestid = jsonRequestObj.get("requestid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String passengers = jsonRequestObj.get("passengers").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-                String price = jsonRequestObj.get("price").toString();
-                System.out.println("Received: " + userid + " " + requestid + " " + pickuplocation + " "
-                        + destination + " " + datentime + " " + passengers + " " + luggage + " " + smoking + " "
-                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
-            }
-            else if (uri.equals("/ride/offer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String seats = jsonRequestObj.get("seats").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-                String price = jsonRequestObj.get("price").toString();
-                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-                        + datentime + " " + seats + " " + luggage + " " + smoking + " " + foodndrink + " "
-                        + pets + " " + ac + " " + travelingtime + " " + price);
-            }
-            else if (uri.equals("/ride/cancel/offer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                System.out.println("Received: " + userid);
-            }
-            else if (uri.equals("/ride/update/offer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String offerid = jsonRequestObj.get("offerid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String seats = jsonRequestObj.get("seats").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-                String price = jsonRequestObj.get("price").toString();
-                System.out.println("Received: " + userid + " " + offerid + " " + pickuplocation + " "
-                        + destination + " " + datentime + " " + seats + " " + luggage + " " + smoking + " "
-                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
-            }
-            else if (uri.equals("/ride/search/request")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
-                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String datentimerange = jsonRequestObj.get("datentimerange").toString();
-                String seats = jsonRequestObj.get("seats").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-                        + pickupproximity + " " + datentime + " " + datentimerange + " " + seats + " "
-                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
-            }
-            else if (uri.equals("/ride/search/offer")){
-                String userid = jsonRequestObj.get("userid").toString();
-                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-                String destination = jsonRequestObj.get("destination").toString();
-                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
-                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
-                String datentime = jsonRequestObj.get("datentime").toString();
-                String datentimerange = jsonRequestObj.get("datentimerange").toString();
-                String passengers = jsonRequestObj.get("passengers").toString();
-                String luggage = jsonRequestObj.get("luggage").toString();
-                String smoking = jsonRequestObj.get("smoking").toString();
-                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-                String pets = jsonRequestObj.get("pets").toString();
-                String ac = jsonRequestObj.get("ac").toString();
-                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-                        + pickupproximity + " " + datentime + " " + datentimerange + " " + passengers + " "
-                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
-            }
+//            else if (uri.equals("/user/verifyemail")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String code = jsonRequestObj.get("code").toString();
+//                System.out.println("Received: " + userid + " " + code);
+//            }
+//            else if (uri.equals("/user/login")){
+//                String email = jsonRequestObj.get("email").toString();
+//                String password = jsonRequestObj.get("password").toString();
+//                System.out.println("Received: " + email + " " + password);
+//            }
+//            else if (uri.equals("/user/forgotpassword")){
+//                String email = jsonRequestObj.get("email").toString();
+//                System.out.println("Received: " + email);
+//            }
+//            else if (uri.equals("/user/resetpassword")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String code  = jsonRequestObj.get("code").toString();
+//                String newpassword  = jsonRequestObj.get("newpassword").toString();
+//                System.out.println("Received: " + userid + " " + code + " " + newpassword);
+//            }
+//            else if (uri.equals("/user/viewaccount")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/user/update")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String email = jsonRequestObj.get("email").toString();
+//                String password = jsonRequestObj.get("password").toString();
+//                String nickname = jsonRequestObj.get("nickname").toString();
+//                String phone = jsonRequestObj.get("phone").toString();
+//                System.out.println("Received: " + userid + " " + email + " " + password + " " + nickname + " " + phone);
+//            }
+//            else if (uri.equals("/user/logout")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/view/request")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/view/offer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/view/acceptedrequest")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/view/joinedoffer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/request")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String passengers = jsonRequestObj.get("passengers").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
+//                String price = jsonRequestObj.get("price").toString();
+//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
+//                        + datentime + " " + passengers + " " + luggage + " " + smoking + " " + foodndrink + " "
+//                        + pets + " " + ac + " " + travelingtime + " " + price);
+//            }
+//            else if (uri.equals("/ride/cancel/request")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/update/request")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String requestid = jsonRequestObj.get("requestid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String passengers = jsonRequestObj.get("passengers").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
+//                String price = jsonRequestObj.get("price").toString();
+//                System.out.println("Received: " + userid + " " + requestid + " " + pickuplocation + " "
+//                        + destination + " " + datentime + " " + passengers + " " + luggage + " " + smoking + " "
+//                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
+//            }
+//            else if (uri.equals("/ride/offer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String seats = jsonRequestObj.get("seats").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
+//                String price = jsonRequestObj.get("price").toString();
+//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
+//                        + datentime + " " + seats + " " + luggage + " " + smoking + " " + foodndrink + " "
+//                        + pets + " " + ac + " " + travelingtime + " " + price);
+//            }
+//            else if (uri.equals("/ride/cancel/offer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                System.out.println("Received: " + userid);
+//            }
+//            else if (uri.equals("/ride/update/offer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String offerid = jsonRequestObj.get("offerid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String seats = jsonRequestObj.get("seats").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
+//                String price = jsonRequestObj.get("price").toString();
+//                System.out.println("Received: " + userid + " " + offerid + " " + pickuplocation + " "
+//                        + destination + " " + datentime + " " + seats + " " + luggage + " " + smoking + " "
+//                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
+//            }
+//            else if (uri.equals("/ride/search/request")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
+//                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String datentimerange = jsonRequestObj.get("datentimerange").toString();
+//                String seats = jsonRequestObj.get("seats").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
+//                        + pickupproximity + " " + datentime + " " + datentimerange + " " + seats + " "
+//                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
+//            }
+//            else if (uri.equals("/ride/search/offer")){
+//                String userid = jsonRequestObj.get("userid").toString();
+//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+//                String destination = jsonRequestObj.get("destination").toString();
+//                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
+//                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
+//                String datentime = jsonRequestObj.get("datentime").toString();
+//                String datentimerange = jsonRequestObj.get("datentimerange").toString();
+//                String passengers = jsonRequestObj.get("passengers").toString();
+//                String luggage = jsonRequestObj.get("luggage").toString();
+//                String smoking = jsonRequestObj.get("smoking").toString();
+//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+//                String pets = jsonRequestObj.get("pets").toString();
+//                String ac = jsonRequestObj.get("ac").toString();
+//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
+//                        + pickupproximity + " " + datentime + " " + datentimerange + " " + passengers + " "
+//                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
+//            }
             else {
                 System.out.println("Request " + uri + " is unknown");
             }
