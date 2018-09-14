@@ -73,7 +73,7 @@
             top: 3px;
         }
         .modal-confirm.modal-dialog {
-            margin-top: 80px;
+            margin-top: 200px;
         }
         .modal-confirm .btn {
             color: #fff;
@@ -91,6 +91,11 @@
         .trigger-btn {
             display: inline-block;
             margin: 100px auto;
+        }
+
+        #btn-redirect-SignIn{
+            font-size: 15px;
+            padding-top:10px;
         }
         </style>
 	}
@@ -139,6 +144,7 @@
                             </div>                                                    
  
                                 <!-- Modal message -->
+                                <!-- Probably here needa make another modal for unsuccessful verification and redirect data target of the button to a function in js-->
                                 <div id="chgPwModal" class="modal fade">
                                     <div class="modal-dialog modal-confirm">
                                         <div class="modal-content">
@@ -149,10 +155,11 @@
                                                 <h4 class="modal-title">Reset Successful!</h4>	
                                             </div>
                                             <div class="modal-body">
-                                                <p class="text-center">Click <a href="/signIn">here</a> to return to the sign in page.</p>
+                                                <p style="position:relative; top:10px"class="text-center">Return to Sign In page.</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+                                                <!-- <button class="btn btn-success btn-block" data-dismiss="modal">OK</button> -->
+                                                <a id="btn-redirect-SignIn" href="/signIn" class="btn btn-success btn-block" >OK</a> 
                                             </div>
                                         </div>
                                     </div>
