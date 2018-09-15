@@ -1,20 +1,26 @@
-// Dependencies
+// dependencies
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
+const bodyParser = require("body-parser");
 
 const app = express();
-
+// route declarations
 const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
 app.use("/", routes);
 app.use("/signIn", signIn);
 app.use("/signUp", signUp);
 
+// https setup
 // const privateKey = fs.readFileSync(
 // 	"/etc/letsencrypt/live/boileride.ryanteo96.tech/privkey.pem",
 // 	"utf8",
@@ -40,7 +46,7 @@ app.use("/signUp", signUp);
 // 	console.log("HTTPS Server running on port 443");
 // });
 
-// for local testing
+// http setup for local testing
 const httpServer = http.createServer(app);
 
 httpServer.listen(80, () => {
