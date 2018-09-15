@@ -7,44 +7,42 @@ const https = require("https");
 
 const app = express();
 
-const privateKey = fs.readFileSync(
-	"/etc/letsencrypt/live/boileride.ryanteo96.tech/privkey.pem",
-	"utf8",
-);
-const certificate = fs.readFileSync(
-	"/etc/letsencrypt/live/boileride.ryanteo96.tech/cert.pem",
-	"utf8",
-);
-const ca = fs.readFileSync(
-	"/etc/letsencrypt/live/boileride.ryanteo96.tech/chain.pem",
-	"utf8",
-);
+const routes = require("./routes/index");
+const signIn = require("./routes/signIn");
+const signUp = require("./routes/signUp");
 
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca,
-};
+app.use("/", routes);
+app.use("/signIn", signIn);
+app.use("/signUp", signUp);
 
-app.get("/", function(req, res) {
-	res.redirect("/signIn");
-});
+// const privateKey = fs.readFileSync(
+// 	"/etc/letsencrypt/live/boileride.ryanteo96.tech/privkey.pem",
+// 	"utf8",
+// );
+// const certificate = fs.readFileSync(
+// 	"/etc/letsencrypt/live/boileride.ryanteo96.tech/cert.pem",
+// 	"utf8",
+// );
+// const ca = fs.readFileSync(
+// 	"/etc/letsencrypt/live/boileride.ryanteo96.tech/chain.pem",
+// 	"utf8",
+// );
 
-app.get("/signIn", function(req, res) {
-	res.sendFile(path.join(__dirname, "public/signIn.html"));
-});
+// const credentials = {
+// 	key: privateKey,
+// 	cert: certificate,
+// 	ca: ca,
+// };
 
-app.get("/signUp", function(req, res) {
-	res.sendFile(path.join(__dirname, "public/signUp.html"));
-});
+// const httpsServer = https.createServer(credentials, app);
 
-app.get("/forgotPw", function(req, res) {
-	res.sendFile(path.join(__dirname, "public/forgotPw.html"));
-});
+// httpsServer.listen(443, () => {
+// 	console.log("HTTPS Server running on port 443");
+// });
 
-// app.listen(4000);
-const httpsServer = https.createServer(credentials, app);
+// for local testing
+const httpServer = http.createServer(app);
 
-httpsServer.listen(443, () => {
-	console.log("HTTPS Server running on port 443");
+httpServer.listen(80, () => {
+	console.log("HTTP Server running on port 80");
 });
