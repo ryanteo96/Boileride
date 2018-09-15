@@ -1,26 +1,30 @@
 import java.sql.*;
 
 /**
- * Created by remychow on 9/13/18.
+ * CS 40800 - Project: Boileride
+ * A web application for ride sharing
+ *
+ * DatabaseCommunicator class send queries to database and return results back to server
+ *
+ * @version September 13, 2018
  */
+
 public class DatabaseCommunicator {
 
-    private Connection conn;
-
-    public DatabaseCommunicator(Connection conn) {
-        this.conn = conn;
-
-    }
-
-    public void testExecuteQuery(Connection conn){
+    public void sampleExecuteQuery(Connection conn){
         System.out.println("select from database");
         try {
-            Statement stmt = this.conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql;
             sql = "SELECT * FROM Users";
             ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                String userid = rs.getString("userid");
+            if (!rs.next() ) {
+                System.out.println("no data");
+            } else {
+                do {
+                    String userid = rs.getString("userid");
+                }
+                while (rs.next());
             }
             rs.close();
             stmt.close();
@@ -30,14 +34,25 @@ public class DatabaseCommunicator {
 
         System.out.println("update, insert, delete in database");
         try {
-            Statement stmt = this.conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql;
             String userid = "testing";
             sql = "INSERT into Users values(" + userid + ")";
             stmt.executeUpdate(sql);
-        } catch (SQLException e) {
+            stmt.close();
+        } catch (SQLIntegrityConstraintViolationException e){
+            //Duplicate entry
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
+
+    public static User selectUser(Connection conn, String userid){
+        User resultUser = new User();
+        return resultUser;
+    }
+
+
 }
