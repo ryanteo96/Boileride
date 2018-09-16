@@ -4,22 +4,28 @@ package DTO;
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
  *
- * DTO for user signup request
+ * DTO for user update request
  *
- * @version September 14, 2018
+ * @version September 15, 2018
  */
 
-public class UserSignUpRequest {
+public class UserUpdateRequest {
+    private String userid;
     private String email;
     private String password;
     private String nickname;
     private String phone;
 
-    public UserSignUpRequest(String e, String p, String n, String ph) {
+    public UserUpdateRequest(String u, String e, String p, String n, String ph) {
+        userid = u;
         email = e;
         password = p;
         nickname = n;
         phone = ph;
+    }
+
+    public String getUserid() {
+        return userid;
     }
 
     public String getEmail() {
@@ -36,6 +42,10 @@ public class UserSignUpRequest {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public void setEmail(String e) {
@@ -55,6 +65,6 @@ public class UserSignUpRequest {
     }
 
     public String toString(){
-        return "email: " + email + ", password: " + password + ", nickname: " + nickname + ", phone: " + phone;
+        return "userid: " + userid + ", email: " + email + ", password: " + password + ", nickname: " + nickname + ", phone: " + phone;
     }
 }

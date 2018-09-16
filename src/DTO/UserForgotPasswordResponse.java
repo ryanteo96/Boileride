@@ -4,16 +4,16 @@ package DTO;
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
  *
- * DTO for user signup response
+ * DTO for user forgot password response
  *
- * @version September 14, 2018
+ * @version September 15, 2018
  */
 
-public class UserSignUpResponse {
+public class UserForgotPasswordResponse {
     private int result;
     private String userid;
 
-    public UserSignUpResponse(int r, String u) {
+    public UserForgotPasswordResponse(int r, String u) {
         result = r;
         userid = u;
     }
@@ -39,4 +39,5 @@ public class UserSignUpResponse {
     public String toString(){
         return "result: " + result + ", userid: " + userid;
     }
+
 }
