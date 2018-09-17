@@ -11,6 +11,10 @@ const app = express();
 const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
+const signOut = require("./routes/signOut");
+const home = require("./routes/home");
+const myRides = require("./routes/myRides");
+const settings = require("./routes/settings");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,6 +23,10 @@ app.use(express.static("public"));
 app.use("/", routes);
 app.use("/signIn", signIn);
 app.use("/signUp", signUp);
+app.use("/signOut", signOut);
+app.use("/home", home);
+app.use("/myRides", myRides);
+app.use("/settings", settings);
 
 // https setup
 // const privateKey = fs.readFileSync(
