@@ -1,0 +1,10 @@
+.row {
+	margin: 10px 0px;
+}
+
+#cards-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 10px 0px;
+}
