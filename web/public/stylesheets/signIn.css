@@ -4,3 +4,36 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+#forgotPassword {
+	float: right;
+	font-size: 80%;
+	position: relative;
+	top: -10px;
+}
+
+#emailSignInInputGroup {
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-top: 10px;
+	margin-bottom: 25px;
+}
+
+#passwordSignInInputGroup {
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-bottom: 25px;
+}
+
+#signInFormBtnContainer {
+	padding-left: 30px;
+}
+
+#btn-signIn {
+	width: 100px;
+}
+
+#btn-goToSignUp {
+	left: 20px;
+	width: 100px;
+}

@@ -10,7 +10,7 @@ router.get("/", function(req, res) {
 router.post("/test", function(req, res) {
 	let test = req.body;
 	console.log(test);
-	res.redirect("/signUp");
+	res.redirect("/home");
 });
 
 module.exports = router;
