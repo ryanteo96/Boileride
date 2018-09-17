@@ -10,31 +10,30 @@ package DTO;
  */
 
 public class UserVerifyEmailRequest {
-    private int userid;
-    private String code;
     private String email;
-    public UserVerifyEmailRequest(int u, String c, String e)
+    private String code;
+
+    public UserVerifyEmailRequest(String e, String c)
     {
-        userid = u;
-        code = c;
         email = e;
+        code = c;
     }
 
-    public int getUserid() {
-        return userid;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCode() { return code; }
-
-    public void setUserid(int u) {
-        this.userid = u;
-    }
 
     public void setCode(String code) {
         this.code = code;
     }
 
     public String toString(){
-        return "userid: " + userid + ", code: " + code;
+        return "email" + email + ", code: " + code;
     }
 }

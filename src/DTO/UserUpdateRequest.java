@@ -10,13 +10,13 @@ package DTO;
  */
 
 public class UserUpdateRequest {
-    private String userid;
+    private int userid;
     private String email;
     private String password;
     private String nickname;
     private String phone;
 
-    public UserUpdateRequest(String u, String e, String p, String n, String ph) {
+    public UserUpdateRequest(int u, String e, String p, String n, String ph) {
         userid = u;
         email = e;
         password = p;
@@ -24,7 +24,7 @@ public class UserUpdateRequest {
         phone = ph;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
@@ -44,7 +44,7 @@ public class UserUpdateRequest {
         return phone;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 

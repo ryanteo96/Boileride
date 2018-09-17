@@ -11,13 +11,14 @@ package DTO;
 
 public class UserVerifyEmailResponse {
     private int result;
-
-    public UserVerifyEmailResponse(int r) {
-        result = r;
-    }
+    private int userid;
 
     public int getResult() {
         return result;
+    }
+
+    public int getUserid() {
+        return userid;
     }
 
     @Anno(name="result")
@@ -25,8 +26,13 @@ public class UserVerifyEmailResponse {
         result = r;
     }
 
+    @Anno(name="userid")
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
     public String toString(){
-        return "result: " + result;
+        return "result: " + result + ", userid: " + userid;
     }
 
 }

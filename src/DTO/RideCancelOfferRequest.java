@@ -10,28 +10,28 @@ package DTO;
  */
 
 public class RideCancelOfferRequest {
-    private String userid;
-    private String offerid;
+    private int userid;
+    private int offerid;
 
-    public RideCancelOfferRequest(String u, String o) {
-        userid = u;
-        offerid = o;
+    public RideCancelOfferRequest(int userid, int offerid) {
+        this.userid = userid;
+        this.offerid = offerid;
     }
 
-    public String getUserid() {
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public void setOfferid(int offerid) {
+        this.offerid = offerid;
+    }
+
+    public int getUserid() {
         return userid;
     }
 
-    public String getOfferid() {
+    public int getOfferid() {
         return offerid;
-    }
-
-    public void setUserid(String u) {
-        userid = u;
-    }
-
-    public void setOfferid(String o) {
-        offerid = o;
     }
 
     public String toString(){

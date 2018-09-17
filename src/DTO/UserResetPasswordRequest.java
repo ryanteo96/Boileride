@@ -10,17 +10,17 @@ package DTO;
  */
 
 public class UserResetPasswordRequest {
-    private String userid;
+    private int userid;
     private String code;
     private String newpassword;
 
-    public UserResetPasswordRequest(String u, String c, String n) {
+    public UserResetPasswordRequest(int u, String c, String n) {
         userid = u;
         code = c;
         newpassword = n;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
@@ -32,7 +32,7 @@ public class UserResetPasswordRequest {
         return newpassword;
     }
 
-    public void setUserid(String u) {
+    public void setUserid(int u) {
         userid = u;
     }
 

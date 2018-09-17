@@ -11,19 +11,13 @@ package DTO;
 
 public class UserSignUpResponse {
     private int result;
-    private int userid;
 
     public UserSignUpResponse(int r, int u) {
         result = r;
-        userid = u;
     }
 
     public int getResult() {
         return result;
-    }
-
-    public int getUserid() {
-        return userid;
     }
 
     @Anno(name="result")
@@ -31,12 +25,7 @@ public class UserSignUpResponse {
         result = r;
     }
 
-    @Anno(name="userid")
-    public void setUserid(int u) {
-        userid = u;
-    }
-
     public String toString(){
-        return "result: " + result + ", userid: " + userid;
+        return "result: " + result;
     }
 }

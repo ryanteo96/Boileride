@@ -11,9 +11,9 @@ package DTO;
 
 public class RideOfferResponse {
     private int result;
-    private String offerid;
+    private int offerid;
 
-    public RideOfferResponse(int r, String o) {
+    public RideOfferResponse(int r, int o) {
         result = r;
         offerid = o;
     }
@@ -22,7 +22,7 @@ public class RideOfferResponse {
         return result;
     }
 
-    public String getOfferid() {
+    public int getOfferid() {
         return offerid;
     }
 
@@ -32,7 +32,7 @@ public class RideOfferResponse {
     }
 
     @Anno(name="requestid")
-    public void setOfferid(String o) {
+    public void setOfferid(int o) {
         offerid = o;
     }
 

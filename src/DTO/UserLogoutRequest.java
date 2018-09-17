@@ -10,17 +10,17 @@ package DTO;
  */
 
 public class UserLogoutRequest {
-    private String userid;
+    private int userid;
 
-    public UserLogoutRequest(String u) {
+    public UserLogoutRequest(int u) {
         userid = u;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String u) {
+    public void setUserid(int u) {
         userid = u;
     }
 

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 
 public class RideRequestRequest {
-    private String userid;
+    private int userid;
     private String pickuplocation;
     private String destination;
     private Date datentime;
@@ -25,7 +25,7 @@ public class RideRequestRequest {
     private int travelingtime;
     private int price;
 
-    public RideRequestRequest(String u, String p, String d, Date da, int pa,
+    public RideRequestRequest(int u, String p, String d, Date da, int pa,
                               int l, boolean s, boolean f, boolean pe, boolean a,
                               int t, int pr){
         userid = u;
@@ -42,7 +42,7 @@ public class RideRequestRequest {
         price = pr;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
@@ -90,7 +90,7 @@ public class RideRequestRequest {
         this.price = price;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
