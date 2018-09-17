@@ -53,8 +53,8 @@ public class BoilerideServer {
 
             if (uri.equals("/user/signup")){
                 //Turns out we need to put DTO. in front of the class name to make it work
-                Object obj = JsonConverter.toObject(in, "DTO.UserSignUpRequest");
-                System.out.println(obj.toString());
+//                Object obj = JsonConverter.toObject(in, "DTO.UserSignUpRequest");
+//                System.out.println(obj.toString());
                 // pseudo code, return to client
                 //return JsonConverter.toJson(User.signUp(obj));
 
@@ -295,8 +295,17 @@ public class BoilerideServer {
 
     public static void main(String[] args) {
 
-        BoilerideServer server = new BoilerideServer();
-        server.connect();
+//        BoilerideServer server = new BoilerideServer();
+//        server.connect();
+        try {
+            File f = new File("C:\\Users\\HYUANG\\Desktop\\test.txt");
+            BufferedReader in = new BufferedReader(new FileReader(f));
+            Object obj = JsonConverter.toObject(in, UserSignUpRequest.class);
+            System.out.println(((UserSignUpRequest)obj).getEmail());
+            System.out.println(JsonConverter.toJson(obj));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        try {
 //            server.conn.close();

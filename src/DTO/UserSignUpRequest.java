@@ -15,6 +15,10 @@ public class UserSignUpRequest {
     private String nickname;
     private String phone;
 
+    public UserSignUpRequest() {
+
+    }
+
     public UserSignUpRequest(String e, String p, String n, String ph) {
         email = e;
         password = p;
@@ -38,18 +42,22 @@ public class UserSignUpRequest {
         return phone;
     }
 
+    @Anno(name = "email")
     public void setEmail(String e) {
         email = e;
     }
 
+    @Anno(name = "password")
     public void setPassword(String p) {
         password = p;
     }
 
+    @Anno(name = "nickname")
     public void setNickname(String n) {
         nickname = n;
     }
 
+    @Anno(name = "phone")
     public void setPhone(String ph) {
         phone = ph;
     }
