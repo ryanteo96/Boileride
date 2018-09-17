@@ -11,10 +11,10 @@ import java.sql.*;
 
 public class DatabaseCommunicator {
 
-    public void sampleExecuteQuery(Connection conn){
+    public void sampleExecuteQuery(){
         System.out.println("select from database");
         try {
-            Statement stmt = conn.createStatement();
+            Statement stmt = BoilerideServer.conn.createStatement();
             String sql;
             sql = "SELECT * FROM Users";
             ResultSet rs = stmt.executeQuery(sql);
@@ -34,11 +34,17 @@ public class DatabaseCommunicator {
 
         System.out.println("update, insert, delete in database");
         try {
-            Statement stmt = conn.createStatement();
+            Statement stmt = BoilerideServer.conn.createStatement();
             String sql;
             String userid = "testing";
             sql = "INSERT into Users values(" + userid + ")";
-            stmt.executeUpdate(sql);
+            int count = stmt.executeUpdate(sql);
+            if (count > 0){
+                //done
+            }
+            else {
+                //not successful
+            }
             stmt.close();
         } catch (SQLIntegrityConstraintViolationException e){
             //Duplicate entry
@@ -49,10 +55,37 @@ public class DatabaseCommunicator {
 
     }
 
-    public static User selectUser(Connection conn, String userid){
+    public static int addUser(User user){
+        return 0;
+    }
+
+    public static User selectUser(int userid){
         User resultUser = new User();
+        resultUser = null;
         return resultUser;
     }
 
+    public static int addRideRequest(RideRequest req){
+        return 0;
+    }
 
+    public static RideRequest selectRideRequest(int requestid){
+        return null;
+    }
+
+    public static int cancelRideRequest(int requestid){
+        return 0;
+    }
+
+    public static int addRideOffer(RideOffer offer){
+        return 0;
+    }
+
+    public static RideOffer selectRideOffer(int offerid){
+        return null;
+    }
+
+    public static int cancelRideOffer(int offerid){
+        return 0;
+    }
 }
