@@ -110,23 +110,21 @@ public class BoilerideServer {
                 System.out.println("Received: " + userid);
             }
             else if (uri.equals("/ride/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
+                String userid = jsonRequestObj.get("userid").toString();
+                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
+                String destination = jsonRequestObj.get("destination").toString();
                 String datentime = jsonRequestObj.get("datentime").toString();
-//                String passengers = jsonRequestObj.get("passengers").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-//                String price = jsonRequestObj.get("price").toString();
-//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-//                        + datentime + " " + passengers + " " + luggage + " " + smoking + " " + foodndrink + " "
-//                        + pets + " " + ac + " " + travelingtime + " " + price);
-                RideRequest ride = new RideRequest();
-
+                String passengers = jsonRequestObj.get("passengers").toString();
+                String luggage = jsonRequestObj.get("luggage").toString();
+                String smoking = jsonRequestObj.get("smoking").toString();
+                String foodndrink = jsonRequestObj.get("foodndrink").toString();
+                String pets = jsonRequestObj.get("pets").toString();
+                String ac = jsonRequestObj.get("ac").toString();
+                String travelingtime = jsonRequestObj.get("travelingtime").toString();
+                String price = jsonRequestObj.get("price").toString();
+                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
+                        + datentime + " " + passengers + " " + luggage + " " + smoking + " " + foodndrink + " "
+                        + pets + " " + ac + " " + travelingtime + " " + price);
             }
             else if (uri.equals("/ride/cancel/request")){
                 String userid = jsonRequestObj.get("userid").toString();
