@@ -283,6 +283,9 @@ public class BoilerideServer {
         BoilerideServer server = new BoilerideServer();
         server.connect();
 
+        int ret = SendEmail.sendEmail("ochow@purdue.edu", "Boileride", "Boileride email sent!");
+        System.out.println(ret);
+
 //        try {
 //            server.conn.close();
 //            System.out.println("Disconnected from database...");
