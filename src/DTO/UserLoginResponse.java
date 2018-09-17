@@ -11,9 +11,9 @@ package DTO;
 
 public class UserLoginResponse {
     private int result;
-    private String userid;
+    private int userid;
 
-    public UserLoginResponse(int r, String u) {
+    public UserLoginResponse(int r, int u) {
         result = r;
         userid = u;
     }
@@ -22,7 +22,7 @@ public class UserLoginResponse {
         return result;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
@@ -32,7 +32,7 @@ public class UserLoginResponse {
     }
 
     @Anno(name="userid")
-    public void setUserid(String u) {
+    public void setUserid(int u) {
         userid = u;
     }
 

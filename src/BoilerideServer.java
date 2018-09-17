@@ -56,7 +56,7 @@ public class BoilerideServer {
                 Object obj = JsonConverter.toObject(in, "DTO.UserSignUpRequest");
                 System.out.println(obj.toString());
                 // pseudo code, return to client
-                //return JsonConverter.toJson(User.signUp(obj));
+                //return JsonConverter.toJson(DTO.User.signUp(obj));
 
 //                String email = jsonRequestObj.get("email").toString();
 //                String password = jsonRequestObj.get("password").toString();

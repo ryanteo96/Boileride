@@ -10,17 +10,17 @@ package DTO;
  */
 
 public class UserViewAccountRequest {
-    private String userid;
+    private int userid;
 
-    public UserViewAccountRequest(String u){
+    public UserViewAccountRequest(int u){
         userid = u;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
