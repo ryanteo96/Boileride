@@ -12,6 +12,7 @@ package DTO;
 public class UserForgotPasswordResponse {
     private int result;
     private int userid;
+    private String code;
 
     public UserForgotPasswordResponse(int r, int u) {
         result = r;
@@ -35,6 +36,8 @@ public class UserForgotPasswordResponse {
     public void setUserid(int u) {
         userid = u;
     }
+
+    public void setCode(String c) {code = c;}
 
     public String toString(){
         return "result: " + result + ", userid: " + userid;

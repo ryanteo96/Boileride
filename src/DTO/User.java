@@ -126,7 +126,7 @@ public class User
         UserLoginResponse response = new UserLoginResponse(-1,-1);
 
         /*
-        * if(emailExist(req.req.getEmail()) == 0)
+        * if(emailExist(req.getEmail()) == 0)
         * {
         *   if(loginWithEmailPassword(req.getEmail(), req.getPassword()) != 1)
         *   {
@@ -168,6 +168,159 @@ public class User
 
 
         */
+
+        return response;
+    }
+    public UserUpdateResponse updateUser(UserUpdateRequest req)
+    {
+        UserUpdateResponse response = new UserUpdateResponse(-1);
+        /*
+            if(user = selectUser(req.getUserid()) && user != NULL)
+            {
+                if(verifyNickname(req.getNickname()))
+                {
+                    if(verifyEmail(req.getEmail()))
+                    {
+                        if(verifyPhone(req.getPhone()))
+                        {
+                            if(updateSQLUser(req.getUserid(), user) == 0)
+                            {
+                                System.out.println("Success updating user in db");
+                                req.setResult(0);
+                            }
+                            else
+                            {
+                                System.out.println("Failed updating user in db");
+                            }
+                        }
+                        else
+                        {
+                            response.setResult(5);
+                        }
+                    }
+                    else
+                    {
+                        response.setResult(4);
+                    }
+                }
+                else
+                {
+                    response.setResult(3);
+                }
+
+            }
+            else
+            {
+                response.setResult(1);
+            }
+
+        */
+        return response;
+    }
+    public UserForgotPasswordResponse forgotPassword(UserForgotPasswordRequest req)
+    {
+        UserForgotPasswordResponse response = new UserForgotPasswordResponse(-1,-1);
+        String email = req.getEmail();
+        int id;
+        String password;
+        User user;
+
+        /*
+
+
+            if(id = lookUpUserid(email) && id != -1)
+            {
+                user = selectUser(id);
+                if(user != NULL)
+                {
+                    password = user.getPassword();
+                    String buffer = password+email;
+                    String hashCode = buffer.hashCode();
+                    response.setCode(hashCode);
+                    response.setResult(0);
+                    response.setUserid(id);
+                    SendEmail.sendEmail(email, "Unique code for resetting password", "Please use this code to reset your password:" + hashCode);
+                }
+                else
+                {
+                    System.out.println("Failed getting userinfo in UserForgotPasswordResponse");
+                }
+            }
+            else
+            {
+                response.setResult(1);
+            }
+
+         */
+
+
+
+        return response;
+    }
+    public UserResetPasswordResponse resetPassword(UserResetPasswordRequest req)
+    {
+        UserResetPasswordResponse response = new UserResetPasswordResponse(-1);
+        UserUpdateRequest updateReq = new UserUpdateRequest(-1, "", "", "", "");
+        UserUpdateResponse updateResponse;
+        User user;
+
+        /*
+            if(user = selectUser(req.getUserid()) && user != NULL)
+            {
+                String buffer = user.getPassword() + user.getEmail();
+                String hashCode = buffer.hashCode();
+                if(req.getCode() == hashCode)
+                {
+
+                   updateReq.setUserid(req.getUserid());
+                   updateReq.setEmail(user.getEmail());
+                   updateReq.setPassword(req.getNewpassword());
+                   updateReq.setNickname(user.getNickname());
+                   updateReq.setPhone(user.getPhone());
+                   updateResponse = updateUser(updateReq);
+
+                   if(updateResponse.getResult() == 0)
+                   {
+                        req.setResult(0);
+                        System.out.println("Success reset password ");
+                   }
+                   else
+                   {
+                        switch(updateResponse.getResult())
+                        {
+                            case 1:
+                                System.out.println("Invalid Userid");
+                                break;
+                            case 2:
+                                System.out.println("User not log in");
+                                break;
+                            case 3:
+                                System.out.println("Invalid nickname");
+                                break;
+                            case 4:
+                                System.out.println("Invalid email");
+                                break;
+                            case 5:
+                                System.out.println("Invalid phone");
+                                break;
+                             default:
+                                break;
+
+                        }
+                   }
+
+                }
+                else
+                {
+                    response.setResult(2);
+                }
+            }
+            else
+            {
+                response.setResult(1);
+            }
+        */
+
 
         return response;
     }
