@@ -16,4 +16,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     compile 'javax.mail:javax.mail-api:1.6.2'
     compile 'com.google.maps:google-maps-services:0.2.11'
+    compile files('mysql-connector-java-8.0.12.jar')
 }
