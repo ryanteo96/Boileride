@@ -29,8 +29,9 @@ public class User
         }
         return false;
     }
-    private boolean verifyEmail(String email)
+    private boolean verifyEmailFormat(String email)
     {
+
         try
         {
             InternetAddress e = new InternetAddress(email);
@@ -40,8 +41,45 @@ public class User
         catch (AddressException error)
         {
             System.out.print(error.getLocalizedMessage());
-            return false;
         }
+
+        return false;
+
+
+    }
+    private UserVerifyEmailResponse verifyEmailCode(UserVerifyEmailRequest req)
+    {
+        UserVerifyEmailResponse response = new UserVerifyEmailResponse(-1,-1);
+
+        /*
+                String buffer = req.getEmail();
+                String hashCode = buffer.hashCode();
+
+                if(req.getCode().compare(hashCode) == 0)
+                {
+
+                    int dbResponse = -1;
+                    dbResponse = addUser(user);
+                    if(dbResponse == -1)
+                    {
+                        System.out.println("Failed add user in db");
+                        response.setUserid(-1);
+                    }
+                    else
+                    {
+                        response.setUserid(dbResponse);
+                        response.setResult(0);
+                    }
+
+                }
+                else
+                {
+                    response.setResult(2);
+                }
+        */
+
+
+        return response;
     }
     private boolean verifyEmailExist(String email)
     {
@@ -73,7 +111,7 @@ public class User
         UserSignUpResponse response = new UserSignUpResponse(-1,-1);
         if(user.verifyNickname(req.getNickname()))
         {
-            if(user.verifyEmail(req.getEmail()))
+            if(user.verifyEmailFormat(req.getEmail()))
             {
                 if(!user.verifyEmailExist(req.getEmail()))
                 {
@@ -81,17 +119,8 @@ public class User
                     {
                         System.out.println("Passed signUp Verification");
                         /*
-                            int dbResponse = -1;
-                            dbResponse = addUser(user);
-                            if(dbResponse == -1)
-                            {
-                                System.out.println("Failed add user in db");
-                                response.setUserid(-1);
-                            }
-                            else
-                            {
-                                response.setUserid(dbResponse);
-                            }
+                            String hashCode = req.getEmail().hashCode();
+                            Sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
                         */
 
                         response.setResult(0);
@@ -224,8 +253,6 @@ public class User
         User user;
 
         /*
-
-
             if(id = lookUpUserid(email) && id != -1)
             {
                 user = selectUser(id);
@@ -267,7 +294,7 @@ public class User
             {
                 String buffer = user.getPassword() + user.getEmail();
                 String hashCode = buffer.hashCode();
-                if(req.getCode() == hashCode)
+                if(req.getCode().compare(hashCode) == 0)
                 {
 
                    updateReq.setUserid(req.getUserid());

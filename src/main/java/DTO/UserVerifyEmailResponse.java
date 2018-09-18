@@ -13,6 +13,11 @@ public class UserVerifyEmailResponse {
     private int result;
     private int userid;
 
+    public UserVerifyEmailResponse(int r, int u){
+        result = r;
+        userid = u;
+    }
+
     public int getResult() {
         return result;
     }
@@ -30,6 +35,12 @@ public class UserVerifyEmailResponse {
     public void setUserid(int userid) {
         this.userid = userid;
     }
+
+
+//        public String toString(){
+//        return "result: " + result ;
+//    }
+
 
     public String toString(){
         return "result: " + result + ", userid: " + userid;
