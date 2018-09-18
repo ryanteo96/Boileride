@@ -3,6 +3,8 @@ import com.google.maps.model.Duration;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import java.util.*;
+
 public class RideOffer {
     private String user;
     private String origin;
@@ -12,6 +14,15 @@ public class RideOffer {
     private long distance;
     private int price;
     private RidePreferences ridePreferences;
+
+    public RideOffer() {
+
+    }
+    public RideOffer(String origin, String destination, Period duration) {
+        this.origin = origin;
+        this.destination = destination;
+        this.duration = duration;
+    }
 
     public String getUser() {
         return user;
@@ -76,4 +87,46 @@ public class RideOffer {
     public void setRidePreferences(RidePreferences ridePreferences) {
         this.ridePreferences = ridePreferences;
     }
+
+    public String toString() {
+        return "Origin: " + origin + ", Destination: " + destination + ", Duration: " + String.valueOf(duration.getMillis());
+    }
+
+    public List<Trip> search(String origin, String destination) {
+        List<Trip> ret = new ArrayList<>();
+        PriorityQueue<Temptrip> heap = new PriorityQueue<>((a, b)->b.total - a.total);
+        FakeDB db = new FakeDB();
+        Temptrip start = new Temptrip();
+        start.trip = new Trip();
+        start.trip.setRides(new LinkedList<>());
+        start.trip.getRides().add(new RideOffer("", origin, new Period(0)));
+        heap.add(start);
+        while (!heap.isEmpty()) {
+            Temptrip curr = heap.poll();
+            if (curr.trip.getRides().getLast().destination.equals(destination)) {
+                ret.add(curr.trip);
+                continue;
+            }
+            for (RideOffer r : db.ridesFrom(curr.trip.getRides().getLast().destination)) {
+                Temptrip t = new Temptrip();
+                t.trip = new Trip();
+                t.trip.setRides(new LinkedList<>());
+                for (RideOffer a : curr.trip.getRides()) {
+                    t.trip.getRides().add(a);
+                }
+
+                t.trip.getRides().add(r);
+                t.trip.setDuration(curr.trip.getDuration() + r.duration.getMillis());
+                t.total = t.trip.getDuration() + db.estimate(r.destination, destination);
+                heap.add(t);
+            }
+        }
+        return ret;
+    }
+
+    private class Temptrip {
+        public Trip trip;
+        public int total;
+    }
 }
+

@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.sql.*;
 import java.util.Iterator;
+import java.util.List;
 
 import DTO.*;
 
@@ -303,6 +304,13 @@ public class BoilerideServer {
         UserSignUpRequest x = new Gson().fromJson(test, UserSignUpRequest.class);
         System.out.println(x.getEmail());
 
+        RideOffer rideOffer = new RideOffer();
+        List<Trip> result = rideOffer.search("A", "E");
+        for (Trip t : result) {
+            for (RideOffer r : t.getRides()) {
+                System.out.println(r.toString());
+            }
+        }
 
 //        try {
 //            server.conn.close();
