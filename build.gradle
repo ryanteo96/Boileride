@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'CS408'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    compile 'javax.mail:javax.mail-api:1.6.2'
+    compile 'com.google.maps:google-maps-services:0.2.11'
+}
