@@ -13,6 +13,11 @@ public class UserVerifyEmailResponse {
     private int result;
     private int userid;
 
+    public UserVerifyEmailResponse(int result, int userid) {
+        this.result = result;
+        this.userid = userid;
+    }
+
     public int getResult() {
         return result;
     }
