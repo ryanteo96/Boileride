@@ -18,3 +18,8 @@ dependencies {
     compile 'com.google.maps:google-maps-services:0.2.11'
     compile files('mysql-connector-java-8.0.12.jar')
 }
+
+task run(type: JavaExec, dependsOn: classes) {
+    main = 'BoilerideServer'
+    classpath = sourceSets.main.runtimeClasspath
+}
