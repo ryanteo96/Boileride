@@ -1,26 +1,30 @@
 import java.sql.*;
 
 /**
- * Created by remychow on 9/13/18.
+ * CS 40800 - Project: Boileride
+ * A web application for ride sharing
+ *
+ * DatabaseCommunicator class send queries to database and return results back to server
+ *
+ * @version September 13, 2018
  */
+
 public class DatabaseCommunicator {
 
-    private Connection conn;
-
-    public DatabaseCommunicator(Connection conn) {
-        this.conn = conn;
-
-    }
-
-    public void testExecuteQuery(Connection conn){
+    public void sampleExecuteQuery(){
         System.out.println("select from database");
         try {
-            Statement stmt = this.conn.createStatement();
+            Statement stmt = BoilerideServer.conn.createStatement();
             String sql;
             sql = "SELECT * FROM Users";
             ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                String userid = rs.getString("userid");
+            if (!rs.next() ) {
+                System.out.println("no data");
+            } else {
+                do {
+                    String userid = rs.getString("userid");
+                }
+                while (rs.next());
             }
             rs.close();
             stmt.close();
@@ -30,14 +34,58 @@ public class DatabaseCommunicator {
 
         System.out.println("update, insert, delete in database");
         try {
-            Statement stmt = this.conn.createStatement();
+            Statement stmt = BoilerideServer.conn.createStatement();
             String sql;
             String userid = "testing";
             sql = "INSERT into Users values(" + userid + ")";
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
+            int count = stmt.executeUpdate(sql);
+            if (count > 0){
+                //done
+            }
+            else {
+                //not successful
+            }
+            stmt.close();
+        } catch (SQLIntegrityConstraintViolationException e){
+            //Duplicate entry
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static int addUser(User user){
+        return 0;
+    }
+
+    public static User selectUser(int userid){
+        User resultUser = new User();
+        resultUser = null;
+        return resultUser;
+    }
+
+    public static int addRideRequest(RideRequest req){
+        return 0;
+    }
+
+    public static RideRequest selectRideRequest(int requestid){
+        return null;
+    }
+
+    public static int cancelRideRequest(int requestid){
+        return 0;
+    }
+
+    public static int addRideOffer(RideOffer offer){
+        return 0;
+    }
+
+    public static RideOffer selectRideOffer(int offerid){
+        return null;
+    }
+
+    public static int cancelRideOffer(int offerid){
+        return 0;
     }
 }
