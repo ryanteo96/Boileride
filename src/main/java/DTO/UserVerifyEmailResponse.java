@@ -35,7 +35,7 @@ public class UserVerifyEmailResponse {
     public void setUserid(int userid) {
         this.userid = userid;
     }
-    
+
     public String toString(){
         return "result: " + result + ", userid: " + userid;
     }
