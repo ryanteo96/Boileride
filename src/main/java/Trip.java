@@ -1,10 +1,10 @@
 import java.util.LinkedList;
 
 public class Trip {
-    private LinkedList<RideOffer> rides;
+    private LinkedList<RideOfferSearch> rides;
     private int duration;
 
-    public LinkedList<RideOffer> getRides() {
+    public LinkedList<RideOfferSearch> getRides() {
         return rides;
     }
 
@@ -12,7 +12,7 @@ public class Trip {
         return duration;
     }
 
-    public void setRides(LinkedList<RideOffer> rides) {
+    public void setRides(LinkedList<RideOfferSearch> rides) {
         this.rides = rides;
     }
 
