@@ -89,7 +89,7 @@ public class RideOfferRequest {
         this.luggage = luggage;
     }
 
-    public boolean isSmoking() {
+    public boolean getSmoking() {
         return smoking;
     }
 
@@ -97,7 +97,7 @@ public class RideOfferRequest {
         this.smoking = smoking;
     }
 
-    public boolean isFoodndrink() {
+    public boolean getFoodndrink() {
         return foodndrink;
     }
 
@@ -105,7 +105,7 @@ public class RideOfferRequest {
         this.foodndrink = foodndrink;
     }
 
-    public boolean isPets() {
+    public boolean getPets() {
         return pets;
     }
 
@@ -113,7 +113,7 @@ public class RideOfferRequest {
         this.pets = pets;
     }
 
-    public boolean isAc() {
+    public boolean getAc() {
         return ac;
     }
 

@@ -128,7 +128,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    res = new RideRequestResponse(0, 0);
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.addRideRequestToDB(req);
                 }
                 else {
                     res = new RideRequestResponse(97, -1);
@@ -138,8 +139,9 @@ public class BoilerideServer {
             else if (uri.equals("/ride/cancel/request")){
                 RideCancelRequestRequest req = new Gson().fromJson(request, RideCancelRequestRequest.class);
                 System.out.println("Received: " + req.toString());
-//                RideCancelRequestResponse res = new RideCancelRequestResponse(0);
-//                response = new Gson().toJson(res);
+                RideRequest rideRequest = new RideRequest();
+                RideCancelRequestResponse res = rideRequest.cancelRideRequestInDB(req);
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/update/request")){
                 RideUpdateRequestRequest req = null;
@@ -152,7 +154,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    res = new RideUpdateRequestResponse(0);
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.updateRideRequestInDB(req);
                 }
                 else {
                     res = new RideUpdateRequestResponse(97);
@@ -170,7 +173,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    res = new RideOfferResponse(0, 0);
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.addRideOfferToDB(req);
                 }
                 else {
                     res = new RideOfferResponse(97, -1);
@@ -180,8 +184,9 @@ public class BoilerideServer {
             else if (uri.equals("/ride/cancel/offer")){
                 RideCancelOfferRequest req = new Gson().fromJson(request, RideCancelOfferRequest.class);
                 System.out.println("Received: " + req.toString());
-//                RideCancelOfferResponse res = new RideCancelOfferResponse(0);
-//                response = new Gson().toJson(res);
+                RideOffer rideRequest = new RideOffer();
+                RideCancelOfferResponse res = rideRequest.cancelRideOfferInDB(req);
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/update/offer")){
                 RideUpdateOfferRequest req = null;
@@ -194,7 +199,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    res = new RideUpdateOfferResponse(0);
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.updateRideOfferInDB(req);
                 }
                 else {
                     res = new RideUpdateOfferResponse(97);

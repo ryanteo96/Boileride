@@ -77,6 +77,10 @@ public class DatabaseCommunicator {
         return 0;
     }
 
+    public static int updateRideRequest(int requestid, RideRequest request){
+        return 0;
+    }
+
     public static int addRideOffer(RideOffer offer){
         return 0;
     }
@@ -87,5 +91,19 @@ public class DatabaseCommunicator {
 
     public static int cancelRideOffer(int offerid){
         return 0;
+    }
+
+    public static int updateRideOffer(int offerid, RideOffer offer){
+        return 0;
+    }
+
+    public static User [ ] selectUserJoinedOffer(int offerid){
+        User[] users = null;
+        return users;
+    }
+
+    public static User [ ] selectUserAcceptedRequest(int requestid){
+        User[] users = null;
+        return users;
     }
 }

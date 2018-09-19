@@ -29,6 +29,25 @@ public class RideRequest {
     private int price;
     private int status;
 
+    public RideRequest(){}
+
+    public RideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
+                       int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                       int travelingtime, int price) {
+        this.requestedby = requestedby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.passengers = passengers;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+    }
+
     public RideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
                        int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                        int travelingtime, int price, int status) {
@@ -209,70 +228,94 @@ public class RideRequest {
         return 0;
     }
 
-    // Integrate all data verification methods into one function
-    public int verifyData(RideRequestRequest request){
+    public RideRequestResponse addRideRequestToDB(RideRequestRequest request){
+        int result = 0;
+        int requestid = -1;
+        User user = DatabaseCommunicator.selectUser(request.getUserid());
+        int userResult = verifyUserid(user);
+        int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
+        int dateResult = verifyDatentime(request.getDatentime());
+        int priceResult = isEnoughPoints(user, request.getPrice());
+        if (userResult > 0) result = userResult;
+        else if (desResult > 0) result = 4;
+        else if (dateResult == 1) result = 5;
+        else if (dateResult == 2) result = 7;
+        else if (priceResult > 0) result = 6;
+        else {
+            RideRequest rideRequest = new RideRequest(request.getUserid(), request.getPickuplocation(), request.getDestination(),
+                    request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
+                    request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice(), 0);
+            requestid = DatabaseCommunicator.addRideRequest(rideRequest);
+        }
+        RideRequestResponse res = new RideRequestResponse(result, requestid);
+        return res;
+    }
+
+    public RideCancelRequestResponse cancelRideRequestInDB(RideCancelRequestRequest request){
+        int result = 0;
+        User user = DatabaseCommunicator.selectUser(request.getUserid());
+        int userResult = verifyUserid(user);
+        if (userResult > 0) result = userResult;
+        else {
+            RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
+            if (rideRequest == null) {
+                result = 4;
+            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+                result = 3;
+            } else if (rideRequest.getStatus() == 2) {
+                result = 5;
+            } else {
+//                User[] users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
+                result = DatabaseCommunicator.cancelRideRequest(request.getRequestid());
+//              String msg = "We are sorry to inform you that your accepted Ride Request from " + rideRequest.getPickuplocation() +
+//                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+//                      " is cancelled by the requested passengers.";
+//                for (int i=0; i < users.length; i++){
+//                    SendEmail.sendEmail(users[i].getEmail(), "Accepted Ride Request Cancelled", msg);
+//                }
+
+            }
+        }
+        RideCancelRequestResponse res = new RideCancelRequestResponse(result);
+        return res;
+    }
+
+    public RideUpdateRequestResponse updateRideRequestInDB(RideUpdateRequestRequest request) {
         int result = 0;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
         int priceResult = isEnoughPoints(user, request.getPrice());
-        if (userResult > 0) return userResult;
-        else if (desResult > 0) return 4;
-        else if (dateResult == 1) return 5;
-        else if (dateResult == 2) return 7;
-        else if (priceResult > 0) return 6;
-        else return result;
-    }
-
-    public int addRideRequestToDB(RideRequestRequest request){
-        RideRequest rideRequest = new RideRequest(request.getUserid(), request.getPickuplocation(), request.getDestination(),
-                request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
-                request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice(), 0);
-        int requestid = DatabaseCommunicator.addRideRequest(rideRequest);
-        return requestid;
-    }
-
-    public int cancelRideRequestInDB(RideCancelRequestRequest request){
-        User user = DatabaseCommunicator.selectUser(request.getUserid());
-        int userResult = verifyUserid(user);
-        if (userResult > 0) return userResult;
-        RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
-        if (rideRequest == null){
-            return 4;
+        if (userResult > 0) result = userResult;
+        else if (desResult > 0) result = 7;
+        else if (dateResult == 1) result = 8;
+        else if (dateResult == 2) result = 10;
+        else if (priceResult > 0) result = 9;
+        else {
+            RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
+            if (rideRequest == null) {
+                result = 4;
+            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+                result = 3;
+            } else if (rideRequest.getStatus() == 2) {
+                result = 5;
+            } else {
+                RideRequest updatedRideRequest = new RideRequest(request.getUserid(), request.getPickuplocation(), request.getDestination(),
+                        request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
+                        request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
+                result = DatabaseCommunicator.updateRideRequest(request.getRequestid(), updatedRideRequest);
+//                User[] users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
+//                String msg = "Your accepted Ride Request from " + rideRequest.getPickuplocation() +
+//                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+//                      " is updated by the requested passengers. Please go to our website to check for details.";
+//                for (int i=0; i < users.length; i++){
+//                    SendEmail.sendEmail(users[i].getEmail(), "Accepted Ride Request Updated", msg);
+//                }
+            }
         }
-        else if (rideRequest.getRequestedby() != request.getUserid()){
-            return 3;
-        }
-        else if (rideRequest.getStatus() == 2){
-            return 5;
-        }
-        int ret = DatabaseCommunicator.cancelRideRequest(request.getRequestid());
-        return ret;
-    }
-
-    public int updateRideRequestInDB(RideUpdateRequestRequest request) {
-        User user = DatabaseCommunicator.selectUser(request.getUserid());
-        int userResult = verifyUserid(user);
-        int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
-        int dateResult = verifyDatentime(request.getDatentime());
-        int priceResult = isEnoughPoints(user, request.getPrice());
-        if (userResult > 0) return userResult;
-        else if (desResult > 0) return 7;
-        else if (dateResult == 1) return 8;
-        else if (dateResult == 2) return 10;
-        else if (priceResult > 0) return 9;
-        RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
-        if (rideRequest == null){
-            return 4;
-        }
-        else if (rideRequest.getRequestedby() != request.getUserid()){
-            return 3;
-        }
-        else if (rideRequest.getStatus() == 2){
-            return 5;
-        }
-        return 0;
+        RideUpdateRequestResponse res = new RideUpdateRequestResponse(result);
+        return res;
     }
 
 }

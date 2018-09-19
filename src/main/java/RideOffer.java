@@ -31,6 +31,25 @@ public class RideOffer {
     private int luggageleft;
     private int status;
 
+    public RideOffer(){}
+
+    public RideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
+                     int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                     int travelingtime, int price) {
+        this.offeredby = offeredby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.seats = seats;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+    }
+
     public RideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
                      int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                      int travelingtime, int price, int seatleft, int luggageleft, int status) {
@@ -231,71 +250,94 @@ public class RideOffer {
         return 0;
     }
 
-    // Integrate all data verification methods into one function
-    public int verifyData(RideOfferRequest offer){
+    public RideOfferResponse addRideOfferToDB(RideOfferRequest offer){
+        int result = 0;
+        int offerid = -1;
+        User user = DatabaseCommunicator.selectUser(offer.getUserid());
+        int userResult = verifyUserid(user);
+        int desResult = verifyDestination(offer.getPickuplocation(), offer.getDestination());
+        int dateResult = verifyDatentime(offer.getDatentime());
+        int priceResult = isEnoughPoints(user, offer.getPrice());
+        if (userResult > 0) result = userResult;
+        else if (desResult > 0) result = 4;
+        else if (dateResult == 1) result = 5;
+        else if (dateResult == 2) result = 7;
+        else if (priceResult > 0) result = 6;
+        else {
+            RideOffer rideOffer = new RideOffer(offer.getUserid(), offer.getPickuplocation(), offer.getDestination(),
+                    offer.getDatentime(), offer.getSeats(), offer.getLuggage(), offer.getSmoking(), offer.getFoodndrink(),
+                    offer.getPets(), offer.getAc(), offer.getTravelingtime(), offer.getPrice(), offer.getSeats(), offer.getLuggage(), 0);
+            offerid = DatabaseCommunicator.addRideOffer(rideOffer);
+        }
+        RideOfferResponse res = new RideOfferResponse(result, offerid);
+        return res;
+    }
+
+    public RideCancelOfferResponse cancelRideOfferInDB(RideCancelOfferRequest offer){
+        int result = 0;
+        User user = DatabaseCommunicator.selectUser(offer.getUserid());
+        int userResult = verifyUserid(user);
+        if (userResult > 0) result = userResult;
+        else {
+            RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offer.getOfferid());
+            if (rideOffer == null) {
+                result = 4;
+            } else if (rideOffer.getOfferedby() != offer.getUserid()) {
+                result = 3;
+            } else if (rideOffer.getStatus() == 2) {
+                result = 5;
+            } else {
+//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(offer.getOfferid());
+                result = DatabaseCommunicator.cancelRideOffer(offer.getOfferid());
+//              String msg = "We are sorry to inform you that your joined Ride Offer from " + rideOffer.getPickuplocation() +
+//                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+//                      " is cancelled by the offered driver.";
+//                for (int i=0; i < users.length; i++){
+//                    SendEmail.sendEmail(users[i].getEmail(), "Joined Ride Offer Cancelled", msg);
+//                }
+
+            }
+        }
+        RideCancelOfferResponse res = new RideCancelOfferResponse(result);
+        return res;
+    }
+
+    public RideUpdateOfferResponse updateRideOfferInDB(RideUpdateOfferRequest offer) {
         int result = 0;
         User user = DatabaseCommunicator.selectUser(offer.getUserid());
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(offer.getPickuplocation(), offer.getDestination());
         int dateResult = verifyDatentime(offer.getDatentime());
         int priceResult = isEnoughPoints(user, offer.getPrice());
-        if (userResult > 0) return userResult;
-        else if (desResult > 0) return 4;
-        else if (dateResult == 1) return 5;
-        else if (dateResult == 2) return 7;
-        else if (priceResult > 0) return 6;
-        else return result;
-    }
-
-    public int addRideOfferToDB(RideOfferRequest offer){
-        RideOffer rideOffer = new RideOffer(offer.getUserid(), offer.getPickuplocation(), offer.getDestination(),
-                offer.getDatentime(), offer.getSeats(), offer.getLuggage(), offer.isSmoking(), offer.isFoodndrink(),
-                offer.isPets(), offer.isAc(), offer.getTravelingtime(), offer.getPrice(), offer.getSeats(),
-                offer.getLuggage(), 0);
-        int offerid = DatabaseCommunicator.addRideOffer(rideOffer);
-        return offerid;
-    }
-
-    public int cancelRideOfferInDB(RideCancelOfferRequest offer){
-        User user = DatabaseCommunicator.selectUser(offer.getUserid());
-        int userResult = verifyUserid(user);
-        if (userResult > 0) return userResult;
-        RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offer.getOfferid());
-        if (rideOffer == null){
-            return 4;
+        if (userResult > 0) result = userResult;
+        else if (desResult > 0) result = 7;
+        else if (dateResult == 1) result = 8;
+        else if (dateResult == 2) result = 10;
+        else if (priceResult > 0) result = 9;
+        else {
+            RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offer.getOfferid());
+            if (rideOffer == null) {
+                result = 4;
+            } else if (rideOffer.getOfferedby() != offer.getUserid()) {
+                result = 3;
+            } else if (rideOffer.getStatus() == 2) {
+                result = 5;
+            } else {
+                RideOffer updatedRideOffer = new RideOffer(offer.getUserid(), offer.getPickuplocation(), offer.getDestination(),
+                        offer.getDatentime(), offer.getSeats(), offer.getLuggage(), offer.getSmoking(), offer.getFoodndrink(),
+                        offer.getPets(), offer.getAc(), offer.getTravelingtime(), offer.getPrice());
+                result = DatabaseCommunicator.updateRideOffer(offer.getOfferid(), updatedRideOffer);
+//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(offer.getOfferid());
+//                String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
+//                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+//                      " is updated by the offered driver. Please go to our website to check for details.";
+//                for (int i=0; i < users.length; i++){
+//                    SendEmail.sendEmail(users[i].getEmail(), "Joined Ride Offer Updated", msg);
+//                }
+            }
         }
-        else if (rideOffer.getOfferedby() != offer.getUserid()){
-            return 3;
-        }
-        else if (rideOffer.getStatus() == 2){
-            return 5;
-        }
-        int ret = DatabaseCommunicator.cancelRideOffer(offer.getOfferid());
-        return ret;
-    }
-
-    public int updateRideOfferInDB(RideUpdateOfferRequest offer) {
-        User user = DatabaseCommunicator.selectUser(offer.getUserid());
-        int userResult = verifyUserid(user);
-        int desResult = verifyDestination(offer.getPickuplocation(), offer.getDestination());
-        int dateResult = verifyDatentime(offer.getDatentime());
-        int priceResult = isEnoughPoints(user, offer.getPrice());
-        if (userResult > 0) return userResult;
-        else if (desResult > 0) return 7;
-        else if (dateResult == 1) return 8;
-        else if (dateResult == 2) return 10;
-        else if (priceResult > 0) return 9;
-        RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offer.getOfferid());
-        if (rideOffer == null){
-            return 4;
-        }
-        else if (rideOffer.getOfferedby() != offer.getUserid()){
-            return 3;
-        }
-        else if (rideOffer.getStatus() == 2){
-            return 5;
-        }
-        return 0;
+        RideUpdateOfferResponse res = new RideUpdateOfferResponse(result);
+        return res;
     }
 
 }
