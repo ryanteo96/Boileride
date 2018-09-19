@@ -96,14 +96,16 @@ public class BoilerideServer {
             else if (uri.equals("/ride/view/request")){
                 RideViewRequestRequest req = new Gson().fromJson(request, RideViewRequestRequest.class);
                 System.out.println("Received: " + req.toString());
-//                RideViewRequestResponse res = new RideViewRequestResponse(0);
-//                response = new Gson().toJson(res);
+                RideRequest rideRequest = new RideRequest();
+                RideViewRequestResponse res = rideRequest.viewRideRequestfromDB(req);
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/view/offer")){
                 RideViewOfferRequest req = new Gson().fromJson(request, RideViewOfferRequest.class);
                 System.out.println("Received: " + req.toString());
-//                RideViewOfferResponse res = new RideViewOfferResponse(0);
-//                response = new Gson().toJson(res);
+                RideOffer rideOffer = new RideOffer();
+                RideViewOfferResponse res = rideOffer.viewRideOfferfromDB(req);
+                response = new Gson().toJson(res);
             }
 //            else if (uri.equals("/ride/view/acceptedrequest")){
 //                RideViewAcceptedRequestRequest req = new Gson().fromJson(request, RideViewAcceptedRequestRequest.class);

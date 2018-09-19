@@ -65,6 +65,14 @@ public class DatabaseCommunicator {
         return resultUser;
     }
 
+    public static RideRequest[] selectRequestList(int userid){
+        return null;
+    }
+
+    public static RideOffer[ ] selectOfferList(int userid){
+        return null;
+    }
+
     public static int addRideRequest(RideRequest req){
         return 0;
     }

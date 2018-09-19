@@ -228,6 +228,19 @@ public class RideRequest {
         return 0;
     }
 
+    public RideViewRequestResponse viewRideRequestfromDB(RideViewRequestRequest request){
+        int result = 0;
+        RideRequest[] requestlist = null;
+        User user = DatabaseCommunicator.selectUser(request.getUserid());
+        int userResult = verifyUserid(user);
+        if (userResult > 0) result = userResult;
+        else{
+            requestlist = DatabaseCommunicator.selectRequestList(request.getUserid());
+        }
+        RideViewRequestResponse res = new RideViewRequestResponse(result, requestlist);
+        return res;
+    }
+
     public RideRequestResponse addRideRequestToDB(RideRequestRequest request){
         int result = 0;
         int requestid = -1;
