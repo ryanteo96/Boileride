@@ -21,17 +21,16 @@
 </head>
 
 <body>
-    <div class="container">
         <div id="signInBox">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="panel-title">Sign In</div>
+            <div class="card card-info">
+                <h5 id="signInHeader" class="card-header bg-primary">
+                    <div class="card-title text-light">Sign In</div>
                     <div id="forgotPassword">
-                        <a href="#">Forgot password?</a>
+                        <a class = "text-light" href="#">Forgot password?</a>
                     </div>
-                </div>
+                </h5>
 
-                <div class="panel-body">
+                <div class="card-body">
                     <form id="signInForm" class="form-horizontal" role="form" action="/signIn/test" method="post"
                         enctype="application/x-www-form-urlencoded">
                         <!-- input group: a container to enhance an input by adding icon etc-->
@@ -69,7 +68,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
