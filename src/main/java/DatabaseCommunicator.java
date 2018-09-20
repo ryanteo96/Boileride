@@ -69,7 +69,7 @@ public class DatabaseCommunicator {
         return null;
     }
 
-    public static RideOffer[ ] selectOfferList(int userid){
+    public static RideOffer[] selectOfferList(int userid){
         return null;
     }
 

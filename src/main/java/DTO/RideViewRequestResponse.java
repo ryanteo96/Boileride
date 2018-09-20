@@ -4,7 +4,7 @@ public class RideViewRequestResponse {
     private int result;
     private RideRequest[] requestlist;
 
-    public RideViewlRequestResponse(int r, RideRequest[] requestlist) {
+    public RideViewRequestResponse(int r, RideRequest[] requestlist) {
         this.result = r;
         this.requestlist = requestlist;
     }

@@ -46,65 +46,193 @@ public class BoilerideServer {
             String response = null;
 
             if (uri.equals("/user/signup")){
-                UserSignUpRequest req = new Gson().fromJson(request, UserSignUpRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserSignUpResponse res = new UserSignUpResponse(0, 0);
-//                response = new Gson().toJson(res);
+                UserSignUpRequest req = null;
+                UserSignUpResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserSignUpRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                  res = new UserSignUpResponse(0, 0);
+                }
+                else{
+                    res = new UserSignUpResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/verifyemail")){
-                UserVerifyEmailRequest req = new Gson().fromJson(request, UserVerifyEmailRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserVerifyEmailResponse res = new UserVerifyEmailResponse(0, 0);
-//                response = new Gson().toJson(res);
+                UserVerifyEmailRequest req = null;
+                UserVerifyEmailResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserVerifyEmailRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserVerifyEmailResponse(0, 0);
+                }
+                else{
+                    res = new UserVerifyEmailResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/login")){
-                UserLoginRequest req = new Gson().fromJson(request, UserLoginRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserLoginResponse res = new UserLoginResponse(0, 0);
-//                response = new Gson().toJson(res);
+                UserLoginRequest req = null;
+                UserLoginResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserLoginRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserLoginResponse(0, 0);
+                }
+                else{
+                    res = new UserLoginResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/forgotpassword")){
-                UserForgotPasswordRequest req = new Gson().fromJson(request, UserForgotPasswordRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserForgotPasswordResponse res = new UserForgotPasswordResponse(0, 0);
-//                response = new Gson().toJson(res);
+                UserForgotPasswordRequest req = null;
+                UserForgotPasswordResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserForgotPasswordRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserForgotPasswordResponse(0, 0);
+                }
+                else{
+                    res = new UserForgotPasswordResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/resetpassword")){
-                UserResetPasswordRequest req = new Gson().fromJson(request, UserResetPasswordRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserResetPasswordResponse res = new UserResetPasswordResponse(0);
-//                response = new Gson().toJson(res);
+                UserResetPasswordRequest req = null;
+                UserResetPasswordResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserResetPasswordRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserResetPasswordResponse(0, 0);
+                }
+                else{
+                    res = new UserResetPasswordResponse(97);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/viewaccount")){
-                UserViewAccountRequest req = new Gson().fromJson(request, UserViewAccountRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserViewAccountResponse res = new UserViewAccountResponse();
-//                response = new Gson().toJson(res);
+                UserViewAccountRequest req = null;
+                UserViewAccountResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserViewAccountRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserViewAccountResponse(0, 0);
+                }
+                else{
+                    res = new UserViewAccountResponse(97, null, null, null);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/update")){
-                UserUpdateRequest req = new Gson().fromJson(request, UserUpdateRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserUpdateResponse res = new UserUpdateResponse(0);
-//                response = new Gson().toJson(res);
+                UserUpdateRequest req = null;
+                UserUpdateResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserUpdateRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserUpdateResponse(0, 0);
+                }
+                else{
+                    res = new UserUpdateResponse(97);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/user/logout")){
-                UserLoginRequest req = new Gson().fromJson(request, UserLoginRequest.class);
-                System.out.println("Received: " + req.toString());
-//                UserLoginResponse res = new UserLoginResponse(0, 0);
-//                response = new Gson().toJson(res);
+                UserLogoutRequest req = null;
+                UserLogoutResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserLogoutRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserLogoutResponse(0, 0);
+                }
+                else{
+                    res = new UserLogoutResponse(97);
+                }
+                response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/view/request")){
-                RideViewRequestRequest req = new Gson().fromJson(request, RideViewRequestRequest.class);
-                System.out.println("Received: " + req.toString());
-                RideRequest rideRequest = new RideRequest();
-                RideViewRequestResponse res = rideRequest.viewRideRequestfromDB(req);
+                RideViewRequestRequest req = null;
+                RideViewRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideViewRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.viewRideRequestfromDB(req);
+                }
+                else{
+                    res = new RideViewRequestResponse(97, null);
+                }
                 response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/view/offer")){
-                RideViewOfferRequest req = new Gson().fromJson(request, RideViewOfferRequest.class);
-                System.out.println("Received: " + req.toString());
-                RideOffer rideOffer = new RideOffer();
-                RideViewOfferResponse res = rideOffer.viewRideOfferfromDB(req);
+                RideViewOfferRequest req = null;
+                RideViewOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideViewOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.viewRideOfferfromDB(req);
+                }
+                else{
+                    res = new RideViewOfferResponse(97, null);
+                }
                 response = new Gson().toJson(res);
             }
 //            else if (uri.equals("/ride/view/acceptedrequest")){
@@ -139,10 +267,22 @@ public class BoilerideServer {
                 response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/cancel/request")){
-                RideCancelRequestRequest req = new Gson().fromJson(request, RideCancelRequestRequest.class);
-                System.out.println("Received: " + req.toString());
-                RideRequest rideRequest = new RideRequest();
-                RideCancelRequestResponse res = rideRequest.cancelRideRequestInDB(req);
+                RideCancelRequestRequest req = null;
+                RideCancelRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideCancelRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.cancelRideRequestInDB(req);
+                }
+                else{
+                    res = new RideCancelRequestResponse(97);
+                }
                 response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/update/request")){
@@ -184,10 +324,22 @@ public class BoilerideServer {
                 response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/cancel/offer")){
-                RideCancelOfferRequest req = new Gson().fromJson(request, RideCancelOfferRequest.class);
-                System.out.println("Received: " + req.toString());
-                RideOffer rideRequest = new RideOffer();
-                RideCancelOfferResponse res = rideRequest.cancelRideOfferInDB(req);
+                RideCancelOfferRequest req = null;
+                RideCancelOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideCancelOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.cancelRideOfferInDB(req);
+                }
+                else{
+                    res = new RideCancelOfferResponse(97);
+                }
                 response = new Gson().toJson(res);
             }
             else if (uri.equals("/ride/update/offer")){
@@ -252,8 +404,6 @@ public class BoilerideServer {
                 response = responseObj.toString();
             }
 
-            System.out.println("Sent response: " + response.toString());
-
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
             httpExchange.sendResponseHeaders(200, response.length());
 
@@ -261,6 +411,8 @@ public class BoilerideServer {
             os.write(response.getBytes());
 
             os.close();
+
+            System.out.println("Sent response: " + response.toString());
         }
 
     }
