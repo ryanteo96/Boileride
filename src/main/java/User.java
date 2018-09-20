@@ -68,12 +68,17 @@ public class User
         /*
                 String buffer = req.getEmail();
                 String hashCode = buffer.hashCode();
+                int userid = lookUpUserid(req.getEmail());
+            if(user = selectUser(userid) && user != null)
+            {
 
                 if(req.getCode().compare(hashCode) == 0)
                 {
 
                     int dbResponse = -1;
-                    dbResponse = addUser(user);
+                    user.status = 1;
+                    user.point = 200;
+                    dbResponse = updataUserStatus(user.getUserid(),user);
                     if(dbResponse == -1)
                     {
                         System.out.println("Failed add user in db");
@@ -90,6 +95,11 @@ public class User
                 {
                     response.setResult(2);
                 }
+            }
+            else
+            {
+                System.out.println("Failed to select user in verifyEmailCode");
+            }
         */
 
 
@@ -135,6 +145,8 @@ public class User
                         /*
                             String hashCode = req.getEmail().hashCode();
                             Sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
+                            user.status = -1;
+                            addUser(user);
                         */
 
                         response.setResult(0);
@@ -172,9 +184,20 @@ public class User
         *   if(loginWithEmailPassword(req.getEmail(), req.getPassword()) != 1)
         *   {
         *       int userid = loginWithEmailPassword(req.getEmail(), req.getPassword()) ;
-        *       System.out.println("Login success");
-        *       response.setResult(0);
-        *       response.setUserid(userid);
+        *
+
+        *       if(user = selectUser(userid) && user != NULL)
+        *       {
+                    System.out.println("Login success");
+        *           response.setResult(0);
+        *           response.setUserid(userid);
+
+        *
+        *           user.status = 1;
+        *           updateUserStatus(userid,user);
+        *
+        *       }
+        *
         *   }
         *   else
         *   {
@@ -212,12 +235,31 @@ public class User
 
         return response;
     }
-    public UserUpdateResponse updateUser(UserUpdateRequest req)
-    {
+    public UserUpdateResponse updateUser(UserUpdateRequest req) {
         UserUpdateResponse response = new UserUpdateResponse(-1);
+        User user;
+//        if(user = selectUser(req.getUserid()) && user != NULL)
+//        {
+    //        if (req.getEmail().compareTo("") == 0) {
+    //            req.setEmail(user.getEmail());
+    //        }
+    //        if (req.getNickname().compareTo("") == 0) {
+    //            req.setNickname(user.getNickname());
+    //        }
+    //        if (req.getPassword().compareTo("") == 0) {
+    //            req.setPassword(user.getPassword());
+    //        }
+    //        if (req.getPhone().compareTo("") == 0) {
+    //            req.setPhone(user.getPhone());
+    //        }
+//
+//        }
+
+
+
         /*
-            if(user = selectUser(req.getUserid()) && user != NULL)
-            {
+           if(user != NULL)
+           {
                 if(verifyNickname(req.getNickname()))
                 {
                     if(verifyEmail(req.getEmail()))
