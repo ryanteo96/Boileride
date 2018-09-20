@@ -5,6 +5,13 @@
 	margin-right: auto;
 }
 
+#btn-signUp{
+	position:relative;
+	left:-14px;
+    width:150px; 
+    height:40px;
+}
+
 #txt-accExist {
 	position: relative;
 	top: 7px;
