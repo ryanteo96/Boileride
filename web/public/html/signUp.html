@@ -27,13 +27,13 @@
             <div class="card card-info shadow mb-5">
                  <!-- <h5 id="signInHeader" class="card-header bg-primary"> -->
                 <h5 id="signUpHeader" class="card-header bg-primary">      
-                    <div class="card-title text-light">Create Account</div>
+                    <div id="createAccTitle" class="card-title text-light">Create Account</div>
                 </h5>
                 <div class="card-body">
                     <form id="signUpForm" class="form-horizontal" role="form">
                         <!-- Input field for email -->
                         <div class="form-group">
-                            <label for="email-signUp" class="col-md-4 control-label">Email</label>                           
+                            <label for="email-signUp" id="emailLabel" class="col-md-4 control-label">Email</label>                           
                                 <input type="text" class="form-control" name="email-signUp" placeholder="Email Address">                                                
                         </div>
 
@@ -51,37 +51,35 @@
 
                         <!-- Input field for nickname -->
                         <div class="form-group">
-                            <label for="nickname" class="col-md-4 control-label">Nickname</label>                           
+                            <label for="nickname" id="nicknameLabel" class="col-md-4 control-label">Nickname</label>                           
                                 <input type="text" class="form-control" name="nickName" placeholder="Nickname">                            
                         </div>
 
                         <!-- Input field for passwprd -->
                         <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Password</label>                          
+                            <label for="password" id="passwordLabel" class="col-md-4 control-label">Password</label>                          
                                 <input type="password" class="form-control" name="password-signUp" placeholder="Password">                           
                         </div>
 
                         <!-- Input field for confirm passwprd -->
                         <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Confirm Password</label>                            
+                            <label for="password" id="confirmPasswordLabel" class="col-md-4 control-label">Confirm Password</label>                            
                                 <input type="password" class="form-control" name="confirm-password-signUp" placeholder="Confirm Password">                          
                         </div>
 
                         <!-- Input field for phone number -->
                         <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Contact Number</label>                           
-                                <input type="tel" class="form-control" name="contactNum-signUp">                          
+                            <label for="password" id="phoneNumLabel" class="col-md-4 control-label">Contact Number</label>                           
+                                <input type="tel" class="form-control" name="contactNum-signUp" placeholder="Contact Number">                          
                         </div>
 
                         <!-- Sign in button-->
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9" style="margin-top:10px">
-                                <button id="btn-signUp" type="button" class="btn btn-info bg-primary"> Sign Up </button>
+                                <button id="btn-signUp" type="button" class="btn btn-info bg-primary float-right"> Sign Up </button>
                                 <p id="txt-accExist">
                                     Already have an account?
                                     <a href="/signIn">Sign in</a>
                                 </p>
-                            </div>
                         </div>
                     </form>
                 </div>
