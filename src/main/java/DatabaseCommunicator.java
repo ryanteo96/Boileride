@@ -1,5 +1,7 @@
 import java.sql.*;
 
+import DTO.*;
+
 /**
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
@@ -65,11 +67,15 @@ public class DatabaseCommunicator {
         return resultUser;
     }
 
-    public static RideRequest[] selectRequestList(int userid){
+    public static int updateUserStatus(int userid, int status){
+        return 0;
+    }
+
+    public static DtoRideRequest[] selectRequestList(int userid){
         return null;
     }
 
-    public static RideOffer[] selectOfferList(int userid){
+    public static DtoRideOffer[] selectOfferList(int userid){
         return null;
     }
 
