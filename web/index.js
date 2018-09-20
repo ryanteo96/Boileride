@@ -15,6 +15,7 @@ const signOut = require("./routes/signOut");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
+const resetPw = require("./routes/resetPw");
 const forgotPw = require("./routes/forgotPw");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,7 @@ app.use("/signOut", signOut);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
+app.use("/resetPw", resetPw);
 app.use("/forgotPw", forgotPw);
 
 // https setup
@@ -59,6 +61,6 @@ app.use("/forgotPw", forgotPw);
 // http setup for local testing
 const httpServer = http.createServer(app);
 
-httpServer.listen(3000, () => {
-	console.log("HTTP Server running on port 3000");
+httpServer.listen(8080, () => {
+	console.log("HTTP Server running on port 8080");
 });
