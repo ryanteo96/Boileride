@@ -216,9 +216,9 @@ public class RideOffer {
         if (user == null){
             return 1;
         }
-//        else if (user.getStatus() == 0){
-//            return 2;
-//        }
+        else if (user.getStatus() == 0){
+            return 2;
+        }
         return 0;
     }
 
@@ -253,7 +253,7 @@ public class RideOffer {
 
     public RideViewOfferResponse viewRideOfferfromDB(RideViewOfferRequest request){
         int result = 0;
-        DtoRideOffer[] offerlist = null;
+        DtoRideOffer[] offerlist = {};
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         if (userResult > 0) result = userResult;
@@ -341,7 +341,7 @@ public class RideOffer {
                         request.getDatentime(), request.getSeats(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                         request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
                 result = DatabaseCommunicator.updateRideOffer(request.getOfferid(), updatedRideOffer);
-//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(offer.getOfferid());
+//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
 //                String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
 //                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
 //                      " is updated by the offered driver. Please go to our website to check for details.";

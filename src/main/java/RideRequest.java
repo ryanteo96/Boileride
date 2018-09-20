@@ -230,7 +230,7 @@ public class RideRequest {
 
     public RideViewRequestResponse viewRideRequestfromDB(RideViewRequestRequest request){
         int result = 0;
-        DtoRideRequest[] requestlist = null;
+        DtoRideRequest[] requestlist = {};
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         if (userResult > 0) result = userResult;

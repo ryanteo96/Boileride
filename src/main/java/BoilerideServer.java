@@ -155,7 +155,7 @@ public class BoilerideServer {
 //                    res = new UserViewAccountResponse(0, 0);
                 }
                 else{
-                    res = new UserViewAccountResponse(97, null, null, null);
+                    res = new UserViewAccountResponse(97, "", "", "");
                 }
                 response = new Gson().toJson(res);
             }
@@ -212,7 +212,8 @@ public class BoilerideServer {
                     res = rideRequest.viewRideRequestfromDB(req);
                 }
                 else{
-                    res = new RideViewRequestResponse(97, null);
+                    DtoRideRequest[] requestlist = {};
+                    res = new RideViewRequestResponse(97, requestlist);
                 }
                 response = new Gson().toJson(res);
             }
@@ -231,7 +232,8 @@ public class BoilerideServer {
                     res = rideOffer.viewRideOfferfromDB(req);
                 }
                 else{
-                    res = new RideViewOfferResponse(97, null);
+                    DtoRideOffer[] offerlist = {};
+                    res = new RideViewOfferResponse(97, offerlist);
                 }
                 response = new Gson().toJson(res);
             }
