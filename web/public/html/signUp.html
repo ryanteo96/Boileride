@@ -27,36 +27,20 @@
                     <div class="panel-title">Create Account</div>
                 </div>
                 <div class="panel-body">
-                    <form id="signUpForm" class="form-horizontal" role="form">
-                        <!-- Input field for email -->
-                        <div class="form-group">
-                            <label for="email-signUp" class="col-md-3 control-label">Email</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="email-signUp" placeholder="Email Address">
-                            </div>
-                        </div>
-
-                        <!-- Input field for first name -->
-                        <div class="form-group">
-                            <label for="firstname-" class="col-md-3 control-label">First Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="firstName" placeholder="First Name">
-                            </div>
-                        </div>
-
-                        <!-- Input field for last name -->
-                        <div class="form-group">
-                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="lastName" placeholder="Last Name">
-                            </div>
-                        </div>
-
+                    <form id="signUpForm" class="form-horizontal" role="form" action="/signUp" method="post" enctype="application/x-www-form-urlencoded">
                         <!-- Input field for nickname -->
                         <div class="form-group">
                             <label for="nickname" class="col-md-3 control-label">Nickname</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="nickName" placeholder="Nickname">
+                                <input type="text" class="form-control" name="nickname" placeholder="Nickname">
+                            </div>
+                        </div>
+
+                        <!-- Input field for email -->
+                        <div class="form-group">
+                            <label for="email-signUp" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" name="email" placeholder="Email Address">
                             </div>
                         </div>
 
@@ -64,7 +48,7 @@
                         <div class="form-group">
                             <label for="password" class="col-md-3 control-label">Password</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" name="password-signUp" placeholder="Password">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
                             </div>
                         </div>
 
@@ -72,25 +56,25 @@
                         <div class="form-group">
                             <label for="password" class="col-md-3 control-label">Confirm Password</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" name="confirm-password-signUp" placeholder="Confirm Password">
+                                <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
                             </div>
                         </div>
 
                         <!-- Input field for phone number -->
                         <div class="form-group">
-                            <label for="password" class="col-md-3 control-label">Contact Number</label>
+                            <label for="password" class="col-md-3 control-label">Phone Number</label>
                             <div class="col-md-8">
-                                <input type="tel" class="form-control" name="contactNum-signUp">
+                                <input type="tel" class="form-control" name="phone">
                             </div>
                         </div>
 
                         <!-- Sign in button-->
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9" style="margin-top:10px">
-                                <button id="btn-signUp" type="button" class="btn btn-info"> Sign Up</button>
+                                <button id="btn-signUp" type="submit" class="btn btn-success">Sign Up</button>
                                 <p id="txt-accExist">
                                     Already have an account?
-                                    <a href="signIn.html">Sign in</a>
+                                    <a href="/signIn">Sign in</a>
                                 </p>
                             </div>
                         </div>
