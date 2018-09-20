@@ -1,5 +1,4 @@
 
-
 import java.util.Date;
 import java.time.format.*;
 import java.time.*;
@@ -254,7 +253,7 @@ public class RideOffer {
 
     public RideViewOfferResponse viewRideOfferfromDB(RideViewOfferRequest request){
         int result = 0;
-        RideOffer[] offerlist = null;
+        DtoRideOffer[] offerlist = null;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         if (userResult > 0) result = userResult;

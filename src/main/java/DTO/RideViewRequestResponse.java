@@ -2,9 +2,9 @@ package DTO;
 
 public class RideViewRequestResponse {
     private int result;
-    private RideRequest[] requestlist;
+    private DtoRideRequest[] requestlist;
 
-    public RideViewRequestResponse(int r, RideRequest[] requestlist) {
+    public RideViewRequestResponse(int r, DtoRideRequest[] requestlist) {
         this.result = r;
         this.requestlist = requestlist;
     }
@@ -18,12 +18,12 @@ public class RideViewRequestResponse {
         result = r;
     }
 
-    public RideRequest[] getRequestlist() {
+    public DtoRideRequest[] getRequestlist() {
         return requestlist;
     }
 
     @Anno(name="requestlist")
-    public void setRequestlist(RideRequest[] requestlist) {
+    public void setRequestlist(DtoRideRequest[] requestlist) {
         this.requestlist = requestlist;
     }
 
