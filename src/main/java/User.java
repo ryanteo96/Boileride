@@ -175,7 +175,7 @@ public class User
         return response;
     }
 
-    
+
 
     public UserLoginResponse login(UserLoginRequest req)
     {
@@ -216,17 +216,26 @@ public class User
     }
     public UserViewAccountResponse viewAccount(UserViewAccountRequest req)
     {
+
         UserViewAccountResponse response = new UserViewAccountResponse(-1, "", "", "");
         User user;
         /*
 
             if(user = selectUser(req.getUserid()) && user != NULL)
             {
-                System.out.println("Success getting user in db from viewAccount function.");
-                response.setResult(0);
-                response.setNickname(user.getNickName());
-                response.setPhone(user.getPhone());
-                response.setEmail(user.getEmail());
+                if(user.status == 1)
+                {
+                    System.out.println("Success getting user in db from viewAccount function.");
+                    response.setResult(0);
+                    response.setNickname(user.getNickName());
+                    response.setPhone(user.getPhone());
+                    response.setEmail(user.getEmail());
+                }
+                else
+                {
+                    System.out.println("User not logged in");
+                    response.setResult(1);
+                }
             }
             else
             {
@@ -269,15 +278,23 @@ public class User
                     {
                         if(verifyPhone(req.getPhone()))
                         {
-                            if(updateSQLUser(req.getUserid(), user) == 0)
+                            if(user.status == 1)
                             {
-                                System.out.println("Success updating user in db");
-                                req.setResult(0);
+                                if(updateSQLUser(req.getUserid(), user) == 0)
+                                {
+                                    System.out.println("Success updating user in db");
+                                    req.setResult(0);
+                                }
+                                else
+                                {
+                                    System.out.println("Failed updating user in db");
+                                }
                             }
                             else
                             {
-                                System.out.println("Failed updating user in db");
+                                System.out.println("User not logged in");
                             }
+
                         }
                         else
                         {
