@@ -254,6 +254,42 @@ public class DatabaseCommunicator {
     }
 
     public static int updateRideRequest(int requestid, RideRequest request){
+        int isAC = 0, isPets = 0, isFoodndrink = 0, isSmoking = 0;
+        if(request.isAc()) {
+            isAC = 1;
+        }
+        if(request.isPets()) {
+            isPets = 1;
+        }
+        if(request.isFoodndrink()) {
+            isFoodndrink = 1;
+        }
+        if(request.isSmoking()) {
+            isSmoking = 1;
+        }
+        int requestedby = request.getRequestedby(), passenger = request.getPassengers(), luggage = request.getLuggage(), smoking = isSmoking,
+                foodndrink = isFoodndrink, pets = isPets, AC = isAC, travellingtime = request.getTravelingtime(), price = request.getPrice(), status = request.getStatus();
+        String pickuplocation = request.getPickuplocation(), destination = request.getDestination();
+
+        Date datentime = request.getDatentime();
+
+        if(conn == null) {
+            connectDB();
+        }
+        try {
+            stmt.executeUpdate("UPDATE RIDEREQUEST SET requestedby = "+requestedby +", pickuplocation = '" +pickuplocation+
+                    "',  destination = '" +destination+"', datentime = '" +datentime+"', passenger = " +passenger+ ",  luggage = " +luggage+
+                    ", smoking = " +smoking+ ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
+                    ", price = " +price+ ", status = "+status+ " WHERE requestid = " +requestid);
+
+
+            conn.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
@@ -289,17 +325,17 @@ public class DatabaseCommunicator {
 
     public static void main (String args[]) throws ParseException {
         // User user = new User( "okay@mail.com", "lala", "ryan", "5678", 50, 1 );
-        //Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2011-05-18 16:29:31");
-        //Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2015-05-18 18:45:11");
+        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
         //System.out.println(timestamp);
         //addUser(user);
         //selectUser(1);
 
-        //RideRequest ride = new RideRequest(1, "purdue", "chicago", timestamp, 2, 2,false,false,false,false,10, 100, 1);
+        RideRequest ride = new RideRequest(5, "NORWAY", "HONGKONG", timestamp, 5, 7,true,true,true,true,100, 1000, 0);
         //addRideRequest(ride);
-
+        updateRideRequest(7, ride);
         //RideRequest rr = selectRideRequest(6);
         //System.out.println(rr.getDestination() +" "+ rr.getDatentime() + " " + rr.getPickuplocation());
-        cancelRideRequest(7);
+        //cancelRideRequest(7);
     }
 }

@@ -117,7 +117,8 @@ public class BoilerideServer {
 //                    res = new UserForgotPasswordResponse(0, 0);
                 }
                 else{
-                    res = new UserForgotPasswordResponse(97, -1);
+                    //remove -1 initially is res = new UserForgotPasswordResponse(97, -1);
+                    res = new UserForgotPasswordResponse(97);
                 }
                 response = new Gson().toJson(res);
             }
