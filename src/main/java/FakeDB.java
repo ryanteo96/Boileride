@@ -3,23 +3,23 @@ import org.joda.time.Period;
 import java.util.*;
 
 public class FakeDB {
-    private RideOffer[] all;
+    private RideOfferSearch[] all;
     public FakeDB() {
-        all = new RideOffer[10];
-        all[0] = new RideOffer("A", "B", new Period((int)(Math.random() * 100)));
-        all[1] = new RideOffer("A", "C", new Period((int)(Math.random() * 100)));
-        all[2] = new RideOffer("A", "D", new Period((int)(Math.random() * 100)));
-        all[3] = new RideOffer("B", "C", new Period((int)(Math.random() * 100)));
-        all[4] = new RideOffer("B", "D", new Period((int)(Math.random() * 100)));
-        all[5] = new RideOffer("C", "D", new Period((int)(Math.random() * 100)));
-        all[6] = new RideOffer("D", "E", new Period((int)(Math.random() * 100)));
-        all[7] = new RideOffer("A", "E", new Period((int)(Math.random() * 100)));
-        all[8] = new RideOffer("B", "E", new Period((int)(Math.random() * 100)));
-        all[9] = new RideOffer("C", "E", new Period((int)(Math.random() * 100)));
+        all = new RideOfferSearch[10];
+        all[0] = new RideOfferSearch("A", "B", new Period((int)(Math.random() * 100)));
+        all[1] = new RideOfferSearch("A", "C", new Period((int)(Math.random() * 100)));
+        all[2] = new RideOfferSearch("A", "D", new Period((int)(Math.random() * 100)));
+        all[3] = new RideOfferSearch("B", "C", new Period((int)(Math.random() * 100)));
+        all[4] = new RideOfferSearch("B", "D", new Period((int)(Math.random() * 100)));
+        all[5] = new RideOfferSearch("C", "D", new Period((int)(Math.random() * 100)));
+        all[6] = new RideOfferSearch("D", "E", new Period((int)(Math.random() * 100)));
+        all[7] = new RideOfferSearch("A", "E", new Period((int)(Math.random() * 100)));
+        all[8] = new RideOfferSearch("B", "E", new Period((int)(Math.random() * 100)));
+        all[9] = new RideOfferSearch("C", "E", new Period((int)(Math.random() * 100)));
     }
-    public List<RideOffer> ridesFrom(String origin) {
-        List<RideOffer> ret = new ArrayList<>();
-        for (RideOffer r : all) {
+    public List<RideOfferSearch> ridesFrom(String origin) {
+        List<RideOfferSearch> ret = new ArrayList<>();
+        for (RideOfferSearch r : all) {
             if (r.getOrigin().equals(origin)) {
                 ret.add(r);
             }

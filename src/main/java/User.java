@@ -14,12 +14,26 @@ public class User
     private String password;
     private String nickname;
     private String phone;
+    private int points;
+    private int status;
 
+    public User(){}
+
+    public User(String email, String password, String nickname, String phone, int points, int status) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.points = points;
+        this.status = status;
+    }
 
     String getNickname(){return nickname;}
     String getPassword(){return password;}
     String getEmail(){return email;}
     String getPhone(){return phone;}
+    int getPoints() { return points; }
+    int getStatus() { return status; }
 
     private boolean verifyNickname(String nickname)
     {

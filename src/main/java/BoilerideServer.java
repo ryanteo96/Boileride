@@ -31,15 +31,7 @@ public class BoilerideServer {
     static final String USER = "backend";
     static final String PASS = "Boileride18!";
 
-    private Statement stmt;
-    private Connection conn;
-    private DatabaseCommunicator db;
-
-    private BoilerideServer(){
-        this.stmt = null;
-        this.conn = null;
-        this.db = null;
-    }
+    static Connection conn;
 
     private static class requestHandler implements HttpHandler {
         @Override
@@ -50,191 +42,367 @@ public class BoilerideServer {
 
             InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
 
+            JsonObject request = (JsonObject) new JsonParser().parse(in);
+            String response = null;
 
             if (uri.equals("/user/signup")){
-                //Turns out we need to put DTO. in front of the class name to make it work
-//                System.out.println(obj.toString());
-                // pseudo code, return to client
-
-//                String email = jsonRequestObj.get("email").toString();
-//                String password = jsonRequestObj.get("password").toString();
-//                String nickname = jsonRequestObj.get("nickname").toString();
-//                String phone = jsonRequestObj.get("phone").toString();
-//                System.out.println("Received: " + email + " " + password + " " + nickname + " " + phone);
+                UserSignUpRequest req = null;
+                UserSignUpResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserSignUpRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                  res = new UserSignUpResponse(0, 0);
+                }
+                else{
+                    res = new UserSignUpResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
             }
-//            else if (uri.equals("/user/verifyemail")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String code = jsonRequestObj.get("code").toString();
-//                System.out.println("Received: " + userid + " " + code);
-//            }
-//            else if (uri.equals("/user/login")){
-//                String email = jsonRequestObj.get("email").toString();
-//                String password = jsonRequestObj.get("password").toString();
-//                System.out.println("Received: " + email + " " + password);
-//            }
-//            else if (uri.equals("/user/forgotpassword")){
-//                String email = jsonRequestObj.get("email").toString();
-//                System.out.println("Received: " + email);
-//            }
-//            else if (uri.equals("/user/resetpassword")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String code  = jsonRequestObj.get("code").toString();
-//                String newpassword  = jsonRequestObj.get("newpassword").toString();
-//                System.out.println("Received: " + userid + " " + code + " " + newpassword);
-//            }
-//            else if (uri.equals("/user/viewaccount")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
-//            else if (uri.equals("/user/update")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String email = jsonRequestObj.get("email").toString();
-//                String password = jsonRequestObj.get("password").toString();
-//                String nickname = jsonRequestObj.get("nickname").toString();
-//                String phone = jsonRequestObj.get("phone").toString();
-//                System.out.println("Received: " + userid + " " + email + " " + password + " " + nickname + " " + phone);
-//            }
-//            else if (uri.equals("/user/logout")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
-//            else if (uri.equals("/ride/view/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
-//            else if (uri.equals("/ride/view/offer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
+            else if (uri.equals("/user/verifyemail")){
+                UserVerifyEmailRequest req = null;
+                UserVerifyEmailResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserVerifyEmailRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserVerifyEmailResponse(0, 0);
+                }
+                else{
+                    res = new UserVerifyEmailResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/login")){
+                UserLoginRequest req = null;
+                UserLoginResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserLoginRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserLoginResponse(0, 0);
+                }
+                else{
+                    res = new UserLoginResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/forgotpassword")){
+                UserForgotPasswordRequest req = null;
+                UserForgotPasswordResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserForgotPasswordRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserForgotPasswordResponse(0, 0);
+                }
+                else{
+                    res = new UserForgotPasswordResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/resetpassword")){
+                UserResetPasswordRequest req = null;
+                UserResetPasswordResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserResetPasswordRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserResetPasswordResponse(0, 0);
+                }
+                else{
+                    res = new UserResetPasswordResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/viewaccount")){
+                UserViewAccountRequest req = null;
+                UserViewAccountResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserViewAccountRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserViewAccountResponse(0, 0);
+                }
+                else{
+                    res = new UserViewAccountResponse(97, null, null, null);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/update")){
+                UserUpdateRequest req = null;
+                UserUpdateResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserUpdateRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserUpdateResponse(0, 0);
+                }
+                else{
+                    res = new UserUpdateResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/user/logout")){
+                UserLogoutRequest req = null;
+                UserLogoutResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, UserLogoutRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //action goes here
+//                    res = new UserLogoutResponse(0, 0);
+                }
+                else{
+                    res = new UserLogoutResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/view/request")){
+                RideViewRequestRequest req = null;
+                RideViewRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideViewRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.viewRideRequestfromDB(req);
+                }
+                else{
+                    res = new RideViewRequestResponse(97, null);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/view/offer")){
+                RideViewOfferRequest req = null;
+                RideViewOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideViewOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.viewRideOfferfromDB(req);
+                }
+                else{
+                    res = new RideViewOfferResponse(97, null);
+                }
+                response = new Gson().toJson(res);
+            }
 //            else if (uri.equals("/ride/view/acceptedrequest")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
+//                RideViewAcceptedRequestRequest req = new Gson().fromJson(request, RideViewAcceptedRequestRequest.class);
+//                System.out.println("Received: " + req.toString());
+//                RideViewAcceptedRequestResponse res = new RideViewAcceptedRequestResponse(0);
+//                response = new Gson().toJson(res);
 //            }
-//            else if (uri.equals("/ride/view/joinedoffer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
+//           else if (uri.equals("/ride/view/joinedoffer")){
+//                RideViewJoinedOfferRequest req = new Gson().fromJson(request, RideViewJoinedOfferRequest.class);
+//                System.out.println("Received: " + req.toString());
+//                RideViewJoinedOfferResponse res = new RideViewJoinedOfferResponse(0);
+//                response = new Gson().toJson(res);
 //            }
-//            else if (uri.equals("/ride/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String passengers = jsonRequestObj.get("passengers").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-//                String price = jsonRequestObj.get("price").toString();
-//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-//                        + datentime + " " + passengers + " " + luggage + " " + smoking + " " + foodndrink + " "
-//                        + pets + " " + ac + " " + travelingtime + " " + price);
-//            }
-//            else if (uri.equals("/ride/cancel/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
-//            else if (uri.equals("/ride/update/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String requestid = jsonRequestObj.get("requestid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String passengers = jsonRequestObj.get("passengers").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-//                String price = jsonRequestObj.get("price").toString();
-//                System.out.println("Received: " + userid + " " + requestid + " " + pickuplocation + " "
-//                        + destination + " " + datentime + " " + passengers + " " + luggage + " " + smoking + " "
-//                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
-//            }
-//            else if (uri.equals("/ride/offer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String seats = jsonRequestObj.get("seats").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-//                String price = jsonRequestObj.get("price").toString();
-//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-//                        + datentime + " " + seats + " " + luggage + " " + smoking + " " + foodndrink + " "
-//                        + pets + " " + ac + " " + travelingtime + " " + price);
-//            }
-//            else if (uri.equals("/ride/cancel/offer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                System.out.println("Received: " + userid);
-//            }
-//            else if (uri.equals("/ride/update/offer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String offerid = jsonRequestObj.get("offerid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String seats = jsonRequestObj.get("seats").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                String travelingtime = jsonRequestObj.get("travelingtime").toString();
-//                String price = jsonRequestObj.get("price").toString();
-//                System.out.println("Received: " + userid + " " + offerid + " " + pickuplocation + " "
-//                        + destination + " " + datentime + " " + seats + " " + luggage + " " + smoking + " "
-//                        + foodndrink + " " + pets + " " + ac + " " + travelingtime + " " + price);
-//            }
-//            else if (uri.equals("/ride/search/request")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
-//                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String datentimerange = jsonRequestObj.get("datentimerange").toString();
-//                String seats = jsonRequestObj.get("seats").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-//                        + pickupproximity + " " + datentime + " " + datentimerange + " " + seats + " "
-//                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
-//            }
-//            else if (uri.equals("/ride/search/offer")){
-//                String userid = jsonRequestObj.get("userid").toString();
-//                String pickuplocation = jsonRequestObj.get("pickuplocation").toString();
-//                String destination = jsonRequestObj.get("destination").toString();
-//                String pickupproximity = jsonRequestObj.get("pickupproximity").toString();
-//                String destinationproximity = jsonRequestObj.get("destinationproximity").toString();
-//                String datentime = jsonRequestObj.get("datentime").toString();
-//                String datentimerange = jsonRequestObj.get("datentimerange").toString();
-//                String passengers = jsonRequestObj.get("passengers").toString();
-//                String luggage = jsonRequestObj.get("luggage").toString();
-//                String smoking = jsonRequestObj.get("smoking").toString();
-//                String foodndrink = jsonRequestObj.get("foodndrink").toString();
-//                String pets = jsonRequestObj.get("pets").toString();
-//                String ac = jsonRequestObj.get("ac").toString();
-//                System.out.println("Received: " + userid + " " + pickuplocation + " " + destination + " "
-//                        + pickupproximity + " " + datentime + " " + datentimerange + " " + passengers + " "
-//                        + luggage + " " + smoking + " " + foodndrink + " " + pets + " " + ac + " ");
-//            }
+            else if (uri.equals("/ride/request")){
+                RideRequestRequest req = null;
+                RideRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.addRideRequestToDB(req);
+                }
+                else {
+                    res = new RideRequestResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/cancel/request")){
+                RideCancelRequestRequest req = null;
+                RideCancelRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideCancelRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.cancelRideRequestInDB(req);
+                }
+                else{
+                    res = new RideCancelRequestResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/update/request")){
+                RideUpdateRequestRequest req = null;
+                RideUpdateRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideUpdateRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.updateRideRequestInDB(req);
+                }
+                else {
+                    res = new RideUpdateRequestResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/offer")){
+                RideOfferRequest req = null;
+                RideOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.addRideOfferToDB(req);
+                }
+                else {
+                    res = new RideOfferResponse(97, -1);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/cancel/offer")){
+                RideCancelOfferRequest req = null;
+                RideCancelOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideCancelOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.cancelRideOfferInDB(req);
+                }
+                else{
+                    res = new RideCancelOfferResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/update/offer")){
+                RideUpdateOfferRequest req = null;
+                RideUpdateOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideUpdateOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.updateRideOfferInDB(req);
+                }
+                else {
+                    res = new RideUpdateOfferResponse(97);
+                }
+                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/search/request")){
+                RideSearchRequestRequest req = null;
+//                RideSearchRequestResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideSearchRequestRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    res = new RideSearchRequestResponse(0);
+                }
+                else {
+//                    res = new RideSearchRequestResponse(97);
+                }
+//                response = new Gson().toJson(res);
+            }
+            else if (uri.equals("/ride/search/offer")){
+                RideSearchOfferRequest req = null;
+//                RideSearchOfferResponse res = null;
+                boolean isRightFormat = true;
+                try {
+                    req = new Gson().fromJson(request, RideSearchOfferRequest.class);
+                }catch (JsonSyntaxException e){
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    res = new RideSearchOfferResponse(0);
+                }
+                else {
+//                    res = new RideSearchOfferResponse(97);
+                }
+//                response = new Gson().toJson(res);
+            }
             else {
                 System.out.println("Request " + uri + " is unknown");
+                JsonObject responseObj = new JsonObject();
+                responseObj.addProperty("result", 98);
+                response = responseObj.toString();
             }
-
-            JsonObject responseObj = new JsonObject();
-            responseObj.addProperty("result", 0);
-            String response = responseObj.toString();
 
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
             httpExchange.sendResponseHeaders(200, response.length());
@@ -243,27 +411,25 @@ public class BoilerideServer {
             os.write(response.getBytes());
 
             os.close();
+
+            System.out.println("Sent response: " + response.toString());
         }
 
     }
 
     private void connect(){
-        //Set up connection to database
 
         try{
-
+            //Set up connection to database
             Class.forName(JDBC_DRIVER);
-            this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            this.stmt = this.conn.createStatement();
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected to database...");
-            this.db = new DatabaseCommunicator(this.conn);
-
+            //Set up server
             HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
             server.createContext("/", new requestHandler());
             server.setExecutor(null);
             server.start();
             System.out.println("Connected to server...");
-
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -277,12 +443,6 @@ public class BoilerideServer {
         }finally {
             //finally block used to close resources
             try {
-                if (this.stmt != null)
-                    this.stmt.close();
-            } catch (SQLException se2) {
-                // nothing we can do
-            }
-            try {
                 if (conn != null)
                     conn.close();
             } catch (SQLException se) {
@@ -293,30 +453,39 @@ public class BoilerideServer {
 
     public static void main(String[] args) {
 
-//        BoilerideServer server = new BoilerideServer();
-//        server.connect();
-        JsonObject test = new JsonObject();
-        test.addProperty("email", "aaaaa@gmail.com");
-        test.addProperty("password", "aaaaa");
-        test.addProperty("nickname", "bbbbb");
-        test.addProperty("phone", "12345");
+        BoilerideServer server = new BoilerideServer();
 
-        UserSignUpRequest x = new Gson().fromJson(test, UserSignUpRequest.class);
-        System.out.println(x.getEmail());
+        server.connect();
 
-        RideOffer rideOffer = new RideOffer();
-        List<Trip> result = rideOffer.search("A", "E");
-        for (Trip t : result) {
-            for (RideOffer r : t.getRides()) {
-                System.out.println(r.toString());
-            }
-        }
-
+        //new JsonParser().parse();
+//        JsonObject test = new JsonObject();
+//        test.addProperty("email", "aaaaa@gmail.com");
+//        test.addProperty("password", "aaaaa");
+//        test.addProperty("nickname", "bbbbb");
+//        test.addProperty("phone", "12345");
+//
+//        UserSignUpRequest x1 = null;
 //        try {
-//            server.conn.close();
-//            System.out.println("Disconnected from database...");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
+//            x1 = new Gson().fromJson(test, UserSignUpRequest.class);
+//        }catch (JsonSyntaxException e){
+//            System.out.println("wrong format");
+//            }
+//        UserSignUpRequest x2 = new Gson().fromJson(test, UserSignUpRequest.class);
+//
+//        UserSignUpRequest[] arr = {x1, x2};
+//
+//        System.out.println(x1.getEmail());
+//
+//        System.out.println(new Gson().toJson(x1));
+//        System.out.println(new Gson().toJson(arr));
+//
+//
+//        RideOffer rideOffer = new RideOffer();
+//        List<Trip> result = rideOffer.search("A", "E");
+//        for (Trip t : result) {
+//            for (RideOffer r : t.getRides()) {
+//                System.out.println(r.toString());
+//            }
 //        }
 
     }

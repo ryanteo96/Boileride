@@ -13,9 +13,10 @@ public class UserVerifyEmailResponse {
     private int result;
     private int userid;
 
-    public UserVerifyEmailResponse(int r, int u){
-        result = r;
-        userid = u;
+    public UserVerifyEmailResponse(int result, int userid) {
+        this.result = result;
+        this.userid = userid;
+
     }
 
     public int getResult() {
