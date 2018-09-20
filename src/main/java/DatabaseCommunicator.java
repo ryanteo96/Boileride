@@ -67,6 +67,10 @@ public class DatabaseCommunicator {
         return resultUser;
     }
 
+    public static int updateUserStatus(int userid, int status){
+        return 0;
+    }
+
     public static DtoRideRequest[] selectRequestList(int userid){
         return null;
     }

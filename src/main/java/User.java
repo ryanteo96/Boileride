@@ -364,4 +364,25 @@ public class User
         return response;
     }
 
+    public int verifyUserid(User user){
+        if (user == null){
+            return 1;
+        }
+        else if (user.getStatus() == 0){
+            return 2;
+        }
+        return 0;
+    }
+
+    public UserLogoutResponse logout(UserLogoutRequest request){
+        int result = 0;
+        User user = DatabaseCommunicator.selectUser(request.getUserid());
+        int userResult = verifyUserid(user);
+        if (userResult > 0) result = userResult;
+        else {
+            result = DatabaseCommunicator.updateUserStatus(request.getUserid(), 0);
+        }
+        UserLogoutResponse res = new UserLogoutResponse(result);
+        return res;
+    }
 }

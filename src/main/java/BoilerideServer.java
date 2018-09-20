@@ -189,8 +189,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserLogoutResponse(0, 0);
+                    User user = new User();
+                    res = user.logout(req);
                 }
                 else{
                     res = new UserLogoutResponse(97);
