@@ -57,6 +57,6 @@ app.use("/settings", settings);
 // http setup for local testing
 const httpServer = http.createServer(app);
 
-httpServer.listen(80, () => {
+httpServer.listen(3000, () => {
 	console.log("HTTP Server running on port 80");
 });
