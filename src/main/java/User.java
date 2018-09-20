@@ -174,6 +174,9 @@ public class User
 
         return response;
     }
+
+    
+
     public UserLoginResponse login(UserLoginRequest req)
     {
         UserLoginResponse response = new UserLoginResponse(-1,-1);
@@ -302,7 +305,7 @@ public class User
     }
     public UserForgotPasswordResponse forgotPassword(UserForgotPasswordRequest req)
     {
-        UserForgotPasswordResponse response = new UserForgotPasswordResponse(-1,-1);
+        UserForgotPasswordResponse response = new UserForgotPasswordResponse(-1);
         String email = req.getEmail();
         int id;
         String password;
@@ -311,7 +314,7 @@ public class User
         /*
             if(id = lookUpUserid(email) && id != -1)
             {
-                user = selectUser(id);
+
                 if(user != NULL)
                 {
                     password = user.getPassword();
@@ -319,7 +322,6 @@ public class User
                     String hashCode = buffer.hashCode();
                     response.setCode(hashCode);
                     response.setResult(0);
-                    response.setUserid(id);
                     SendEmail.sendEmail(email, "Unique code for resetting password", "Please use this code to reset your password:" + hashCode);
                 }
                 else
