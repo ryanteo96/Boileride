@@ -18,7 +18,7 @@ public class RideSearchRequestRequest {
     private int pickupproximity;
     private int destinationproximity;
     private Date datentime;
-    private int datentimerange;
+    private Date datentimerange;
     private int seats;
     private int luggage;
     private boolean smoking;
@@ -26,7 +26,7 @@ public class RideSearchRequestRequest {
     private boolean pets;
     private boolean ac;
 
-    public RideSearchRequestRequest(int u, String p, String d, int pp, int dp, Date da, int dr,
+    public RideSearchRequestRequest(int u, String p, String d, int pp, int dp, Date da, Date dr,
                               int se, int l, boolean s, boolean f, boolean pe, boolean a){
         userid = u;
         pickuplocation = p;
@@ -67,7 +67,7 @@ public class RideSearchRequestRequest {
         this.datentime = datentime;
     }
 
-    public void setDatentimerange(int datentimerange) {
+    public void setDatentimerange(Date datentimerange) {
         this.datentimerange = datentimerange;
     }
 
@@ -119,7 +119,7 @@ public class RideSearchRequestRequest {
         return datentime;
     }
 
-    public int getDatentimerange() {
+    public Date getDatentimerange() {
         return datentimerange;
     }
 
