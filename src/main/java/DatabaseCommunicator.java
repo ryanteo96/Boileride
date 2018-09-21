@@ -151,9 +151,36 @@ public class DatabaseCommunicator {
         }
 
         return resultUser;
+    }
 
+    public static int updateSQLUser(int userid, User user) {
+        String nickname = user.getNickname();
+        String password = user.getPassword();
+        String phone = user.getPhone();
+        int status = user.getStatus();
+        int points = user.getPoints();
+        String email = user.getEmail();
 
-    }    /*
+        if(conn == null) {
+            connectDB();
+        }
+        try {
+            stmt.executeUpdate("UPDATE USER SET nickname = '"+nickname+"', password = '"+password+"', " +
+                    "phone = "+phone+", status = "+status+", points = "+points+", email = '"+email+"' WHERE userid = " +userid);
+
+            conn.close();
+            stmt.close();
+        }
+        catch(SQLException e) {
+            System.out.println("what");
+            e.printStackTrace();
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /*
         public static RideRequest[] selectRequestList(int userid){
             return null;
         }
@@ -638,9 +665,10 @@ public class DatabaseCommunicator {
 
 
     public static void main (String args[]) throws ParseException {
-        // User user = new User( "okay@mail.com", "lala", "ryan", "5678", 50, 1 );
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2015-05-18 18:45:11");
-        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );
+        //updateSQLUser(1, user);
+        //Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2015-05-18 18:45:11");
+        //Timestamp timestamp = new java.sql.Timestamp(date.getTime());
         //System.out.println(timestamp);
         //addUser(user);
         //selectUser(1);
