@@ -24,20 +24,20 @@ router.post(
 		console.log(data);
 
 		// temp server connection test
-		var options = {
-			uri: "http://localhost:8080/user/login",
-			json: data,
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
+		// var options = {
+		// 	uri: "http://localhost:8080/user/login",
+		// 	json: data,
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// };
 
-		request(options, function(error, response) {
-			console.log(error, response);
-			res.send(response.result);
-			return;
-		});
+		// request(options, function(error, response) {
+		// 	console.log(error, response);
+		// 	res.send(response.result);
+		// 	return;
+		// });
 	}),
 );
 
