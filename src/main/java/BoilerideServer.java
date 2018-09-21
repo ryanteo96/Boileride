@@ -56,8 +56,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                  res = new UserSignUpResponse(0, 0);
+                    User user = new User();
+                    res = user.signUp(req);
                 }
                 else{
                     res = new UserSignUpResponse(97, -1);
@@ -75,8 +75,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserVerifyEmailResponse(0, 0);
+                    User user = new User();
+                    res = user.verifyEmailCode(req);
                 }
                 else{
                     res = new UserVerifyEmailResponse(97, -1);
@@ -94,8 +94,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserLoginResponse(0, 0);
+                    User user = new User();
+                    res = user.login(req);
                 }
                 else{
                     res = new UserLoginResponse(97, -1);
@@ -113,8 +113,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserForgotPasswordResponse(0, 0);
+                    User user = new User();
+                    res = user.forgotPassword(req);
                 }
                 else{
                     //remove -1 initially is res = new UserForgotPasswordResponse(97, -1);
@@ -133,8 +133,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserResetPasswordResponse(0, 0);
+                    User user = new User();
+                    res = user.resetPassword(req);
                 }
                 else{
                     res = new UserResetPasswordResponse(97);
@@ -152,8 +152,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserViewAccountResponse(0, 0);
+                    User user = new User();
+                    res = user.viewAccount(req);
                 }
                 else{
                     res = new UserViewAccountResponse(97, "", "", "");
@@ -171,8 +171,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //action goes here
-//                    res = new UserUpdateResponse(0, 0);
+                    User user = new User();
+                    res = user.updateUser(req);
                 }
                 else{
                     res = new UserUpdateResponse(97);

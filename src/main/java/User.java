@@ -61,7 +61,7 @@ public class User
 
 
     }
-    private UserVerifyEmailResponse verifyEmailCode(UserVerifyEmailRequest req)
+    public UserVerifyEmailResponse verifyEmailCode(UserVerifyEmailRequest req)
     {
         UserVerifyEmailResponse response = new UserVerifyEmailResponse(-1,-1);
 
