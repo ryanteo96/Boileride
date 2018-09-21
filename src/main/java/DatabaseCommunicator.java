@@ -207,65 +207,55 @@ public class DatabaseCommunicator {
         return 0;
     }
     public static int addRideRequest(RideRequest ride){
-        int requestedid = 0;
-        int isAC = 0;
-        int isPets = 0;
-        int isFoodndrink = 0;
-        int isSmoking = 0;
+        int requestedid = -1;
 
-        if(ride.isAc()) {
-            isAC = 1;
-        }
-        if(ride.isPets()) {
-            isPets = 1;
-        }
-        if(ride.isFoodndrink()) {
-            isFoodndrink = 1;
-        }
-        if(ride.isSmoking()) {
-            isSmoking = 1;
-        }
         int requestedby = ride.getRequestedby();
         int passenger = ride.getPassengers();
         int luggage = ride.getLuggage();
-        int smoking = isSmoking;
-        int foodndrink = isFoodndrink;
-        int pets = isPets;
-        int AC = isAC;
+        boolean smoking = ride.isSmoking();
+        boolean foodndrink = ride.isFoodndrink();
+        boolean pets = ride.isPets();
+        boolean ac = ride.isAc();
         int travellingtime = ride.getTravelingtime();
         int price = ride.getPrice();
         int status = ride.getStatus();
         String pickuplocation = ride.getPickuplocation();
         String destination = ride.getDestination();
         Date datentime = ride.getDatentime();
-        String strDate = datentime.toString();
+        Timestamp timestamp = new java.sql.Timestamp(datentime.getTime());
 
-        Date date = null;
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-
-        if(conn == null) {
-            connectDB();
-        }
-        try {
-            stmt.executeUpdate("INSERT INTO RIDEREQUEST(requestedby, pickuplocation, destination, " +
+            String query = "INSERT INTO RIDEREQUEST(requestedby, pickuplocation, destination, " +
                     "datentime, passenger, luggage, smoking, foodndrink, pets, AC, travellingtime, price, status) " +
-                    "VALUES ( "+requestedby + ", '" + pickuplocation + "', '" +destination + "', '"
-                    + timestamp + "', " + passenger + ", " + luggage +
-                    ", " + smoking + ", " + foodndrink+", " +pets+", " +AC+", "+travellingtime+", " +price+ ", " +status + ")");
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query,
+                    Statement.RETURN_GENERATED_KEYS);
 
-            //Dont know how many condition to check
-            rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE pickuplocation = '"+pickuplocation+"' AND destination = '"+destination+"' AND requestedby = "+requestedby);
-            while(rs.next()) {
-                requestedid = rs.getInt("requestid");
+            stmt.setInt(1,requestedby);
+            stmt.setString(2,pickuplocation);
+            stmt.setString(3,destination);
+            stmt.setTimestamp(4,timestamp);
+            stmt.setInt(5,passenger);
+            stmt.setInt(6,luggage);
+            stmt.setBoolean(7,smoking);
+            stmt.setBoolean(8,foodndrink);
+            stmt.setBoolean(9,pets);
+            stmt.setBoolean(10,ac);
+            stmt.setInt(11,travellingtime);
+            stmt.setInt(12,price);
+            stmt.setInt(13,status);
+
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                requestedid = rs.getInt(1);
             }
-            //System.out.println(requestedid);
+
             rs.close();
-            conn.close();
             stmt.close();
 
         }
@@ -428,31 +418,15 @@ public class DatabaseCommunicator {
     }
 
     public static int addRideOffer(RideOffer offer){
-        int offerid = 0;
-        int isAC = 0;
-        int isPets = 0;
-        int isFoodndrink = 0;
-        int isSmoking = 0;
+        int offerid = -1;
 
-        if(offer.isAc()) {
-            isAC = 1;
-        }
-        if(offer.isPets()) {
-            isPets = 1;
-        }
-        if(offer.isFoodndrink()) {
-            isFoodndrink = 1;
-        }
-        if(offer.isSmoking()) {
-            isSmoking = 1;
-        }
         int offeredby = offer.getOfferedby();
         int seats = offer.getSeats();
         int luggage = offer.getLuggage();
-        int smoking = isSmoking;
-        int foodndrink = isFoodndrink;
-        int pets = isPets;
-        int AC = isAC;
+        boolean smoking = offer.isSmoking();
+        boolean foodndrink = offer.isFoodndrink();
+        boolean pets = offer.isPets();
+        boolean ac = offer.isAc();
         int travellingtime = offer.getTravelingtime();
         int price = offer.getPrice();
         int status = offer.getStatus();
@@ -461,33 +435,42 @@ public class DatabaseCommunicator {
         String pickuplocation = offer.getPickuplocation();
         String destination = offer.getDestination();
         Date datentime = offer.getDatentime();
-        /*
-        String strDate = datentime.toString();
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-        */
-        if(conn == null) {
-            connectDB();
-        }
-        try {
-            stmt.executeUpdate("INSERT INTO RIDEOFFER(offeredby, pickuplocation, destination, " +
-                    "datentime, seats, luggage, smoking, foodndrink, pets, AC, travellingtime, price, seatsleft, luggagesleft, status) " +
-                    "VALUES ( "+offeredby + ", '" + pickuplocation + "', '" +destination + "', '"
-                    + datentime + "', " + seats + ", " + luggage +
-                    ", " + smoking + ", " + foodndrink+", " +pets+", " +AC+", "+travellingtime+", " +price+ ", " +seatsleft+ ", " +luggagesleft+ ", " +status + ")");
+        Timestamp timestamp = new java.sql.Timestamp(datentime.getTime());
 
-            //Dont know how many condition to check
-            rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE pickuplocation = '"+pickuplocation+"' AND destination = '"+destination+"' AND offeredby = "+offeredby);
-            while(rs.next()) {
-                offerid = rs.getInt("offerid");
+//        if(conn == null) {
+//            connectDB();
+//        }
+        try {
+            String query = "INSERT INTO RIDEOFFER(offeredby, pickuplocation, destination, " +
+                    "datentime, seats, luggage, smoking, foodndrink, pets, AC, travellingtime, price, seatsleft, luggagesleft, status) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+            PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setInt(1,offeredby);
+            stmt.setString(2,pickuplocation);
+            stmt.setString(3,destination);
+            stmt.setTimestamp(4,timestamp);
+            stmt.setInt(5,seats);
+            stmt.setInt(6,luggage);
+            stmt.setBoolean(7,smoking);
+            stmt.setBoolean(8,foodndrink);
+            stmt.setBoolean(9,pets);
+            stmt.setBoolean(10,ac);
+            stmt.setInt(11,travellingtime);
+            stmt.setInt(12,price);
+            stmt.setInt(13,seatsleft);
+            stmt.setInt(14,luggagesleft);
+            stmt.setInt(15,status);
+
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                offerid = rs.getInt(1);
             }
+
             rs.close();
-            conn.close();
             stmt.close();
 
         }
