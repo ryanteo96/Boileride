@@ -14,8 +14,8 @@ const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
 const forgotPw = require("./routes/forgotPw");
 const resetPw = require("./routes/resetPw");
-const myRequest = require("./routes/myRequest");
-const myOffer = require("./routes/myOffer");
+// const myRequest = require("./routes/myRides/myRequest");
+// const myOffer = require("./routes/myRides/myOffer");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
@@ -23,8 +23,6 @@ const createRideOffer = require("./routes/createRideOffer");
 const createRideRequest = require("./routes/createRideRequest");
 const searchRideOffer = require("./routes/searchRideOffer");
 const searchRideRequest = require("./routes/searchRideRequest");
-const myRequest = require("./routes/myRides/myRequest");
-const myOffer = require("./routes/myOffer");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -36,8 +34,8 @@ app.use("/signUp", signUp);
 app.use("/signOut", signOut);
 app.use("/forgotPw", forgotPw);
 app.use("/resetPw", resetPw);
-app.use("/myRequest", myRequest);
-app.use("/myOffer", myOffer);
+app.use("/myRequest", myRides);
+app.use("/myOffer", myRides);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
@@ -45,8 +43,7 @@ app.use("/createRideOffer", createRideOffer);
 app.use("/createRideRequest", createRideRequest);
 app.use("/searchRideOffer", searchRideOffer);
 app.use("/searchRideRequest", searchRideRequest);
-app.use("/myRides/myRequest", myRequest);
-app.use("/myRides/myOffer", myOffer);
+
 // https setup
 // const privateKey = fs.readFileSync(
 // 	"/etc/letsencrypt/live/boileride.ryanteo96.tech/privkey.pem",
