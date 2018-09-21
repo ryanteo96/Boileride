@@ -245,7 +245,7 @@ public class RideOffer {
     }
 
     public int isEnoughPoints(User user, int price){
-        if (user.getPoints() < price) {
+        if (user != null && user.getPoints() < price) {
             return 1;
         }
         return 0;
@@ -351,6 +351,7 @@ public class RideOffer {
             }
         }
         RideUpdateOfferResponse res = new RideUpdateOfferResponse(result);
+
         return res;
     }
 
