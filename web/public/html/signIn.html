@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sign In</title>
-     <!-- Latest compiled and minified CSS -->
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-     crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
 
-     <!-- jQuery library -->
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-     crossorigin="anonymous"></script>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 
-     <!-- Latest compiled JavaScript -->
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-     crossorigin="anonymous"></script>     
+    <!-- Latest compiled JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
 
     <!-- Javascript and Stylesheets imports -->
@@ -21,37 +22,37 @@
 </head>
 
 <body>
-        <div id="signInBox">
-            <div class="card card-info shadow mb-5">
-                <h5 id="signInHeader" class="card-header bg-primary">
-                    <div id="signInTitle" class="card-title text-light">Sign In</div>
-                    <div id="forgotPassword">
-                        <a class = "text-light" href="/forgotPw">Forgot password?</a>
+    <div id="signInBox">
+        <div class="card card-info shadow mb-5">
+            <h5 id="signInHeader" class="card-header bg-primary">
+                <div id="signInTitle" class="card-title text-light">Sign In</div>
+                <div id="forgotPassword">
+                    <a class="text-light" href="/forgotPw">Forgot password?</a>
+                </div>
+            </h5>
+
+            <div class="card-body">
+                <form id="signInForm" class="form-horizontal" role="form" action="/signIn" method="post" enctype="application/x-www-form-urlencoded">
+                    <!-- input group: a container to enhance an input by adding icon etc-->
+                    <!-- sign in email-->
+                    <div id="emailSignInInputGroup" class="input-group col-md-auto">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                        <input id="emailSignIn" type="email" class="form-control" name="email" value="" placeholder="Email Address"
+                            required>
                     </div>
-                </h5>
 
-                <div class="card-body">
-                    <form id="signInForm" class="form-horizontal" role="form" action="/signIn" method="post"
-                        enctype="application/x-www-form-urlencoded">
-                        <!-- input group: a container to enhance an input by adding icon etc-->
-                        <!-- sign in email-->
-                        <div id="emailSignInInputGroup" class="input-group col-md-auto">
-                            <span class="input-group-addon">
-                                <i class="glyphicon glyphicon-user"></i>
-                            </span>
-                            <input id="emailSignIn" type="text" class="form-control" name="email" value="" placeholder="Email Address">
-                        </div>
+                    <!-- sign in password-->
+                    <div id="passwordSignInInputGroup" class="input-group col-md-auto">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </span>
+                        <input id="passwordSignIn" type="password" class="form-control" name="password" placeholder="Password"
+                            required>
+                    </div>
 
-                        <!-- sign in password-->
-                        <div id="passwordSignInInputGroup" class="input-group col-md-auto">
-                            <span class="input-group-addon">
-                                <i class="glyphicon glyphicon-lock"></i>
-                            </span>
-                            <input id="password-signIn" type="password" class="form-control" name="password"
-                                placeholder="Password">
-                        </div>
-
-                        <!-- Remember pw checkbox
+                    <!-- Remember pw checkbox
                         <div class="input-group">
                             <div class="checkbox" style="padding-left:30px">
                                 <label>                                    
@@ -60,14 +61,14 @@
                             </div>
                          </div> -->
 
-                        <div id="signInFormBtnContainer" class="col-md-12 controls">
-                            <button id="btn-signIn" type="submit" class="btn btn-success">Login</button>
-                            <a id="btn-goToSignUp" href="/signUp" class="btn btn-primary">Sign Up</a>
-                        </div>
-                    </form>
-                </div>
+                    <div id="signInFormBtnContainer" class="col-md-12 controls">
+                        <button id="btn-signIn" type="submit" class="btn btn-success">Login</button>
+                        <a id="btn-goToSignUp" href="/signUp" class="btn btn-primary">Sign Up</a>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
