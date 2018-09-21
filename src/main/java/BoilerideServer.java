@@ -43,6 +43,8 @@ public class BoilerideServer {
             InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
 
             JsonObject request = (JsonObject) new JsonParser().parse(in);
+            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+
             String response = null;
 
             if (uri.equals("/user/signup")){
@@ -50,7 +52,7 @@ public class BoilerideServer {
                 UserSignUpResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserSignUpRequest.class);
+                    req = gson.fromJson(request, UserSignUpRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -62,14 +64,14 @@ public class BoilerideServer {
                 else{
                     res = new UserSignUpResponse(97, -1);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/verifyemail")){
                 UserVerifyEmailRequest req = null;
                 UserVerifyEmailResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserVerifyEmailRequest.class);
+                    req = gson.fromJson(request, UserVerifyEmailRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -81,14 +83,14 @@ public class BoilerideServer {
                 else{
                     res = new UserVerifyEmailResponse(97, -1);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/login")){
                 UserLoginRequest req = null;
                 UserLoginResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserLoginRequest.class);
+                    req = gson.fromJson(request, UserLoginRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -100,14 +102,14 @@ public class BoilerideServer {
                 else{
                     res = new UserLoginResponse(97, -1);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/forgotpassword")){
                 UserForgotPasswordRequest req = null;
                 UserForgotPasswordResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserForgotPasswordRequest.class);
+                    req = gson.fromJson(request, UserForgotPasswordRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -120,14 +122,14 @@ public class BoilerideServer {
                     //remove -1 initially is res = new UserForgotPasswordResponse(97, -1);
                     res = new UserForgotPasswordResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/resetpassword")){
                 UserResetPasswordRequest req = null;
                 UserResetPasswordResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserResetPasswordRequest.class);
+                    req = gson.fromJson(request, UserResetPasswordRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -139,14 +141,14 @@ public class BoilerideServer {
                 else{
                     res = new UserResetPasswordResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/viewaccount")){
                 UserViewAccountRequest req = null;
                 UserViewAccountResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserViewAccountRequest.class);
+                    req = gson.fromJson(request, UserViewAccountRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -158,14 +160,14 @@ public class BoilerideServer {
                 else{
                     res = new UserViewAccountResponse(97, "", "", "");
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/update")){
                 UserUpdateRequest req = null;
                 UserUpdateResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserUpdateRequest.class);
+                    req = gson.fromJson(request, UserUpdateRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -177,14 +179,14 @@ public class BoilerideServer {
                 else{
                     res = new UserUpdateResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/user/logout")){
                 UserLogoutRequest req = null;
                 UserLogoutResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, UserLogoutRequest.class);
+                    req = gson.fromJson(request, UserLogoutRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -196,14 +198,14 @@ public class BoilerideServer {
                 else{
                     res = new UserLogoutResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/view/request")){
                 RideViewRequestRequest req = null;
                 RideViewRequestResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideViewRequestRequest.class);
+                    req = gson.fromJson(request, RideViewRequestRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -216,14 +218,14 @@ public class BoilerideServer {
                     DtoRideRequest[] requestlist = {};
                     res = new RideViewRequestResponse(97, requestlist);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/view/offer")){
                 RideViewOfferRequest req = null;
                 RideViewOfferResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideViewOfferRequest.class);
+                    req = gson.fromJson(request, RideViewOfferRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -236,26 +238,26 @@ public class BoilerideServer {
                     DtoRideOffer[] offerlist = {};
                     res = new RideViewOfferResponse(97, offerlist);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
 //            else if (uri.equals("/ride/view/acceptedrequest")){
-//                RideViewAcceptedRequestRequest req = new Gson().fromJson(request, RideViewAcceptedRequestRequest.class);
+//                RideViewAcceptedRequestRequest req = gson.fromJson(request, RideViewAcceptedRequestRequest.class);
 //                System.out.println("Received: " + req.toString());
 //                RideViewAcceptedRequestResponse res = new RideViewAcceptedRequestResponse(0);
-//                response = new Gson().toJson(res);
+//                response = gson.toJson(res);
 //            }
 //           else if (uri.equals("/ride/view/joinedoffer")){
-//                RideViewJoinedOfferRequest req = new Gson().fromJson(request, RideViewJoinedOfferRequest.class);
+//                RideViewJoinedOfferRequest req = gson.fromJson(request, RideViewJoinedOfferRequest.class);
 //                System.out.println("Received: " + req.toString());
 //                RideViewJoinedOfferResponse res = new RideViewJoinedOfferResponse(0);
-//                response = new Gson().toJson(res);
+//                response = gson.toJson(res);
 //            }
             else if (uri.equals("/ride/request")){
                 RideRequestRequest req = null;
                 RideRequestResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideRequestRequest.class);
+                    req = gson.fromJson(request, RideRequestRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -267,14 +269,14 @@ public class BoilerideServer {
                 else {
                     res = new RideRequestResponse(97, -1);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/cancel/request")){
                 RideCancelRequestRequest req = null;
                 RideCancelRequestResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideCancelRequestRequest.class);
+                    req = gson.fromJson(request, RideCancelRequestRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -286,14 +288,14 @@ public class BoilerideServer {
                 else{
                     res = new RideCancelRequestResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/update/request")){
                 RideUpdateRequestRequest req = null;
                 RideUpdateRequestResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideUpdateRequestRequest.class);
+                    req = gson.fromJson(request, RideUpdateRequestRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -305,14 +307,14 @@ public class BoilerideServer {
                 else {
                     res = new RideUpdateRequestResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/offer")){
                 RideOfferRequest req = null;
                 RideOfferResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideOfferRequest.class);
+                    req = gson.fromJson(request, RideOfferRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -324,14 +326,14 @@ public class BoilerideServer {
                 else {
                     res = new RideOfferResponse(97, -1);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/cancel/offer")){
                 RideCancelOfferRequest req = null;
                 RideCancelOfferResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideCancelOfferRequest.class);
+                    req = gson.fromJson(request, RideCancelOfferRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -343,14 +345,14 @@ public class BoilerideServer {
                 else{
                     res = new RideCancelOfferResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/update/offer")){
                 RideUpdateOfferRequest req = null;
                 RideUpdateOfferResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideUpdateOfferRequest.class);
+                    req = gson.fromJson(request, RideUpdateOfferRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -362,14 +364,14 @@ public class BoilerideServer {
                 else {
                     res = new RideUpdateOfferResponse(97);
                 }
-                response = new Gson().toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/request")){
                 RideSearchRequestRequest req = null;
 //                RideSearchRequestResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideSearchRequestRequest.class);
+                    req = gson.fromJson(request, RideSearchRequestRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -380,14 +382,14 @@ public class BoilerideServer {
                 else {
 //                    res = new RideSearchRequestResponse(97);
                 }
-//                response = new Gson().toJson(res);
+//                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/offer")){
                 RideSearchOfferRequest req = null;
 //                RideSearchOfferResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = new Gson().fromJson(request, RideSearchOfferRequest.class);
+                    req = gson.fromJson(request, RideSearchOfferRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
@@ -398,7 +400,7 @@ public class BoilerideServer {
                 else {
 //                    res = new RideSearchOfferResponse(97);
                 }
-//                response = new Gson().toJson(res);
+//                response = gson.toJson(res);
             }
             else {
                 System.out.println("Request " + uri + " is unknown");
