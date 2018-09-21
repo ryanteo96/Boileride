@@ -18,6 +18,7 @@ const settings = require("./routes/settings");
 const createRideOffer = require("./routes/createRideOffer");
 const createRideRequest = require("./routes/createRideRequest");
 const searchRideOffer = require("./routes/searchRideOffer");
+const searchRideRequest = require("./routes/searchRideRequest");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -33,6 +34,7 @@ app.use("/settings", settings);
 app.use("/createRideOffer", createRideOffer);
 app.use("/createRideRequest", createRideRequest);
 app.use("/searchRideOffer", searchRideOffer);
+app.use("/searchRideRequest", searchRideRequest);
 
 // https setup
 // const privateKey = fs.readFileSync(
