@@ -17,6 +17,8 @@ const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
 const resetPw = require("./routes/resetPw");
 const forgotPw = require("./routes/forgotPw");
+const myRequest = require("./routes/myRequest");
+const myOffer = require("./routes/myOffer");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,6 +33,8 @@ app.use("/myRides", myRides);
 app.use("/settings", settings);
 app.use("/resetPw", resetPw);
 app.use("/forgotPw", forgotPw);
+app.use("/myRequest", myRequest);
+app.use("/myOffer", myOffer);
 
 // https setup
 // const privateKey = fs.readFileSync(
