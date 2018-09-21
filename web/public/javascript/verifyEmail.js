@@ -1,11 +1,14 @@
 $(document).ready(function() {
 	$("#verifyEmailForm").submit(function(data) {
 		data.preventDefault();
-
+        
+        var credentials = localStorage.getItem("credentials");        
+        var obj = JSON.parse(credentials);  
+        
 		$.post(
 			"/verifyEmail",
 			{
-				email: $("#verifyEmail").val(),
+				email: obj.email,
 				code: $("#verifyCode").val(),
 			},
 			function(res) {
@@ -13,24 +16,15 @@ $(document).ready(function() {
 
 				switch (res) {
 					case "0": {
-						window.location.href = "/home";
-
-						localStorage.key = "credentials";
-						localStorage.setItem(
-							"credentials",
-							JSON.stringify({
-								email: $("#emailSignIn").val(),
-								password: $("#passwordSignIn").val(),
-							}),
-						);
+						window.location.href = "/home";						
 						break;
 					}
 					case "1": {
-						alert("User does not exist.");
+						alert("Invalid email.");
 						break;
 					}
 					case "2": {
-						alert("Invalid password.");
+						alert("Invalid verification code.");
 						break;
 					}
 				}

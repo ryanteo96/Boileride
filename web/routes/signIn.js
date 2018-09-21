@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const request = require("request");
-const bcrypt = require("bcrypt");
 const crypto = require("crypto-js/sha3");
 const asyncHandler = require("express-async-handler");
 

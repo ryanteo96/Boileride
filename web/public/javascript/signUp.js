@@ -17,7 +17,7 @@ $(document).ready(function() {
 
 				switch (res) {
 					case "0": {
-						window.location.href = "/home";
+						window.location.href = "/verifyEmail";
 
 						localStorage.key = "credentials";
 						localStorage.setItem(
