@@ -14,6 +14,7 @@ router.post("/", function(req, res) {
 		phone: req.body.phone,
 	};
 
+	res.send("0");
 	console.log(data);
 
 	// temp server connection test
@@ -28,10 +29,11 @@ router.post("/", function(req, res) {
 
 	// request(options, function(error, response) {
 	// 	console.log(error, response);
+	// 	res.send(response.result);
 	// 	return;
 	// });
 
-	res.redirect("/home");
+	// res.redirect("/home");
 });
 
 module.exports = router;
