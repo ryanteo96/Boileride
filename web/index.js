@@ -12,10 +12,14 @@ const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
+const forgotPw = require("./routes/forgotPw");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
-const forgotPw = require("./routes/forgotPw");
+const createRideOffer = require("./routes/createRideOffer");
+const createRideRequest = require("./routes/createRideRequest");
+const searchRideOffer = require("./routes/searchRideOffer");
+const searchRideRequest = require("./routes/searchRideRequest");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -25,10 +29,14 @@ app.use("/", routes);
 app.use("/signIn", signIn);
 app.use("/signUp", signUp);
 app.use("/signOut", signOut);
+app.use("/forgotPw", forgotPw);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
-app.use("/forgotPw", forgotPw);
+app.use("/createRideOffer", createRideOffer);
+app.use("/createRideRequest", createRideRequest);
+app.use("/searchRideOffer", searchRideOffer);
+app.use("/searchRideRequest", searchRideRequest);
 
 // https setup
 // const privateKey = fs.readFileSync(
