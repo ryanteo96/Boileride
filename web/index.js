@@ -59,6 +59,6 @@ app.use("/createRideOffer", createRideOffer);
 // http setup for local testing
 const httpServer = http.createServer(app);
 
-httpServer.listen(8000, () => {
+httpServer.listen(80, () => {
 	console.log("HTTP Server running on port 80");
 });
