@@ -17,6 +17,7 @@ dependencies {
     compile 'javax.mail:javax.mail-api:1.6.2'
     compile 'com.google.maps:google-maps-services:0.2.11'
     compile files('mysql-connector-java-8.0.12.jar')
+    compile files('javax.mail.jar')
 }
 
 task run(type: JavaExec, dependsOn: classes) {
