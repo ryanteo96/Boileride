@@ -8,8 +8,7 @@
         crossorigin="anonymous">
 
     <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -32,7 +31,9 @@
             </h5>
 
             <div class="card-body">
-                <form id="signInForm" class="form-horizontal" role="form" action="/signIn" method="post" enctype="application/x-www-form-urlencoded">
+                <!-- action="/signIn" method="post" enctype="application/x-www-form-urlencoded" -->
+
+                <form id="signInForm" class="form-horizontal" role="form" method="post">
                     <!-- input group: a container to enhance an input by adding icon etc-->
                     <!-- sign in email-->
                     <div id="emailSignInInputGroup" class="input-group col-md-auto">
