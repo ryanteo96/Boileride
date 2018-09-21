@@ -14,8 +14,6 @@ const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
 const forgotPw = require("./routes/forgotPw");
 const resetPw = require("./routes/resetPw");
-// const myRequest = require("./routes/myRides/myRequest");
-// const myOffer = require("./routes/myRides/myOffer");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
@@ -23,6 +21,7 @@ const createRideOffer = require("./routes/createRideOffer");
 const createRideRequest = require("./routes/createRideRequest");
 const searchRideOffer = require("./routes/searchRideOffer");
 const searchRideRequest = require("./routes/searchRideRequest");
+const verifyEmail = require("./routes/verifyEmail");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -43,6 +42,7 @@ app.use("/createRideOffer", createRideOffer);
 app.use("/createRideRequest", createRideRequest);
 app.use("/searchRideOffer", searchRideOffer);
 app.use("/searchRideRequest", searchRideRequest);
+app.use("/verifyEmail", verifyEmail);
 
 // https setup
 // const privateKey = fs.readFileSync(
