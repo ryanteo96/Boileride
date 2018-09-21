@@ -25,7 +25,7 @@
 
     <body>
         <div class="container">
-            <div id="resetPwBox">   
+            <div id="forgotPwBox">   
             <h1>  </h1>
             <div class="card card-info shadow mb-5">
                     <div id="headerBox" class="card-header bg-primary">
@@ -33,13 +33,15 @@
                     </div>     
 
                     <div class="card-body">
-                        <h1>Enter your email address to reset our password </h1>
-                        <form id="resetPwForm" class="form-horizontal" role="form">
+                        <h6>Enter your email address to change your password </h6>
+                        <form id="forgotPwForm" class="form-horizontal" role="form" action="/forgotPw" method="post" >
                             <!-- input for email -->   
                             <div class="form-group" style="margin-top:10px">
-                                    <input type="text" class="form-control" name="email" placeholder="example@gmail.com">
-                            </div>   
-
+                                    <input type="text" class="form-control" name="email" placeholder="example@gmail.com">                                    
+                            </div>      
+                        <button class="btn btn-default float-right"> Cancel </button>         
+                        <button type="button"id="forgotPwBtn" class="btn btn-success float-right" action="/forgotPw" method="post" >Reset Password</button> 
+                        </form>
                     </div>
             </div>
         </div>
