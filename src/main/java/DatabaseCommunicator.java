@@ -81,11 +81,12 @@ public class DatabaseCommunicator {
     public static User selectUser(int userid){
         User resultUser = null;
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
-            rs = stmt.executeQuery("SELECT * FROM USER WHERE userid = " + userid);
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE userid = " + userid);
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "", email = "";
@@ -102,7 +103,7 @@ public class DatabaseCommunicator {
                 resultUser = new User( email,  password,  nickname,  phone,  points,  status);
             }
             rs.close();
-            conn.close();
+//            conn.close();
             stmt.close();
 
 
@@ -191,14 +192,13 @@ public class DatabaseCommunicator {
     */
 
     public static int updateUserStatus(int i, int j) {
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE USER set status = "+j +" WHERE userid = "+i);
-            conn.close();
             stmt.close();
-
         }
         catch(SQLException e) {
             e.printStackTrace();
