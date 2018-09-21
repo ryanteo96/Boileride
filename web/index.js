@@ -13,6 +13,9 @@ const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
 const forgotPw = require("./routes/forgotPw");
+const resetPw = require("./routes/resetPw");
+const myRequest = require("./routes/myRequest");
+const myOffer = require("./routes/myOffer");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
@@ -30,6 +33,9 @@ app.use("/signIn", signIn);
 app.use("/signUp", signUp);
 app.use("/signOut", signOut);
 app.use("/forgotPw", forgotPw);
+app.use("/resetPw", resetPw);
+app.use("/myRequest", myRequest);
+app.use("/myOffer", myOffer);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
@@ -69,4 +75,5 @@ const httpServer = http.createServer(app);
 
 httpServer.listen(80, () => {
 	console.log("HTTP Server running on port 80");
+
 });

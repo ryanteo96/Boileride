@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reset Password</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+        <!-- jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>     
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!-- Javascript and Stylesheets imports -->
+        <link href="../stylesheets/resetPw.css" rel="stylesheet" type="text/css">    
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div id="resetPwBox">   
+            <h1>  </h1>
+            <div class="card card-info shadow mb-5">
+                    <div id="headerBox" class="card-header bg-primary">
+                            <h4 class="card-title text-light">Reset Password</h4>
+                    </div>     
+
+                    <div class="card-body">
+                        <form id="resetPwForm" class="form-horizontal" role="form" action="/resetPw" method="post">
+                            <!-- input for email -->   
+                            <div class="form-group" style="margin-top:10px">
+                                    <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Email </label>
+                                        <input type="text" class="form-control" name="email" placeholder="">
+                                </div>
+
+                            <div class="form-group" style="margin-top:10px">
+                                <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Validaton Code</label>
+                                    <input type="text" class="form-control" name="code" placeholder="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newPw" id="newPwLabel" class="col-md-5 control-label">New Password</label>
+                                    <input type="password" class="form-control" name="newPw" placeholder="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="verifyPw" id="verifyPwLabel" class="col-md-5 control-label">Confirm Password</label>
+                                    <input type="password" class="form-control" name="verifyPw" placeholder="">
+                            </div>
+
+
+                            <div class="col-md-12 controls" style="position:relative; top:10px; padding-left:30px; padding-bottom:20px;">
+                                    <!-- <button type="button" type="submit" id="changePwBtn" class="btn btn-success float-right" data-toggle="modal" data-target="#chgPwModal">Change Password</button>  -->
+                                    <button id="changePwBtn" class="btn btn-success float-right" type="submit" data-toggle="modal" data-target="#chgPwModal">Change Password</button> 
+                            </div>                                                    
+ 
+                                <!-- Modal message -->
+                                <!-- Probably here needa make another modal for unsuccessful verification and redirect data target of the button to a function in js-->                                
+                                <div id="chgPwModal" class="modal fade">
+                                    <div class="modal-dialog modal-confirm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="icon-box">
+                                                    <i class="material-icons">&#xE876;</i>
+                                                </div>				
+                                                <h4 id="resetTitle" class="modal-title text-center">Reset Successful!</h4>	
+                                            </div>
+                                            <div class="modal-body">
+                                                <p style="position:relative; top:10px" class="text-center">Return to Sign In page.</p>
+                                            </div>
+                                            <div class="modal-footer">                                              
+                                                <a id="btn-redirect-SignIn" href="/signIn" class="btn btn-success btn-block bg-primary" >OK</a> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>     
+
+                    </div>
+            </div>
+        </div>
+
+    </div>
+    </body>
+
+</html>

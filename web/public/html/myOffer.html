@@ -16,7 +16,8 @@
         crossorigin="anonymous"></script>
 
     <!-- Javascript and Stylesheets imports -->
-    <link href="../stylesheets/home.css" rel="stylesheet" type="text/css">    
+    <link href="../stylesheets/home.css" rel="stylesheet" type="text/css">
+    <link href="../stylesheets/myRides.css" rel="stylesheet" type="text/css">
     <script src="../javascript/home.js" type="text/javascript"></script>
 
 </head>
@@ -35,14 +36,14 @@
                     <a class="nav-link" href="/home">Home</a>
                 </li>
 
-                <li class="nav-item dropdown">
+                <li class="nav-item active">
                     <!-- <a class="nav-link dropdown" href="/myRides">My Rides<span class="sr-only">(current)</span></a> -->
                     <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         My Rides
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">                          
-                        <a class="dropdown-item" href="/myRequest">Ride Requests</a>
-                        <a class="dropdown-item" href="/myOffer">Ride Offers</a>                        
+                                <a class="dropdown-item" href="/myRequest">Ride Requests</a>
+                                <a class="dropdown-item" href="/myOffer">Ride Offers</a>                        
                     </div>
                 </li>
 
@@ -53,10 +54,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/signOut">Sign Out</a>
                 </li>
-
             </ul>
         </div>
+     
     </nav>  
+    <h5 id="textOffer">MY OFFERS</h5>
 </body>
 
 </html>
