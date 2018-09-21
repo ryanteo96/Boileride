@@ -50,23 +50,23 @@ public class DatabaseCommunicator {
         int points = user.getPoints();
         String email = user.getEmail();
 
-        int userid = 0;
-        if(conn == null) {
-            connectDB();
-        }
+        int userid = -1;
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("INSERT INTO USER(nickname, password, phone, status, points, email) " +
                     "VALUES ('" + nickname + "','" + password + "','" + phone + "',"
                     + status + "," + points + ",'" + email + "')");
 
             //stmt.executeUpdate("INSERT INTO USER(nickname, password, phone, status, points, email) VALUES ('test','test','test',1,0,'test3')");
-            rs = stmt.executeQuery("SELECT * FROM USER WHERE email = " + "'"+ email+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE email = " + "'"+ email+"'");
             while(rs.next()) {
                 userid = rs.getInt("userid");
             }
             //System.out.println(userid);
             rs.close();
-            conn.close();
             stmt.close();
         }
         catch(SQLException e) {
@@ -86,7 +86,7 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE userid = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email FROM USER WHERE userid = " + userid);
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "", email = "";
@@ -94,7 +94,6 @@ public class DatabaseCommunicator {
             while (rs.next()) {
                 //id = rs.getInt("userid");
                 nickname = rs.getString("nickname");
-                password = rs.getString("password");
                 phone = rs.getString("phone");
                 points = rs.getInt("points");
                 status = rs.getInt("status");
@@ -103,7 +102,6 @@ public class DatabaseCommunicator {
                 resultUser = new User( email,  password,  nickname,  phone,  points,  status);
             }
             rs.close();
-//            conn.close();
             stmt.close();
 
 
@@ -118,11 +116,12 @@ public class DatabaseCommunicator {
     public static User selectUserByEmail(String email) {
         User resultUser = null;
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
-            rs = stmt.executeQuery("SELECT * FROM USER WHERE email = '" + email+"'");
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email FROM USER WHERE email = '" + email+"'");
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "";
@@ -130,7 +129,6 @@ public class DatabaseCommunicator {
             while (rs.next()) {
                 id = rs.getInt("userid");
                 nickname = rs.getString("nickname");
-                password = rs.getString("password");
                 phone = rs.getString("phone");
                 points = rs.getInt("points");
                 status = rs.getInt("status");
@@ -141,9 +139,7 @@ public class DatabaseCommunicator {
                 //System.out.println(nickname + " " +password + " " + id);
             }
             rs.close();
-            conn.close();
             stmt.close();
-
 
         }
         catch (SQLException e) {
@@ -162,14 +158,14 @@ public class DatabaseCommunicator {
         int points = user.getPoints();
         String email = user.getEmail();
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE USER SET nickname = '"+nickname+"', password = '"+password+"', " +
                     "phone = "+phone+", status = "+status+", points = "+points+", email = '"+email+"' WHERE userid = " +userid);
 
-            conn.close();
             stmt.close();
         }
         catch(SQLException e) {
@@ -206,6 +202,7 @@ public class DatabaseCommunicator {
         }
         return 0;
     }
+
     public static int addRideRequest(RideRequest ride){
         int requestedid = -1;
 
@@ -269,10 +266,11 @@ public class DatabaseCommunicator {
     public static RideRequest selectRideRequest(int requestid){
         RideRequest rideRequest = null;
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestid = " + requestid);
 
             int requestedby = 0;
@@ -330,7 +328,6 @@ public class DatabaseCommunicator {
                     luggage, smoke, food, pet, ac, travellingtime, price, status);
 
             rs.close();
-            conn.close();
             stmt.close();
         }
         catch (SQLException e) {
@@ -351,10 +348,10 @@ public class DatabaseCommunicator {
             connectDB();
         }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE requestid = " + requestid);
 
             rs.close();
-            conn.close();
             stmt.close();
 
         }
@@ -396,18 +393,19 @@ public class DatabaseCommunicator {
         String pickuplocation = request.getPickuplocation();
         String destination = request.getDestination();
         Date datentime = request.getDatentime();
+        Timestamp timestamp = new java.sql.Timestamp(datentime.getTime());
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
             //took out status (remy says status shouldn't be updated)
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEREQUEST SET requestedby = "+requestedby +", pickuplocation = '" +pickuplocation+
-                    "',  destination = '" +destination+"', datentime = '" +datentime+"', passenger = " +passenger+ ",  luggage = " +luggage+
+                    "',  destination = '" +destination+"', datentime = '" +timestamp+"', passenger = " +passenger+ ",  luggage = " +luggage+
                     ", smoking = " +smoking+ ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
                     ", price = " +price+ " WHERE requestid = " +requestid);
 
-            conn.close();
             stmt.close();
         }
         catch (SQLException e) {
@@ -487,11 +485,12 @@ public class DatabaseCommunicator {
     public static RideOffer selectRideOffer(int offerid){
         RideOffer rideOffer = null;
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
-            rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offerid = " + offerid);
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offerid = " + offerid);
 
             int offeredby = 0;
             int luggage = 0;
@@ -548,7 +547,6 @@ public class DatabaseCommunicator {
                     luggage, smoke, food, pet, ac, travellingtime, price, status, seatsleft, luggagesleft);
            //System.out.println(offeredby + ", " +pickuplocation+ ", " + destination);
             rs.close();
-            conn.close();
             stmt.close();
 
         }
@@ -562,14 +560,13 @@ public class DatabaseCommunicator {
     }
 
     public static int cancelRideOffer(int offerid){
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE offerid = " + offerid);
 
-            //rs.close();
-            conn.close();
             stmt.close();
 
         }
@@ -614,18 +611,18 @@ public class DatabaseCommunicator {
         String pickuplocation = offer.getPickuplocation();
         String destination = offer.getDestination();
         Date datentime = offer.getDatentime();
+        Timestamp timestamp = new java.sql.Timestamp(datentime.getTime());
 
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
             //took out status, luggagesleft, seatsleft (remy says shouldn't update them)
             stmt.executeUpdate("UPDATE RIDEOFFER SET offeredby = "+offeredby +", pickuplocation = '" +pickuplocation+
-                    "',  destination = '" +destination+"', datentime = '" +datentime+"', seats = " +seats+ ",  luggage = " +luggage+
+                    "',  destination = '" +destination+"', datentime = '" +timestamp+"', seats = " +seats+ ",  luggage = " +luggage+
                     ", smoking = " +smoking+ ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
                     ", price = " +price+ " WHERE offerid = " +offerid);
 
-            conn.close();
             stmt.close();
         }
         catch (SQLException e) {
