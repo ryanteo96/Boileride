@@ -63,7 +63,7 @@ public class DatabaseCommunicator {
             while(rs.next()) {
                 userid = rs.getInt("userid");
             }
-            System.out.println(userid);
+            //System.out.println(userid);
             conn.close();
         }
         catch(SQLException e) {
@@ -122,6 +122,7 @@ public class DatabaseCommunicator {
         return 0;
     }
     public static int addRideRequest(RideRequest ride){
+        int requestedid = 0;
         int isAC = 0, isPets = 0, isFoodndrink = 0, isSmoking = 0;
         if(ride.isAc()) {
             isAC = 1;
@@ -159,14 +160,20 @@ public class DatabaseCommunicator {
                     + timestamp + "', " + passenger + ", " + luggage +
                     ", " + smoking + ", " + foodndrink+", " +pets+", " +AC+", "+travellingtime+", " +price+ ", " +status + ")");
 
-
+            //Dont know how many condition to check
+            rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE pickuplocation = '"+pickuplocation+"' AND destination = '"+destination+"' AND requestedby = "+requestedby);
+            while(rs.next()) {
+                requestedid = rs.getInt("requestid");
+            }
+            //System.out.println(requestedid);
             conn.close();
 
         }
         catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return 0;
+        return requestedid;
     }
 
     public static RideRequest selectRideRequest(int requestid){
@@ -331,9 +338,9 @@ public class DatabaseCommunicator {
         //addUser(user);
         //selectUser(1);
 
-        RideRequest ride = new RideRequest(5, "NORWAY", "HONGKONG", timestamp, 5, 7,true,true,true,true,100, 1000, 0);
+        //RideRequest ride = new RideRequest(3, "UK", "MY", timestamp, 5, 7,true,true,true,true,100, 1000, 0);
         //addRideRequest(ride);
-        updateRideRequest(7, ride);
+        //updateRideRequest(7, ride);
         //RideRequest rr = selectRideRequest(6);
         //System.out.println(rr.getDestination() +" "+ rr.getDatentime() + " " + rr.getPickuplocation());
         //cancelRideRequest(7);
