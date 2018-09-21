@@ -18,9 +18,10 @@ public class DatabaseCommunicator {
     private static final String USER = "backend";
     private static final String PASSWORD = "Boileride18!";
 
-    private static Connection conn = null;
+    //private static Connection conn = null;
     private static Statement stmt = null;
     private static ResultSet rs = null;
+    private static Connection conn = null;
 
 
     // Connect this thread to the database.
@@ -64,7 +65,9 @@ public class DatabaseCommunicator {
                 userid = rs.getInt("userid");
             }
             //System.out.println(userid);
+            rs.close();
             conn.close();
+            stmt.close();
         }
         catch(SQLException e) {
             System.out.println("what");
@@ -98,7 +101,10 @@ public class DatabaseCommunicator {
                 //System.out.println("id = "+ id + ", nickname = " + nickname + ", password =" + password + ", phone = " + phone + ", points = " + points + ", status = " + status + ", email = " + email);User(String email, String password, String nickname, String phone, int points, int status)
                 resultUser = new User( email,  password,  nickname,  phone,  points,  status);
             }
+            rs.close();
             conn.close();
+            stmt.close();
+
 
         }
         catch (SQLException e) {
@@ -108,7 +114,46 @@ public class DatabaseCommunicator {
         return resultUser;
     }
 
-    /*
+    public static User selectUserByEmail(String email) {
+        User resultUser = null;
+
+        if(conn == null) {
+            connectDB();
+        }
+        try {
+            rs = stmt.executeQuery("SELECT * FROM USER WHERE email = '" + email+"'");
+
+            int id = 0 , points = 0, status = 0;
+            String nickname = "", password = "", phone = "";
+
+            while (rs.next()) {
+                id = rs.getInt("userid");
+                nickname = rs.getString("nickname");
+                password = rs.getString("password");
+                phone = rs.getString("phone");
+                points = rs.getInt("points");
+                status = rs.getInt("status");
+                //email = rs.getString("email");
+
+                //need to add USERID but USER is not taking it
+                resultUser = new User( email,  password,  nickname,  phone,  points,  status);
+                //System.out.println(nickname + " " +password + " " + id);
+            }
+            rs.close();
+            conn.close();
+            stmt.close();
+
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return resultUser;
+
+
+    }    /*
         public static RideRequest[] selectRequestList(int userid){
             return null;
         }
@@ -119,6 +164,34 @@ public class DatabaseCommunicator {
     */
 
     public static int updateUserStatus(int i, int j) {
+
+
+        int userid = 0;
+        if(conn == null) {
+            connectDB();
+        }
+        try {
+            stmt.executeUpdate("UPDATE USER set status = "+j +" WHERE userid = "+i);
+
+
+            /*
+            while(rs.next()) {
+                userid = rs.getInt("userid");
+            }
+            //System.out.println(userid);
+            rs.close();
+            stmt.close();
+            */
+            //rs.close();
+            conn.close();
+            stmt.close();
+
+        }
+        catch(SQLException e) {
+            //System.out.println("what");
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
     public static int addRideRequest(RideRequest ride){
@@ -166,7 +239,9 @@ public class DatabaseCommunicator {
                 requestedid = rs.getInt("requestid");
             }
             //System.out.println(requestedid);
+            rs.close();
             conn.close();
+            stmt.close();
 
         }
         catch (SQLException e) {
@@ -228,11 +303,14 @@ public class DatabaseCommunicator {
 
             rideRequest = new RideRequest( requestedby,  pickuplocation,  destination,  timestamp,  passenger,
                     luggage, smoke, food, pet, ac, travellingtime, price, status);
+            rs.close();
             conn.close();
+            stmt.close();
 
         }
         catch (SQLException e) {
             e.printStackTrace();
+            return null;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -250,7 +328,9 @@ public class DatabaseCommunicator {
         try {
             stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE requestid = " + requestid);
 
+            rs.close();
             conn.close();
+            stmt.close();
 
         }
         catch (SQLException e) {
@@ -290,7 +370,9 @@ public class DatabaseCommunicator {
                     ", price = " +price+ ", status = "+status+ " WHERE requestid = " +requestid);
 
 
+            rs.close();
             conn.close();
+            stmt.close();
 
         }
         catch (SQLException e) {
@@ -301,7 +383,62 @@ public class DatabaseCommunicator {
     }
 
     public static int addRideOffer(RideOffer offer){
-        return 0;
+        int offerid = 0;
+        int isAC = 0, isPets = 0, isFoodndrink = 0, isSmoking = 0;
+        if(offer.isAc()) {
+            isAC = 1;
+        }
+        if(offer.isPets()) {
+            isPets = 1;
+        }
+        if(offer.isFoodndrink()) {
+            isFoodndrink = 1;
+        }
+        if(offer.isSmoking()) {
+            isSmoking = 1;
+        }
+        int offeredby = offer.getOfferedby(), seats = offer.getSeats(), luggage = offer.getLuggage(), smoking = isSmoking,
+                foodndrink = isFoodndrink, pets = isPets, AC = isAC, travellingtime = offer.getTravelingtime(),
+                price = offer.getPrice(), status = offer.getStatus(), seatsleft = offer.getSeatleft(), luggagesleft = offer.getLuggageleft();
+        String pickuplocation = offer.getPickuplocation(), destination = offer.getDestination();
+
+        Date datentime = offer.getDatentime();
+        /*
+        String strDate = datentime.toString();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        */
+        if(conn == null) {
+            connectDB();
+        }
+        try {
+            stmt.executeUpdate("INSERT INTO RIDEOFFER(offeredby, pickuplocation, destination, " +
+                    "datentime, seats, luggage, smoking, foodndrink, pets, AC, travellingtime, price, seatsleft, luggagesleft, status) " +
+                    "VALUES ( "+offeredby + ", '" + pickuplocation + "', '" +destination + "', '"
+                    + datentime + "', " + seats + ", " + luggage +
+                    ", " + smoking + ", " + foodndrink+", " +pets+", " +AC+", "+travellingtime+", " +price+ ", " +seatsleft+ ", " +luggagesleft+ ", " +status + ")");
+
+            //Dont know how many condition to check
+            rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE pickuplocation = '"+pickuplocation+"' AND destination = '"+destination+"' AND offeredby = "+offeredby);
+            while(rs.next()) {
+                offerid = rs.getInt("offerid");
+            }
+            //System.out.println(offerid);
+            rs.close();
+            conn.close();
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return offerid;
     }
 
     public static DTO.DtoRideOffer[] selectOfferList(int offerid){
@@ -338,11 +475,13 @@ public class DatabaseCommunicator {
         //addUser(user);
         //selectUser(1);
 
-        //RideRequest ride = new RideRequest(3, "UK", "MY", timestamp, 5, 7,true,true,true,true,100, 1000, 0);
-        //addRideRequest(ride);
+        //RideOffer ride = new RideOffer(3, "HEAVEN", "EARTH", timestamp, 5, 7,true,true,true,true,100, 1000,3,2,0);
+        //addRideOffer(ride);
         //updateRideRequest(7, ride);
         //RideRequest rr = selectRideRequest(6);
         //System.out.println(rr.getDestination() +" "+ rr.getDatentime() + " " + rr.getPickuplocation());
         //cancelRideRequest(7);
+        //updateUserStatus(10, 0);
+        //selectUserByEmail("okay@mail.com");
     }
 }
