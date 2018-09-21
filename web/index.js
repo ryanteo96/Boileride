@@ -12,13 +12,17 @@ const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
+const forgotPw = require("./routes/forgotPw");
+const resetPw = require("./routes/resetPw");
+const myRequest = require("./routes/myRequest");
+const myOffer = require("./routes/myOffer");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
-const resetPw = require("./routes/resetPw");
-const forgotPw = require("./routes/forgotPw");
-const myRequest = require("./routes/myRequest");
-const myOffer = require("./routes/myOffer");
+const createRideOffer = require("./routes/createRideOffer");
+const createRideRequest = require("./routes/createRideRequest");
+const searchRideOffer = require("./routes/searchRideOffer");
+const searchRideRequest = require("./routes/searchRideRequest");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,13 +32,17 @@ app.use("/", routes);
 app.use("/signIn", signIn);
 app.use("/signUp", signUp);
 app.use("/signOut", signOut);
+app.use("/forgotPw", forgotPw);
+app.use("/resetPw", resetPw);
+app.use("/myRequest", myRequest);
+app.use("/myOffer", myOffer);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
-app.use("/resetPw", resetPw);
-app.use("/forgotPw", forgotPw);
-app.use("/myRequest", myRequest);
-app.use("/myOffer", myOffer);
+app.use("/createRideOffer", createRideOffer);
+app.use("/createRideRequest", createRideRequest);
+app.use("/searchRideOffer", searchRideOffer);
+app.use("/searchRideRequest", searchRideRequest);
 
 // https setup
 // const privateKey = fs.readFileSync(
@@ -65,6 +73,7 @@ app.use("/myOffer", myOffer);
 // http setup for local testing
 const httpServer = http.createServer(app);
 
-httpServer.listen(8080, () => {
-	console.log("HTTP Server running on port 8080");
+httpServer.listen(80, () => {
+	console.log("HTTP Server running on port 80");
+
 });

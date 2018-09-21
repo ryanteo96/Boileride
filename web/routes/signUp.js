@@ -8,17 +8,17 @@ router.get("/", function(req, res) {
 
 router.post("/", function(req, res) {
 	var data = {
-		nickname: req.body.nickname,
 		email: req.body.email,
 		password: req.body.password,
-		phone: req.body.phone
+		nickname: req.body.nickname,
+		phone: req.body.phone,
 	};
 
 	console.log(data);
 
 	// temp server connection test
 	// var options = {
-	// 	uri: "http://localhost:8080/user/login",
+	// 	uri: "http://localhost:8080/user/signup",
 	// 	json: data,
 	// 	method: "POST",
 	// 	headers: {
@@ -31,8 +31,7 @@ router.post("/", function(req, res) {
 	// 	return;
 	// });
 
-	res.redirect("/signIn");
+	res.redirect("/home");
 });
-
 
 module.exports = router;

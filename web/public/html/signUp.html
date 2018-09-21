@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sign Up</title>
-   <!-- Latest compiled and minified CSS -->
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-   crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
 
-   <!-- jQuery library -->
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-   crossorigin="anonymous"></script>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 
-   <!-- Latest compiled JavaScript -->
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-   crossorigin="anonymous"></script>     
+    <!-- Latest compiled JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
     <!-- Javascript and Stylesheets imports -->
     <link href="../stylesheets/signUp.css" rel="stylesheet" type="text/css">
@@ -25,61 +26,52 @@
     <div class="container">
         <div id="signUpBox">
             <div class="card card-info shadow mb-5">
-                 <!-- <h5 id="signInHeader" class="card-header bg-primary"> -->
-                <h5 id="signUpHeader" class="card-header bg-primary">      
+                <!-- <h5 id="signInHeader" class="card-header bg-primary"> -->
+                <h5 id="signUpHeader" class="card-header bg-primary">
                     <div id="createAccTitle" class="card-title text-light">Create Account</div>
                 </h5>
                 <div class="card-body">
-                    <form id="signUpForm" class="form-horizontal" role="form" action="/signUp" method="post">
-                        <!-- Input field for email -->
-                        <div class="form-group">
-                            <label for="email-signUp" id="emailLabel" class="col-md-4 control-label">Email</label>                           
-                                <input type="text" class="form-control" name="email" placeholder="Email Address">                                                
-                        </div>
-
-                        <!-- Input field for first name -->
-                        <!-- <div class="form-group">
-                            <label for="firstname-" class="col-md-4 control-label">First Name</label>                      
-                                <input type="text" class="form-control" name="firstName" placeholder="First Name">                            
-                        </div> -->
-
-                        <!-- Input field for last name -->
-                        <!-- <div class="form-group">
-                            <label for="lastname" class="col-md-4 control-label">Last Name</label>                           
-                                <input type="text" class="form-control" name="lastName" placeholder="Last Name">                         
-                        </div> -->
-
+                    <form id="signUpForm" class="form-horizontal" role="form" action="/signUp" method="post" enctype="application/x-www-form-urlencoded">
                         <!-- Input field for nickname -->
                         <div class="form-group">
-                            <label for="nickname" id="nicknameLabel" class="col-md-4 control-label">Nickname</label>                           
-                                <input type="text" class="form-control" name="nickname" placeholder="Nickname">                            
+                            <label for="nickname" id="nicknameLabel" class="col-md-4 control-label">Nickname</label>
+                            <input type="text" class="form-control" name="nickname" placeholder="Nickname" required>
+                        </div>
+
+                        <!-- Input field for email -->
+                        <div class="form-group">
+                            <label for="email" id="emailLabel" class="col-md-4 control-label">Email Address</label>
+                            <input type="email" class="form-control" name="email" placeholder="Email Address" required>
                         </div>
 
                         <!-- Input field for passwprd -->
                         <div class="form-group">
-                            <label for="password" id="passwordLabel" class="col-md-4 control-label">Password</label>                          
-                                <input type="password" class="form-control" name="password" placeholder="Password">                           
+                            <label for="password" id="passwordLabel" class="col-md-4 control-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
                         </div>
 
                         <!-- Input field for confirm passwprd -->
                         <div class="form-group">
-                            <label for="password" id="confirmPasswordLabel" class="col-md-4 control-label">Confirm Password</label>                            
-                                <input type="password" class="form-control" name="confirmPw" placeholder="Confirm Password">                          
+                            <label for="confirmPassword" id="confirmPasswordLabel" class="col-md-4 control-label">Confirm
+                                Password</label>
+                            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password"
+                                required>
                         </div>
 
                         <!-- Input field for phone number -->
                         <div class="form-group">
-                            <label for="password" id="phoneNumLabel" class="col-md-4 control-label">Contact Number</label>                           
-                                <input type="tel" class="form-control" name="phone" placeholder="Contact Number">                          
+                            <label for="phone" id="phoneNumLabel" class="col-md-4 control-label">Contact Number</label>
+                            <input type="tel" class="form-control" name="phone" placeholder="Contact Number" required>
                         </div>
 
                         <!-- Sign in button-->
                         <div class="form-group">
-                                <button id="btnSignUp" type="submit" class="btn btn-info bg-primary float-right"> Sign Up </button>
-                                <p id="txt-accExist">
-                                    Already have an account?
-                                    <a href="/signIn">Sign in</a>
-                                </p>
+                            <button id="btn-signUp" type="submit" class="btn btn-info bg-primary float-right"> Sign Up
+                            </button>
+                            <p id="txt-accExist">
+                                Already have an account?
+                                <a href="/signIn">Sign in</a>
+                            </p>
                         </div>
                     </form>
                 </div>

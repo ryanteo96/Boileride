@@ -49,54 +49,52 @@
         <h4 id="settingsTitle">Settings</h4>
 
         <h5 id="changeNicknameTitle">Change Nickname</h5>
-        <form>
+        <form id="changeNicknameForm" class="form-horizontal" role="form" action="/settings/changeNickname" method="post"
+            enctype="application/x-www-form-urlencoded" target="frame">
             <div class="form-group">
                 <label for="inputNickname">Nickname</label>
-                <input type="text" class="form-control" id="inputNickname" placeholder="New Nickname">
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="New Nickname">
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Change</button>
-        </form>
-
-        <h5 id="changePasswordTitle">Change Password</h5>
-        <form>
-            <div class="form-group">
-                <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="New Password">
-            </div>
-            <div class="form-group">
-                <label for="inputConfirmPassword">Confirm Password</label>
-                <input type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm New Password">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2">Change</button>
+            <button id="changeNicknameBtn" type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
 
         <h5 id="changeEmailTitle">Change Email</h5>
-        <form>
+        <form id="changeEmailForm" class="form-horizontal" role="form" action="/settings/changeEmail" method="post"
+            enctype="application/x-www-form-urlencoded" target="frame">
             <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="New Email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="New Email">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Change</button>
+        </form>
+
+
+        <h5 id="changePasswordTitle">Change Password</h5>
+        <form id="changePasswordForm" class="form-horizontal" role="form" action="/settings/changePassword" method="post"
+            enctype="application/x-www-form-urlencoded" target="frame">
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="New Password">
+            </div>
+            <div class="form-group">
+                <label for="inputConfirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm New Password">
             </div>
             <button type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
 
         <h5 id="changePhoneNumberTitle">Change Phone Number</h5>
-        <form>
+        <form id="changePhoneForm" class="form-horizontal" role="form" action="/settings/changePhone" method="post"
+            enctype="application/x-www-form-urlencoded" target="frame">
             <div class="form-group">
                 <label for="inputPhoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="New Phone Number">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2">Change</button>
-        </form>
-
-        <h5 id="changePhoneNumberTitle">Change Phone Number</h5>
-        <form>
-            <div class="form-group">
-                <label for="inputPhoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="New Phone Number">
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="New Phone Number">
             </div>
             <button type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
     </div>
+
+    <iframe name="frame"></iframe>
 </body>
 
 </html>
