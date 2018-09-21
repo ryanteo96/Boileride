@@ -12,6 +12,7 @@ const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
 const signUp = require("./routes/signUp");
 const signOut = require("./routes/signOut");
+const forgotPw = require("./routes/forgotPw");
 const home = require("./routes/home");
 const myRides = require("./routes/myRides");
 const settings = require("./routes/settings");
@@ -28,6 +29,7 @@ app.use("/", routes);
 app.use("/signIn", signIn);
 app.use("/signUp", signUp);
 app.use("/signOut", signOut);
+app.use("/forgotPw", forgotPw);
 app.use("/home", home);
 app.use("/myRides", myRides);
 app.use("/settings", settings);
@@ -65,6 +67,6 @@ app.use("/searchRideRequest", searchRideRequest);
 // http setup for local testing
 const httpServer = http.createServer(app);
 
-httpServer.listen(80, () => {
-	console.log("HTTP Server running on port 80");
+httpServer.listen(3000, () => {
+	console.log("HTTP Server running on port 3000");
 });

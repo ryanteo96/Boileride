@@ -1,3 +1,11 @@
+#signInHeader{
+	height:60px;
+}
+
+#signInTitle{
+	margin-top:6px;
+}
+
 #signInBox {
 	width: 600px;
 	margin-top: 100px;
@@ -7,9 +15,9 @@
 
 #forgotPassword {
 	float: right;
-	font-size: 80%;
+	font-size: 60%;
 	position: relative;
-	top: -10px;
+	bottom: 16px;
 }
 
 #emailSignInInputGroup {
