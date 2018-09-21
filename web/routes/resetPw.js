@@ -28,8 +28,6 @@ router.post("/", function(req, res) {
 	// 	console.log(error, response);
 	// 	return;
 	// });
-
-	res.redirect("/home");
 });
 
 module.exports = router;
