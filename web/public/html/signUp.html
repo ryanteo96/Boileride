@@ -30,7 +30,7 @@
                     <div id="createAccTitle" class="card-title text-light">Create Account</div>
                 </h5>
                 <div class="card-body">
-                    <form id="signUpForm" class="form-horizontal" role="form">
+                    <form id="signUpForm" class="form-horizontal" role="form" action="/signUp" method="post">
                         <!-- Input field for email -->
                         <div class="form-group">
                             <label for="email-signUp" id="emailLabel" class="col-md-4 control-label">Email</label>                           
@@ -75,7 +75,7 @@
 
                         <!-- Sign in button-->
                         <div class="form-group">
-                                <button id="btn-signUp" type="button" class="btn btn-info bg-primary float-right"> Sign Up </button>
+                                <button id="btnSignUp" type="submit" class="btn btn-info bg-primary float-right"> Sign Up </button>
                                 <p id="txt-accExist">
                                     Already have an account?
                                     <a href="/signIn">Sign in</a>
