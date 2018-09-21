@@ -6,12 +6,12 @@ router.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/resetPw.html"));
 });
 
-
 router.post("/", function(req, res) {
 	var data = {
-		email: req.body.email
-	};
-	console.log("print something" + req.body.email);
+		email: req.body.email,
+		code: req.body.code,
+		newpassword: req.body.newPw
+	};	
 	console.log(data);
 
 	// temp server connection test
@@ -24,10 +24,10 @@ router.post("/", function(req, res) {
 		},
 	};
 
-	request(options, function(error, response) {
-		console.log(error, response);
-		return;
-	});
+	// request(options, function(error, response) {
+	// 	console.log(error, response);
+	// 	return;
+	// });
 
 	res.redirect("/home");
 });

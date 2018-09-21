@@ -8,9 +8,12 @@ router.get("/", function(req, res) {
 
 router.post("/", function(req, res) {
 	var data = {
-		email: req.body.email,		
+		email: req.body.email,			
 	};
-
+	
+	//var myJSON = JSON.stringify(data);
+	// console.log(myJSON);
+	//localStorageSet('email', myJSON);
 	console.log(data);
 
 	// temp server connection test
@@ -23,8 +26,8 @@ router.post("/", function(req, res) {
 	// 	},
 	// };
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
+	// request(options, function(error, res) {
+	// 	console.log(error, res);
 	// 	return;
 	// });
 

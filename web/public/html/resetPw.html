@@ -33,27 +33,32 @@
                     </div>     
 
                     <div class="card-body">
-                        <form id="resetPwForm" class="form-horizontal" role="form">
+                        <form id="resetPwForm" class="form-horizontal" role="form" action="/resetPw" method="post">
                             <!-- input for email -->   
                             <div class="form-group" style="margin-top:10px">
-                                <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Email Address</label>
-                                    <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                    <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Email </label>
+                                        <input type="text" class="form-control" name="email" placeholder="">
+                                </div>
+
+                            <div class="form-group" style="margin-top:10px">
+                                <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Validaton Code</label>
+                                    <input type="text" class="form-control" name="code" placeholder="">
                             </div>
 
                             <div class="form-group">
                                 <label for="newPw" id="newPwLabel" class="col-md-5 control-label">New Password</label>
-                                    <input type="password" class="form-control" name="newPw" placeholder="New Password">
+                                    <input type="password" class="form-control" name="newPw" placeholder="">
                             </div>
 
                             <div class="form-group">
                                 <label for="verifyPw" id="verifyPwLabel" class="col-md-5 control-label">Confirm Password</label>
-                                    <input type="password" class="form-control" name="verifyPw" placeholder="Confirm Password">
+                                    <input type="password" class="form-control" name="verifyPw" placeholder="">
                             </div>
 
 
                             <div class="col-md-12 controls" style="position:relative; top:10px; padding-left:30px; padding-bottom:20px;">
-                                    <button type="button" id="changePwBtn" class="btn btn-success float-right" 
-                                    action="/resetPw" method="post" data-toggle="modal" data-target="#chgPwModal">Change Password</button> 
+                                    <!-- <button type="button" type="submit" id="changePwBtn" class="btn btn-success float-right" data-toggle="modal" data-target="#chgPwModal">Change Password</button>  -->
+                                    <button id="changePwBtn" class="btn btn-success float-right" type="submit">Change Password</button> 
                             </div>                                                    
  
                                 <!-- Modal message -->
