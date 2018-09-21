@@ -293,7 +293,7 @@ public class DatabaseCommunicator {
             boolean pet = false;
             boolean ac = false;
 
-            while (rs.next()) {
+            if (rs.next()) {
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
@@ -308,31 +308,31 @@ public class DatabaseCommunicator {
                 travellingtime = rs.getInt("travellingtime");
                 price = rs.getInt("price");
                 status = rs.getInt("status");
-            }
 
-            if(smoking == 1) {
-                smoke = true;
-            }
-            if(foodndrink == 1) {
-                food = true;
-            }
-            if(pets == 1) {
-                pet = true;
-            }
-            if(AC == 1) {
-                ac = true;
-            }
 
-            Date datentime = null;
-            try {
-                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                rideRequest = new RideRequest(requestedby, pickuplocation, destination, datentime, passenger,
+                        luggage, smoke, food, pet, ac, travellingtime, price, status);
             }
-
-            rideRequest = new RideRequest( requestedby,  pickuplocation,  destination,  datentime,  passenger,
-                    luggage, smoke, food, pet, ac, travellingtime, price, status);
-
             rs.close();
             stmt.close();
         }
@@ -514,12 +514,11 @@ public class DatabaseCommunicator {
             String datentimeStr = null;
             boolean smoke = false, food =false, pet = false, ac = false;
 
-            while (rs.next()) {
+            if (rs.next()) {
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
                 datentimeStr = rs.getString("datentime");
-                System.out.println(rs.getString("datentime"));
                 seats = rs.getInt("seats");
                 luggage = rs.getInt("luggage");
                 smoking = rs.getInt("smoking");
@@ -531,31 +530,31 @@ public class DatabaseCommunicator {
                 status = rs.getInt("status");
                 seatsleft = rs.getInt("seatsleft");
                 luggagesleft = rs.getInt("luggagesleft");
-            }
 
-            if(smoking == 1) {
-                smoke = true;
-            }
-            if(foodndrink == 1) {
-                food = true;
-            }
-            if(pets == 1) {
-                pet = true;
-            }
-            if(AC == 1) {
-                ac = true;
-            }
 
-            Date datentime = null;
-            try {
-                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                rideOffer = new RideOffer(offeredby, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
             }
-
-            rideOffer = new RideOffer( offeredby,  pickuplocation,  destination,  datentime, seats,
-                    luggage, smoke, food, pet, ac, travellingtime, price, status, seatsleft, luggagesleft);
-
            //System.out.println(offeredby + ", " +pickuplocation+ ", " + destination);
             rs.close();
             stmt.close();
@@ -575,7 +574,7 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE offerid = " + offerid);
+            stmt.executeUpdate("UPDATE RIDEOFFER SET status = 2 WHERE offerid = " + offerid);
 
             stmt.close();
 

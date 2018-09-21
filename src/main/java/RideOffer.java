@@ -294,6 +294,7 @@ public class RideOffer {
         if (userResult > 0) result = userResult;
         else {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
+            System.out.println(rideOffer.toString());
             if (rideOffer == null) {
                 result = 4;
             } else if (rideOffer.getOfferedby() != request.getUserid()) {
