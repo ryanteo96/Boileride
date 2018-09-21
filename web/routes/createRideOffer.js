@@ -35,6 +35,7 @@ router.post("/", function(req, res) {
 	// }
 
 	var data = {
+		userid: "temp",
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
 		datentime: date + " " + time,
@@ -44,6 +45,8 @@ router.post("/", function(req, res) {
 		foodndrink: req.body.foodndrink,
 		pets: req.body.pets,
 		ac: req.body.ac,
+		travellingtime: "temp",
+		price: "temp",
 	};
 
 	console.log(data);

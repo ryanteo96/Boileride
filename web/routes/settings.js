@@ -8,7 +8,11 @@ router.get("/", function(req, res) {
 
 router.post("/changeNickname", function(req, res) {
 	var data = {
+		userid: "temp",
+		email: "",
+		password: "",
 		nickname: req.body.nickname,
+		phone: "",
 	};
 
 	console.log(data);
@@ -31,7 +35,11 @@ router.post("/changeNickname", function(req, res) {
 
 router.post("/changeEmail", function(req, res) {
 	var data = {
+		userid: "temp",
 		email: req.body.email,
+		password: "",
+		nickname: "",
+		phone: "",
 	};
 
 	console.log(data);
@@ -54,7 +62,11 @@ router.post("/changeEmail", function(req, res) {
 
 router.post("/changePassword", function(req, res) {
 	var data = {
+		userid: "temp",
+		email: "",
 		password: req.body.password,
+		nickname: "",
+		phone: "",
 	};
 
 	console.log(data);
@@ -77,6 +89,10 @@ router.post("/changePassword", function(req, res) {
 
 router.post("/changePhone", function(req, res) {
 	var data = {
+		userid: "temp",
+		email: "",
+		password: "",
+		nickname: "",
 		phone: req.body.phone,
 	};
 
