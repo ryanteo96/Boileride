@@ -84,6 +84,7 @@ public class DatabaseCommunicator {
 //        if(conn == null) {
 //            connectDB();
 //        }
+
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email FROM USER WHERE userid = " + userid);
@@ -91,7 +92,7 @@ public class DatabaseCommunicator {
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "", email = "";
 
-            while (rs.next()) {
+            if (rs.next()) {
                 //id = rs.getInt("userid");
                 nickname = rs.getString("nickname");
                 phone = rs.getString("phone");
@@ -110,6 +111,7 @@ public class DatabaseCommunicator {
             e.printStackTrace();
             return null;
         }
+
         return resultUser;
     }
 
@@ -285,7 +287,7 @@ public class DatabaseCommunicator {
             int status = 0;
             String pickuplocation = "";
             String destination = "";
-            String datentime = null;
+            String datentimeStr = null;
             boolean smoke = false;
             boolean food =false;
             boolean pet = false;
@@ -295,7 +297,7 @@ public class DatabaseCommunicator {
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
-                datentime = rs.getString("datentime");
+                datentimeStr = rs.getString("datentime");
                 //time = rs.getTime("datentime");
                 passenger = rs.getInt("passenger");
                 luggage = rs.getInt("luggage");
@@ -321,10 +323,14 @@ public class DatabaseCommunicator {
                 ac = true;
             }
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datentime);
-            Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+            Date datentime = null;
+            try {
+                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            rideRequest = new RideRequest( requestedby,  pickuplocation,  destination,  timestamp,  passenger,
+            rideRequest = new RideRequest( requestedby,  pickuplocation,  destination,  datentime,  passenger,
                     luggage, smoke, food, pet, ac, travellingtime, price, status);
 
             rs.close();
@@ -333,8 +339,6 @@ public class DatabaseCommunicator {
         catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
         return rideRequest;
     }
@@ -483,6 +487,7 @@ public class DatabaseCommunicator {
         return null;
     }
     public static RideOffer selectRideOffer(int offerid){
+
         RideOffer rideOffer = null;
 
 //        if(conn == null) {
@@ -506,14 +511,15 @@ public class DatabaseCommunicator {
             int seats = 0;
             String pickuplocation = "";
             String destination = "";
-            String datentime = null;
+            String datentimeStr = null;
             boolean smoke = false, food =false, pet = false, ac = false;
 
             while (rs.next()) {
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
-                datentime = rs.getString("datentime");
+                datentimeStr = rs.getString("datentime");
+                System.out.println(rs.getString("datentime"));
                 seats = rs.getInt("seats");
                 luggage = rs.getInt("luggage");
                 smoking = rs.getInt("smoking");
@@ -540,11 +546,16 @@ public class DatabaseCommunicator {
                 ac = true;
             }
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datentime);
-            Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+            Date datentime = null;
+            try {
+                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            rideOffer = new RideOffer( offeredby,  pickuplocation,  destination,  timestamp, seats,
+            rideOffer = new RideOffer( offeredby,  pickuplocation,  destination,  datentime, seats,
                     luggage, smoke, food, pet, ac, travellingtime, price, status, seatsleft, luggagesleft);
+
            //System.out.println(offeredby + ", " +pickuplocation+ ", " + destination);
             rs.close();
             stmt.close();
@@ -553,9 +564,8 @@ public class DatabaseCommunicator {
         catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
+
         return rideOffer;
     }
 
@@ -617,11 +627,13 @@ public class DatabaseCommunicator {
 //            connectDB();
 //        }
         try {
-            //took out status, luggagesleft, seatsleft (remy says shouldn't update them)
+            //took out status (remy says shouldn't update them)
+            Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEOFFER SET offeredby = "+offeredby +", pickuplocation = '" +pickuplocation+
-                    "',  destination = '" +destination+"', datentime = '" +timestamp+"', seats = " +seats+ ",  luggage = " +luggage+
-                    ", smoking = " +smoking+ ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
-                    ", price = " +price+ " WHERE offerid = " +offerid);
+                    "',  destination = '" +destination+"', datentime = '" +timestamp+ "', seatsleft = seatsleft + (" + seats + "-seats)" +
+                    ", luggagesleft = luggagesleft + (" + luggage + "-luggage)" + ", seats = " +seats+ ",  luggage = " +luggage+ ", smoking = " +smoking+
+                    ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
+                    ", price = " +price + " WHERE offerid = " +offerid);
 
             stmt.close();
         }
