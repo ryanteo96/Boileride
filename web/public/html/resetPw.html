@@ -33,26 +33,26 @@
                     </div>     
 
                     <div class="card-body">
-                        <form id="resetPwForm" class="form-horizontal" role="form" action="/resetPw" method="post">
+                        <form id="resetPwForm" class="form-horizontal" role="form" method="post">
                             <!-- input for email -->   
                             <div class="form-group" style="margin-top:10px">
                                     <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Email </label>
-                                        <input type="text" class="form-control" name="email" placeholder="">
+                                        <input type="email" class="form-control" name="email" placeholder="" required>
                                 </div>
 
                             <div class="form-group" style="margin-top:10px">
-                                <label for="resetPwEmail" id="resetPwLabel" class="col-md-5 control-label">Validaton Code</label>
-                                    <input type="text" class="form-control" name="code" placeholder="">
+                                <label for="validCode" id="validCode" class="col-md-5 control-label">Validaton Code</label>
+                                    <input type="text" class="form-control" name="code" placeholder="" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="newPw" id="newPwLabel" class="col-md-5 control-label">New Password</label>
-                                    <input type="password" class="form-control" name="newPw" placeholder="">
+                                    <input type="password" class="form-control" name="newPw" placeholder="" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="verifyPw" id="verifyPwLabel" class="col-md-5 control-label">Confirm Password</label>
-                                    <input type="password" class="form-control" name="verifyPw" placeholder="">
+                                    <input type="password" class="form-control" name="verifyPw" placeholder="" required>
                             </div>
 
 
