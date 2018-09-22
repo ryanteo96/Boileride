@@ -12,8 +12,9 @@ router.post("/", function(req, res) {
 	    code: req.body.code
 	};
 
+	res.send("0");	
 	console.log(data);
-    res.send("0")
+	
 	// temp server connection test
 	// var options = {
 	// 	uri: "http://localhost:8080/user/signup",
