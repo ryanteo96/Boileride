@@ -4,6 +4,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import DTO.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by arthur on 2018/9/13.
  */
@@ -16,6 +20,7 @@ public class User
     private String phone;
     private int points;
     private int status;
+    public static DatabaseCommunicator SQL = new DatabaseCommunicator();
 
     public User(){}
 
@@ -61,13 +66,36 @@ public class User
 
 
     }
+    private String hash(String str)
+    {
+        String hash = "";
+
+        try
+        {
+            MessageDigest objSHA256 = MessageDigest.getInstance("SHA-256");
+            byte[] bytSHA256 = objSHA256.digest(str.getBytes());
+            BigInteger intNumSHA256 = new BigInteger(1, bytSHA256);
+            String hcSHA256 = intNumSHA256.toString(16);
+            while (hcSHA256.length() < 64) {
+                hcSHA256 = "0" + hcSHA256;
+            }
+            hash = hcSHA256;
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            System.out.println("Cant find SHA-256 hash");
+            System.out.println(e.getLocalizedMessage());
+        }
+        return hash;
+    }
+
     public UserVerifyEmailResponse verifyEmailCode(UserVerifyEmailRequest req)
     {
         UserVerifyEmailResponse response = new UserVerifyEmailResponse(-1,-1);
 
-        /*
+            /*
                 String buffer = req.getEmail();
-                String hashCode = buffer.hashCode();
+                String hashCode = hash(buffer);
                 int userid = lookUpUserid(req.getEmail());
             if(user = selectUser(userid) && user != null)
             {
@@ -100,20 +128,20 @@ public class User
             {
                 System.out.println("Failed to select user in verifyEmailCode");
             }
-        */
 
 
+            */
         return response;
     }
     private boolean verifyEmailExist(String email)
     {
         /*
-            if(emailExist(email))
+            if(SQL.emailExist(email))
             {
                 return true;
             }
-        */
 
+        */
 
         return false;
     }
@@ -129,6 +157,8 @@ public class User
         return true;
     }
 
+
+
     public UserSignUpResponse signUp(UserSignUpRequest req)
     {
         User user = new User();
@@ -142,12 +172,12 @@ public class User
                     if(user.verifyPhone(req.getPhone()))
                     {
                         System.out.println("Passed signUp Verification");
-                        /*
-                            String hashCode = req.getEmail().hashCode();
-                            Sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
+                        SendEmail sender = new SendEmail();
+                            String hashCode = hash(req.getEmail());
+                            sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
                             user.status = -1;
-                            addUser(user);
-                        */
+                            SQL.addUser(user);
+
 
                         response.setResult(0);
 
