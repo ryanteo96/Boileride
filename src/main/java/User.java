@@ -459,7 +459,7 @@ public class User
         if (user == null){
             return 1;
         }
-        else if (user.getStatus() == 0){
+        else if (user.getStatus() <= 0){
             return 2;
         }
         return 0;

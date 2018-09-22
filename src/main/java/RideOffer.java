@@ -216,7 +216,7 @@ public class RideOffer {
         if (user == null){
             return 1;
         }
-        else if (user.getStatus() == 0){
+        else if (user.getStatus() <= 0){
             return 2;
         }
         return 0;
@@ -245,7 +245,7 @@ public class RideOffer {
     }
 
     public int isEnoughPoints(User user, int price){
-        if (user.getPoints() < price) {
+        if (user != null && user.getPoints() < price) {
             return 1;
         }
         return 0;
@@ -294,6 +294,7 @@ public class RideOffer {
         if (userResult > 0) result = userResult;
         else {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
+            System.out.println(rideOffer.toString());
             if (rideOffer == null) {
                 result = 4;
             } else if (rideOffer.getOfferedby() != request.getUserid()) {
@@ -351,6 +352,7 @@ public class RideOffer {
             }
         }
         RideUpdateOfferResponse res = new RideUpdateOfferResponse(result);
+
         return res;
     }
 

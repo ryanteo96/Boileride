@@ -1,3 +1,10 @@
+import com.google.maps.DistanceMatrixApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DistanceMatrix;
+import com.google.maps.model.DistanceMatrixElement;
+import com.google.maps.model.TrafficModel;
+import com.google.maps.model.TravelMode;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -12,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import DTO.*;
+import org.joda.time.DateTime;
 
 /**
  * CS 40800 - Project: Boileride
@@ -445,22 +453,39 @@ public class BoilerideServer {
         catch(Exception e){
             //Handle errors for Class.forName
             e.printStackTrace();
-        }finally {
-            //finally block used to close resources
-            try {
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 
     public static void main(String[] args) {
 
-        BoilerideServer server = new BoilerideServer();
+//        BoilerideServer server = new BoilerideServer();
+//
+//        server.connect();
+        String[] o = {"West Lafayette"};
+        String[] d = {"Chicago"};
+        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
+        try {
+            DistanceMatrix m = DistanceMatrixApi.getDistanceMatrix(c, o, d)
+                    //.newRequest(c)
+                    //.origins(o)
+                    //.destinations(d)
+                    //.mode(TravelMode.DRIVING)
+                    //.trafficModel(TrafficModel.OPTIMISTIC)
+                    //.departureTime(new DateTime(System.currentTimeMillis()))
+                    .await();
+            System.out.println("out");
+            DistanceMatrixElement res = m.rows[0].elements[0];
+            System.out.println(res.duration);
+            System.out.println(res.distance);
+            System.out.println(res.durationInTraffic);
 
-        server.connect();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //new JsonParser().parse();
 //        JsonObject test = new JsonObject();

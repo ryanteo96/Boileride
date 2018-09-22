@@ -193,7 +193,7 @@ public class RideRequest {
         if (user == null){
             return 1;
         }
-        else if (user.getStatus() == 0){
+        else if (user.getStatus() <= 0){
             return 2;
         }
         return 0;
@@ -222,7 +222,7 @@ public class RideRequest {
     }
 
     public int isEnoughPoints(User user, int price){
-        if (user.getPoints() < price) {
+        if (user != null && user.getPoints() < price) {
             return 1;
         }
         return 0;
