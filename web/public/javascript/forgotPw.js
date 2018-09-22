@@ -3,9 +3,9 @@ $(document).ready(function() {
         data.preventDefault();
         
 		$.post(
-			"/verifyEmail",
+			"/forgotPw",
 			{
-				email: obj.email,				
+				email: $("#forgotPwEmail").val()		
 			},
 			function(res) {
 				console.log(res);
