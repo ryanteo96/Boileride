@@ -458,34 +458,34 @@ public class BoilerideServer {
 
     public static void main(String[] args) {
 
-//        BoilerideServer server = new BoilerideServer();
-//
-//        server.connect();
-        String[] o = {"West Lafayette"};
-        String[] d = {"Chicago"};
-        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
-        try {
-            DistanceMatrix m = DistanceMatrixApi.getDistanceMatrix(c, o, d)
-                    //.newRequest(c)
-                    //.origins(o)
-                    //.destinations(d)
-                    //.mode(TravelMode.DRIVING)
-                    //.trafficModel(TrafficModel.OPTIMISTIC)
-                    //.departureTime(new DateTime(System.currentTimeMillis()))
-                    .await();
-            System.out.println("out");
-            DistanceMatrixElement res = m.rows[0].elements[0];
-            System.out.println(res.duration);
-            System.out.println(res.distance);
-            System.out.println(res.durationInTraffic);
+        BoilerideServer server = new BoilerideServer();
 
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        server.connect();
+//        String[] o = {"West Lafayette"};
+//        String[] d = {"Chicago"};
+//        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
+//        try {
+//            DistanceMatrix m = DistanceMatrixApi.getDistanceMatrix(c, o, d)
+//                    //.newRequest(c)
+//                    //.origins(o)
+//                    //.destinations(d)
+//                    //.mode(TravelMode.DRIVING)
+//                    //.trafficModel(TrafficModel.OPTIMISTIC)
+//                    //.departureTime(new DateTime(System.currentTimeMillis()))
+//                    .await();
+//            System.out.println("out");
+//            DistanceMatrixElement res = m.rows[0].elements[0];
+//            System.out.println(res.duration);
+//            System.out.println(res.distance);
+//            System.out.println(res.durationInTraffic);
+//
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         //new JsonParser().parse();
 //        JsonObject test = new JsonObject();
