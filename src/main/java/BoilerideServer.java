@@ -460,9 +460,8 @@ public class BoilerideServer {
     public static void main(String[] args) {
 
         BoilerideServer server = new BoilerideServer();
-<<<<<<< HEAD
-
         server.connect();
+        
 //        String[] o = {"West Lafayette"};
 //        String[] d = {"Chicago"};
 //        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
@@ -488,37 +487,6 @@ public class BoilerideServer {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-=======
-
-        server.connect();
-
-//        String[] o = {"West Lafayette"};
-//        String[] d = {"Chicago"};
-//        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
-//        try {
-//            DistanceMatrix m = DistanceMatrixApi.getDistanceMatrix(c, o, d)
-//                    //.newRequest(c)
-//                    //.origins(o)
-//                    //.destinations(d)
-//                    //.mode(TravelMode.DRIVING)
-//                    //.trafficModel(TrafficModel.OPTIMISTIC)
-//                    //.departureTime(new DateTime(System.currentTimeMillis()))
-//                    .await();
-//            System.out.println("out");
-//            DistanceMatrixElement res = m.rows[0].elements[0];
-//            System.out.println(res.duration);
-//            System.out.println(res.distance);
-//            System.out.println(res.durationInTraffic);
-//
-//        } catch (ApiException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
->>>>>>> d2144b71354659d6df21b69e5bfd9db10a738fff
 
         //new JsonParser().parse();
 //        JsonObject test = new JsonObject();
