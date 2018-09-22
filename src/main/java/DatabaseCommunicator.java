@@ -2,7 +2,9 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 
+import DTO.*;
 /**
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
@@ -343,14 +345,84 @@ public class DatabaseCommunicator {
         return rideRequest;
     }
 
-    public static DTO.DtoRideRequest[] selectRequestList(int requestid){
-        return null;
+    public static ArrayList<DtoRideRequest> selectRequestList(int userid){
+        ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
+
+        int requestedby = 0;
+        int passenger = 0;
+        int luggage = 0;
+        int travellingtime = 0;
+        int price = 0;
+        int smoking = 0;
+        int foodndrink = 0;
+        int pets = 0;
+        int AC = 0;
+        int status = 0;
+        String pickuplocation = "";
+        String destination = "";
+        String datentimeStr = null;
+        boolean smoke = false;
+        boolean food =false;
+        boolean pet = false;
+        boolean ac = false;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
+            while (rs.next()){
+                requestedby = rs.getInt("requestedby");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                passenger = rs.getInt("passenger");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoRideRequest rideRequest = new DtoRideRequest(requestedby, pickuplocation, destination, datentime, passenger,
+                        luggage, smoke, food, pet, ac, travellingtime, price, status);
+
+                requestlist.add(rideRequest);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return requestlist;
     }
 
     public static int cancelRideRequest(int requestid){
-        if(conn == null) {
-            connectDB();
-        }
+//        if(conn == null) {
+//            connectDB();
+//        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE requestid = " + requestid);
@@ -483,9 +555,84 @@ public class DatabaseCommunicator {
         return offerid;
     }
 
-    public static DTO.DtoRideOffer[] selectOfferList(int offerid){
-        return null;
+    public static ArrayList<DtoRideOffer> selectOfferList(int userid){
+        ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
+
+        int offeredby = 0;
+        int luggage = 0;
+        int travellingtime = 0;
+        int price = 0;
+        int smoking = 0;
+        int foodndrink = 0;
+        int pets = 0;
+        int AC = 0;
+        int status = 0;
+        int seatsleft = 0;
+        int luggagesleft = 0;
+        int seats = 0;
+        String pickuplocation = "";
+        String destination = "";
+        String datentimeStr = null;
+        boolean smoke = false;
+        boolean food =false;
+        boolean pet = false;
+        boolean ac = false;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            while (rs.next()) {
+                offeredby = rs.getInt("offeredby");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                seats = rs.getInt("seats");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+                seatsleft = rs.getInt("seatsleft");
+                luggagesleft = rs.getInt("luggagesleft");
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoRideOffer rideOffer = new DtoRideOffer(offeredby, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
+
+                offerlist.add(rideOffer);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return offerlist;
     }
+
     public static RideOffer selectRideOffer(int offerid){
 
         RideOffer rideOffer = null;

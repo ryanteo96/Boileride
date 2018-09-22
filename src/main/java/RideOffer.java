@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.time.format.*;
 import java.time.*;
@@ -216,7 +217,7 @@ public class RideOffer {
         if (user == null){
             return 1;
         }
-        else if (user.getStatus() == 0){
+        else if (user.getStatus() <= 0){
             return 2;
         }
         return 0;
@@ -253,7 +254,7 @@ public class RideOffer {
 
     public RideViewOfferResponse viewRideOfferfromDB(RideViewOfferRequest request){
         int result = 0;
-        DtoRideOffer[] offerlist = {};
+        ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         if (userResult > 0) result = userResult;

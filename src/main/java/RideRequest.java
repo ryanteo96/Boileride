@@ -2,6 +2,7 @@ import java.util.Date;
 import java.time.format.*;
 import java.time.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 import DTO.*;
 
@@ -193,7 +194,7 @@ public class RideRequest {
         if (user == null){
             return 1;
         }
-        else if (user.getStatus() == 0){
+        else if (user.getStatus() <= 0){
             return 2;
         }
         return 0;
@@ -230,7 +231,7 @@ public class RideRequest {
 
     public RideViewRequestResponse viewRideRequestfromDB(RideViewRequestRequest request){
         int result = 0;
-        DtoRideRequest[] requestlist = {};
+        ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
         if (userResult > 0) result = userResult;
