@@ -1,9 +1,7 @@
 $(document).ready(function() {
 	$("#signUpForm").submit(function(data) {
-		data.preventDefault();
-
-		console.log("hi");
-
+        data.preventDefault();
+        checkPhone();
 		$.post(
 			"/signUp",
 			{
@@ -14,7 +12,7 @@ $(document).ready(function() {
 			},
 			function(res) {
 				console.log(res);
-
+                
 				switch (res) {
 					case "0": {
 						window.location.href = "/verifyEmail";
@@ -51,3 +49,14 @@ $(document).ready(function() {
 		);
 	});
 });
+
+function checkPhone(){
+    var num = $("#phone").val();
+    if(!isNaN(num)){
+        console.log("legit number");
+        return 0;
+    }else{
+        alert("Invalid phone num!");
+        return 4;
+    }
+}
