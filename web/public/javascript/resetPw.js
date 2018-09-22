@@ -5,8 +5,8 @@ $(document).ready(function() {
 			"/resetPw",
 			{
 				email: $("#resetEmail").val(),
-				code: $("#resetNewPw").val(),
-				password: $("#resetNewPw").val(),
+				code: $("#resetCode").val(),
+				newpassword: $("#resetNewPw").val(),
 			},
 			function(res) {
 				console.log(res);

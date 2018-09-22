@@ -94,6 +94,11 @@ width: 325px;
     left:-14px;
 }
 
+#validCode{
+    position:relative;
+    left:-14px;
+}
+
 #newPwLabel{
     position:relative;
     left:-14px;
