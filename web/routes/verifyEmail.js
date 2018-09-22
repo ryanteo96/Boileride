@@ -13,7 +13,7 @@ router.post("/", function(req, res) {
 	};
 
 	console.log(data);
-
+    res.send("0")
 	// temp server connection test
 	// var options = {
 	// 	uri: "http://localhost:8080/user/signup",
@@ -28,8 +28,7 @@ router.post("/", function(req, res) {
 	// 	console.log(error, response);
 	// 	return;
 	// });
-
-	res.redirect("/home");
+	
 });
 
 module.exports = router;
