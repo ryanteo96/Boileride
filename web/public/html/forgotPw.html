@@ -8,8 +8,7 @@
         crossorigin="anonymous">
 
     <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -38,7 +37,7 @@
                         <form id="forgotPwForm" class="form-horizontal" role="form" method="post" >
                             <!-- input for email -->   
                             <div class="form-group" style="margin-top:10px">
-                                    <input type="email" class="form-control" name="email" placeholder="example@gmail.com" required>                                    
+                                    <input id="forgotPwEmail" type="email" class="form-control" name="email" placeholder="example@gmail.com" required>                                    
                             </div>      
                         <a class="btn btn-secondary float-right" href="/signIn" style="border:solid 0.5px"> Cancel </a> 
                         <button id="forgotPwBtn" class="btn btn-success float-right" type="submit">Reset Password</button> 

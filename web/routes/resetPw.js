@@ -12,6 +12,7 @@ router.post("/", function(req, res) {
 		code: req.body.code,
 		newpassword: req.body.newPw
 	};	
+	
 	res.send("0");
 	console.log(data);
 

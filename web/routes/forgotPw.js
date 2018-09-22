@@ -11,9 +11,7 @@ router.post("/", function(req, res) {
 		email: req.body.email,			
 	};
 	
-	//var myJSON = JSON.stringify(data);
-	// console.log(myJSON);
-	//localStorageSet('email', myJSON);
+	res.send("0");
 	console.log(data);
 
 	// temp server connection test
@@ -30,8 +28,6 @@ router.post("/", function(req, res) {
 	// 	console.log(error, res);
 	// 	return;
 	// });
-
-	res.redirect("/resetPw");
 });
 
 module.exports = router;
