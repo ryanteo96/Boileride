@@ -15,14 +15,14 @@ router.post("/", function(req, res) {
 	console.log(data);
 
 	// temp server connection test
-	var options = {
-		uri: "http://localhost:8080/user/resetpassword",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	};
+	// var options = {
+	// 	uri: "http://localhost:8080/user/resetpassword",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
 
 	// request(options, function(error, response) {
 	// 	console.log(error, response);
