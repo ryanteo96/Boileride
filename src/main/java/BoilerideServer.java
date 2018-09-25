@@ -462,7 +462,7 @@ public class BoilerideServer {
         BoilerideServer server = new BoilerideServer();
 
         server.connect();
-        
+
 //        String[] o = {"West Lafayette"};
 //        String[] d = {"Chicago"};
 //        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
