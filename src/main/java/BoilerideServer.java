@@ -34,7 +34,7 @@ import org.joda.time.DateTime;
 public class BoilerideServer {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://142.93.19.7:3306/boileridedb?useSSL=false";
+    static final String DB_URL = "jdbc:mysql://142.93.19.7:3306/arthur?useSSL=false";
 
     static final String USER = "backend";
     static final String PASS = "Boileride18!";
@@ -458,9 +458,9 @@ public class BoilerideServer {
 
     public static void main(String[] args) {
 
-//        BoilerideServer server = new BoilerideServer();
+        BoilerideServer server = new BoilerideServer();
 //
-//        server.connect();
+        server.connect();
         String[] o = {"West Lafayette"};
         String[] d = {"Chicago"};
         GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
