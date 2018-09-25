@@ -20,6 +20,7 @@ $(document).ready(function() {
 							"credentials",
 							JSON.stringify({
 								email: $("#emailSignIn").val(),
+								password: $("#passwordSignIn").val(),
 							}),
 						);
 						break;

@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const crypto = require("crypto-js/sha3");
+
 const router = express.Router();
 
 router.get("/", function(req, res) {
@@ -9,7 +11,7 @@ router.get("/", function(req, res) {
 router.post("/", function(req, res) {
 	var data = {
 		email: req.body.email,
-		password: req.body.password,
+		password: crypto(req.body.email + req.body.password).toString(),
 		nickname: req.body.nickname,
 		phone: req.body.phone,
 	};

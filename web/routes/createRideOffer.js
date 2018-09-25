@@ -28,6 +28,8 @@ router.post("/", function(req, res) {
 		req.body.ac = "false";
 	}
 
+	console.log(req.body.traveltime);
+
 	// if (moment(date, "YYYY-MM-DD", true).isValid()) {
 	// 	console.log("true");
 	// } else {
