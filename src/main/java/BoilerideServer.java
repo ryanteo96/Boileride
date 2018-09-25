@@ -444,6 +444,7 @@ public class BoilerideServer {
             server.setExecutor(null);
             server.start();
             System.out.println("Connected to server...");
+
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -463,6 +464,9 @@ public class BoilerideServer {
 
         server.connect();
 
+        //System.out.println(DatabaseCommunicator.loginWithEmailPassword("test3", "test"));\
+        //System.out.println(DatabaseCommunicator.selectUserByEmail("ryan@mail.com").getNickname());
+        //System.out.println("hello");
 //        String[] o = {"West Lafayette"};
 //        String[] d = {"Chicago"};
 //        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();

@@ -21,12 +21,14 @@ public class DatabaseCommunicator {
     private static final String PASSWORD = "Boileride18!";
 
     //private static Connection conn = null;
+    /*
     private static Statement stmt = null;
     private static ResultSet rs = null;
     private static Connection conn = null;
-
+*/
 
     // Connect this thread to the database.
+    /*
     private static void connectDB() {
         try {
             Class.forName(JDBC_DRIVER);
@@ -43,7 +45,7 @@ public class DatabaseCommunicator {
             e.printStackTrace();
         }
     }
-
+    */
     public static int addUser(User user){
         String nickname = user.getNickname();
         String password = user.getPassword();
@@ -139,7 +141,7 @@ public class DatabaseCommunicator {
                 //email = rs.getString("email");
 
                 //need to add USERID but USER is not taking it
-                resultUser = new User( email,  password,  nickname,  phone,  points,  status);
+                resultUser = new User( email,  nickname,  phone,  points,  status, id);
                 //System.out.println(nickname + " " +password + " " + id);
             }
             rs.close();
@@ -152,6 +154,40 @@ public class DatabaseCommunicator {
         }
 
         return resultUser;
+    }
+
+    public static int loginWithEmailPassword(String email, String password) {
+        //User resultUser = null;
+        int userid = 0;
+
+//        if(conn == null) {
+//            connectDB();
+//        }
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            System.out.println("im here");
+            ResultSet rs = stmt.executeQuery("SELECT userid FROM USER WHERE email = '" + email+"' AND password = '"+password+"'");
+            System.out.println("im here2");
+            //int id = 0;
+            //System.out.println(rs.getInt(userid));
+
+            if (rs.next()) {
+                System.out.println("im here3");
+                userid = rs.getInt("userid");
+
+                //userid = id;
+                System.out.println(userid);
+            }
+            rs.close();
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 1;
+        }
+
+        return userid;
     }
 
     public static int updateSQLUser(int userid, User user) {
@@ -275,7 +311,7 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestid = " + requestid);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestid = " + requestid);
 
             int requestedby = 0;
             int passenger = 0;
@@ -368,7 +404,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
             while (rs.next()){
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
@@ -427,7 +463,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             stmt.executeUpdate("UPDATE RIDEREQUEST SET status = 2 WHERE requestid = " + requestid);
 
-            rs.close();
+            //rs.close();
             stmt.close();
 
         }
@@ -580,7 +616,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             while (rs.next()) {
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
@@ -810,7 +846,7 @@ public class DatabaseCommunicator {
         //System.out.println(timestamp);
         //addUser(user);
         //selectUser(1);
-
+        //System.out.println(loginWithEmailPassword("ryan@mail.com", "lala"));
         //RideRequest ride = new RideRequest(3, "HEAVEN", "EARTH", timestamp, 5, 7,true,true,false,false,10000, 100000,0);
         //updateRideOffer(3, ride);
         //addRideOffer(ride);

@@ -20,6 +20,7 @@ public class User
     private String phone;
     private int points;
     private int status;
+    private int userid;
     public static DatabaseCommunicator SQL = new DatabaseCommunicator();
 
     public User(){}
@@ -31,6 +32,17 @@ public class User
         this.phone = phone;
         this.points = points;
         this.status = status;
+        //this.userid = userid;
+    }
+
+    public User(String email, String nickname, String phone, int points, int status, int userid) {
+        this.email = email;
+        //this.password = password;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.points = points;
+        this.status = status;
+        this.userid = userid;
     }
 
     String getNickname(){return nickname;}
@@ -39,6 +51,7 @@ public class User
     String getPhone(){return phone;}
     int getPoints() { return points; }
     int getStatus() { return status; }
+    int getUserid() {return userid;}
 
     private boolean verifyNickname(String nickname)
     {
