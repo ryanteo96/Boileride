@@ -1,10 +1,12 @@
 package DTO;
 
+import java.util.ArrayList;
+
 public class RideViewRequestResponse {
     private int result;
-    private DtoRideRequest[] requestlist;
+    private ArrayList<DtoRideRequest> requestlist;
 
-    public RideViewRequestResponse(int r, DtoRideRequest[] requestlist) {
+    public RideViewRequestResponse(int r, ArrayList<DtoRideRequest> requestlist) {
         this.result = r;
         this.requestlist = requestlist;
     }
@@ -18,19 +20,21 @@ public class RideViewRequestResponse {
         result = r;
     }
 
-    public DtoRideRequest[] getRequestlist() {
+    public ArrayList<DtoRideRequest> getRequestlist() {
         return requestlist;
     }
 
     @Anno(name="requestlist")
-    public void setRequestlist(DtoRideRequest[] requestlist) {
+    public void setRequestlist(ArrayList<DtoRideRequest> requestlist) {
         this.requestlist = requestlist;
     }
 
     public String toString(){
         String str = "result: " + result + ", requestlist: ";
-        for (int i=0; i<requestlist.length;i++){
-            str += i + ":[" + requestlist[i].toString() + "]";
+        int index = 0;
+        for (DtoRideRequest rideRequest: requestlist){
+            str += index + ":[" + rideRequest.toString() + "]";
+            index++;
         }
         return str;
     }
