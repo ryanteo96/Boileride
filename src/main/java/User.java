@@ -180,6 +180,11 @@ public class User
                             String hashCode = hash(req.getEmail());
                             sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
                             user.status = -1;
+                            user.email = req.getEmail();
+                            user.nickname = req.getNickname();
+                            user.password = req.getPassword();
+                            user.phone = req.getPhone();
+                            user.points = 200;
                             SQL.addUser(user);
 
 
