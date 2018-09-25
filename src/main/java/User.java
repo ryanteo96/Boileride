@@ -59,7 +59,7 @@ public class User
         }
         catch (AddressException error)
         {
-            System.out.print(error.getLocalizedMessage());
+            System.out.println(error.getLocalizedMessage());
         }
 
         return false;
@@ -147,6 +147,10 @@ public class User
     }
     private boolean verifyPhone(String phoneNumber)
     {
+        if(phoneNumber.length() < 10)
+        {
+            return false;
+        }
         for(int i = 0; i<phoneNumber.length();i++)
         {
             if(!Character.isDigit(phoneNumber.charAt(i)))

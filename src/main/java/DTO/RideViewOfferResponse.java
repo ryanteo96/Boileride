@@ -1,10 +1,12 @@
 package DTO;
 
+import java.util.ArrayList;
+
 public class RideViewOfferResponse {
     private int result;
-    private DtoRideOffer[] offerlist;
+    private ArrayList<DtoRideOffer> offerlist;
 
-    public RideViewOfferResponse(int result, DtoRideOffer[] offerlist) {
+    public RideViewOfferResponse(int result, ArrayList<DtoRideOffer> offerlist) {
         this.result = result;
         this.offerlist = offerlist;
     }
@@ -18,19 +20,21 @@ public class RideViewOfferResponse {
         result = r;
     }
 
-    public DtoRideOffer[] getOfferlist() {
+    public ArrayList<DtoRideOffer> getOfferlist() {
         return offerlist;
     }
 
     @Anno(name="offerlist")
-    public void setOfferlist(DtoRideOffer[] offerlist) {
+    public void setOfferlist(ArrayList<DtoRideOffer> offerlist) {
         this.offerlist = offerlist;
     }
 
     public String toString(){
         String str = "result: " + result + ", offerlist: ";
-        for (int i=0; i<offerlist.length;i++){
-            str += i + ":[" + offerlist[i].toString() + "]";
+        int index = 0;
+        for (DtoRideOffer rideOffer: offerlist){
+            str += index + ":[" + rideOffer.toString() + "]";
+            index++;
         }
         return str;
     }

@@ -1,25 +1,46 @@
+import org.joda.time.DateTime;
 import org.joda.time.Period;
 
 import java.util.*;
 
 public class FakeDB {
-    private RideOfferSearch[] all;
+    private RideOfferObj[] offers;
+    private RideRequestObj[] requests;
     public FakeDB() {
-        all = new RideOfferSearch[10];
-        all[0] = new RideOfferSearch("A", "B", new Period((int)(Math.random() * 100)));
-        all[1] = new RideOfferSearch("A", "C", new Period((int)(Math.random() * 100)));
-        all[2] = new RideOfferSearch("A", "D", new Period((int)(Math.random() * 100)));
-        all[3] = new RideOfferSearch("B", "C", new Period((int)(Math.random() * 100)));
-        all[4] = new RideOfferSearch("B", "D", new Period((int)(Math.random() * 100)));
-        all[5] = new RideOfferSearch("C", "D", new Period((int)(Math.random() * 100)));
-        all[6] = new RideOfferSearch("D", "E", new Period((int)(Math.random() * 100)));
-        all[7] = new RideOfferSearch("A", "E", new Period((int)(Math.random() * 100)));
-        all[8] = new RideOfferSearch("B", "E", new Period((int)(Math.random() * 100)));
-        all[9] = new RideOfferSearch("C", "E", new Period((int)(Math.random() * 100)));
+        String user = "Jack";
+        //double originProximity = 5;
+        //double destinationProximity = 5;
+        DateTime departure = new DateTime(2018, 9, 30, 10, 30, 0);
+        //int departureProximity = 5;
+        RidePreferences pref = new RidePreferences(4, 4, true, true, true, true);
+
+        offers = new RideOfferObj[10];
+        offers[0] = new RideOfferObj(user, "A", "B", departure, pref, 100, 100, 100);
+        offers[1] = new RideOfferObj(user, "A", "C", departure, pref, 100, 100, 100);
+        offers[2] = new RideOfferObj(user, "A", "D", departure, pref, 100, 100, 100);
+        offers[3] = new RideOfferObj(user, "B", "C", departure, pref, 100, 100, 100);
+        offers[4] = new RideOfferObj(user, "B", "D", departure, pref, 100, 100, 100);
+        offers[5] = new RideOfferObj(user, "C", "D", departure, pref, 100, 100, 100);
+        offers[6] = new RideOfferObj(user, "D", "E", departure, pref, 100, 100, 100);
+        offers[7] = new RideOfferObj(user, "A", "E", departure, pref, 100, 100, 100);
+        offers[8] = new RideOfferObj(user, "B", "E", departure, pref, 100, 100, 100);
+        offers[9] = new RideOfferObj(user, "C", "E", departure, pref, 100, 100, 100);
+
+        requests = new RideRequestObj[10];
+        requests[0] = new RideRequestObj(user, "A", "B", departure, pref, 100, 100, 100);
+        requests[1] = new RideRequestObj(user, "A", "C", departure, pref, 100, 100, 100);
+        requests[2] = new RideRequestObj(user, "A", "D", departure, pref, 100, 100, 100);
+        requests[3] = new RideRequestObj(user, "B", "C", departure, pref, 100, 100, 100);
+        requests[4] = new RideRequestObj(user, "B", "D", departure, pref, 100, 100, 100);
+        requests[5] = new RideRequestObj(user, "C", "D", departure, pref, 100, 100, 100);
+        requests[6] = new RideRequestObj(user, "D", "E", departure, pref, 100, 100, 100);
+        requests[7] = new RideRequestObj(user, "A", "E", departure, pref, 100, 100, 100);
+        requests[8] = new RideRequestObj(user, "B", "E", departure, pref, 100, 100, 100);
+        requests[9] = new RideRequestObj(user, "C", "E", departure, pref, 100, 100, 100);
     }
-    public List<RideOfferSearch> ridesFrom(String origin) {
-        List<RideOfferSearch> ret = new ArrayList<>();
-        for (RideOfferSearch r : all) {
+    public List<RideOfferObj> rideOfferFrom(String origin) {
+        List<RideOfferObj> ret = new ArrayList<>();
+        for (RideOfferObj r : offers) {
             if (r.getOrigin().equals(origin)) {
                 ret.add(r);
             }
@@ -27,16 +48,14 @@ public class FakeDB {
         return ret;
 
     }
-    public int estimate(String origin, String destination) {
-        Map<String, Map<String, Integer>> table = new HashMap<>();
-        String s[] = {"A", "B", "C", "D", "E"};
-        for (int i = 0; i < s.length; i++) {
-            Map<String, Integer> t = new HashMap<>();
-            for (int j = 0; j < s.length; j++) {
-                t.put(s[j], (i + j) % s.length);
+
+    public List<RideRequestObj> rideRequestFrom(String origin, String destination) {
+        List<RideRequestObj> ret = new ArrayList<>();
+        for (RideRequestObj r : requests) {
+            if (r.getOrigin().equals(origin) && r.getDestination().equals(destination)) {
+                ret.add(r);
             }
-            table.put(s[i], t);
         }
-        return table.get(origin).get(destination);
+        return ret;
     }
 }
