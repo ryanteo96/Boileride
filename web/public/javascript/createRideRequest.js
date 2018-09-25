@@ -1,6 +1,10 @@
+let traveltime;
+let pickup;
+let destination;
+
 function init() {
-	var pickuplocation = document.getElementById("pickuplocation");
-	var destination = document.getElementById("destination");
+	pickup = document.getElementById("pickuplocation");
+	destination = document.getElementById("destination");
 
 	var pickup_autocomplete = new google.maps.places.Autocomplete(
 		pickuplocation,
@@ -14,24 +18,11 @@ function init() {
 		pickup_autocomplete,
 		"place_changed",
 		function() {
-			if (dest_autocomplete.getPlace()) {
-				var pickup = pickup_autocomplete.getPlace();
-				var destination = dest_autocomplete.getPlace();
-
-				var origin = {
-					lat: pickup.geometry.location.lat(),
-					lng: pickup.geometry.location.lng(),
-				};
-
-				var dest = {
-					lat: destination.geometry.location.lat(),
-					lng: destination.geometry.location.lng(),
-				};
-
+			if (destination.value) {
 				service.getDistanceMatrix(
 					{
-						origins: [origin],
-						destinations: [dest],
+						origins: [pickup.value],
+						destinations: [destination.value],
 						travelMode: "DRIVING",
 						unitSystem: google.maps.UnitSystem.METRIC,
 						avoidHighways: false,
@@ -44,6 +35,7 @@ function init() {
 							var output = document.getElementById("traveltime");
 							var results = response.rows[0].elements;
 							output.value = results[0].duration.text;
+							traveltime = results[0].duration.value;
 						}
 					},
 				);
@@ -55,24 +47,11 @@ function init() {
 		dest_autocomplete,
 		"place_changed",
 		function() {
-			if (pickup_autocomplete.getPlace()) {
-				var pickup = pickup_autocomplete.getPlace();
-				var destination = dest_autocomplete.getPlace();
-
-				var origin = {
-					lat: pickup.geometry.location.lat(),
-					lng: pickup.geometry.location.lng(),
-				};
-
-				var dest = {
-					lat: destination.geometry.location.lat(),
-					lng: destination.geometry.location.lng(),
-				};
-
+			if (pickup.value) {
 				service.getDistanceMatrix(
 					{
-						origins: [origin],
-						destinations: [dest],
+						origins: [pickup.value],
+						destinations: [destination.value],
 						travelMode: "DRIVING",
 						unitSystem: google.maps.UnitSystem.METRIC,
 						avoidHighways: false,
@@ -85,6 +64,7 @@ function init() {
 							var output = document.getElementById("traveltime");
 							var results = response.rows[0].elements;
 							output.value = results[0].duration.text;
+							traveltime = results[0].duration.value;
 						}
 					},
 				);
