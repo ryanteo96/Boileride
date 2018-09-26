@@ -15,10 +15,10 @@ import DTO.*;
  */
 
 public class DatabaseCommunicator {
-    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://142.93.19.7:3306/boileridedb?useSSL=false";
-    private static final String USER = "backend";
-    private static final String PASSWORD = "Boileride18!";
+//    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://142.93.19.7:3306/boileridedb?useSSL=false";
+//    private static final String USER = "backend";
+//    private static final String PASSWORD = "Boileride18!";
 
     //private static Connection conn = null;
     /*
@@ -165,14 +165,11 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            System.out.println("im here");
             ResultSet rs = stmt.executeQuery("SELECT userid FROM USER WHERE email = '" + email+"' AND password = '"+password+"'");
-            System.out.println("im here2");
             //int id = 0;
             //System.out.println(rs.getInt(userid));
 
             if (rs.next()) {
-                System.out.println("im here3");
                 userid = rs.getInt("userid");
 
                 //userid = id;

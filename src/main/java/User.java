@@ -53,6 +53,17 @@ public class User
     int getStatus() { return status; }
     int getUserid() {return userid;}
 
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", points=" + points +
+                ", status=" + status +
+                '}';
+    }
+
     private boolean verifyNickname(String nickname)
     {
         if(nickname.length() < 50)
