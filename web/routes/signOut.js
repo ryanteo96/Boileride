@@ -2,9 +2,9 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
-router.get("/", function(req, res) {
+router.post("/", function(req, res) {
 	var data = {
-		userid: "test",
+		userid: res.userid,
 	};
 
 	console.log(data);
@@ -21,10 +21,9 @@ router.get("/", function(req, res) {
 
 	// request(options, function(error, response) {
 	// 	console.log(error, response);
+	//	res.send(response.body);
 	// 	return;
 	// });
-
-	res.redirect("/signIn");
 });
 
 module.exports = router;
