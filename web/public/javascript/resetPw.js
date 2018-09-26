@@ -1,6 +1,20 @@
 $(document).ready(function() {
+	var password = document.getElementById("resetNewPw");
+	var confirmPassword = document.getElementById("resetConfirmPw");
+
+	function validatePassword() {
+		if (password.value != confirmPassword.value) {
+			confirmPassword.setCustomValidity("Passwords does not match.");
+		} else {
+			confirmPassword.setCustomValidity("");
+		}
+	}
+
+	password.onchange = validatePassword;
+	confirmPassword.onkeyup = validatePassword;
+
 	$("#resetPwForm").submit(function(data) {
-        data.preventDefault();        
+		data.preventDefault();
 		$.post(
 			"/resetPw",
 			{
@@ -9,24 +23,21 @@ $(document).ready(function() {
 				newpassword: $("#resetNewPw").val(),
 			},
 			function(res) {
-				console.log(res);
-                
-				switch (res) {
-					case "0": {
+				switch (res.result) {
+					case 0: {
 						window.location.href = "/signIn";
 						break;
 					}
-					case "1": {
+					case 1: {
 						alert("User does not exist.");
 						break;
 					}
-					case "2": {
+					case 2: {
 						alert("Incorrect validation code.");
 						break;
-					}					
+					}
 				}
 			},
 		);
 	});
 });
-

@@ -1,32 +1,30 @@
 $(document).ready(function() {
 	$("#forgotPwForm").submit(function(data) {
-        data.preventDefault();
-        
+		data.preventDefault();
+
 		$.post(
 			"/forgotPw",
 			{
-				email: $("#forgotPwEmail").val()		
+				email: $("#forgotPwEmail").val(),
 			},
 			function(res) {
-				console.log(res);
-
-				switch (res) {
-					case "0": {
-                        window.location.href = "/resetPw";
-
+				switch (res.result) {
+					case 0: {
 						localStorage.key = "resetPwEmail";
 						localStorage.setItem(
 							"resetPwEmail",
 							JSON.stringify({
-								email: $("#forgotPwEmail").val()								
+								email: $("#forgotPwEmail").val(),
 							}),
 						);
+
+						window.location.href = "/resetPw";
 						break;
 					}
-					case "1": {
+					case 1: {
 						alert("User does not exist.");
 						break;
-					}					
+					}
 				}
 			},
 		);

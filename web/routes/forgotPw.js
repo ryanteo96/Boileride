@@ -24,8 +24,8 @@ router.post("/", function(req, res) {
 	// 	},
 	// };
 
-	// request(options, function(error, res) {
-	// 	console.log(error, res);
+	// request(options, function(error, response) {
+	// 	res.send(response.body);
 	// 	return;
 	// });
 });
