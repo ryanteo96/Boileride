@@ -3,20 +3,21 @@ const path = require("path");
 const router = express.Router();
 
 router.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname, "../public/html/forgotPw.html"));
+	res.sendFile(path.join(__dirname, "../public/html/verifyEmail.html"));
 });
 
 router.post("/", function(req, res) {
 	var data = {
 		email: req.body.email,
+	    code: req.body.code
 	};
 
-	res.send("0");
+	res.send("0");	
 	console.log(data);
-
+	
 	// temp server connection test
 	// var options = {
-	// 	uri: "http://localhost:8080/user/forgotpassword",
+	// 	uri: "http://localhost:8080/user/signup",
 	// 	json: data,
 	// 	method: "POST",
 	// 	headers: {
@@ -24,10 +25,11 @@ router.post("/", function(req, res) {
 	// 	},
 	// };
 
-	// request(options, function(error, res) {
-	// 	console.log(error, res);
+	// request(options, function(error, response) {
+	// 	console.log(error, response);
 	// 	return;
 	// });
+	
 });
 
 module.exports = router;
