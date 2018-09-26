@@ -8,7 +8,7 @@
         crossorigin="anonymous">
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label for="nickname" id="nicknameLabel" class="col-md-4 control-label">Nickname</label>
                             <input id="nickname" type="text" class="form-control" name="nickname" placeholder="Nickname"
-                                required>
+                                maxlength="49" required>
                         </div>
 
                         <!-- Input field for email -->
@@ -47,11 +47,14 @@
                         <div class="form-group">
                             <label for="password" id="passwordLabel" class="col-md-4 control-label">Password</label>
                             <input id="password" type="password" class="form-control" name="password" placeholder="Password"
-                                required>
+                                pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$" required>
+                            <p><small>Minimum 6 characters, at least 1 lowercase letter, at least 1 uppercase letter,
+                                    at least 1 digit, at least 1 special character.</small></p>
                         </div>
 
                         <!-- Input field for confirm passwprd -->
-                        <div class="form-group">
+                        <div class="
+                                form-group">
                             <label for="confirmPassword" id="confirmPasswordLabel" class="col-md-4 control-label">Confirm
                                 Password</label>
                             <input id="confirmPassword" type="password" class="form-control" name="confirmPassword"
@@ -62,12 +65,14 @@
                         <div class="form-group">
                             <label for="phone" id="phoneNumLabel" class="col-md-4 control-label">Contact Number</label>
                             <input id="phone" type="tel" class="form-control" name="phone" placeholder="Contact Number"
-                                required>
+                                pattern="[0-9]{10}" oninvalid="this.setCustomValidity('Please provide a valid phone number.')"
+                                oninput="setCustomValidity('')" required>
                         </div>
 
                         <!-- Sign in button-->
                         <div class="form-group">
-                            <button id="btn-signUp" type="submit" class="btn btn-info bg-primary float-right"> Sign Up
+                            <button id="btn-signUp" type="submit" class="btn btn-info bg-primary float-right">
+                                Sign Up
                             </button>
                             <p id="txt-accExist">
                                 Already have an account?

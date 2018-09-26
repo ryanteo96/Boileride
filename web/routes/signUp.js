@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const crypto = require("crypto-js/sha3");
+const request = require("request");
 
 const router = express.Router();
 
@@ -16,26 +17,23 @@ router.post("/", function(req, res) {
 		phone: req.body.phone,
 	};
 
-	res.send("0");
+	// res.send("0");
 	console.log(data);
 
 	// temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/signup",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/signup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	res.send(response.result);
-	// 	return;
-	// });
-
-	// res.redirect("/home");
+	request(options, function(error, response) {
+		res.send(response.body);
+		return;
+	});
 });
 
 module.exports = router;

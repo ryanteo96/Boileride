@@ -1,8 +1,20 @@
 $(document).ready(function() {
+	var password = document.getElementById("password");
+	var confirmPassword = document.getElementById("confirmPassword");
+
+	function validatePassword() {
+		if (password.value != confirmPassword.value) {
+			confirmPassword.setCustomValidity("Passwords does not match.");
+		} else {
+			confirmPassword.setCustomValidity("");
+		}
+	}
+
+	password.onchange = validatePassword;
+	confirmPassword.onkeyup = validatePassword;
+
 	$("#signUpForm").submit(function(data) {
 		data.preventDefault();
-
-		console.log("hi");
 
 		$.post(
 			"/signUp",
@@ -15,34 +27,24 @@ $(document).ready(function() {
 			function(res) {
 				console.log(res);
 
-				switch (res) {
-					case "0": {
-						window.location.href = "/home";
-
-						localStorage.key = "credentials";
-						localStorage.setItem(
-							"credentials",
-							JSON.stringify({
-								nickname: $("#nickname").val(),
-								email: $("#email").val(),
-								phone: $("#phone").val(),
-							}),
-						);
+				switch (res.result) {
+					case 0: {
+						window.location.href = "/verifyEmail";
 						break;
 					}
-					case "1": {
+					case 1: {
 						alert("Invalid nickname.");
 						break;
 					}
-					case "2": {
+					case 2: {
 						alert("Invalid email.");
 						break;
 					}
-					case "3": {
+					case 3: {
 						alert("Email has been taken.");
 						break;
 					}
-					case "4": {
+					case 4: {
 						alert("Invalid phone number.");
 						break;
 					}
