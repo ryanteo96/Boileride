@@ -16,24 +16,22 @@ router.post("/", function(req, res) {
 		password: crypto(req.body.email + req.body.password).toString(),
 	};
 
-	res.send("0");
 	console.log(data);
 
 	// temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/login",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/login",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	res.send(response.result);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		res.send(response.body);
+		return;
+	});
 });
 
 module.exports = router;

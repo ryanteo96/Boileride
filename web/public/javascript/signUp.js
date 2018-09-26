@@ -25,10 +25,16 @@ $(document).ready(function() {
 				phone: $("#phone").val(),
 			},
 			function(res) {
-				console.log(res);
-
 				switch (res.result) {
 					case 0: {
+						localStorage.key = "credentials";
+						localStorage.setItem(
+							"credentials",
+							JSON.stringify({
+								email: $("#email").val(),
+							}),
+						);
+
 						window.location.href = "/verifyEmail";
 						break;
 					}
