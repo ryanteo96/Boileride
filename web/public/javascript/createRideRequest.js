@@ -9,9 +9,12 @@ function init() {
 
 	var pickup_autocomplete = new google.maps.places.Autocomplete(
 		pickuplocation,
+		{ fields: ["place_id", "formatted_address"] },
 	);
 
-	var dest_autocomplete = new google.maps.places.Autocomplete(destination);
+	var dest_autocomplete = new google.maps.places.Autocomplete(destination, {
+		fields: ["place_id", "formatted_address"],
+	});
 
 	var service = new google.maps.DistanceMatrixService();
 
