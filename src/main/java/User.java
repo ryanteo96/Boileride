@@ -248,7 +248,7 @@ public class User
         if(user!= null)
          {
              userid = SQL.loginWithEmailPassword(req.getEmail(), req.getPassword());
-             if(userid != -1)
+             if(userid != -1 && user.getStatus() > -1)
              {
                if(user.getUserid() == userid)
                {
