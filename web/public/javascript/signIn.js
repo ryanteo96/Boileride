@@ -2,6 +2,14 @@ $(document).ready(function() {
 	$("#signInForm").submit(function(data) {
 		data.preventDefault();
 
+		localStorage.key = "credentials";
+		localStorage.setItem(
+			"credentials",
+			JSON.stringify({
+				email: $("#emailSignIn").val(),
+			}),
+		);
+
 		$.post(
 			"/signIn",
 			{
@@ -11,8 +19,6 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						window.location.href = "/home";
-
 						localStorage.key = "credentials";
 						localStorage.setItem(
 							"credentials",
@@ -20,6 +26,8 @@ $(document).ready(function() {
 								email: $("#emailSignIn").val(),
 							}),
 						);
+
+						window.location.href = "/home";
 						break;
 					}
 					case 1: {

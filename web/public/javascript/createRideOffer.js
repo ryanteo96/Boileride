@@ -1,6 +1,7 @@
-let traveltime;
 let pickup;
 let destination;
+let traveltime;
+let price;
 
 function init() {
 	pickup = document.getElementById("pickuplocation");
@@ -24,7 +25,7 @@ function init() {
 						origins: [pickup.value],
 						destinations: [destination.value],
 						travelMode: "DRIVING",
-						unitSystem: google.maps.UnitSystem.METRIC,
+						unitSystem: google.maps.UnitSystem.IMPERIAL,
 						avoidHighways: false,
 						avoidTolls: false,
 					},
@@ -32,10 +33,18 @@ function init() {
 						if (status !== "OK") {
 							alert("Error was: " + status);
 						} else {
-							var output = document.getElementById("traveltime");
+							var travelTimeOutput = document.getElementById(
+								"traveltime",
+							);
+							var priceOutput = document.getElementById("price");
+
 							var results = response.rows[0].elements;
-							output.value = results[0].duration.text;
+							travelTimeOutput.value = results[0].duration.text;
+							var arr = results[0].distance.text.split(" mi");
+							priceOutput.value = arr[0];
+
 							traveltime = results[0].duration.value;
+							price = arr[0];
 						}
 					},
 				);
@@ -53,7 +62,7 @@ function init() {
 						origins: [pickup.value],
 						destinations: [destination.value],
 						travelMode: "DRIVING",
-						unitSystem: google.maps.UnitSystem.METRIC,
+						unitSystem: google.maps.UnitSystem.IMPERIAL,
 						avoidHighways: false,
 						avoidTolls: false,
 					},
@@ -61,10 +70,18 @@ function init() {
 						if (status !== "OK") {
 							alert("Error was: " + status);
 						} else {
-							var output = document.getElementById("traveltime");
+							var travelTimeOutput = document.getElementById(
+								"traveltime",
+							);
+							var priceOutput = document.getElementById("price");
+
 							var results = response.rows[0].elements;
-							output.value = results[0].duration.text;
+							travelTimeOutput.value = results[0].duration.text;
+							var arr = results[0].distance.text.split(" mi");
+							priceOutput.value = arr[0];
+
 							traveltime = results[0].duration.value;
+							price = arr[0];
 						}
 					},
 				);
@@ -79,35 +96,55 @@ $(document).ready(function() {
 	$("#createRideOfferForm").submit(function(data) {
 		data.preventDefault();
 
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
 		$.post(
 			"/createRideOffer",
 			{
-				// email: $("#emailSignIn").val(),
-				// password: $("#passwordSignIn").val(),
-				traveltime: traveltime,
+				userid: obj.userid,
+				pickuplocation: pickup.value,
+				destination: destination.value,
+				date: $("#date").val(),
+				time: $("#time").val(),
+				seats: $("#seats").val(),
+				luggage: $("#luggage").val(),
+				smoking: $("#smoking").prop("checked"),
+				foodndrink: $("#foodndrink").prop("checked"),
+				pets: $("#pets").prop("checked"),
+				ac: $("#ac").prop("checked"),
+				travellingtime: traveltime,
+				price: price,
 			},
 			function(res) {
-				// console.log(res);
-
-				switch (res) {
-					case "0": {
+				switch (res.result) {
+					case 0: {
+						alert("Ride Offer successfully created.");
 						window.location.href = "/home";
-
-						localStorage.key = "credentials";
-						localStorage.setItem(
-							"credentials",
-							JSON.stringify({
-								email: $("#emailSignIn").val(),
-							}),
-						);
 						break;
 					}
-					case "1": {
-						alert("User does not exist.");
+					case 1: {
+						alert("Invalid userid.");
 						break;
 					}
-					case "2": {
-						alert("Invalid password.");
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid pickup location.");
+						break;
+					}
+					case 4: {
+						alert("Invalid destination.");
+						break;
+					}
+					case 5: {
+						alert("Invalid datentime.");
+						break;
+					}
+					case 6: {
+						alert("Not enough points.");
 						break;
 					}
 				}

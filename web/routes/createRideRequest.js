@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const request = require("request");
 const moment = require("moment");
 
 const router = express.Router();
@@ -12,41 +13,19 @@ router.post("/", function(req, res) {
 	let date = req.body.date;
 	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
 
-	if (!req.body.smoking) {
-		req.body.smoking = "false";
-	}
-
-	if (!req.body.foodndrink) {
-		req.body.foodndrink = "false";
-	}
-
-	if (!req.body.pets) {
-		req.body.pets = "false";
-	}
-
-	if (!req.body.ac) {
-		req.body.ac = "false";
-	}
-
-	// if (moment(date, "YYYY-MM-DD", true).isValid()) {
-	// 	console.log("true");
-	// } else {
-	// 	console.log("false");
-	// }
-
 	var data = {
-		userid: "temp",
+		userid: req.body.userid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
 		datentime: date + " " + time,
-		seats: req.body.seats,
+		passengers: req.body.passengers,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,
 		foodndrink: req.body.foodndrink,
 		pets: req.body.pets,
 		ac: req.body.ac,
-		travellingtime: "temp",
-		price: "temp",
+		travellingtime: req.body.travellingtime,
+		price: req.body.price,
 	};
 
 	console.log(data);
@@ -62,7 +41,7 @@ router.post("/", function(req, res) {
 	// };
 
 	// request(options, function(error, response) {
-	// 	console.log(error, response);
+	//	res.send(response.body);
 	// 	return;
 	// });
 
