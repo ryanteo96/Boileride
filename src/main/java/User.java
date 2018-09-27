@@ -137,7 +137,7 @@ public class User
                 }
                 else
                 {
-                    response.setUserid(dbResponse);
+                    response.setUserid(userid);
                     response.setResult(0);
                 }
             }
@@ -196,7 +196,7 @@ public class User
                         System.out.println("Passed signUp Verification");
                         SendEmail sender = new SendEmail();
                             String hashCode = hash(req.getEmail());
-                            sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
+                            sender.sendEmail(req.getEmail(),"Your special code to register your account", hashCode );
                             user.status = -1;
                             user.email = req.getEmail();
                             user.nickname = req.getNickname();
