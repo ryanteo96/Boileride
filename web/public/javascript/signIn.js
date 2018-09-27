@@ -2,14 +2,6 @@ $(document).ready(function() {
 	$("#signInForm").submit(function(data) {
 		data.preventDefault();
 
-		localStorage.key = "credentials";
-		localStorage.setItem(
-			"credentials",
-			JSON.stringify({
-				email: $("#emailSignIn").val(),
-			}),
-		);
-
 		$.post(
 			"/signIn",
 			{
@@ -23,7 +15,7 @@ $(document).ready(function() {
 						localStorage.setItem(
 							"credentials",
 							JSON.stringify({
-								email: $("#emailSignIn").val(),
+								userid: res.userid,
 							}),
 						);
 

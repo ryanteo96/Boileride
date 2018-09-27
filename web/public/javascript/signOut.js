@@ -5,7 +5,7 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
-		console.log(obj);
+		console.log(obj.userid);
 
 		$.post(
 			"/signOut",
