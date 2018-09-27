@@ -35,9 +35,9 @@ public class User
         //this.userid = userid;
     }
 
-    public User(String email, String nickname, String phone, int points, int status, int userid) {
+    public User(String email, String password, String nickname, String phone, int points, int status, int userid) {
         this.email = email;
-        //this.password = password;
+        this.password = password;
         this.nickname = nickname;
         this.phone = phone;
         this.points = points;
@@ -409,6 +409,7 @@ public class User
             {
                 String buffer = user.getPassword() + user.getEmail();
                 String hashCode = hash(buffer);
+
                 if(req.getCode().compareTo(hashCode) == 0)
                 {
 
