@@ -158,7 +158,7 @@ public class DatabaseCommunicator {
 
     public static int loginWithEmailPassword(String email, String password) {
         //User resultUser = null;
-        int userid = 0;
+        int userid = -1;
 
 //        if(conn == null) {
 //            connectDB();
