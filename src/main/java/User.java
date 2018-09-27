@@ -116,57 +116,51 @@ public class User
     public UserVerifyEmailResponse verifyEmailCode(UserVerifyEmailRequest req)
     {
         UserVerifyEmailResponse response = new UserVerifyEmailResponse(-1,-1);
+        User user;
 
-            /*
-                String buffer = req.getEmail();
-                String hashCode = hash(buffer);
-                int userid = lookUpUserid(req.getEmail());
-            if(user = selectUser(userid) && user != null)
+        String buffer = req.getEmail();
+        String hashCode = hash(buffer);
+        user =  SQL.selectUserByEmail(req.getEmail());
+        int userid = user.getUserid();
+        if(user != null)
+        {
+            if(req.getCode().compareTo(hashCode) == 0)
             {
-
-                if(req.getCode().compare(hashCode) == 0)
+                int dbResponse = -1;
+                user.status = 1;
+                user.points = 200;
+                dbResponse = SQL.updateUserStatus(user.getUserid(),1);
+                if(dbResponse == -1)
                 {
-
-                    int dbResponse = -1;
-                    user.status = 1;
-                    user.point = 200;
-                    dbResponse = updataUserStatus(user.getUserid(),user);
-                    if(dbResponse == -1)
-                    {
-                        System.out.println("Failed add user in db");
-                        response.setUserid(-1);
-                    }
-                    else
-                    {
-                        response.setUserid(dbResponse);
-                        response.setResult(0);
-                    }
-
+                    System.out.println("Failed add user in db");
+                    response.setUserid(-1);
                 }
                 else
                 {
-                    response.setResult(2);
+                    response.setUserid(dbResponse);
+                    response.setResult(0);
                 }
             }
             else
             {
-                System.out.println("Failed to select user in verifyEmailCode");
+                response.setResult(2);
             }
+        }
+        else
+        {
+            System.out.println("Failed to select user in verifyEmailCode");
+        }
 
 
-            */
+
         return response;
     }
     private boolean verifyEmailExist(String email)
     {
-        /*
-            if(SQL.emailExist(email))
-            {
-                return true;
-            }
-
-        */
-
+        if(SQL.selectUserByEmail(email) != null)
+        {
+            return true;
+        }
         return false;
     }
     private boolean verifyPhone(String phoneNumber)
@@ -308,41 +302,39 @@ public class User
     }
     public UserUpdateResponse updateUser(UserUpdateRequest req) {
         UserUpdateResponse response = new UserUpdateResponse(-1);
-        User user;
-//        if(user = selectUser(req.getUserid()) && user != NULL)
-//        {
-    //        if (req.getEmail().compareTo("") == 0) {
-    //            req.setEmail(user.getEmail());
-    //        }
-    //        if (req.getNickname().compareTo("") == 0) {
-    //            req.setNickname(user.getNickname());
-    //        }
-    //        if (req.getPassword().compareTo("") == 0) {
-    //            req.setPassword(user.getPassword());
-    //        }
-    //        if (req.getPhone().compareTo("") == 0) {
-    //            req.setPhone(user.getPhone());
-    //        }
-//
-//        }
+        User user = SQL.selectUser(req.getUserid());
+        if(user != null)
+        {
+            if (req.getEmail().compareTo("") == 0) {
+                req.setEmail(user.getEmail());
+            }
+            if (req.getNickname().compareTo("") == 0) {
+                req.setNickname(user.getNickname());
+            }
+            if (req.getPassword().compareTo("") == 0) {
+                req.setPassword(user.getPassword());
+            }
+            if (req.getPhone().compareTo("") == 0) {
+                req.setPhone(user.getPhone());
+            }
 
+        }
 
-
-        /*
-           if(user != NULL)
+           if(user != null)
            {
                 if(verifyNickname(req.getNickname()))
                 {
-                    if(verifyEmail(req.getEmail()))
+                    if(verifyEmailFormat(req.getEmail()))
                     {
                         if(verifyPhone(req.getPhone()))
                         {
                             if(user.status == 1)
                             {
-                                if(updateSQLUser(req.getUserid(), user) == 0)
+                                user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),1);
+                                if(SQL.updateSQLUser(req.getUserid(), user) == 0)
                                 {
                                     System.out.println("Success updating user in db");
-                                    req.setResult(0);
+                                    response.setResult(0);
                                 }
                                 else
                                 {
@@ -352,6 +344,7 @@ public class User
                             else
                             {
                                 System.out.println("User not logged in");
+                                response.setResult(2);
                             }
 
                         }
@@ -376,43 +369,31 @@ public class User
                 response.setResult(1);
             }
 
-        */
         return response;
     }
     public UserForgotPasswordResponse forgotPassword(UserForgotPasswordRequest req)
     {
         UserForgotPasswordResponse response = new UserForgotPasswordResponse(-1);
         String email = req.getEmail();
-        int id;
+
         String password;
-        User user;
-
-        /*
-            if(id = lookUpUserid(email) && id != -1)
-            {
-
-                if(user != NULL)
-                {
-                    password = user.getPassword();
-                    String buffer = password+email;
-                    String hashCode = buffer.hashCode();
-                    response.setCode(hashCode);
-                    response.setResult(0);
-                    SendEmail.sendEmail(email, "Unique code for resetting password", "Please use this code to reset your password:" + hashCode);
-                }
-                else
-                {
-                    System.out.println("Failed getting userinfo in UserForgotPasswordResponse");
-                }
-            }
-            else
-            {
-                response.setResult(1);
-            }
-
-         */
+        User user = SQL.selectUserByEmail(email);
 
 
+        if(user != null)
+        {
+            password = user.getPassword();
+            String buffer = password+email;
+            String hashCode = hash(buffer);
+            response.setCode(hashCode);
+            response.setResult(0);
+            SendEmail.sendEmail(email, "Unique code for resetting password", "Please use this code to reset your password:" + hashCode);
+
+        }
+        else
+        {
+            response.setResult(1);
+        }
 
         return response;
     }
@@ -421,26 +402,27 @@ public class User
         UserResetPasswordResponse response = new UserResetPasswordResponse(-1);
         UserUpdateRequest updateReq = new UserUpdateRequest(-1, "", "", "", "");
         UserUpdateResponse updateResponse;
-        User user;
+        User user = SQL.selectUserByEmail(req.getEmail());
 
-        /*
-            if(user = selectUser(req.getUserid()) && user != NULL)
+
+            if(user != null)
             {
                 String buffer = user.getPassword() + user.getEmail();
-                String hashCode = buffer.hashCode();
-                if(req.getCode().compare(hashCode) == 0)
+                String hashCode = hash(buffer);
+                if(req.getCode().compareTo(hashCode) == 0)
                 {
 
-                   updateReq.setUserid(req.getUserid());
-                   updateReq.setEmail(user.getEmail());
+                   updateReq.setUserid(user.getUserid());
+//                   updateReq.setEmail(req.getEmail());
                    updateReq.setPassword(req.getNewpassword());
-                   updateReq.setNickname(user.getNickname());
-                   updateReq.setPhone(user.getPhone());
+//                   updateReq.setNickname(user.getNickname());
+//                   updateReq.setPhone(user.getPhone());
+
                    updateResponse = updateUser(updateReq);
 
                    if(updateResponse.getResult() == 0)
                    {
-                        req.setResult(0);
+                        response.setResult(0);
                         System.out.println("Success reset password ");
                    }
                    else
@@ -478,7 +460,6 @@ public class User
             {
                 response.setResult(1);
             }
-        */
 
 
         return response;
