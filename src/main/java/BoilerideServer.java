@@ -9,6 +9,19 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.jetty.http.HttpStatus;
+
 import com.google.gson.*;
 
 
@@ -431,34 +444,51 @@ public class BoilerideServer {
 
     }
 
-    private void connect(){
-
-        try{
-            //Set up connection to database
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connected to database...");
-            //Set up server
-            HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
-            server.createContext("/", new requestHandler());
-            server.setExecutor(null);
-            server.start();
-            System.out.println("Connected to server...");
-
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (IOException e) {
-            //Handle errors for HttpServer
-            e.printStackTrace();
-        }
-        catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
+    public class ExampleServlet extends HttpServlet {
+        @Override
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+            resp.setStatus(HttpStatus.OK_200);
+            resp.getWriter().println("EmbeddedJetty");
         }
     }
 
-    public static void main(String[] args) {
+
+    private void connect() throws Exception{
+        Server server = new Server(8080);
+
+        ServletContextHandler handler = new ServletContextHandler(server, "/example");
+
+        handler.addServlet(ExampleServlet.class, "/");
+
+        server.start();
+
+//        try{
+//            //Set up connection to database
+//            Class.forName(JDBC_DRIVER);
+//            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+//            System.out.println("Connected to database...");
+//            //Set up server
+//            HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
+//            server.createContext("/", new requestHandler());
+//            server.setExecutor(null);
+//            server.start();
+//            System.out.println("Connected to server...");
+//
+//        }catch(SQLException se){
+//            //Handle errors for JDBC
+//            se.printStackTrace();
+//        } catch (IOException e) {
+//            //Handle errors for HttpServer
+//            e.printStackTrace();
+//        }
+//        catch(Exception e){
+//            //Handle errors for Class.forName
+//            e.printStackTrace();
+//        }
+    }
+
+    public static void main(String[] args) throws Exception{
 
         BoilerideServer server = new BoilerideServer();
 
