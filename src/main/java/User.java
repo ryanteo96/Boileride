@@ -243,38 +243,34 @@ public class User
     public UserLoginResponse login(UserLoginRequest req)
     {
         UserLoginResponse response = new UserLoginResponse(-1,-1);
+        User user = SQL.selectUserByEmail(req.getEmail());
+        int userid = -1;
+        if(user!= null)
+         {
+             userid = SQL.loginWithEmailPassword(req.getEmail(), req.getPassword());
+             if(userid != -1)
+             {
+               if(user.getUserid() == userid)
+               {
+                   System.out.println("Login success");
+                   response.setResult(0);
+                   response.setUserid(userid);
+                   user.status = 1;
+                   SQL.updateUserStatus(userid,1);
 
-        /*
-        * if(emailExist(req.getEmail()) == 0)
-        * {
-        *   if(loginWithEmailPassword(req.getEmail(), req.getPassword()) != 1)
-        *   {
-        *       int userid = loginWithEmailPassword(req.getEmail(), req.getPassword()) ;
-        *
+               }
 
-        *       if(user = selectUser(userid) && user != NULL)
-        *       {
-                    System.out.println("Login success");
-        *           response.setResult(0);
-        *           response.setUserid(userid);
+             }
+             else
+             {
+                 response.setResult(2);
+             }
+         }
+         else
+         {
+           response.setResult(1);
+         }
 
-        *
-        *           user.status = 1;
-        *           updateUserStatus(userid,user);
-        *
-        *       }
-        *
-        *   }
-        *   else
-        *   {
-        *       response.setResult(2);
-        *   }
-        * }
-        * else
-        * {
-        *   response.setResult(1);
-        * }
-        * */
         return response;
     }
     public UserViewAccountResponse viewAccount(UserViewAccountRequest req)

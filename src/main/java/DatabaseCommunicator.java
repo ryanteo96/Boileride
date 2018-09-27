@@ -181,7 +181,7 @@ public class DatabaseCommunicator {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            return 1;
+            return -1;
         }
 
         return userid;
