@@ -22,7 +22,7 @@ function init() {
 		pickup_autocomplete,
 		"place_changed",
 		function() {
-			console.log(pickup_autocomplete);
+			console.log(pickup_autocomplete.getPlace());
 			if (destination.value) {
 				service.getDistanceMatrix(
 					{

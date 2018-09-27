@@ -13,19 +13,24 @@ $(document).ready(function() {
 	password.onchange = validatePassword;
 	confirmPassword.onkeyup = validatePassword;
 
+	var resetPwEmail = localStorage.getItem("resetPwEmail");
+	var obj = JSON.parse(resetPwEmail);
+
+	console.log(obj);
+
 	$("#resetPwForm").submit(function(data) {
 		data.preventDefault();
 		$.post(
 			"/resetPw",
 			{
-				email: $("#resetEmail").val(),
+				email: obj.email,
 				code: $("#resetCode").val(),
 				newpassword: $("#resetNewPw").val(),
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						window.location.href = "/signIn";
+						$("#chgPwModal").modal("show");
 						break;
 					}
 					case 1: {
