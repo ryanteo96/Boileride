@@ -127,7 +127,7 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email FROM USER WHERE email = '" + email+"'");
+            ResultSet rs = stmt.executeQuery("SELECT userid, nickname, phone, points, status, email FROM USER WHERE email = '" + email+"'");
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "";
