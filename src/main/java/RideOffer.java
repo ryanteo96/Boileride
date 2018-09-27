@@ -245,6 +245,20 @@ public class RideOffer {
         return 0;
     }
 
+    public int verifySeats(int seats){
+        if (seats <= 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int verifyLuggage(int luggage){
+        if (luggage < 0) {
+            return 1;
+        }
+        return 0;
+    }
+
     public int isEnoughPoints(User user, int price){
         if (user != null && user.getPoints() < price) {
             return 1;
@@ -272,11 +286,15 @@ public class RideOffer {
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
+        int seatResult = verifySeats(request.getSeats());
+        int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 4;
         else if (dateResult == 1) result = 5;
         else if (dateResult == 2) result = 7;
+        else if (seatResult > 0) result = 97;
+        else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 6;
         else {
             RideOffer rideOffer = new RideOffer(request.getUserid(), request.getPickuplocation(), request.getDestination(),
@@ -295,7 +313,6 @@ public class RideOffer {
         if (userResult > 0) result = userResult;
         else {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
-            System.out.println(rideOffer.toString());
             if (rideOffer == null) {
                 result = 4;
             } else if (rideOffer.getOfferedby() != request.getUserid()) {
@@ -324,11 +341,15 @@ public class RideOffer {
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
+        int seatResult = verifySeats(request.getSeats());
+        int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 7;
         else if (dateResult == 1) result = 8;
         else if (dateResult == 2) result = 10;
+        else if (seatResult > 0) result = 97;
+        else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 9;
         else {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());

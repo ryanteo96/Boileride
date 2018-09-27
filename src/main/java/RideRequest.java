@@ -222,6 +222,20 @@ public class RideRequest {
         return 0;
     }
 
+    public int verifyPassengers(int passengers){
+        if (passengers <= 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int verifyLuggage(int luggage){
+        if (luggage < 0) {
+            return 1;
+        }
+        return 0;
+    }
+
     public int isEnoughPoints(User user, int price){
         if (user != null && user.getPoints() < price) {
             return 1;
@@ -249,11 +263,15 @@ public class RideRequest {
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
+        int passengerResult = verifyPassengers(request.getPassengers());
+        int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 4;
         else if (dateResult == 1) result = 5;
         else if (dateResult == 2) result = 7;
+        else if (passengerResult > 0) result = 97;
+        else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 6;
         else {
             RideRequest rideRequest = new RideRequest(request.getUserid(), request.getPickuplocation(), request.getDestination(),
@@ -300,11 +318,15 @@ public class RideRequest {
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
+        int passengerResult = verifyPassengers(request.getPassengers());
+        int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 7;
         else if (dateResult == 1) result = 8;
         else if (dateResult == 2) result = 10;
+        else if (passengerResult > 0) result = 97;
+        else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 9;
         else {
             RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
