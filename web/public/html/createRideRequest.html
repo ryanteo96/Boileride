@@ -34,13 +34,19 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav active">
                 <li class="nav-item">
                     <a class="nav-link" href="/home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/myRides">My Rides</a>
-                </li>
+                        <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            My Rides
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">                          
+                            <a class="dropdown-item" href="/myRides/myRequest">Ride Requests</a>
+                            <a class="dropdown-item" href="/myRides/myOffer">Ride Offers</a>                         
+                        </div>
+                    </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/settings">Settings</a>
                 </li>
