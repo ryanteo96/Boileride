@@ -56,6 +56,15 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
+						localStorage.key = "credentials";
+						localStorage.setItem(
+							"credentials",
+							JSON.stringify({
+								userid: res.userid,
+								email: $("#newEmail").val(),
+							}),
+						);
+
 						window.location.href = "/verifyEmail";
 						break;
 					}
@@ -91,6 +100,7 @@ $(document).ready(function() {
 			"/settings/changePassword",
 			{
 				userid: obj.userid,
+				email: obj.email,
 				newpassword: $("#newPassword").val(),
 			},
 			function(res) {

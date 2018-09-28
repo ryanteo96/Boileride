@@ -58,12 +58,6 @@ router.post("/changeEmail", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		var body = {
-			result: 0,
-		};
-
-		res.send(body);
-
 		if (response) {
 			res.send(response.body);
 		}
@@ -75,7 +69,7 @@ router.post("/changePassword", function(req, res) {
 	var data = {
 		userid: req.body.userid,
 		email: "",
-		password: crypto(req.body.userid + req.body.newpassword).toString(),
+		password: crypto(req.body.email + req.body.newpassword).toString(),
 		nickname: "",
 		phone: "",
 	};
