@@ -20,12 +20,12 @@
 	overflow: auto;
 	margin-left: auto;
 	margin-right: auto;
-}
+} */
 
 .list > li:hover {
 	cursor: pointer;
-	background-color: skyblue;
-} */
+	background-color: lightgrey;
+}
 
 #myRequestModal {
 	position: absolute;
