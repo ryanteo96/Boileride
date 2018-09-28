@@ -16,6 +16,7 @@ $(document).ready(function() {
 							"credentials",
 							JSON.stringify({
 								userid: res.userid,
+								email: $("#emailSignIn").val(),
 							}),
 						);
 

@@ -21,10 +21,16 @@ $(document).ready(function() {
 							"credentials",
 							JSON.stringify({
 								userid: res.userid,
+								email: obj.email,
 							}),
 						);
 
-						window.location.href = "/home";
+						if (obj.userid) {
+							window.location.href = "/settings";
+						} else {
+							window.location.href = "/home";
+						}
+
 						break;
 					}
 					case 1: {

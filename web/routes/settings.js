@@ -1,5 +1,8 @@
 const express = require("express");
 const path = require("path");
+const request = require("request");
+const crypto = require("crypto-js/sha3");
+
 const router = express.Router();
 
 router.get("/", function(req, res) {
@@ -8,7 +11,7 @@ router.get("/", function(req, res) {
 
 router.post("/changeNickname", function(req, res) {
 	var data = {
-		userid: "temp",
+		userid: req.body.userid,
 		email: "",
 		password: "",
 		nickname: req.body.nickname,
@@ -17,25 +20,26 @@ router.post("/changeNickname", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/update",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/update",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 router.post("/changeEmail", function(req, res) {
 	var data = {
-		userid: "temp",
+		userid: req.body.userid,
 		email: req.body.email,
 		password: "",
 		nickname: "",
@@ -44,52 +48,60 @@ router.post("/changeEmail", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/update",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/update",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		var body = {
+			result: 0,
+		};
+
+		res.send(body);
+
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 router.post("/changePassword", function(req, res) {
 	var data = {
-		userid: "temp",
+		userid: req.body.userid,
 		email: "",
-		password: req.body.password,
+		password: crypto(req.body.userid + req.body.newpassword).toString(),
 		nickname: "",
 		phone: "",
 	};
 
 	console.log(data);
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/update",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/update",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 router.post("/changePhone", function(req, res) {
 	var data = {
-		userid: "temp",
+		userid: req.body.userid,
 		email: "",
 		password: "",
 		nickname: "",
@@ -98,20 +110,21 @@ router.post("/changePhone", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/user/update",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/user/update",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 module.exports = router;
