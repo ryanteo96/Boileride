@@ -91,7 +91,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email FROM USER WHERE userid = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email, password FROM USER WHERE userid = " + userid);
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "", email = "";
@@ -103,6 +103,7 @@ public class DatabaseCommunicator {
                 points = rs.getInt("points");
                 status = rs.getInt("status");
                 email = rs.getString("email");
+                password = rs.getString("password");
                 //System.out.println("id = "+ id + ", nickname = " + nickname + ", password =" + password + ", phone = " + phone + ", points = " + points + ", status = " + status + ", email = " + email);User(String email, String password, String nickname, String phone, int points, int status)
                 resultUser = new User( email,  password,  nickname,  phone,  points,  status);
             }
@@ -195,6 +196,7 @@ public class DatabaseCommunicator {
         int status = user.getStatus();
         int points = user.getPoints();
         String email = user.getEmail();
+
 
 //        if(conn == null) {
 //            connectDB();

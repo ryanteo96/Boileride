@@ -305,11 +305,18 @@ public class User
 
         UserUpdateResponse response = new UserUpdateResponse(-1);
         User user = SQL.selectUser(req.getUserid());
+        boolean resetEmail = false;
         if(user != null)
         {
             if (req.getEmail().compareTo("") == 0) {
                 req.setEmail(user.getEmail());
             }
+            else
+            {
+                resetEmail = true;
+
+            }
+
             if (req.getNickname().compareTo("") == 0) {
                 req.setNickname(user.getNickname());
             }
@@ -330,22 +337,34 @@ public class User
                     {
                         if(verifyPhone(req.getPhone()))
                         {
-                            if(user.status == 1 || resetPassword)
+                            if(user.status == 1 || resetPassword || resetEmail)
                             {
-                                if(user.status == 1)
+                                if(user.status == 1 && !resetEmail)
                                 {
-                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),1);
+                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),1, req.getUserid());
                                 }
                                 else if(resetPassword)
                                 {
-                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),0);
+                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),0, req.getUserid());
+                                }
+                                else if(resetEmail)
+                                {
+                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),-1, req.getUserid());
+                                    String hashCode = hash(req.getEmail());
+                                    SendEmail sender = new SendEmail();
+                                    sender.sendEmail(req.getEmail(),"Your special code to activate your account", hashCode );
                                 }
 
 
-                                if(SQL.updateSQLUser(req.getUserid(), user) == 0)
+                                int result = SQL.updateSQLUser(req.getUserid(), user);
+                                if( result == 0)
                                 {
                                     System.out.println("Success updating user in db");
                                     response.setResult(0);
+                                }
+                                else if(result == 1)
+                                {
+                                    System.out.println("Duplicate email in server");
                                 }
                                 else
                                 {
