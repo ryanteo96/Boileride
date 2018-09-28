@@ -49,11 +49,11 @@
         <h4 id="settingsTitle">Settings</h4>
 
         <h5 id="changeNicknameTitle">Change Nickname</h5>
-        <form id="changeNicknameForm" class="form-horizontal" role="form" action="/settings/changeNickname" method="post"
-            enctype="application/x-www-form-urlencoded" target="frame">
+        <form id="changeNicknameForm" class="form-horizontal" role="form" method="post" target="frame">
             <div class="form-group">
                 <label for="inputNickname">Nickname</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="New Nickname">
+                <input id="newNickname" type="text" class="form-control" id="nickname" name="nickname" placeholder="New Nickname"
+                    required>
             </div>
             <button id="changeNicknameBtn" type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
@@ -63,32 +63,37 @@
             enctype="application/x-www-form-urlencoded" target="frame">
             <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="New Email">
+                <input id="newEmail" type="email" class="form-control" id="email" name="email" placeholder="New Email"
+                    required>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
 
 
         <h5 id="changePasswordTitle">Change Password</h5>
-        <form id="changePasswordForm" class="form-horizontal" role="form" action="/settings/changePassword" method="post"
-            enctype="application/x-www-form-urlencoded" target="frame">
+        <form id="changePasswordForm" class="form-horizontal" role="form" method="post" target="frame">
             <div class="form-group">
                 <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="New Password">
+                <input id="newPassword" type="password" class="form-control" id="password" name="password" placeholder="New Password"
+                    pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$" required>
+                <p><small>Minimum 6 characters, at least 1 lowercase letter, at least 1 uppercase letter,
+                        at least 1 digit, at least 1 special character.</small></p>
             </div>
             <div class="form-group">
                 <label for="inputConfirmPassword">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm New Password">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm New Password"
+                    required>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Change</button>
         </form>
 
         <h5 id="changePhoneNumberTitle">Change Phone Number</h5>
-        <form id="changePhoneForm" class="form-horizontal" role="form" action="/settings/changePhone" method="post"
-            enctype="application/x-www-form-urlencoded" target="frame">
+        <form id="changePhoneForm" class="form-horizontal" role="form" method="post" target="frame">
             <div class="form-group">
                 <label for="inputPhoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" name="phone" placeholder="New Phone Number">
+                <input id="newPhone" type="tel" class="form-control" id="phone" name="phone" placeholder="New Phone Number"
+                    pattern="[0-9]{10}" oninvalid="this.setCustomValidity('Please provide a valid phone number.')"
+                    oninput="setCustomValidity('')" required>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Change</button>
         </form>

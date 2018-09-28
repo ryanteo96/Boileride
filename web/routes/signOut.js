@@ -11,7 +11,6 @@ router.post("/", function(req, res) {
 
 	console.log(data);
 
-	// temp server connection test
 	var options = {
 		uri: "http://localhost:8080/user/logout",
 		json: data,
@@ -22,8 +21,9 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		console.log(response.body);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });

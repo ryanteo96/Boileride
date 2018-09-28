@@ -17,10 +17,8 @@ router.post("/", function(req, res) {
 		phone: req.body.phone,
 	};
 
-	// res.send("0");
 	console.log(data);
 
-	// temp server connection test
 	var options = {
 		uri: "http://localhost:8080/user/signup",
 		json: data,
@@ -31,7 +29,9 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });

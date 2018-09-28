@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const request = require("request");
+const crypto = require("crypto-js/sha3");
 
 const router = express.Router();
 
@@ -12,12 +13,11 @@ router.post("/", function(req, res) {
 	var data = {
 		email: req.body.email,
 		code: req.body.code,
-		newpassword: req.body.newpassword,
+		newpassword: crypto(req.body.email + req.body.newpassword).toString(),
 	};
 
 	console.log(data);
 
-	// temp server connection test
 	var options = {
 		uri: "http://localhost:8080/user/resetpassword",
 		json: data,
@@ -28,7 +28,9 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });
