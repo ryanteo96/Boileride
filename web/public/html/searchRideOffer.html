@@ -70,8 +70,8 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="validationDefault01">Pick Up Proximity</label>
-                    <input type="number" class="form-control" id="validationDefault01" name="pickupproximity"
-                        placeholder="" min=0 value="">
+                    <input id="pickupproximity" type="number" class="form-control" id="validationDefault01" name="pickupproximity"
+                        placeholder="" min=0 value="0">
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="validationDefault02">Destination</label>
@@ -80,77 +80,74 @@
                 </div>
                 <div class="col-md-2 mb-3">
                     <label for="validationDefault02">Destination Proximity</label>
-                    <input type="number" class="form-control" id="validationDefault02" name="destinationproximity"
-                        placeholder="" min=0 value="">
+                    <input id="destinationproximity" type="number" class="form-control" id="validationDefault02" name="destinationproximity"
+                        placeholder="" min=0 value="0">
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-md-3 mb-3">
                     <label for="validationDefault03">Date</label>
-                    <input type="date" class="form-control" id="validationDefault03" name="date" placeholder=""
+                    <input id="date" type="date" class="form-control" id="validationDefault03" name="date" placeholder=""
                         onkeydown="return false" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="validationDefault04">Time</label>
-                    <input type="time" class="form-control" id="validationDefault04" name="time" placeholder=""
+                    <input id="time" type="time" class="form-control" id="validationDefault04" name="time" placeholder=""
                         required>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="validationDefault03">Date Range</label>
-                    <input type="date" class="form-control" id="validationDefault03" name="daterange" placeholder=""
-                        onkeydown="return false">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="validationDefault04">Time Range</label>
-                    <input type="time" class="form-control" id="validationDefault04" name="timerange" placeholder="">
+                    <label for="validationDefault03">Time Range (minutes)</label>
+                    <input id="datentimerange" type="number" class="form-control" id="validationDefault03" name="datentimerange"
+                        min=0 value="0">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col-md-3 mb-3">
                     <label for="validationDefault05">Number of Seat(s) Available</label>
-                    <input type="number" class="form-control" id="validationDefault05" name="passengers" min=1 value=""
-                        required>
+                    <input id="passengers" type="number" class="form-control" id="validationDefault05" name="passengers"
+                        min=1 value="" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="validationDefault06">Number of Luggage(s)</label>
-                    <input type="number" class="form-control" id="validationDefault06" name="luggage" min=0 value=""
-                        required>
+                    <input id="luggage" type="number" class="form-control" id="validationDefault06" name="luggage" min=0
+                        value="" required>
                 </div>
             </div>
             <h5 id="searchRideOfferPreferences">Preferences</h5>
             <div class="form-row" id="preferencesDiv">
                 <div class="col-md-3 mb-3">
                     <label for="validationDefault06">Number of Ride(s)</label>
-                    <input type="number" class="form-control" id="validationDefault06" name="numrides" min=1 value="">
+                    <input id="numrides" type="number" class="form-control" id="validationDefault06" name="numrides"
+                        min=1 value="">
                 </div>
             </div>
 
             <h5 id="searchRideOfferAmenities">Amenities</h5>
             <div class="form-row" id="amenitiesDiv">
                 <div class="form-check form-check-inline mb-3">
-                    <input class="form-check-input" type="checkbox" value="true" id="checkbox1" name="smoking">
+                    <input id="smoking" class="form-check-input" type="checkbox" value="true" id="checkbox1" name="smoking">
                     <label class="form-check-label" for="checkbox1">
                         Smoking Allowed
                     </label>
                 </div>
 
                 <div class="form-check form-check-inline mb-3">
-                    <input class="form-check-input " type="checkbox" value="true" id="checkbox2" name="foodndrink">
+                    <input id="foodndrink" class="form-check-input " type="checkbox" value="true" id="checkbox2" name="foodndrink">
                     <label class="form-check-label" for="checkbox2">
                         Food and Drinks Allowed
                     </label>
                 </div>
 
                 <div class="form-check form-check-inline mb-3">
-                    <input class="form-check-input " type="checkbox" value="true" id="checkbox3" name="pets">
+                    <input id="pets" class="form-check-input " type="checkbox" value="true" id="checkbox3" name="pets">
                     <label class="form-check-label" for="checkbox3">
                         Pets Allowed
                     </label>
                 </div>
 
                 <div class="form-check form-check-inline mb-3">
-                    <input class="form-check-input " type="checkbox" value="true" id="checkbox4" name="ac">
+                    <input id="ac" class="form-check-input " type="checkbox" value="true" id="checkbox4" name="ac">
                     <label class="form-check-label" for="checkbox4">
                         A.C. Available
                     </label>
