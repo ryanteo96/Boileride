@@ -10,6 +10,10 @@ public class RideRequestSearchResponse {
 
     }
 
+    public RideRequestSearchResponse(int result) {
+        this.result = result;
+    }
+
     public RideRequestSearchResponse(int result, ArrayList<DtoRideRequest> rides) {
         this.result = result;
         this.rides = rides;

@@ -10,6 +10,10 @@ public class RideOfferSearchResponse {
 
     }
 
+    public RideOfferSearchResponse(int result) {
+        this.result = result;
+    }
+
     public RideOfferSearchResponse(int result, LinkedList<Trip> trips) {
         this.result = result;
         this.trips = trips;

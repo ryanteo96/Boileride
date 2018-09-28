@@ -376,40 +376,48 @@ public class BoilerideServer {
                 response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/request")){
-                RideSearchRequestRequest req = null;
-//                RideSearchRequestResponse res = null;
+                RideRequestSearchRequest req = null;
+                RideRequestSearchResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = gson.fromJson(request, RideSearchRequestRequest.class);
+                    req = gson.fromJson(request, RideRequestSearchRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    res = new RideSearchRequestResponse(0);
+                    try {
+                        res = RideRequest.search(req);
+                    } catch (InterruptedException | ApiException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
-//                    res = new RideSearchRequestResponse(97);
+                    res = new RideRequestSearchResponse(97);
                 }
-//                response = gson.toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/offer")){
-                RideSearchOfferRequest req = null;
-//                RideSearchOfferResponse res = null;
+                RideOfferSearchRequest req = null;
+                RideOfferSearchResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = gson.fromJson(request, RideSearchOfferRequest.class);
+                    req = gson.fromJson(request, RideOfferSearchRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    res = new RideSearchOfferResponse(0);
+                    try {
+                        res = RideOffer.search(req);
+                    } catch (InterruptedException | ApiException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
-//                    res = new RideSearchOfferResponse(97);
+                    res = new RideOfferSearchResponse(97);
                 }
-//                response = gson.toJson(res);
+                response = gson.toJson(res);
             }
             else {
                 System.out.println("Request " + uri + " is unknown");

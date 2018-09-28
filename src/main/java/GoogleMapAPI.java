@@ -10,7 +10,7 @@ public class GoogleMapAPI {
     private GeoApiContext ctx;
 
     public GoogleMapAPI() {
-        ctx = new GeoApiContext.Builder().apiKey("ASD").build();
+        ctx = new GeoApiContext.Builder().apiKey("AIzaSyCv6CgYyQgZsgIBrA4h4QBcb-ZU4Xjfsas").build();
     }
 
     public int estimate(String address1, String address2) throws InterruptedException, ApiException, IOException {
