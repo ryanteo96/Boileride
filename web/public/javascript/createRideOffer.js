@@ -44,7 +44,7 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(" mi");
+							var arr = results[0].distance.text.split(".");
 							priceOutput.value = arr[0];
 
 							traveltime = results[0].duration.value;
@@ -81,7 +81,7 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(" mi");
+							var arr = results[0].distance.text.split(".");
 							priceOutput.value = arr[0];
 
 							traveltime = results[0].duration.value;

@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const moment = require("moment");
+const request = require("request");
 
 const router = express.Router();
 
@@ -29,22 +30,20 @@ router.post("/", function(req, res) {
 
 	console.log(data);
 
-	// temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/offer",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/ride/offer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	res.send(response.body);
-	// 	return;
-	// });
-
-	res.redirect("/home");
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 module.exports = router;
