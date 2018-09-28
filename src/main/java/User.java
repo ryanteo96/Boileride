@@ -300,7 +300,9 @@ public class User
 
         return response;
     }
-    public UserUpdateResponse updateUser(UserUpdateRequest req) {
+    public UserUpdateResponse updateUser(UserUpdateRequest req, Boolean resetPassword)
+    {
+
         UserUpdateResponse response = new UserUpdateResponse(-1);
         User user = SQL.selectUser(req.getUserid());
         if(user != null)
@@ -328,9 +330,18 @@ public class User
                     {
                         if(verifyPhone(req.getPhone()))
                         {
-                            if(user.status == 1)
+                            if(user.status == 1 || resetPassword)
                             {
-                                user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),1);
+                                if(user.status == 1)
+                                {
+                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),1);
+                                }
+                                else if(resetPassword)
+                                {
+                                    user = new User(req.getEmail(),req.getPassword(),req.getNickname(), req.getPhone(),user.getPoints(),0);
+                                }
+
+
                                 if(SQL.updateSQLUser(req.getUserid(), user) == 0)
                                 {
                                     System.out.println("Success updating user in db");
@@ -419,7 +430,7 @@ public class User
 //                   updateReq.setNickname(user.getNickname());
 //                   updateReq.setPhone(user.getPhone());
 
-                   updateResponse = updateUser(updateReq);
+                   updateResponse = updateUser(updateReq, true);
 
                    if(updateResponse.getResult() == 0)
                    {

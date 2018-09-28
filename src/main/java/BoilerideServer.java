@@ -183,7 +183,7 @@ public class BoilerideServer {
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     User user = new User();
-                    res = user.updateUser(req);
+                    res = user.updateUser(req, false);
                 }
                 else{
                     res = new UserUpdateResponse(97);
