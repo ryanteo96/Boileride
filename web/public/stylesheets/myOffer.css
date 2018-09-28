@@ -22,7 +22,7 @@
 	margin-right: auto;
 }
 
-li:hover {
+.list > li:hover {
 	cursor: pointer;
 	background-color: skyblue;
 }

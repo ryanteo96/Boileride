@@ -22,7 +22,22 @@
 	margin-right: auto;
 }
 
-li:hover {
+.list > li:hover {
 	cursor: pointer;
 	background-color: skyblue;
+}
+
+#myRequestModal {
+	position: absolute;
+	top: 20%;
+}
+
+#rideDetails {
+	margin-left: 162px;
+}
+
+#cancelRequestBtn {
+	position: initial;
+	top: 12px;
+	right: 50px;
 }

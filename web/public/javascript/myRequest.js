@@ -1,5 +1,6 @@
+var requestList;
+
 $(document).ready(function() {
-	generateRequestList();
 	$("#myRequest").click(function(data) {
 		data.preventDefault();
 
@@ -12,7 +13,6 @@ $(document).ready(function() {
 			"/myRides/myRequest",
 			{
 				// userid: obj.userid,
-				userid: "temp",
 			},
 			function(res) {
 				switch (res.result) {
@@ -25,6 +25,8 @@ $(document).ready(function() {
 								requestlist: res.requestlist,
 							}),
 						);
+						generateRequestList();
+						console.log(res.requestlist);
 						break;
 					}
 					case 1: {
@@ -44,37 +46,24 @@ $(document).ready(function() {
 function generateRequestList() {
 	var options = {
 		valueNames: [
-			"requestid",
-			"requestedby",
-			"travelingtime",
-			"price",
+			{ data: ["requestid"] },
+			// "requestedby",
+			// "travelingtime",
+			// "price",
 			"datentime",
 			"pickuplocation",
 			"destination",
-			"passengers",
-			"luggage",
-			"smoking",
-			"foodndrink",
-			"pets",
-			"ac",
+			// "passengers",
+			// "luggage",
+			// "smoking",
+			// "foodndrink",
+			// "pets",
+			// "ac",
 			"status",
 		],
 		item:
-			'<li class="test">' +
-			'<div class="row" style="font-size:20px">' +
-			'<div class="col-3">' +
-			'<a class="requestid" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-3">' +
-			'<a class="requestedby" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-3">' +
-			'<a class="travelingtime" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-3">' +
-			'<a class="price" style="font-weight: bold;"></a>' +
-			"</div>" +
-			"</div>" +
+			'<li class="requestList" ondblclick=showModal(this)>' +
+			/* First row */
 			'<div class="row" style="font-size:20px">' +
 			'<div class="col-3">' +
 			'<a class="datentime" style="font-weight: bold;"></a>' +
@@ -85,54 +74,55 @@ function generateRequestList() {
 			'<div class="col-3">' +
 			'<a class="destination" style="font-weight: bold;"></a>' +
 			"</div>" +
-			'<div class="col-3">' +
-			'<a class="luggage" style="font-weight: bold;"></a>' +
+			'<button type="button" class="btn btn-danger" id="cancelRequestBtn"> Cancel Ride </button>' +
 			"</div>" +
-			"</div>" +
+			/* Second row */
 			'<div class="row" style="font-size:20px">' +
 			'<div class="col">' +
-			'<a class="smoking" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col">' +
-			'<a class="foodndrink" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col">' +
-			'<a class="pets" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col">' +
-			'<a class="ac" style="font-weight: bold;"></a>' +
-			"</div>" +
-			"</div>" +
-			"</div>" +
-			'<div class="row" style="font-size:20px">' +
-			'<div class="col-3">' +
-			'<a class="status" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-3">' +
-			'<a class="passengers" style="font-weight: bold;"></a>' +
+			'<a class="status" style="font-weight: bold;">HI</a>' +
 			"</div>" +
 			"</div>" +
 			"</li>",
 	};
 
-	var requestList = new List("myRequestList", options);
+	requestList = new List("myRequestList", options);
 
 	for (var i = 0; i < 10; i++) {
 		requestList.add({
-			requestid: "ID: " + i,
-			requestedby: "Requested By: " + i,
-			travelingtime: "Travel Time: " + i,
-			price: "Price: $" + i,
-			datentime: "Date: " + i,
+			id: i,
+			requestid: i,
+			//requestedby: "Requested By: " + i,
+			// travelingtime: "Travel Time: " + i,
+			// price: "Price: " + i,
+			datentime: "Date and time: " + i,
 			pickuplocation: "Pickup location: " + i,
 			destination: "Destination: " + i,
-			passengers: "No. of Passengers: " + i,
-			luggage: "No. of Luggage: " + i,
-			smoking: "Allow Smoking: " + i,
-			foodndrink: "Allow Food And Drink: " + i,
-			pets: "Allow Pets: " + i,
-			ac: "Request AC: " + i,
+			// passengers: "No. of Passengers: " + i,
+			// luggage: "No. of Luggage: " + i,
+			// smoking: "Allow Smoking: " + i,
+			// foodndrink: "Allow Food And Drink: " + i,
+			// pets: "Allow Pets: " + i,
+			// ac: "Request AC: " + i,
 			status: "Status: " + i,
 		});
 	}
+}
+
+function getItem(item) {
+	var requestid = $(item).data("requestid");
+
+	// alert(requestid);
+	console.log(
+		requestList.get("requestid", requestid)[0]._values.travelingtime,
+	);
+}
+
+function showModal(item) {
+	$("#myRequestModal").modal("show");
+	var requestid = $(item).data("requestid");
+
+	// alert(requestid);
+	console.log(
+		requestList.get("requestid", requestid)[0]._values.travelingtime,
+	);
 }
