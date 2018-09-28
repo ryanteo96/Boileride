@@ -834,6 +834,184 @@ public class DatabaseCommunicator {
         return users;
     }
 
+    public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
+        ArrayList<RideOffer> res = new ArrayList<>();
+
+        int offeredby = 0;
+        int luggage = 0;
+        int travellingtime = 0;
+        int price = 0;
+        int smoking = 0;
+        int foodndrink = 0;
+        int pets = 0;
+        int AC = 0;
+        int status = 0;
+        int seatsleft = 0;
+        int luggagesleft = 0;
+        int seats = 0;
+        String pickuplocation = "";
+        String destination = "";
+        String datentimeStr = null;
+        boolean smoke = false;
+        boolean food =false;
+        boolean pet = false;
+        boolean ac = false;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            String query = String.format("SELECT * FROM RIDEREQUEST " +
+                            "WHERE status <> 2 " +
+                            "AND pickuplocation like '%%%s%%' " +
+                            "AND datentime >= %s " +
+                            "AND seatleft >= %d " +
+                            "AND luggageleft >= %d " +
+                            "AND smoking = %d " +
+                            "AND foodndrink = %d " +
+                            "AND pets = %d " +
+                            "AND ac = %d", city, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                offeredby = rs.getInt("offeredby");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                seats = rs.getInt("seats");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+                seatsleft = rs.getInt("seatsleft");
+                luggagesleft = rs.getInt("luggagesleft");
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                RideOffer rideOffer = new RideOffer(offeredby, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
+
+                res.add(rideOffer);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return res;
+    }
+
+    public static ArrayList<RideRequest> rideRequestFromTo(String city1, String city2, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
+        ArrayList<RideRequest> res = new ArrayList<>();
+
+        int requestedby = 0;
+        int passenger = 0;
+        int luggage = 0;
+        int travellingtime = 0;
+        int price = 0;
+        int smoking = 0;
+        int foodndrink = 0;
+        int pets = 0;
+        int AC = 0;
+        int status = 0;
+        String pickuplocation = "";
+        String destination = "";
+        String datentimeStr = null;
+        boolean smoke = false;
+        boolean food =false;
+        boolean pet = false;
+        boolean ac = false;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            String query = String.format("SELECT * FROM RIDEREQUEST " +
+                    "WHERE status <> 2 " +
+                    "AND pickuplocation like '%%%s%%' " +
+                    "AND destination like '%%%s%%' " +
+                    "AND datentime >= %s " +
+                    "AND passenger >= %d " +
+                    "AND luggage >= %d " +
+                    "AND smoking = %d " +
+                    "AND foodndrink = %d " +
+                    "AND pets = %d " +
+                    "AND ac = %d", city1, city2, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                requestedby = rs.getInt("requestedby");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                passenger = rs.getInt("passenger");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                RideRequest rideRequest = new RideRequest(requestedby, pickuplocation, destination, datentime, passenger,
+                        luggage, smoke, food, pet, ac, travellingtime, price, status);
+                res.add(rideRequest);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return res;
+    }
+
+
+
 
     public static void main (String args[]) throws ParseException {
         //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );

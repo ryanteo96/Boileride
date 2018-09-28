@@ -20,6 +20,10 @@ public class DtoRideOffer {
     private int luggageleft;
     private int status;
 
+    public DtoRideOffer() {
+
+    }
+
     public DtoRideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
                         int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                         int travelingtime, int price, int seatleft, int luggageleft, int status) {

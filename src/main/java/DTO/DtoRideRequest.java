@@ -17,6 +17,10 @@ public class DtoRideRequest {
     private int price;
     private int status;
 
+    public DtoRideRequest() {
+
+    }
+
     public DtoRideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
                           int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                           int travelingtime, int price, int status) {

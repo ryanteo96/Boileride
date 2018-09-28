@@ -1,10 +1,16 @@
+import java.io.IOException;
 import java.util.Date;
 import java.time.format.*;
 import java.time.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import DTO.*;
+import com.google.maps.errors.ApiException;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 /**
  * CS 40800 - Project: Boileride
@@ -352,6 +358,63 @@ public class RideRequest {
         }
         RideUpdateRequestResponse res = new RideUpdateRequestResponse(result);
         return res;
+    }
+
+    public DtoRideRequest toDtoRideRequest() {
+        DtoRideRequest drr = new DtoRideRequest();
+        drr.setRequestedby(requestedby);
+        drr.setPickuplocation(pickuplocation);
+        drr.setDestination(destination);
+        drr.setDatentime(datentime);
+        drr.setPassengers(passengers);
+        drr.setLuggage(luggage);
+        drr.setSmoking(smoking);
+        drr.setFoodndrink(foodndrink);
+        drr.setPets(pets);
+        drr.setAc(ac);
+        drr.setTravelingtime(travelingtime);
+        drr.setPrice(price);
+        drr.setStatus(status);
+        return drr;
+    }
+
+    public static RideRequestSearchResponse search (RideRequestSearchRequest query) throws InterruptedException, ApiException, IOException {
+        RideRequestSearchResponse response = new RideRequestSearchResponse();
+        GoogleMapAPI gma = new GoogleMapAPI();
+        // todo: add validation on query
+
+
+        ArrayList<DtoRideRequest> rides = new ArrayList<>();
+        ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(query.getOrigin()),
+                gma.getCity(query.getDestination()), query.getDeparture().toDate(),
+                query.getPassengers(), query.getLuggage(),
+                query.isSmoking(), query.isFoodndrink(),
+                query.isPets(), query.isAc());
+        if (rs == null) {
+            response.setResult(9);
+            return response;
+        }
+        for (RideRequest r : rs) {
+            if (gma.estimate(r.getPickuplocation(), query.getOrigin()) <= query.getOriginProximity() &&
+                    gma.estimate(r.getDestination(), query.getDestination()) <= query.getDestinationProximity() &&
+                    new Interval(query.getDeparture(), new DateTime(r.getDatentime())).toDurationMillis() <= query.getDepartureProximity() * 60 * 1000 &&
+                    r.getPassengers() <= query.getPassengers() &&
+                    r.getLuggage() <= query.getLuggage() &&
+                    r.isSmoking() == query.isSmoking() &&
+                    r.isFoodndrink() == query.isFoodndrink() &&
+                    r.isPets() == query.isPets() &&
+                    r.isAc() == query.isAc()) {
+                rides.add(r.toDtoRideRequest());
+            }
+        }
+        if (rides.size() == 0) {
+            response.setResult(9);
+            return response;
+        } else {
+            response.setResult(0);
+            response.setRides(rides);
+            return response;
+        }
     }
 
 }
