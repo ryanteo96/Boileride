@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	generateRequestList();
 	$("#myRequest").click(function(data) {
 		data.preventDefault();
 
@@ -24,7 +25,6 @@ $(document).ready(function() {
 								requestlist: res.requestlist,
 							}),
 						);
-						generateList();
 						break;
 					}
 					case 1: {
@@ -41,7 +41,7 @@ $(document).ready(function() {
 	});
 });
 
-function generateList() {
+function generateRequestList() {
 	var options = {
 		valueNames: [
 			"requestid",
@@ -49,6 +49,7 @@ function generateList() {
 			"travelingtime",
 			"price",
 			"datentime",
+			"pickuplocation",
 			"destination",
 			"passengers",
 			"luggage",
@@ -79,10 +80,10 @@ function generateList() {
 			'<a class="datentime" style="font-weight: bold;"></a>' +
 			"</div>" +
 			'<div class="col-3">' +
-			'<a class="destination" style="font-weight: bold;"></a>' +
+			'<a class="pickuplocation" style="font-weight: bold;"></a>' +
 			"</div>" +
 			'<div class="col-3">' +
-			'<a class="passengers" style="font-weight: bold;"></a>' +
+			'<a class="destination" style="font-weight: bold;"></a>' +
 			"</div>" +
 			'<div class="col-3">' +
 			'<a class="luggage" style="font-weight: bold;"></a>' +
@@ -107,19 +108,23 @@ function generateList() {
 			'<div class="col-3">' +
 			'<a class="status" style="font-weight: bold;"></a>' +
 			"</div>" +
+			'<div class="col-3">' +
+			'<a class="passengers" style="font-weight: bold;"></a>' +
+			"</div>" +
 			"</div>" +
 			"</li>",
 	};
 
-	var requestList = new List("requestList", options);
+	var requestList = new List("myRequestList", options);
 
 	for (var i = 0; i < 10; i++) {
 		requestList.add({
-			requestid: "ID:" + i,
-			requestedby: "Requested By:" + i,
-			travelingtime: "Travel Time:" + i,
+			requestid: "ID: " + i,
+			requestedby: "Requested By: " + i,
+			travelingtime: "Travel Time: " + i,
 			price: "Price: $" + i,
 			datentime: "Date: " + i,
+			pickuplocation: "Pickup location: " + i,
 			destination: "Destination: " + i,
 			passengers: "No. of Passengers: " + i,
 			luggage: "No. of Luggage: " + i,
