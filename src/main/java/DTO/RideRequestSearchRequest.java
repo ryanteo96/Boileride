@@ -3,14 +3,14 @@ package DTO;
 import org.joda.time.DateTime;
 
 public class RideRequestSearchRequest {
-    private String user;
-    private String origin;
-    private double originProximity;
+    private String userid;
+    private String pickuplocation;
+    private double pickupproximity;
     private String destination;
-    private double destinationProximity;
-    private DateTime departure;
-    private int departureProximity;
-    private int passengers;
+    private double destinationproximity;
+    private DateTime datentime;
+    private int datentimerange;
+    private int seats;
     private int luggage;
     private boolean smoking;
     private boolean foodndrink;
@@ -21,27 +21,27 @@ public class RideRequestSearchRequest {
 
     }
 
-    public RideRequestSearchRequest(String user,
-                                    String origin,
-                                    double originProximity,
+    public RideRequestSearchRequest(String userid,
+                                    String pickuplocation,
+                                    double pickupproximity,
                                     String destination,
-                                    double destinationProximity,
-                                    DateTime departure,
-                                    int departureProximity,
-                                    int passengers,
+                                    double destinationproximity,
+                                    DateTime datentime,
+                                    int datentimerange,
+                                    int seats,
                                     int luggage,
                                     boolean smoking,
                                     boolean foodndrink,
                                     boolean pets,
                                     boolean ac) {
-        this.user = user;
-        this.origin = origin;
-        this.originProximity = originProximity;
+        this.userid = userid;
+        this.pickuplocation = pickuplocation;
+        this.pickupproximity = pickupproximity;
         this.destination = destination;
-        this.destinationProximity = destinationProximity;
-        this.departure = departure;
-        this.departureProximity = departureProximity;
-        this.passengers = passengers;
+        this.destinationproximity = destinationproximity;
+        this.datentime = datentime;
+        this.datentimerange = datentimerange;
+        this.seats = seats;
         this.luggage = luggage;
         this.smoking = smoking;
         this.foodndrink = foodndrink;
@@ -49,36 +49,36 @@ public class RideRequestSearchRequest {
         this.ac = ac;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserid() {
+        return userid;
     }
 
-    public String getOrigin() {
-        return origin;
+    public String getPickuplocation() {
+        return pickuplocation;
     }
 
-    public double getOriginProximity() {
-        return originProximity;
+    public double getPickupproximity() {
+        return pickupproximity;
     }
 
     public String getDestination() {
         return destination;
     }
 
-    public double getDestinationProximity() {
-        return destinationProximity;
+    public double getDestinationproximity() {
+        return destinationproximity;
     }
 
-    public DateTime getDeparture() {
-        return departure;
+    public DateTime getDatentime() {
+        return datentime;
     }
 
-    public int getDepartureProximity() {
-        return departureProximity;
+    public int getDatentimerange() {
+        return datentimerange;
     }
 
-    public int getPassengers() {
-        return passengers;
+    public int getSeats() {
+        return seats;
     }
 
     public int getLuggage() {
@@ -101,36 +101,36 @@ public class RideRequestSearchRequest {
         return ac;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setPickuplocation(String pickuplocation) {
+        this.pickuplocation = pickuplocation;
     }
 
-    public void setOriginProximity(double originProximity) {
-        this.originProximity = originProximity;
+    public void setPickupproximity(double pickupproximity) {
+        this.pickupproximity = pickupproximity;
     }
 
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
-    public void setDestinationProximity(double destinationProximity) {
-        this.destinationProximity = destinationProximity;
+    public void setDestinationproximity(double destinationproximity) {
+        this.destinationproximity = destinationproximity;
     }
 
-    public void setDeparture(DateTime departure) {
-        this.departure = departure;
+    public void setDatentime(DateTime datentime) {
+        this.datentime = datentime;
     }
 
-    public void setDepartureProximity(int departureProximity) {
-        this.departureProximity = departureProximity;
+    public void setDatentimerange(int datentimerange) {
+        this.datentimerange = datentimerange;
     }
 
-    public void setPassengers(int passengers) {
-        this.passengers = passengers;
+    public void setSeats(int seats) {
+        this.seats = seats;
     }
 
     public void setLuggage(int luggage) {
@@ -154,13 +154,13 @@ public class RideRequestSearchRequest {
     }
 
     public String toString() {
-        return "Origin: " + origin +
-                ", Origin Proximity: " + originProximity +
+        return "Origin: " + pickuplocation +
+                ", Origin Proximity: " + pickupproximity +
                 ", Destination: " + destination +
-                ", Destination Proximity: " + destinationProximity +
-                ", Departure: " + departure.toString() +
-                ", Departure Proximity: " + departureProximity +
-                ", Number of Passengers: " + passengers +
+                ", Destination Proximity: " + destinationproximity +
+                ", Departure: " + datentime.toString() +
+                ", Departure Proximity: " + datentimerange +
+                ", Number of Passengers: " + seats +
                 ", Number of Luggage: " + luggage +
                 ", Allow Smoking: " + smoking +
                 ", Allow Food and Drink: " + foodndrink +
