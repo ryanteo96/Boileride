@@ -416,7 +416,7 @@ public class RideOffer {
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
             if (gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(query.getDestination()))) {
-                if (curr.getRides().size() - 1 <= query.getNumrides()) {
+                if (curr.getRides().size() - 1 <= query.getNumrides() && query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 > curr.getRides().getFirst().getDatentime().getTime()) {
                     curr.getRides().removeFirst();
                     trips.addLast(curr.toTrip());
                 }
@@ -424,10 +424,14 @@ public class RideOffer {
             }
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(query.getDatentime().toDate().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    new Date(query.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
                     lro.getSeatleft(), lro.getLuggageleft(),
                     lro.isSmoking(), lro.isFoodndrink(),
                     lro.isPets(), lro.isAc());
+            if (rs == null) {
+                response.setResult(9);
+                return response;
+            }
             for (RideOffer r : rs) {
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());

@@ -381,7 +381,7 @@ public class RideRequest {
 
         ArrayList<DtoRideRequest> rides = new ArrayList<>();
         ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(query.getPickuplocation()),
-                gma.getCity(query.getDestination()), query.getDatentime().toDate(),
+                gma.getCity(query.getDestination()), query.getDatentime(),
                 query.getSeats(), query.getLuggage(),
                 query.isSmoking(), query.isFoodndrink(),
                 query.isPets(), query.isAc());
@@ -392,7 +392,7 @@ public class RideRequest {
         for (RideRequest r : rs) {
             if (gma.estimate(r.getPickuplocation(), query.getPickuplocation()) <= query.getPickupproximity() &&
                     gma.estimate(r.getDestination(), query.getDestination()) <= query.getDestinationproximity() &&
-                    new Interval(query.getDatentime(), new DateTime(r.getDatentime())).toDurationMillis() <= query.getDatentimerange() * 60 * 1000 &&
+                    query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 >= r.getDatentime().getTime() &&
                     r.getPassengers() <= query.getSeats() &&
                     r.getLuggage() <= query.getLuggage() &&
                     r.isSmoking() == query.isSmoking() &&

@@ -2,13 +2,15 @@ package DTO;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 public class RideRequestSearchRequest {
     private String userid;
     private String pickuplocation;
     private double pickupproximity;
     private String destination;
     private double destinationproximity;
-    private DateTime datentime;
+    private Date datentime;
     private int datentimerange;
     private int seats;
     private int luggage;
@@ -26,7 +28,7 @@ public class RideRequestSearchRequest {
                                     double pickupproximity,
                                     String destination,
                                     double destinationproximity,
-                                    DateTime datentime,
+                                    Date datentime,
                                     int datentimerange,
                                     int seats,
                                     int luggage,
@@ -69,7 +71,7 @@ public class RideRequestSearchRequest {
         return destinationproximity;
     }
 
-    public DateTime getDatentime() {
+    public Date getDatentime() {
         return datentime;
     }
 
@@ -121,7 +123,7 @@ public class RideRequestSearchRequest {
         this.destinationproximity = destinationproximity;
     }
 
-    public void setDatentime(DateTime datentime) {
+    public void setDatentime(Date datentime) {
         this.datentime = datentime;
     }
 
