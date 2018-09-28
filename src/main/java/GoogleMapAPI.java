@@ -19,7 +19,7 @@ public class GoogleMapAPI {
                 .destinations(address2)
                 .mode(TravelMode.DRIVING)
                 .await();
-        return (int) res.rows[0].elements[0].duration.inSeconds;
+        return (int) res.rows[0].elements[0].duration.inSeconds / 60;
     }
 
     public String getCity(String address) throws InterruptedException, ApiException, IOException {

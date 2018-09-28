@@ -467,10 +467,21 @@ public class BoilerideServer {
     }
 
     public static void main(String[] args) {
+        GoogleMapAPI gma = new GoogleMapAPI();
+        try {
+            System.out.println(gma.estimate("PMU, 101 Grant St Room 186 101, West Lafayette, IN 47906", "200 North Second Street, Lafayette, IN 47901"));
+            System.out.println(gma.getCity("200 North Second Street, Lafayette, IN 47901"));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        BoilerideServer server = new BoilerideServer();
-
-        server.connect();
+//        BoilerideServer server = new BoilerideServer();
+//
+//        server.connect();
 
         //System.out.println(DatabaseCommunicator.loginWithEmailPassword("test3", "test"));
         //System.out.println(DatabaseCommunicator.selectUserByEmail("ryan@mail.com").getNickname());
