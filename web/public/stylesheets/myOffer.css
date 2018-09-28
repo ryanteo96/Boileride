@@ -1,32 +1,4 @@
-#searchRideRequestDiv {
-	padding: 10px;
-}
-
-#viewMyOfferListTitle {
-	padding: 0px 10px;
-}
-
-#searchRideRequestDetails {
-	padding: 10px;
-}
-
-#searchRideRequestForm {
-	padding: 0px 10px;
-}
-
-#searchRideRequestPreferences {
-	padding: 10px 0px;
-}
-
-#preferencesDiv {
-	padding: 0px 5px;
-}
-
-.dropdown-menu {
-	left: auto;
-}
-
-.viewMyOfferList {
+.myRideOfferList {
 	padding: 10px;
 }
 
@@ -44,10 +16,4 @@
 
 .row {
 	margin: 0px;
-}
-
-.list > li:hover {
-	cursor: pointer;
-	background-color: rgb(212, 212, 192);
-	opacity: 1;
 }
