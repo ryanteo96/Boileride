@@ -11,20 +11,20 @@ $(document).ready(function() {
 			"/myRides/myRequest",
 			{
 				// userid: obj.userid,
-				userid:"temp"
+				userid: "temp",
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						console.log("IM HERE!!");	
+						console.log("IM HERE!!");
 						localStorage.key = "requestList";
 						localStorage.setItem(
 							"requestList",
 							JSON.stringify({
-								requestlist: res.requestlist
+								requestlist: res.requestlist,
 							}),
-						);		
-						generateList();			
+						);
+						generateList();
 						break;
 					}
 					case 1: {
@@ -41,29 +41,32 @@ $(document).ready(function() {
 	});
 });
 
-function generateList(){
+function generateList() {
 	var options = {
-		valueNames: [ 'name', 'born' ],
-		item: '<li><h3 class="name"></h3><p class="born"></p></li>'
+		valueNames: ["name", "born"],
+		item: '<li><h3 class="name"></h3><p class="born"></p></li>',
 	};
-	
-	var values = [{
-		name: 'Jonny Strömberg',
-		born: 1986
-	},
-	{
-		name: 'Jonas Arnklint',
-		born: 1985
-	},
-	{
-		name: 'Martina Elm',
-		born: 1986
-	}];
-	
-	var userList = new List('users', options, values);
-	
-	userList.add({
-	name: "Gustaf Lindqvist",
-	born: 1983
-	});
+
+	var values = [
+		{
+			name: "Jonny Strömberg",
+			born: 1986,
+		},
+		{
+			name: "Jonas Arnklint",
+			born: 1985,
+		},
+		{
+			name: "Martina Elm",
+			born: 1986,
+		},
+	];
+
+	var userList = new List("users", options, values);
+	for (var i = 0; i < 10; i++) {
+		userList.add({
+			name: "Gustaf Lindqvist",
+			born: 1983,
+		});
+	}
 }
