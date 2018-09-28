@@ -17,6 +17,11 @@
     <!-- List.js framework-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 
+    <!-- Icons import -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+        crossorigin="anonymous">
+
+
     <!-- Javascript and Stylesheets imports -->
     <link href="../stylesheets/home.css" rel="stylesheet" type="text/css">
     <script src="../javascript/home.js" type="text/javascript"></script>
@@ -64,10 +69,74 @@
 
     </nav>
     <!-- Below nav bar-->
-    <h5 id="textOffer">MY RIDE OFFERS</h5>
-    <div id="myOfferList">
-        <ul class="list"></ul>
+    <div id="viewMyOfferList" class="viewMyOfferList">
+        <h5 id="viewMyOfferListTitle">MY RIDE OFFERS</h5>
+        <ul class="list list-group list-group-flush"></ul>
     </div>
+
+
+    <!-- Modal -->
+    <div id="myOfferModal" class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <!-- role="document" -->
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ride Offer Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-2 d-flex w-100">
+                            <h5 class="mb-1 text-left col">Pick Up Location</h5>
+                            <h5 class="mb-1 text-right col">Destination</h5>
+                        </div>
+                        <div class="mb-2 pb-5 d-flex w-100">
+                            <h6 id="pickuplocationDetails" class="mb-1 text-left col-5 text-primary"></h6>
+                            <i class="fas fa-arrow-right text-center col-2"></i>
+                            <h6 id="destinationDetails" class="mb-1 text-right col-5 text-primary"></h6>
+                        </div>
+                        <div class="mb-2 d-flex w-100">
+                            <h5 class="mb-1 text-center col">Number of Passenger(s)</h5>
+                            <h5 class="mb-1 text-center col">Number of Luggage(s)</h5>
+                        </div>
+                        <div class="mb-2 pb-5 d-flex w-100">
+                            <h6 id="passengersDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="luggageDetails" class="mb-1 text-center col text-primary"></h6>
+                        </div>
+                        <div class="mb-2 d-flex w-100">
+                            <h5 class="mb-1 text-center col">Smoking Allowed</h5>
+                            <h5 class="mb-1 text-center col">Food and Drinks Allowed</h5>
+                            <h5 class="mb-1 text-center col">Pets Allowed</h5>
+                            <h5 class="mb-1 text-center col">A.C. Available</h5>
+                        </div>
+                        <div class="mb-2 pb-5 d-flex w-100">
+                            <h6 id="smokingDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="foodndrinkDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="petsDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="acDetails" class="mb-1 text-center col text-primary"></h6>
+                        </div>
+
+                        <div class="mb-2 d-flex w-100">
+                            <h5 class="mb-1 text-center col">Travel Time</h5>
+                            <h5 class="mb-1 text-center col">Request by</h5>
+                            <h5 class="mb-1 text-center col">Price</h5>
+                        </div>
+                        <div class="mb-2 d-flex w-100">
+                            <h6 id="travelingtimeDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="requestedbyDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="priceDetails" class="mb-1 text-center col text-primary"></h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" disabled>Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 </body>
 

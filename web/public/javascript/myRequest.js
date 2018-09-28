@@ -112,9 +112,10 @@ function getItem(item) {
 	var requestid = $(item).data("requestid");
 
 	// alert(requestid);
-	console.log(
-		requestList.get("requestid", requestid)[0]._values.travelingtime,
-	);
+	console
+		.log
+		//requestList.get("requestid", requestid)[0]._values.travelingtime,
+		();
 }
 
 function showModal(item) {
@@ -122,7 +123,8 @@ function showModal(item) {
 	var requestid = $(item).data("requestid");
 
 	// alert(requestid);
-	console.log(
-		requestList.get("requestid", requestid)[0]._values.travelingtime,
-	);
+	console
+		.log
+		//requestList.get("requestid", requestid)[0]._values.travelingtime,
+		();
 }
