@@ -60,7 +60,7 @@ function generateRequestList() {
 			"status",
 		],
 		item:
-			"<li>" +
+			'<li class="test">' +
 			'<div class="row" style="font-size:20px">' +
 			'<div class="col-3">' +
 			'<a class="requestid" style="font-weight: bold;"></a>' +
