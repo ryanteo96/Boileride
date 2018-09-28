@@ -43,30 +43,56 @@ $(document).ready(function() {
 
 function generateList() {
 	var options = {
-		valueNames: ["name", "born"],
-		item: '<li><h3 class="name"></h3><p class="born"></p></li>',
+		valueNames: [
+			"requestid",
+			"requestedby",
+			"travelingtime",
+			"price",
+			"datentime",
+			"destination",
+			"passengers",
+			"luggage",
+			"smoking",
+			"foodndrink",
+			"pets",
+			"ac",
+			"status",
+		],
+		item:
+			'<li><div class="row" style="font-size:20px"><div class="col-3">' +
+			'<a class="requestid" style="font-weight: bold;"></a></div><div class="col-3">' +
+			'<a class="requestedby" style="font-weight: bold;"></a></div><div class="col-3">' +
+			'<a class="travelingtime" style="font-weight: bold;"></a></div><div class="col-3">' +
+			'<a class="price" style="font-weight: bold;"></a></div></div>' +
+			'<div class="row" style="font-size:20px"><div class="col-3"><a class="datentime" style="font-weight: bold;"></a>' +
+			'</div><div class="col-3"><a class="destination" style="font-weight: bold;"></a></div>' +
+			'<div class="col-3"><a class="passengers" style="font-weight: bold;"></a></div><div class="col-3">' +
+			'<a class="luggage" style="font-weight: bold;"></a></div></div>' +
+			'<div class="row" style="font-size:20px"><div class="col-3"><a class="smoking" style="font-weight: bold;"></a>' +
+			'</div><div class="col-3"></div><a class="foodndrink" style="font-weight: bold;"></a></div>' +
+			'<div class="col-3"><a class="pets" style="font-weight: bold;"></a></div><div class="col-3">' +
+			'<a class="ac" style="font-weight: bold;"></a></div></div>' +
+			'<div class="row" style="font-size:20px"><div class="col-3"><a class="status" style="font-weight: bold;"></a>' +
+			"</div></div></li>",
 	};
 
-	var values = [
-		{
-			name: "Jonny Strömberg",
-			born: 1986,
-		},
-		{
-			name: "Jonas Arnklint",
-			born: 1985,
-		},
-		{
-			name: "Martina Elm",
-			born: 1986,
-		},
-	];
+	var requestList = new List("requestList", options);
 
-	var userList = new List("users", options, values);
 	for (var i = 0; i < 10; i++) {
-		userList.add({
-			name: "Gustaf Lindqvist",
-			born: 1983,
+		requestList.add({
+			requestid: "ID:" + i,
+			requestedby: "Requested By:" + i,
+			travelingtime: "Travel Time:" + i,
+			price: "Price: $" + i,
+			datentime: "Date: " + i,
+			destination: "Destination: " + i,
+			passengers: "No. of Passengers: " + i,
+			luggage: "No. of Luggage: " + i,
+			smoking: "Allow Smoking: " + i,
+			foodndrink: "Allow Food And Drink: " + i,
+			pets: "Allow Pets: " + i,
+			ac: "Request AC: " + i,
+			status: "Status: " + i,
 		});
 	}
 }
