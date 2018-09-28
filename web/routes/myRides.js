@@ -1,17 +1,22 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
+const request = require("request");
 
 router.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRides.html"));
 });
 
-router.get("/myRequest", function(req,res){
+router.post("/myRequest", function(req,res){
 	res.sendFile(path.join(__dirname, "../public/html/myRequest.html"));
-	var data = {
-		userid: req.body.userid,
+	var data = {							
+		userid: req.body.userid
 	};
-
+	var body = {
+		result: 0
+	}
+	res.send(body);
+	console.log("body is " + body);
 	console.log(data);
 
 	//  temp server connection test
@@ -24,17 +29,19 @@ router.get("/myRequest", function(req,res){
 	// 	},
 	// };
 
+
 	// request(options, function(error, response) {
 	// 	console.log(error, response);
+	// 	res.send(response.body);	
 	// 	return;
 	// });
 	
 });
 
-router.get("/myOffer", function(req,res){
+router.post("/myOffer", function(req,res){
 	res.sendFile(path.join(__dirname, "../public/html/myOffer.html"));
 	var data = {
-		userid: req.body.userid,
+		userid: req.body.userid
 	};
 	console.log(data);
 
@@ -50,6 +57,7 @@ router.get("/myOffer", function(req,res){
 
 	// request(options, function(error, response) {
 	// 	console.log(error, response);
+	//  res.send(response.body);
 	// 	return;
 	// });
 });
