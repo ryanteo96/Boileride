@@ -127,7 +127,7 @@ public class DatabaseCommunicator {
 //        }
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT userid, nickname, phone, points, status, email FROM USER WHERE email = '" + email+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE email = '" + email+"'");
 
             int id = 0 , points = 0, status = 0;
             String nickname = "", password = "", phone = "";
@@ -135,13 +135,14 @@ public class DatabaseCommunicator {
             while (rs.next()) {
                 id = rs.getInt("userid");
                 nickname = rs.getString("nickname");
+                password = rs.getString("password");
                 phone = rs.getString("phone");
                 points = rs.getInt("points");
                 status = rs.getInt("status");
                 //email = rs.getString("email");
 
                 //need to add USERID but USER is not taking it
-                resultUser = new User( email,  nickname,  phone,  points,  status, id);
+                resultUser = new User( email, password,  nickname,  phone,  points,  status, id);
                 //System.out.println(nickname + " " +password + " " + id);
             }
             rs.close();

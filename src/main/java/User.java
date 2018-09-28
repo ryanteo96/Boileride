@@ -35,9 +35,9 @@ public class User
         //this.userid = userid;
     }
 
-    public User(String email, String nickname, String phone, int points, int status, int userid) {
+    public User(String email, String password, String nickname, String phone, int points, int status, int userid) {
         this.email = email;
-        //this.password = password;
+        this.password = password;
         this.nickname = nickname;
         this.phone = phone;
         this.points = points;
@@ -137,7 +137,7 @@ public class User
                 }
                 else
                 {
-                    response.setUserid(dbResponse);
+                    response.setUserid(userid);
                     response.setResult(0);
                 }
             }
@@ -196,7 +196,7 @@ public class User
                         System.out.println("Passed signUp Verification");
                         SendEmail sender = new SendEmail();
                             String hashCode = hash(req.getEmail());
-                            sender.sendEmail(req.getEmail(),"Your special coe to register your account", hashCode );
+                            sender.sendEmail(req.getEmail(),"Your special code to register your account", hashCode );
                             user.status = -1;
                             user.email = req.getEmail();
                             user.nickname = req.getNickname();
@@ -409,6 +409,7 @@ public class User
             {
                 String buffer = user.getPassword() + user.getEmail();
                 String hashCode = hash(buffer);
+
                 if(req.getCode().compareTo(hashCode) == 0)
                 {
 

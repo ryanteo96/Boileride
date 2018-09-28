@@ -34,6 +34,6 @@ public class UserVerifyEmailRequest {
     }
 
     public String toString(){
-        return "email" + email + ", code: " + code;
+        return "email: " + email + ", code: " + code;
     }
 }
