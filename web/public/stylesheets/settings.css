@@ -31,3 +31,7 @@
 iframe {
 	display: none;
 }
+
+.dropdown-menu{
+    left:auto;
+}
