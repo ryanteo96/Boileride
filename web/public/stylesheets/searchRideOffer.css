@@ -1,8 +1,10 @@
-#searchRideOfferDiv {
+#searchRideOfferDiv,
+.list {
 	padding: 10px;
 }
 
-#searchRideOfferTitle {
+#searchRideOfferTitle,
+#searchRideOfferListTitle {
 	padding: 0px 10px;
 }
 
@@ -28,4 +30,24 @@
 
 .dropdown-menu {
 	left: auto;
+}
+
+.searchRideOfferList {
+	padding: 10px;
+}
+
+.icons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.values {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+.row {
+	margin: 0px;
 }
