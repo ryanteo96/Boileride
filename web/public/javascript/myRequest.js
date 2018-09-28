@@ -59,21 +59,56 @@ function generateList() {
 			"status",
 		],
 		item:
-			'<li><div class="row" style="font-size:20px"><div class="col-3">' +
-			'<a class="requestid" style="font-weight: bold;"></a></div><div class="col-3">' +
-			'<a class="requestedby" style="font-weight: bold;"></a></div><div class="col-3">' +
-			'<a class="travelingtime" style="font-weight: bold;"></a></div><div class="col-3">' +
-			'<a class="price" style="font-weight: bold;"></a></div></div>' +
-			'<div class="row" style="font-size:20px"><div class="col-3"><a class="datentime" style="font-weight: bold;"></a>' +
-			'</div><div class="col-3"><a class="destination" style="font-weight: bold;"></a></div>' +
-			'<div class="col-3"><a class="passengers" style="font-weight: bold;"></a></div><div class="col-3">' +
-			'<a class="luggage" style="font-weight: bold;"></a></div></div>' +
-			'<div class="row" style="font-size:20px"><div class="col-3"><a class="smoking" style="font-weight: bold;"></a>' +
-			'</div><div class="col-3"></div><a class="foodndrink" style="font-weight: bold;"></a></div>' +
-			'<div class="col-3"><a class="pets" style="font-weight: bold;"></a></div><div class="col-3">' +
-			'<a class="ac" style="font-weight: bold;"></a></div></div>' +
-			'<div class="row" style="font-size:20px"><div class="col-3"><a class="status" style="font-weight: bold;"></a>' +
-			"</div></div></li>",
+			"<li>" +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="col-3">' +
+			'<a class="requestid" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="requestedby" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="travelingtime" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="price" style="font-weight: bold;"></a>' +
+			"</div>" +
+			"</div>" +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="col-3">' +
+			'<a class="datentime" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="destination" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="passengers" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col-3">' +
+			'<a class="luggage" style="font-weight: bold;"></a>' +
+			"</div>" +
+			"</div>" +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="col">' +
+			'<a class="smoking" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col">' +
+			'<a class="foodndrink" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col">' +
+			'<a class="pets" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<div class="col">' +
+			'<a class="ac" style="font-weight: bold;"></a>' +
+			"</div>" +
+			"</div>" +
+			"</div>" +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="col-3">' +
+			'<a class="status" style="font-weight: bold;"></a>' +
+			"</div>" +
+			"</div>" +
+			"</li>",
 	};
 
 	var requestList = new List("requestList", options);
