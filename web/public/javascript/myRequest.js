@@ -47,42 +47,39 @@ function generateRequestList() {
 	var options = {
 		valueNames: [
 			{ data: ["requestid"] },
-			"requestedby",
-			"travelingtime",
-			"price",
+			// "requestedby",
+			// "travelingtime",
+			// "price",
 			"datentime",
 			"pickuplocation",
 			"destination",
-			"passengers",
+			// "passengers",
 			// "luggage",
 			// "smoking",
 			// "foodndrink",
 			// "pets",
 			// "ac",
-			// "status",
+			"status",
 		],
 		item:
 			'<li class="requestList" ondblclick=showModal(this)>' +
+			/* First row */
 			'<div class="row" style="font-size:20px">' +
-			'<div class="col-4">' +
+			'<div class="col-3">' +
 			'<a class="datentime" style="font-weight: bold;"></a>' +
 			"</div>" +
-			'<div class="col-4">' +
-			'<a class="passengers" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-4">' +
-			'<a class="price" style="font-weight: bold;"></a>' +
-			"</div>" +
-			"</div>" +
-			'<div class="row" style="font-size:20px">' +
-			'<div class="col-4">' +
-			'<a class="travelingtime" style="font-weight: bold;"></a>' +
-			"</div>" +
-			'<div class="col-4">' +
+			'<div class="col-3">' +
 			'<a class="pickuplocation" style="font-weight: bold;"></a>' +
 			"</div>" +
-			'<div class="col-4">' +
+			'<div class="col-3">' +
 			'<a class="destination" style="font-weight: bold;"></a>' +
+			"</div>" +
+			'<button type="button" class="btn btn-danger" id="cancelRequestBtn"> Cancel Ride </button>' +
+			"</div>" +
+			/* Second row */
+			'<div class="row" style="font-size:20px">' +
+			'<div class="col">' +
+			'<a class="status" style="font-weight: bold;">HI</a>' +
 			"</div>" +
 			"</div>" +
 			"</li>",
@@ -95,18 +92,18 @@ function generateRequestList() {
 			id: i,
 			requestid: i,
 			//requestedby: "Requested By: " + i,
-			travelingtime: "Travel Time: " + i,
-			price: "Price: $" + i,
+			// travelingtime: "Travel Time: " + i,
+			// price: "Price: " + i,
 			datentime: "Date and time: " + i,
 			pickuplocation: "Pickup location: " + i,
 			destination: "Destination: " + i,
-			passengers: "No. of Passengers: " + i,
+			// passengers: "No. of Passengers: " + i,
 			// luggage: "No. of Luggage: " + i,
 			// smoking: "Allow Smoking: " + i,
 			// foodndrink: "Allow Food And Drink: " + i,
 			// pets: "Allow Pets: " + i,
 			// ac: "Request AC: " + i,
-			// status: "Status: " + i,
+			status: "Status: " + i,
 		});
 	}
 }
