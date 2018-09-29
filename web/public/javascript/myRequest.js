@@ -1,101 +1,41 @@
 var requestList;
 
-let test = [
-	{
-		requestid: 1,
-		requestedby: "test",
-		pickuplocation: "Earhart",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		passengers: 4,
-		luggage: 4,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 1,
-		status: "true",
-	},
-	{
-		requestid: 2,
-		requestedby: "test2",
-		pickuplocation: "Hillenbrand",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		passengers: 3,
-		luggage: 3,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 100,
-		status: "true",
-	},
-];
-
 $(document).ready(function() {
-	generateRequestList(test);
-	localStorage.key = "test";
-	localStorage.setItem(
-		"test",
-		JSON.stringify({
-			requestid: 1,
-			requestedby: "test",
-			pickuplocation: "Earhart",
-			destination: "Purdue",
-			datentime: "1/1/1",
-			passengers: 4,
-			luggage: 4,
-			smoking: "true",
-			foodndrink: "false",
-			pets: "true",
-			ac: "true",
-			travelingtime: 3,
-			price: 1,
-			status: "true",
-		}),
-	);
-	$("#myRequest").click(function(data) {
-		data.preventDefault();
+	var credentials = localStorage.getItem("credentials");
+	var obj = JSON.parse(credentials);
 
-		var credentials = localStorage.getItem("credentials");
-		var obj = JSON.parse(credentials);
+	console.log(obj.userid);
 
-		console.log(obj.userid);
-
-		$.post(
-			"/myRides/myRequest",
-			{
-				userid: obj.userid,
-			},
-			function(res) {
-				switch (res.result) {
-					case 0: {
-						console.log(res.requestlist);
-						generateRequestList(res.requestlist);
-						localStorage.key = "requestlist";
-						localStorage.setItem(
-							"requestlist",
-							JSON.stringify({
-								requestlist: res.requestlist,
-							}),
-						);
-						break;
-					}
-					case 1: {
-						alert("Invalid userid.");
-						break;
-					}
-					case 2: {
-						alert("User not logged in.");
-						break;
-					}
+	$.post(
+		"/myRides/myRequest",
+		{
+			userid: obj.userid,
+		},
+		function(res) {
+			switch (res.result) {
+				case 0: {
+					console.log(res.requestlist);
+					generateRequestList(res.requestlist);
+					localStorage.key = "requestlist";
+					localStorage.setItem(
+						"requestlist",
+						JSON.stringify({
+							requestlist: res.requestlist,
+						}),
+					);
+					break;
 				}
-			},
-		);
-	});
+				case 1: {
+					alert("Invalid userid.");
+					break;
+				}
+				case 2: {
+					alert("User not logged in.");
+					break;
+				}
+			}
+		},
+	);
 
 	$("#editRequestBtn").click(function(data) {
 		data.preventDefault();
@@ -189,19 +129,19 @@ function generateRequestList(requestList) {
 	myRideRequestList = new List("myRideRequestList", options);
 
 	for (var i = 0; i < requestList.length; i++) {
-		if (requestList[i].smoking == "true") {
+		if (requestList[i].smoking) {
 			requestList[i].smoking = "Yes";
 		} else requestList[i].smoking = "No";
 
-		if (requestList[i].ac == "true") {
+		if (requestList[i].ac) {
 			requestList[i].ac = "Yes";
 		} else requestList[i].ac = "No";
 
-		if (requestList[i].foodndrink == "true") {
+		if (requestList[i].foodndrink) {
 			requestList[i].foodndrink = "Yes";
 		} else requestList[i].foodndrink = "No";
 
-		if (requestList[i].pets == "true") {
+		if (requestList[i].pets) {
 			requestList[i].pets = "Yes";
 		} else requestList[i].pets = "No";
 
