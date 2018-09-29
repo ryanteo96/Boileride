@@ -871,8 +871,8 @@ public class DatabaseCommunicator {
                             "WHERE status <> 2 " +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
-                            "AND seatleft >= %d " +
-                            "AND luggageleft >= %d " +
+                            "AND seatsleft >= %d " +
+                            "AND luggagesleft >= %d " +
                             "AND smoking = %d " +
                             "AND foodndrink = %d " +
                             "AND pets = %d " +
