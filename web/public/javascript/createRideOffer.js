@@ -44,9 +44,14 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							if (results[0].distance.text.split(".") >= 0) {
+								var arr = results[0].distance.text.split(".");
+							} else {
+								var arr = results[0].distance.text.split(" mi");
+							}
+
+							priceOutput.value = arr[0];
 							traveltime = results[0].duration.value;
 							price = arr[0];
 						}
@@ -81,9 +86,14 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							if (results[0].distance.text.split(".") >= 0) {
+								var arr = results[0].distance.text.split(".");
+							} else {
+								var arr = results[0].distance.text.split(" mi");
+							}
+
+							priceOutput.value = arr[0];
 							traveltime = results[0].duration.value;
 							price = arr[0];
 						}
