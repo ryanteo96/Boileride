@@ -16,6 +16,7 @@ import com.google.maps.errors.ApiException;
  */
 
 public class RideOffer {
+    private int offerid;
     private int offeredby;
     private String pickuplocation;
     private String destination;
@@ -54,6 +55,27 @@ public class RideOffer {
     public RideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
                      int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                      int travelingtime, int price, int seatleft, int luggageleft, int status) {
+        this.offeredby = offeredby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.seats = seats;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+        this.seatleft = seatleft;
+        this.luggageleft = luggageleft;
+        this.status = status;
+    }
+
+    public RideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
+                     int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                     int travelingtime, int price, int seatleft, int luggageleft, int status) {
+        this.offerid = offerid;
         this.offeredby = offeredby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -379,6 +401,7 @@ public class RideOffer {
 
     public DtoRideOffer toDtoRideOffer() {
         DtoRideOffer dro = new DtoRideOffer();
+        dro.setOfferid(offerid);
         dro.setOfferedby(offeredby);
         dro.setPickuplocation(pickuplocation);
         dro.setDestination(destination);

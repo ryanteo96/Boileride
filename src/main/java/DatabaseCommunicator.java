@@ -844,7 +844,8 @@ public class DatabaseCommunicator {
     public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
         ArrayList<RideOffer> res = new ArrayList<>();
 
-        int offeredby = 0;
+        int offerid = -1;
+        int offeredby = -1;
         int luggage = 0;
         int travellingtime = 0;
         int price = 0;
@@ -879,6 +880,7 @@ public class DatabaseCommunicator {
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+                offerid = rs.getInt("offerid");
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
@@ -915,7 +917,7 @@ public class DatabaseCommunicator {
                     e.printStackTrace();
                 }
 
-                RideOffer rideOffer = new RideOffer(offeredby, pickuplocation, destination, datentime, seats,
+                RideOffer rideOffer = new RideOffer(offerid, offeredby, pickuplocation, destination, datentime, seats,
                         luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
 
                 res.add(rideOffer);
@@ -934,7 +936,8 @@ public class DatabaseCommunicator {
     public static ArrayList<RideRequest> rideRequestFromTo(String city1, String city2, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
         ArrayList<RideRequest> res = new ArrayList<>();
 
-        int requestedby = 0;
+        int requestid = -1;
+        int requestedby = -1;
         int passenger = 0;
         int luggage = 0;
         int travellingtime = 0;
@@ -968,6 +971,7 @@ public class DatabaseCommunicator {
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
+                requestid = rs.getInt("requestid");
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
@@ -1002,7 +1006,7 @@ public class DatabaseCommunicator {
                     e.printStackTrace();
                 }
 
-                RideRequest rideRequest = new RideRequest(requestedby, pickuplocation, destination, datentime, passenger,
+                RideRequest rideRequest = new RideRequest(requestid, requestedby, pickuplocation, destination, datentime, passenger,
                         luggage, smoke, food, pet, ac, travellingtime, price, status);
                 res.add(rideRequest);
             }

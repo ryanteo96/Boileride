@@ -17,6 +17,7 @@ import org.joda.time.Interval;
  */
 
 public class RideRequest {
+    private int requestid;
     private int requestedby;
     private String pickuplocation;
     private String destination;
@@ -53,6 +54,25 @@ public class RideRequest {
     public RideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
                        int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                        int travelingtime, int price, int status) {
+        this.requestedby = requestedby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.passengers = passengers;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+        this.status = status;
+    }
+
+    public RideRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime,
+                       int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                       int travelingtime, int price, int status) {
+        this.requestid = requestid;
         this.requestedby = requestedby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -357,6 +377,7 @@ public class RideRequest {
 
     public DtoRideRequest toDtoRideRequest() {
         DtoRideRequest drr = new DtoRideRequest();
+        drr.setRequestid(requestid);
         drr.setRequestedby(requestedby);
         drr.setPickuplocation(pickuplocation);
         drr.setDestination(destination);
