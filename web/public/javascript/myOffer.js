@@ -1,9 +1,11 @@
 var offerList;
 
 $(document).ready(function() {
-	generateViewOfferList();
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
+
+	console.log(obj.userid);
+
 	$.post(
 		"/myRides/myOffer",
 		{
@@ -13,13 +15,7 @@ $(document).ready(function() {
 			switch (res.result) {
 				case 0: {
 					console.log(res.offerlist);
-					localStorage.key = "offerlist";
-					localStorage.setItem(
-						"offerlist",
-						JSON.stringify({
-							offerlist: res.offerlist,
-						}),
-					);
+					generateViewOfferList(res.offerlist);
 					break;
 				}
 				case 1: {
@@ -33,12 +29,6 @@ $(document).ready(function() {
 			}
 		},
 	);
-});
-
-$("#myOffer").click(function(data) {
-	data.preventDefault();
-
-	console.log(obj.userid);
 
 	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -47,18 +37,26 @@ $("#myOffer").click(function(data) {
 
 	$("#cancelOfferBtn").click(function(data) {
 		data.preventDefault();
+
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
+
+		var editOffer = localStorage.getItem("editOffer");
+		var edit = JSON.parse(editOffer);
+
 		console.log(obj.userid);
+		console.log(obj.offerid);
+
 		$.post(
 			"/myRides/myOffer/cancel",
 			{
 				userid: obj.userid,
-				offerid: obj.offerid,
+				offerid: edit.offerid,
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
+						window.location.href = "/myRides/myOffer/";
 						break;
 					}
 					case 1: {
@@ -125,7 +123,7 @@ function generateViewOfferList(offerList) {
 			"</li>",
 	};
 
-	offerList = new List("myRideOfferList", options);
+	myRideOfferList = new List("myRideOfferList", options);
 
 	for (var i = 0; i < offerList.length; i++) {
 		if (offerList[i].smoking == true) {
@@ -165,47 +163,57 @@ function generateViewOfferList(offerList) {
 function getItem(item) {
 	var offerid = $(item).data("offerid");
 
+	localStorage.key = "offerRequest";
+	localStorage.setItem(
+		"offerRequest",
+		JSON.stringify(myRideOfferList.get("offerid", offerid)[0]._values),
+	);
+
 	$("#myRideOfferModal").modal("show");
 
 	$("#pickuplocationDetails").html(
-		offerList.get("offerid", offerid)[0]._value.pickuplocation,
+		myRideOfferList.get("offerid", offerid)[0]._value.pickuplocation,
 	);
 
 	$("#destinationDetails").html(
-		offerList.get("offerid", offerid)[0]._value.destination,
+		myRideOfferList.get("offerid", offerid)[0]._value.destination,
 	);
 
 	$("#seatsDetails").html(
-		offerList.get("offerid", offerid)[0]._value.seatleft,
+		myRideOfferList.get("offerid", offerid)[0]._value.seatleft,
 	);
 
 	$("#luggageDetails").html(
-		offerList.get("offerid", offerid)[0]._value.luggageleft,
+		myRideOfferList.get("offerid", offerid)[0]._value.luggageleft,
 	);
 
 	$("#numridesDetails").html(
-		offerList.get("offerid", offerid)[0]._value.numrides,
+		myRideOfferList.get("offerid", offerid)[0]._value.numrides,
 	);
 
 	$("#smokingDetails").html(
-		offerList.get("offerid", offerid)[0]._value.smoking,
+		myRideOfferList.get("offerid", offerid)[0]._value.smoking,
 	);
 
 	$("#foodndrinkDetails").html(
-		offerList.get("offerid", offerid)[0]._value.foodndrink,
+		myRideOfferList.get("offerid", offerid)[0]._value.foodndrink,
 	);
 
-	$("#petsDetails").html(offerList.get("offerid", offerid)[0]._value.pets);
+	$("#petsDetails").html(
+		myRideOfferList.get("offerid", offerid)[0]._value.pets,
+	);
 
-	$("#acDetails").html(offerList.get("offerid", offerid)[0]._value.ac);
+	$("#acDetails").html(myRideOfferList.get("offerid", offerid)[0]._value.ac);
 
 	$("#travelingtimeDetails").html(
-		offerList.get("offerid", offerid)[0]._value.travelingtime,
+		myRideOfferList.get("offerid", offerid)[0]._value.travelingtime,
 	);
 
 	$("#offeredbyDetails").html(
-		offerList.get("offerid", offerid)[0]._value.offeredby,
+		myRideOfferList.get("offerid", offerid)[0]._value.offeredby,
 	);
 
-	$("#priceDetails").html(offerList.get("offerid", offerid)[0]._value.price);
+	$("#priceDetails").html(
+		myRideOfferList.get("offerid", offerid)[0]._value.price,
+	);
 }

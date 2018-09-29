@@ -97,7 +97,7 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
-	$("#createRideOfferForm").submit(function(data) {
+	$("#editRideOfferForm").submit(function(data) {
 		data.preventDefault();
 
 		var credentials = localStorage.getItem("credentials");
@@ -123,7 +123,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						alert("Ride Offer successfully created.");
+						alert("Ride Offer successfully updated.");
 						window.location.href = "/myOffer";
 						break;
 					}
