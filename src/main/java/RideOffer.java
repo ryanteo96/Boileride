@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Date;
 
 import DTO.*;
+import com.google.gson.Gson;
 import com.google.maps.errors.ApiException;
 
 /**
@@ -433,14 +434,15 @@ public class RideOffer {
         start.setRides(new LinkedList<>());
         RideOffer first = new RideOffer();
         first.setDestination(query.getPickuplocation());
+        first.setDatentime(query.getDatentime());
         first.setTravelingtime(0);
         start.getRides().add(first);
         heap.add(start);
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
-            if (gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(query.getDestination()))) {
+            if (curr.getRides().getLast().getDestination().equals(query.getDestination())) {
                 if (curr.getRides().size() - 1 <= query.getNumrides() && query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 > curr.getRides().getFirst().getDatentime().getTime()) {
-                    curr.getRides().removeFirst();
+                    // curr.getRides().removeFirst();
                     trips.addLast(curr.toTrip());
                 }
                 continue;
@@ -456,6 +458,7 @@ public class RideOffer {
                 return response;
             }
             for (RideOffer r : rs) {
+                System.out.println(new Gson().toJson(r));
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());
                 for (RideOffer a : curr.getRides()) {

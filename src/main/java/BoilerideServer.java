@@ -15,7 +15,10 @@ import com.google.gson.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -471,6 +474,30 @@ public class BoilerideServer {
         BoilerideServer server = new BoilerideServer();
 
         server.connect();
+
+//        DatabaseCommunicator.rideOfferFrom("Lafayette", new Date(),
+//                1, 1, true, true, true, true);
+//        DatabaseCommunicator.rideRequestFromTo("Lafayette", "Chicago",
+//                new Date(),
+//                1, 1, true, true, true, true);
+
+//        RideRequestSearchRequest query1 = new RideRequestSearchRequest("hyuang", "Hillenbrand Dining Court, 3rd Street, West Lafayette, IN 47906", 10.0, "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0,
+//                new Date(), 10000, 1, 1, true, false, false, false);
+//        RideOfferSearchRequest query2 = new RideOfferSearchRequest("hyuang", "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0, "Lawson Computer Science Building, North University Street, West Lafayette, IN 47906", 10.0,
+//                new Date(), 10000, 10, 1, 1, false, true, false, false);
+//
+//        try {
+//            RideRequestSearchResponse r1 = RideRequest.search(query1);
+//            RideOfferSearchResponse r2 = RideOffer.search(query2);
+//            System.out.println(new Gson().toJson(r1));
+//            System.out.println(new Gson().toJson(r2));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 //        GoogleMapAPI gma = new GoogleMapAPI();
 //        try {
