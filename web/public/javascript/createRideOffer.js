@@ -117,7 +117,7 @@ $(document).ready(function() {
 				foodndrink: $("#foodndrink").prop("checked"),
 				pets: $("#pets").prop("checked"),
 				ac: $("#ac").prop("checked"),
-				travellingtime: traveltime,
+				travelingtime: traveltime,
 				price: price,
 			},
 			function(res) {
