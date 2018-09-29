@@ -55,6 +55,21 @@ $(document).ready(function() {
 					case 0: {
 						console.log(res.requestlist);
 						generateRequestList(res.requestlist);
+						// localStorage.key = "requestlist";
+						// localStorage.setItem(
+						// 	"requestlist",
+						// 	JSON.stringify({
+						// 		requestlist: res.requestlist,
+						// 	}),
+
+						localStorage.key = "requestlist";
+						localStorage.setItem(
+							"requestlist",
+							JSON.stringify({
+								requestlist: res.requestlist,
+							}),
+						);
+
 						break;
 					}
 					case 1: {
@@ -68,6 +83,11 @@ $(document).ready(function() {
 				}
 			},
 		);
+	});
+
+	$("#editRequestBtn").click(function(data) {
+		data.preventDefault();
+		window.location.href = "/myRides/myRequest/edit";
 	});
 });
 
@@ -99,15 +119,14 @@ function generateRequestList(requestList) {
 			'<small class="datentime col-2 text-right"></small>' +
 			"</div>" +
 			'<div class="d-flex w-100">' +
-			'<i class="icons fas fa-users p-2 col text-center"><small class="values seatsleft p-2"></small></i>' +
+			'<i class="icons fas fa-users p-2 col text-center"><small class="values passengers p-2"></small></i>' +
 			'<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggage p-2"></small></i>' +
-			'<i class="icons fas fa-car p-2 col text-center"><small class="values numrides p-2"></small></i>' +
 			'<i class="icons fas fa-smoking p-2 col text-center"><small class="values smoking p-2"></small></i>' +
 			'<i class="icons fas fa-cookie-bite p-2 col text-center"><small class="values foodndrink p-2"></small></i>' +
 			'<i class="icons fas fa-paw p-2 col text-center"><small class="values pets p-2"></small></i>' +
 			'<i class="icons far fa-snowflake p-2 col text-center"><small class="values ac p-2"></small></i>' +
 			'<i class="icons fas fa-stopwatch p-2 col text-center"><small class="values travelingtime p-2"></small></i>' +
-			'<i class="icons fas fa-user-circle p-2 col text-center"><small class="values offeredby p-2"></small></i>' +
+			'<i class="icons fas fa-user-circle p-2 col text-center"><small class="values requestedby p-2"></small></i>' +
 			'<i class="icons fas fa-money-bill p-2 col text-center"><small class="values price p-2"></small></i>' +
 			"</div>" +
 			"</div>" +
