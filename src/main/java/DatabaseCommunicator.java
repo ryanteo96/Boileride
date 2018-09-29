@@ -384,29 +384,29 @@ public class DatabaseCommunicator {
     public static ArrayList<DtoRideRequest> selectRequestList(int userid){
         ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
 
-        int requestid = -1;
-        int requestedby = -1;
-        int passenger = 0;
-        int luggage = 0;
-        int travellingtime = 0;
-        int price = 0;
-        int smoking = 0;
-        int foodndrink = 0;
-        int pets = 0;
-        int AC = 0;
-        int status = 0;
-        String pickuplocation = "";
-        String destination = "";
-        String datentimeStr = null;
-        boolean smoke = false;
-        boolean food =false;
-        boolean pet = false;
-        boolean ac = false;
-
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
             while (rs.next()){
+                int requestid = -1;
+                int requestedby = -1;
+                int passenger = 0;
+                int luggage = 0;
+                int travellingtime = 0;
+                int price = 0;
+                int smoking = 0;
+                int foodndrink = 0;
+                int pets = 0;
+                int AC = 0;
+                int status = 0;
+                String pickuplocation = "";
+                String destination = "";
+                String datentimeStr = null;
+                boolean smoke = false;
+                boolean food =false;
+                boolean pet = false;
+                boolean ac = false;
+
                 requestid = rs.getInt("requestid");
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
@@ -596,31 +596,31 @@ public class DatabaseCommunicator {
     public static ArrayList<DtoRideOffer> selectOfferList(int userid){
         ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
 
-        int offerid = -1;
-        int offeredby = -1;
-        int luggage = 0;
-        int travellingtime = 0;
-        int price = 0;
-        int smoking = 0;
-        int foodndrink = 0;
-        int pets = 0;
-        int AC = 0;
-        int status = 0;
-        int seatsleft = 0;
-        int luggagesleft = 0;
-        int seats = 0;
-        String pickuplocation = "";
-        String destination = "";
-        String datentimeStr = null;
-        boolean smoke = false;
-        boolean food =false;
-        boolean pet = false;
-        boolean ac = false;
-
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             while (rs.next()) {
+                int offerid = -1;
+                int offeredby = -1;
+                int luggage = 0;
+                int travellingtime = 0;
+                int price = 0;
+                int smoking = 0;
+                int foodndrink = 0;
+                int pets = 0;
+                int AC = 0;
+                int status = 0;
+                int seatsleft = 0;
+                int luggagesleft = 0;
+                int seats = 0;
+                String pickuplocation = "";
+                String destination = "";
+                String datentimeStr = null;
+                boolean smoke = false;
+                boolean food =false;
+                boolean pet = false;
+                boolean ac = false;
+
                 offerid = rs.getInt("offerid");
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
