@@ -124,7 +124,7 @@ $(document).ready(function() {
 				switch (res.result) {
 					case 0: {
 						alert("Ride Offer successfully created.");
-						window.location.href = "/home";
+						window.location.href = "/myOffer";
 						break;
 					}
 					case 1: {
