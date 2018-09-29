@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class DtoRideOffer {
 
+    private int offerid;
     private int offeredby;
     private String pickuplocation;
     private String destination;
@@ -24,9 +25,10 @@ public class DtoRideOffer {
 
     }
 
-    public DtoRideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
+    public DtoRideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
                         int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                         int travelingtime, int price, int seatleft, int luggageleft, int status) {
+        this.offerid = offerid;
         this.offeredby = offeredby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -42,6 +44,14 @@ public class DtoRideOffer {
         this.seatleft = seatleft;
         this.luggageleft = luggageleft;
         this.status = status;
+    }
+
+    public int getOfferid() {
+        return offerid;
+    }
+
+    public void setOfferid(int offerid) {
+        this.offerid = offerid;
     }
 
     public int getOfferedby() {
@@ -166,7 +176,8 @@ public class DtoRideOffer {
 
     public String toString() {
         return "RideOffer{" +
-                "offeredby=" + offeredby +
+                "offerid=" + offerid +
+                ", offeredby=" + offeredby +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +

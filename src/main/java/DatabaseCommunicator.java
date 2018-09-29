@@ -384,7 +384,8 @@ public class DatabaseCommunicator {
     public static ArrayList<DtoRideRequest> selectRequestList(int userid){
         ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
 
-        int requestedby = 0;
+        int requestid = -1;
+        int requestedby = -1;
         int passenger = 0;
         int luggage = 0;
         int travellingtime = 0;
@@ -406,6 +407,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
             while (rs.next()){
+                requestid = rs.getInt("requestid");
                 requestedby = rs.getInt("requestedby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
@@ -440,7 +442,7 @@ public class DatabaseCommunicator {
                     e.printStackTrace();
                 }
 
-                DtoRideRequest rideRequest = new DtoRideRequest(requestedby, pickuplocation, destination, datentime, passenger,
+                DtoRideRequest rideRequest = new DtoRideRequest(requestid, requestedby, pickuplocation, destination, datentime, passenger,
                         luggage, smoke, food, pet, ac, travellingtime, price, status);
 
                 requestlist.add(rideRequest);
@@ -594,7 +596,8 @@ public class DatabaseCommunicator {
     public static ArrayList<DtoRideOffer> selectOfferList(int userid){
         ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
 
-        int offeredby = 0;
+        int offerid = -1;
+        int offeredby = -1;
         int luggage = 0;
         int travellingtime = 0;
         int price = 0;
@@ -618,6 +621,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             while (rs.next()) {
+                offerid = rs.getInt("offerid");
                 offeredby = rs.getInt("offeredby");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
@@ -654,7 +658,7 @@ public class DatabaseCommunicator {
                     e.printStackTrace();
                 }
 
-                DtoRideOffer rideOffer = new DtoRideOffer(offeredby, pickuplocation, destination, datentime, seats,
+                DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, pickuplocation, destination, datentime, seats,
                         luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
 
                 offerlist.add(rideOffer);
