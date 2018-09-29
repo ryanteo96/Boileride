@@ -867,7 +867,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            String query = String.format("SELECT * FROM RIDEREQUEST " +
+            String query = String.format("SELECT * FROM RIDEOFFER " +
                             "WHERE status <> 2 " +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
