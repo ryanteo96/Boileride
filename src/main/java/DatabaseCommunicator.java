@@ -870,7 +870,7 @@ public class DatabaseCommunicator {
             String query = String.format("SELECT * FROM RIDEREQUEST " +
                             "WHERE status <> 2 " +
                             "AND pickuplocation like '%%%s%%' " +
-                            "AND datentime >= %s " +
+                            "AND datentime >= '%s' " +
                             "AND seatleft >= %d " +
                             "AND luggageleft >= %d " +
                             "AND smoking = %d " +
@@ -961,7 +961,7 @@ public class DatabaseCommunicator {
                     "WHERE status <> 2 " +
                     "AND pickuplocation like '%%%s%%' " +
                     "AND destination like '%%%s%%' " +
-                    "AND datentime >= %s " +
+                    "AND datentime >= '%s' " +
                     "AND passenger >= %d " +
                     "AND luggage >= %d " +
                     "AND smoking = %d " +
