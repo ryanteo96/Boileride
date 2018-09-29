@@ -16,13 +16,6 @@ $(document).ready(function() {
 				case 0: {
 					console.log(res.requestlist);
 					generateRequestList(res.requestlist);
-					localStorage.key = "requestlist";
-					localStorage.setItem(
-						"requestlist",
-						JSON.stringify({
-							requestlist: res.requestlist,
-						}),
-					);
 					break;
 				}
 				case 1: {
@@ -48,17 +41,21 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
+		var editRequest = localStorage.getItem("editRequest");
+		var edit = JSON.parse(editRequest);
+
 		console.log(obj.userid);
 
 		$.post(
-			"/myRides/myRequest",
+			"/myRides/myRequest/cancel",
 			{
 				userid: obj.userid,
-				requestid: obj.requestid,
+				requestid: edit.requestid,
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
+						window.location.href = "/myRides/myRequest/";
 						break;
 					}
 					case 1: {
@@ -165,6 +162,14 @@ function generateRequestList(requestList) {
 
 function getItem(item) {
 	var requestid = $(item).data("requestid");
+
+	localStorage.key = "editRequest";
+	localStorage.setItem(
+		"editRequest",
+		JSON.stringify(
+			myRideRequestList.get("requestid", requestid)[0]._values,
+		),
+	);
 
 	$("#myRideRequestModal").modal("show");
 
