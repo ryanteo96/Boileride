@@ -107,7 +107,7 @@ google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
 	loadOriginalValue();
-	$("#createRideRequestForm").submit(function(data) {
+	$("#editRideRequestForm").submit(function(data) {
 		data.preventDefault();
 
 		var credentials = localStorage.getItem("credentials");
@@ -181,7 +181,6 @@ $(document).ready(function() {
 });
 
 function loadOriginalValue() {
-	// var requestlist = localStorage.getItem("test");
 	var editRequest = localStorage.getItem("editRequest");
 	var obj = JSON.parse(editRequest);
 
