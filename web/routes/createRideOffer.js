@@ -24,7 +24,7 @@ router.post("/", function(req, res) {
 		foodndrink: req.body.foodndrink,
 		pets: req.body.pets,
 		ac: req.body.ac,
-		travellingtime: req.body.travellingtime,
+		travelingtime: req.body.travelingtime,
 		price: req.body.price,
 	};
 
