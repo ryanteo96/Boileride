@@ -66,7 +66,7 @@
 
     </nav>
 
-    <div id="viewMyOfferList" class="viewMyOfferList">
+    <div id="myRideOfferList" class="viewMyOfferList">
         <h5 id="myRideOfferListTitle">My Ride Offers</h5>
         <ul class="list list-group list-group-flush"></ul>
     </div>
@@ -126,8 +126,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" disabled>Join</button>
+                        <button id="cancelOfferBtn" type="button" class="btn btn-secondary" data-dismiss="modal" href="/myRides/myOffer/cancel">Cancel
+                            Ride</button>
+                        <button id="editOfferBtn" type="button" class="btn btn-primary" href="/myRides/myOffer/edit">Edit
+                            Ride</button>
                     </div>
                 </div>
             </div>

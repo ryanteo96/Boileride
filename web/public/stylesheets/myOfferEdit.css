@@ -1,0 +1,27 @@
+#createRideOfferDiv {
+	padding: 10px;
+}
+
+#createRideOfferTitle {
+	padding: 0px 10px;
+}
+
+#createRideOfferDetails {
+	padding: 10px;
+}
+
+#createRideOfferForm {
+	padding: 0px 10px;
+}
+
+#createRideOfferAmenities {
+	padding: 10px 0px;
+}
+
+#amenitiesDiv {
+	padding: 0px 5px;
+}
+
+.dropdown-menu {
+	left: auto;
+}

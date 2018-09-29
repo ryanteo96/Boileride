@@ -1,56 +1,64 @@
-let offerList;
-let test = [
-	{
-		offerid: 1,
-		offeredby: "test",
-		pickuplocation: "Earhart",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 1,
-		seatleft: 1,
-		luggageleft: 1,
-		status: "true",
-	},
-	{
-		offerid: 2,
-		offeredby: "test2",
-		pickuplocation: "Hillenbrand",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 100,
-		seatleft: 2,
-		luggageleft: 3,
-		status: "true",
-	},
-];
+var offerList;
 
 $(document).ready(function() {
-	generateViewOfferList(test);
-	$("#myOffer").click(function(data) {
+	generateViewOfferList();
+	var credentials = localStorage.getItem("credentials");
+	var obj = JSON.parse(credentials);
+	$.post(
+		"/myRides/myOffer",
+		{
+			userid: obj.userid,
+		},
+		function(res) {
+			switch (res.result) {
+				case 0: {
+					console.log(res.offerlist);
+					localStorage.key = "offerlist";
+					localStorage.setItem(
+						"offerlist",
+						JSON.stringify({
+							offerlist: res.offerlist,
+						}),
+					);
+					break;
+				}
+				case 1: {
+					alert("Invalid userid.");
+					break;
+				}
+				case 2: {
+					alert("User not logged in.");
+					break;
+				}
+			}
+		},
+	);
+});
+
+$("#myOffer").click(function(data) {
+	data.preventDefault();
+
+	console.log(obj.userid);
+
+	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
+		window.location.href = "/myRides/myOffer/edit";
+	});
 
+	$("#cancelOfferBtn").click(function(data) {
+		data.preventDefault();
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
 		console.log(obj.userid);
-
 		$.post(
-			"/myRides/myOffer",
+			"/myRides/myOffer/cancel",
 			{
 				userid: obj.userid,
+				offerid: obj.offerid,
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						console.log(res.offerlist);
-						generateViewOfferList(res.offerlist);
 						break;
 					}
 					case 1: {
@@ -61,13 +69,22 @@ $(document).ready(function() {
 						alert("User not logged in.");
 						break;
 					}
+					case 3: {
+						alert("Not authorized to cancel.");
+					}
+					case 4: {
+						alert("Ride not exist.");
+					}
+					case 5: {
+						alert("Ride already cancelled.");
+					}
 				}
 			},
 		);
 	});
 });
 
-function generateViewOfferList(viewOfferList) {
+function generateViewOfferList(offerList) {
 	var options = {
 		valueNames: [
 			{ data: ["offerid"] },
@@ -108,39 +125,39 @@ function generateViewOfferList(viewOfferList) {
 			"</li>",
 	};
 
-	offerList = new List("viewMyOfferList", options);
+	offerList = new List("myRideOfferList", options);
 
-	for (var i = 0; i < viewOfferList.length; i++) {
-		if (viewOfferList[i].smoking == "true") {
-			viewOfferList[i].smoking = "Yes";
-		} else viewOfferList[i].smoking = "No";
+	for (var i = 0; i < offerList.length; i++) {
+		if (offerList[i].smoking == true) {
+			offerList[i].smoking = "Yes";
+		} else offerList[i].smoking = "No";
 
-		if (viewOfferList[i].ac == "true") {
-			viewOfferList[i].ac = "Yes";
-		} else viewOfferList[i].ac = "No";
+		if (offerList[i].ac == true) {
+			offerList[i].ac = "Yes";
+		} else offerList[i].ac = "No";
 
-		if (viewOfferList[i].foodndrink == "true") {
-			viewOfferList[i].foodndrink = "Yes";
-		} else viewOfferList[i].foodndrink = "No";
+		if (offerList[i].foodndrink == true) {
+			offerList[i].foodndrink = "Yes";
+		} else offerList[i].foodndrink = "No";
 
-		if (viewOfferList[i].pets == "true") {
-			viewOfferList[i].pets = "Yes";
-		} else viewOfferList[i].pets = "No";
+		if (offerList[i].pets == true) {
+			offerList[i].pets = "Yes";
+		} else offerList[i].pets = "No";
 
 		offerList.add({
-			offerid: viewOfferList[i].offerid,
-			pickuplocation: viewOfferList[i].pickuplocation,
-			destination: viewOfferList[i].destination,
-			datentime: viewOfferList[i].datentime,
-			smoking: viewOfferList[i].smoking,
-			ac: viewOfferList[i].ac,
-			foodndrink: viewOfferList[i].foodndrink,
-			pets: viewOfferList[i].pets,
-			travelingtime: viewOfferList[i].travelingtime,
-			offeredby: viewOfferList[i].offeredby,
-			seatleft: viewOfferList[i].seatleft,
-			luggageleft: viewOfferList[i].luggageleft,
-			price: viewOfferList[i].price,
+			offerid: offerList[i].offerid,
+			pickuplocation: offerList[i].pickuplocation,
+			destination: offerList[i].destination,
+			datentime: offerList[i].datentime,
+			smoking: offerList[i].smoking,
+			ac: offerList[i].ac,
+			foodndrink: offerList[i].foodndrink,
+			pets: offerList[i].pets,
+			travelingtime: offerList[i].travelingtime,
+			offeredby: offerList[i].offeredby,
+			seatleft: offerList[i].seatleft,
+			luggageleft: offerList[i].luggageleft,
+			price: offerList[i].price,
 		});
 	}
 }
@@ -151,44 +168,44 @@ function getItem(item) {
 	$("#myRideOfferModal").modal("show");
 
 	$("#pickuplocationDetails").html(
-		offerList.get("offerid", offerid)[0]._values.pickuplocation,
+		offerList.get("offerid", offerid)[0]._value.pickuplocation,
 	);
 
 	$("#destinationDetails").html(
-		offerList.get("offerid", offerid)[0]._values.destination,
+		offerList.get("offerid", offerid)[0]._value.destination,
 	);
 
 	$("#seatsDetails").html(
-		offerList.get("offerid", offerid)[0]._values.seatleft,
+		offerList.get("offerid", offerid)[0]._value.seatleft,
 	);
 
 	$("#luggageDetails").html(
-		offerList.get("offerid", offerid)[0]._values.luggageleft,
+		offerList.get("offerid", offerid)[0]._value.luggageleft,
 	);
 
 	$("#numridesDetails").html(
-		offerList.get("offerid", offerid)[0]._values.numrides,
+		offerList.get("offerid", offerid)[0]._value.numrides,
 	);
 
 	$("#smokingDetails").html(
-		offerList.get("offerid", offerid)[0]._values.smoking,
+		offerList.get("offerid", offerid)[0]._value.smoking,
 	);
 
 	$("#foodndrinkDetails").html(
-		offerList.get("offerid", offerid)[0]._values.foodndrink,
+		offerList.get("offerid", offerid)[0]._value.foodndrink,
 	);
 
-	$("#petsDetails").html(offerList.get("offerid", offerid)[0]._values.pets);
+	$("#petsDetails").html(offerList.get("offerid", offerid)[0]._value.pets);
 
-	$("#acDetails").html(offerList.get("offerid", offerid)[0]._values.ac);
+	$("#acDetails").html(offerList.get("offerid", offerid)[0]._value.ac);
 
 	$("#travelingtimeDetails").html(
-		offerList.get("offerid", offerid)[0]._values.travelingtime,
+		offerList.get("offerid", offerid)[0]._value.travelingtime,
 	);
 
 	$("#offeredbyDetails").html(
-		offerList.get("offerid", offerid)[0]._values.offeredby,
+		offerList.get("offerid", offerid)[0]._value.offeredby,
 	);
 
-	$("#priceDetails").html(offerList.get("offerid", offerid)[0]._values.price);
+	$("#priceDetails").html(offerList.get("offerid", offerid)[0]._value.price);
 }

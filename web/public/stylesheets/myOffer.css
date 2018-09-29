@@ -17,3 +17,8 @@
 .row {
 	margin: 0px;
 }
+
+.list > li:hover {
+	cursor: pointer;
+	background-color: lightgrey;
+}
