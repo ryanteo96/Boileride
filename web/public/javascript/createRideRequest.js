@@ -44,7 +44,7 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.split(".") >= 0) {
+							if (results[0].distance.text.indexOf(".") >= 0) {
 								var arr = results[0].distance.text.split(".");
 							} else {
 								var arr = results[0].distance.text.split(" mi");
@@ -86,7 +86,7 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.split(".") >= 0) {
+							if (results[0].distance.text.indexOf(".") >= 0) {
 								var arr = results[0].distance.text.split(".");
 							} else {
 								var arr = results[0].distance.text.split(" mi");
