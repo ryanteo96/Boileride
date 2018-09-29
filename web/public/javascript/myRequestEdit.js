@@ -4,22 +4,6 @@ let traveltime;
 let price;
 
 function init() {
-	var requestlist = localStorage.getItem("requestlist");
-	var obj = JSON.parse(requestlist);
-
-	$("#pickuplocation").val("SOMETHING");
-	$("#destination").val(obj.pickuplocation);
-	$("#date").val(obj.pickuplocation);
-	$("#time").val(obj.pickuplocation);
-	$("#passengers").val(obj.pickuplocation);
-	$("#luggage").val(obj.pickuplocation);
-	$("#smoking").val(obj.pickuplocation);
-	$("#foodndrink").val(obj.pickuplocation);
-	$("#pets").val(obj.pickuplocation);
-	$("#ac").val(obj.pickuplocation);
-	$("#traveltime").val(obj.pickuplocation);
-	$("#price").val(obj.pickuplocation);
-
 	pickup = document.getElementById("pickuplocation");
 	destination = document.getElementById("destination");
 
@@ -112,6 +96,7 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
+	loadOriginalValue();
 	$("#createRideRequestForm").submit(function(data) {
 		data.preventDefault();
 
@@ -138,7 +123,7 @@ $(document).ready(function() {
 				switch (res.result) {
 					case 0: {
 						alert("Ride Request successfully created.");
-						window.location.href = "/home";
+						window.location.href = "/myRides/myRequest";
 						break;
 					}
 					case 1: {
@@ -150,23 +135,67 @@ $(document).ready(function() {
 						break;
 					}
 					case 3: {
-						alert("Invalid pickup location.");
+						alert("Not authorized to update.");
 						break;
 					}
 					case 4: {
-						alert("Invalid destination.");
+						alert("Ride not exist.");
 						break;
 					}
 					case 5: {
-						alert("Invalid datentime.");
+						alert("Ride cancelled.");
 						break;
 					}
 					case 6: {
-						alert("Not enough points.");
+						alert("Invalid pickup location.");
 						break;
+					}
+					case 7: {
+						alert("Invalid destination.");
+					}
+					case 8: {
+						alert("Invalid datentime.");
+					}
+					case 9: {
+						alert("Not enough points.");
 					}
 				}
 			},
 		);
 	});
 });
+
+function loadOriginalValue() {
+	var requestlist = localStorage.getItem("test");
+	// var requestlist = localStorage.getItem("requestlist");
+	var obj = JSON.parse(requestlist);
+
+	$("#pickuplocation").val(obj.pickuplocation);
+	$("#destination").val(obj.destination);
+	$("#date").val(obj.date);
+	$("#time").val(obj.time);
+	$("#passengers").val(obj.passengers);
+	$("#luggage").val(obj.luggage);
+	if (obj.smoking == "true") {
+		$("#smoking").prop("checked", true);
+	} else {
+		$("#smoking").prop("checked", false);
+	}
+	if (obj.foodndrink == "true") {
+		$("#foodndrink").prop("checked", true);
+	} else {
+		$("#foodndrink").prop("checked", false);
+	}
+	if (obj.pets == "true") {
+		$("#pets").prop("checked", true);
+	} else {
+		$("#pets").prop("checked", false);
+	}
+	if (obj.ac == "true") {
+		$("#ac").prop("checked", true);
+	} else {
+		$("#ac").prop("checked", false);
+	}
+	$("#traveltime").val(obj.travelingtime);
+	$("#price").val(obj.price);
+}

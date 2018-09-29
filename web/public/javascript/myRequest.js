@@ -37,6 +37,26 @@ let test = [
 
 $(document).ready(function() {
 	generateRequestList(test);
+	localStorage.key = "test";
+	localStorage.setItem(
+		"test",
+		JSON.stringify({
+			requestid: 1,
+			requestedby: "test",
+			pickuplocation: "Earhart",
+			destination: "Purdue",
+			datentime: "1/1/1",
+			passengers: 4,
+			luggage: 4,
+			smoking: "true",
+			foodndrink: "false",
+			pets: "true",
+			ac: "true",
+			travelingtime: 3,
+			price: 1,
+			status: "true",
+		}),
+	);
 	$("#myRequest").click(function(data) {
 		data.preventDefault();
 
@@ -55,13 +75,6 @@ $(document).ready(function() {
 					case 0: {
 						console.log(res.requestlist);
 						generateRequestList(res.requestlist);
-						// localStorage.key = "requestlist";
-						// localStorage.setItem(
-						// 	"requestlist",
-						// 	JSON.stringify({
-						// 		requestlist: res.requestlist,
-						// 	}),
-
 						localStorage.key = "requestlist";
 						localStorage.setItem(
 							"requestlist",
@@ -69,7 +82,6 @@ $(document).ready(function() {
 								requestlist: res.requestlist,
 							}),
 						);
-
 						break;
 					}
 					case 1: {
@@ -88,6 +100,47 @@ $(document).ready(function() {
 	$("#editRequestBtn").click(function(data) {
 		data.preventDefault();
 		window.location.href = "/myRides/myRequest/edit";
+	});
+
+	$("#cancelRequestBtn").click(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		console.log(obj.userid);
+
+		$.post(
+			"/myRides/myRequest",
+			{
+				userid: obj.userid,
+				requestid: obj.requestid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Not authorized to cancel.");
+					}
+					case 4: {
+						alert("Ride not exist.");
+					}
+					case 5: {
+						alert("Ride already cancelled.");
+					}
+				}
+			},
+		);
 	});
 });
 
