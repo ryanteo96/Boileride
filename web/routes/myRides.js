@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
-const router = express.Router();
 const request = require("request");
+const moment = require("moment");
+
+const router = express.Router();
 
 router.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRides.html"));
@@ -41,9 +43,12 @@ router.post("/myRequest", function(req, res) {
 		},
 	};
 
+	console.log(data);
+
 	request(options, function(error, response) {
-		console.log(error, response);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });
@@ -58,7 +63,7 @@ router.post("/myRequest/edit", function(req, res) {
 		requestid: req.body.requestid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
-		datentime: req.body.datentime,
+		datentime: date + " " + time,
 		passengers: req.body.passengers,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,
@@ -68,6 +73,8 @@ router.post("/myRequest/edit", function(req, res) {
 		travelingtime: req.body.travelingtime,
 		price: req.body.price,
 	};
+
+	console.log(data);
 
 	//  temp server connection test
 	var options = {
@@ -80,8 +87,9 @@ router.post("/myRequest/edit", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		console.log(error, response);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });
@@ -106,9 +114,12 @@ router.post("/myRequest/cancel", function(req, res) {
 		},
 	};
 
+	console.log(data);
+
 	request(options, function(error, response) {
-		console.log(error, response);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });
@@ -163,6 +174,8 @@ router.post("/myOffer/edit", function(req, res) {
 		price: req.body.price,
 	};
 
+	console.log(data);
+
 	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/update/offer",
@@ -174,8 +187,9 @@ router.post("/myOffer/edit", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		console.log(error, response);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });
@@ -199,8 +213,9 @@ router.post("/myOffer/cancel", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		console.log(error, response);
-		res.send(response.body);
+		if (response) {
+			res.send(response.body);
+		}
 		return;
 	});
 });

@@ -43,9 +43,14 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							if (results[0].distance.text.indexOf(".") >= 0) {
+								var arr = results[0].distance.text.split(".");
+							} else {
+								var arr = results[0].distance.text.split(" mi");
+							}
+
+							priceOutput.value = arr[0];
 							traveltime = results[0].duration.value;
 							price = arr[0];
 						}
@@ -80,9 +85,14 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							if (results[0].distance.text.indexOf(".") >= 0) {
+								var arr = results[0].distance.text.split(".");
+							} else {
+								var arr = results[0].distance.text.split(" mi");
+							}
+
+							priceOutput.value = arr[0];
 							traveltime = results[0].duration.value;
 							price = arr[0];
 						}
@@ -102,10 +112,15 @@ $(document).ready(function() {
 
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
+
+		var editRequest = localStorage.getItem("editRequest");
+		var edit = JSON.parse(editRequest);
+
 		$.post(
-			"/myRequest/edit",
+			"/myRides/myRequest/edit",
 			{
 				userid: obj.userid,
+				requestid: edit.requestid,
 				pickuplocation: pickup.value,
 				destination: destination.value,
 				date: $("#date").val(),
@@ -116,13 +131,13 @@ $(document).ready(function() {
 				foodndrink: $("#foodndrink").prop("checked"),
 				pets: $("#pets").prop("checked"),
 				ac: $("#ac").prop("checked"),
-				travellingtime: traveltime,
+				travelingtime: traveltime,
 				price: price,
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						alert("Ride Request successfully created.");
+						alert("Ride Request successfully updated.");
 						window.location.href = "/myRides/myRequest";
 						break;
 					}
@@ -166,36 +181,45 @@ $(document).ready(function() {
 });
 
 function loadOriginalValue() {
-	var requestlist = localStorage.getItem("test");
-	// var requestlist = localStorage.getItem("requestlist");
-	var obj = JSON.parse(requestlist);
+	// var requestlist = localStorage.getItem("test");
+	var editRequest = localStorage.getItem("editRequest");
+	var obj = JSON.parse(editRequest);
+
+	var datentime = obj.datentime.split(" ");
+	var date = datentime[0];
+	var time = datentime[1];
 
 	$("#pickuplocation").val(obj.pickuplocation);
 	$("#destination").val(obj.destination);
-	$("#date").val(obj.date);
-	$("#time").val(obj.time);
+	$("#date").val(date);
+	$("#time").val(time);
 	$("#passengers").val(obj.passengers);
 	$("#luggage").val(obj.luggage);
-	if (obj.smoking == "true") {
+
+	if (obj.smoking == "Yes") {
 		$("#smoking").prop("checked", true);
 	} else {
 		$("#smoking").prop("checked", false);
 	}
-	if (obj.foodndrink == "true") {
+
+	if (obj.foodndrink == "Yes") {
 		$("#foodndrink").prop("checked", true);
 	} else {
 		$("#foodndrink").prop("checked", false);
 	}
-	if (obj.pets == "true") {
+
+	if (obj.pets == "Yes") {
 		$("#pets").prop("checked", true);
 	} else {
 		$("#pets").prop("checked", false);
 	}
-	if (obj.ac == "true") {
+
+	if (obj.ac == "Yes") {
 		$("#ac").prop("checked", true);
 	} else {
 		$("#ac").prop("checked", false);
 	}
+
 	$("#traveltime").val(obj.travelingtime);
 	$("#price").val(obj.price);
 }
