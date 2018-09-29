@@ -1,33 +1,28 @@
 $(document).ready(function() {
-	$("#signInForm").submit(function(data) {
+	$("#forgotPwForm").submit(function(data) {
 		data.preventDefault();
 
 		$.post(
-			"/signIn",
+			"/forgotPw",
 			{
-				email: $("#emailSignIn").val(),
-				password: $("#passwordSignIn").val(),
+				email: $("#forgotPwEmail").val(),
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						localStorage.key = "credentials";
+						localStorage.key = "resetPwEmail";
 						localStorage.setItem(
-							"credentials",
+							"resetPwEmail",
 							JSON.stringify({
-								userid: res.userid,
+								email: $("#forgotPwEmail").val(),
 							}),
 						);
 
-						window.location.href = "/home";
+						window.location.href = "/resetPw";
 						break;
 					}
 					case 1: {
 						alert("User does not exist.");
-						break;
-					}
-					case 2: {
-						alert("Invalid password.");
 						break;
 					}
 				}

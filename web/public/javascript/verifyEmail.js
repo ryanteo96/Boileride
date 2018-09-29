@@ -1,12 +1,17 @@
 $(document).ready(function() {
-	$("#signInForm").submit(function(data) {
+	$("#verifyEmailForm").submit(function(data) {
 		data.preventDefault();
 
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		console.log(obj);
+
 		$.post(
-			"/signIn",
+			"/verifyEmail",
 			{
-				email: $("#emailSignIn").val(),
-				password: $("#passwordSignIn").val(),
+				email: obj.email,
+				code: $("#verifyCode").val(),
 			},
 			function(res) {
 				switch (res.result) {
@@ -23,11 +28,11 @@ $(document).ready(function() {
 						break;
 					}
 					case 1: {
-						alert("User does not exist.");
+						alert("Invalid email.");
 						break;
 					}
 					case 2: {
-						alert("Invalid password.");
+						alert("Invalid verification code.");
 						break;
 					}
 				}

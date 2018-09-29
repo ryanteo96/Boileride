@@ -5,19 +5,20 @@ const request = require("request");
 const router = express.Router();
 
 router.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname, "../public/html/forgotPw.html"));
+	res.sendFile(path.join(__dirname, "../public/html/verifyEmail.html"));
 });
 
 router.post("/", function(req, res) {
 	var data = {
 		email: req.body.email,
+		code: req.body.code,
 	};
 
 	console.log(data);
 
 	// temp server connection test
 	var options = {
-		uri: "http://localhost:8080/user/forgotpassword",
+		uri: "http://localhost:8080/user/verifyemail",
 		json: data,
 		method: "POST",
 		headers: {
@@ -26,6 +27,7 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
+		console.log(response.body);
 		res.send(response.body);
 		return;
 	});

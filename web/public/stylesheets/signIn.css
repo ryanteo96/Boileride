@@ -37,11 +37,11 @@
 	padding-left: 30px;
 }
 
-#btnDignIn {
+#btn-signIn {
 	width: 100px;
 }
 
-#btnSignUp {
+#btn-goToSignUp {
 	left: 20px;
 	width: 100px;
 }

@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const request = require("request");
+
 const router = express.Router();
 
 router.get("/", function(req, res) {
@@ -10,8 +12,9 @@ router.post("/", function(req, res) {
 	var data = {
 		email: req.body.email,
 		code: req.body.code,
-		newpassword: req.body.newPw
-	};	
+		newpassword: req.body.newpassword,
+	};
+
 	console.log(data);
 
 	// temp server connection test
@@ -24,10 +27,10 @@ router.post("/", function(req, res) {
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		res.send(response.body);
+		return;
+	});
 });
 
 module.exports = router;
