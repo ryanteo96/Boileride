@@ -49,6 +49,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
+						console.log(res.offerlist);
 						generateViewOfferList(res.offerlist);
 						break;
 					}
@@ -147,7 +148,7 @@ function generateViewOfferList(viewOfferList) {
 function getItem(item) {
 	var offerid = $(item).data("offerid");
 
-	$("#myOfferModal").modal("show");
+	$("#myRideOfferModal").modal("show");
 
 	$("#pickuplocationDetails").html(
 		offerList.get("offerid", offerid)[0]._values.pickuplocation,
@@ -157,12 +158,12 @@ function getItem(item) {
 		offerList.get("offerid", offerid)[0]._values.destination,
 	);
 
-	$("#passengersDetails").html(
-		offerList.get("offerid", offerid)[0]._values.passengers,
+	$("#seatsDetails").html(
+		offerList.get("offerid", offerid)[0]._values.seatleft,
 	);
 
 	$("#luggageDetails").html(
-		offerList.get("offerid", offerid)[0]._values.luggage,
+		offerList.get("offerid", offerid)[0]._values.luggageleft,
 	);
 
 	$("#numridesDetails").html(
@@ -185,8 +186,8 @@ function getItem(item) {
 		offerList.get("offerid", offerid)[0]._values.travelingtime,
 	);
 
-	$("#requestedbyDetails").html(
-		offerList.get("offerid", offerid)[0]._values.requestedby,
+	$("#offeredbyDetails").html(
+		offerList.get("offerid", offerid)[0]._values.offeredby,
 	);
 
 	$("#priceDetails").html(offerList.get("offerid", offerid)[0]._values.price);
