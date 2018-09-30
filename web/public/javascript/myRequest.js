@@ -3,7 +3,7 @@ var requestList;
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-
+	//generateRequestList(requestlist);
 	console.log(obj.userid);
 
 	$.post(
@@ -14,6 +14,7 @@ $(document).ready(function() {
 		function(res) {
 			switch (res.result) {
 				case 0: {
+					console.log("success");
 					console.log(res.requestlist);
 					generateRequestList(res.requestlist);
 					break;
@@ -107,6 +108,7 @@ function generateRequestList(requestList) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
+			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
 			'<div class="d-flex w-100">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values passengers p-2"></small></i>' +
@@ -142,6 +144,14 @@ function generateRequestList(requestList) {
 			requestList[i].pets = "Yes";
 		} else requestList[i].pets = "No";
 
+		if (requestList[i].status == 0) {
+			requestList[i].status = "Ongoing";
+			$("#status" + i).css("color", "blue");
+		} else {
+			requestList[i].status = "Cancelled";
+			$("#status" + i).css("color", "red");
+		}
+
 		myRideRequestList.add({
 			requestid: requestList[i].requestid,
 			pickuplocation: requestList[i].pickuplocation,
@@ -156,7 +166,9 @@ function generateRequestList(requestList) {
 			travelingtime: requestList[i].travelingtime,
 			requestedby: requestList[i].requestedby,
 			price: requestList[i].price,
+			status: requestList[i].status,
 		});
+		$("#status").attr("id", "status" + i);
 	}
 }
 
