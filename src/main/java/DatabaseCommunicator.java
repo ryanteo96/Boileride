@@ -477,30 +477,14 @@ public class DatabaseCommunicator {
     }
 
     public static int updateRideRequest(int requestid, RideRequest request){
-        int isAC = 0;
-        int isPets = 0;
-        int isFoodndrink = 0;
-        int isSmoking = 0;
 
-        if(request.isAc()) {
-            isAC = 1;
-        }
-        if(request.isPets()) {
-            isPets = 1;
-        }
-        if(request.isFoodndrink()) {
-            isFoodndrink = 1;
-        }
-        if(request.isSmoking()) {
-            isSmoking = 1;
-        }
-        int requestedby = request.getRequestedby();
+        //int requestedby = request.getRequestedby();
         int passenger = request.getPassengers();
         int luggage = request.getLuggage();
-        int smoking = isSmoking;
-        int foodndrink = isFoodndrink;
-        int pets = isPets;
-        int AC = isAC;
+        boolean smoking = request.isSmoking();
+        boolean foodndrink = request.isFoodndrink();
+        boolean pets = request.isPets();
+        boolean ac = request.isAc();
         int travellingtime = request.getTravelingtime();
         int price = request.getPrice();
         //int status = request.getStatus();
@@ -513,12 +497,25 @@ public class DatabaseCommunicator {
 //            connectDB();
 //        }
         try {
-            //took out status (remy says status shouldn't be updated)
-            Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE RIDEREQUEST SET requestedby = "+requestedby +", pickuplocation = '" +pickuplocation+
-                    "',  destination = '" +destination+"', datentime = '" +timestamp+"', passenger = " +passenger+ ",  luggage = " +luggage+
-                    ", smoking = " +smoking+ ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
-                    ", price = " +price+ " WHERE requestid = " +requestid);
+            //took out status (remy says requestedby, status shouldn't be updated)
+            String query = "UPDATE RIDEREQUEST SET pickuplocation = ?, destination = ?, datentime = ?, passenger = ?, luggage = ?, " +
+                    "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, price = ? WHERE requestid = ?";
+            PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
+
+            stmt.setString(1, pickuplocation);
+            stmt.setString(2, destination);
+            stmt.setTimestamp(3, timestamp);
+            stmt.setInt(4,passenger);
+            stmt.setInt(5,luggage);
+            stmt.setBoolean(6,smoking);
+            stmt.setBoolean(7,foodndrink);
+            stmt.setBoolean(8,pets);
+            stmt.setBoolean(9,ac);
+            stmt.setInt(10,travellingtime);
+            stmt.setInt(11,price);
+            stmt.setInt(12, requestid);
+
+            stmt.executeUpdate();
 
             stmt.close();
         }
@@ -774,31 +771,13 @@ public class DatabaseCommunicator {
     }
 
     public static int updateRideOffer(int offerid, RideOffer offer){
-        int isAC = 0;
-        int isPets = 0;
-        int isFoodndrink = 0;
-        int isSmoking = 0;
 
-        if(offer.isAc()) {
-            isAC = 1;
-        }
-        if(offer.isPets()) {
-            isPets = 1;
-        }
-        if(offer.isFoodndrink()) {
-            isFoodndrink = 1;
-        }
-        if(offer.isSmoking()) {
-            isSmoking = 1;
-        }
-
-        int offeredby = offer.getOfferedby();
         int seats = offer.getSeats();
         int luggage = offer.getLuggage();
-        int smoking = isSmoking;
-        int foodndrink = isFoodndrink;
-        int pets = isPets;
-        int AC = isAC;
+        boolean smoking = offer.isSmoking();
+        boolean foodndrink = offer.isFoodndrink();
+        boolean pets = offer.isPets();
+        boolean ac = offer.isAc();
         int travellingtime = offer.getTravelingtime();
         int price = offer.getPrice();
         //int status = offer.getStatus();
@@ -813,13 +792,37 @@ public class DatabaseCommunicator {
 //            connectDB();
 //        }
         try {
-            //took out status (remy says shouldn't update them)
-            Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE RIDEOFFER SET offeredby = "+offeredby +", pickuplocation = '" +pickuplocation+
-                    "',  destination = '" +destination+"', datentime = '" +timestamp+ "', seatsleft = seatsleft + (" + seats + "-seats)" +
-                    ", luggagesleft = luggagesleft + (" + luggage + "-luggage)" + ", seats = " +seats+ ",  luggage = " +luggage+ ", smoking = " +smoking+
-                    ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
-                    ", price = " +price + " WHERE offerid = " +offerid);
+            //took out status, offeredby (remy says shouldn't update them)
+            String query = "UPDATE RIDEOFFER SET pickuplocation = ?, destination = ?, datentime = ?, " +
+                    "seatsleft = seatsleft + (? - seats), luggagesleft = luggagesleft + (? - luggage), " +
+                    "seats = ?, luggage = ?, " + "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, " +
+                    "price = ? WHERE offerid = ?";
+            PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
+
+
+//            Statement stmt = BoilerideServer.conn.createStatement();
+//            stmt.executeUpdate("UPDATE RIDEOFFER SET offeredby = "+offeredby +", pickuplocation = '" +pickuplocation+
+//                    "',  destination = '" +destination+"', datentime = '" +timestamp+ "', seatsleft = seatsleft + (" + seats + "-seats)" +
+//                    ", luggagesleft = luggagesleft + (" + luggage + "-luggage)" + ", seats = " +seats+ ",  luggage = " +luggage+ ", smoking = " +smoking+
+//                    ", foodndrink = "+foodndrink+", pets = " +pets+", AC = " +AC+", travellingtime = " +travellingtime+
+//                    ", price = " +price + " WHERE offerid = " +offerid);
+
+            stmt.setString(1, pickuplocation);
+            stmt.setString(2, destination);
+            stmt.setTimestamp(3, timestamp);
+            stmt.setInt(4, seats);
+            stmt.setInt(5, luggage);
+            stmt.setInt(6, seats);
+            stmt.setInt(7,luggage);
+            stmt.setBoolean(8,smoking);
+            stmt.setBoolean(9,foodndrink);
+            stmt.setBoolean(10,pets);
+            stmt.setBoolean(11,ac);
+            stmt.setInt(12,travellingtime);
+            stmt.setInt(13,price);
+            stmt.setInt(14, offerid);
+
+            stmt.executeUpdate();
 
             stmt.close();
         }
