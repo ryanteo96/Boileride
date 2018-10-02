@@ -446,10 +446,16 @@ public class BoilerideServer {
 
     public class ExampleServlet extends HttpServlet {
         @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+        protected void doPost(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-            resp.setStatus(HttpStatus.OK_200);
-            resp.getWriter().println("EmbeddedJetty");
+            BufferedReader in = new BufferedReader(req.getReader());
+
+            JsonObject request = (JsonObject) new JsonParser().parse(in);
+            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+            System.out.println(request);
+            resp.setContentType("application/json");
+            String test = "happy";
+            resp.getWriter().println(new Gson().toJson(test));
         }
     }
 
@@ -458,8 +464,9 @@ public class BoilerideServer {
         Server server = new Server(8080);
 
         ServletContextHandler handler = new ServletContextHandler(server, "/example");
-
-        handler.addServlet(ExampleServlet.class, "/");
+        server.setHandler(handler);
+        handler.setContextPath("/");
+        handler.addServlet(new ServletHolder(new ExampleServlet()), "/");
 
         server.start();
 
