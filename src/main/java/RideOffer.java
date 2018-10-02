@@ -1,11 +1,11 @@
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 import java.util.Date;
-import java.time.format.*;
-import java.time.*;
-import java.sql.*;
 
 import DTO.*;
+import com.google.gson.Gson;
+import com.google.maps.errors.ApiException;
 
 /**
  * CS 40800 - Project: Boileride
@@ -17,6 +17,7 @@ import DTO.*;
  */
 
 public class RideOffer {
+    private int offerid;
     private int offeredby;
     private String pickuplocation;
     private String destination;
@@ -55,6 +56,27 @@ public class RideOffer {
     public RideOffer(int offeredby, String pickuplocation, String destination, Date datentime,
                      int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                      int travelingtime, int price, int seatleft, int luggageleft, int status) {
+        this.offeredby = offeredby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.seats = seats;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+        this.seatleft = seatleft;
+        this.luggageleft = luggageleft;
+        this.status = status;
+    }
+
+    public RideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
+                     int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                     int travelingtime, int price, int seatleft, int luggageleft, int status) {
+        this.offerid = offerid;
         this.offeredby = offeredby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -376,6 +398,88 @@ public class RideOffer {
         RideUpdateOfferResponse res = new RideUpdateOfferResponse(result);
 
         return res;
+    }
+
+    public DtoRideOffer toDtoRideOffer() {
+        DtoRideOffer dro = new DtoRideOffer();
+        dro.setOfferid(offerid);
+        dro.setOfferedby(offeredby);
+        dro.setPickuplocation(pickuplocation);
+        dro.setDestination(destination);
+        dro.setDatentime(datentime);
+        dro.setSeats(seats);
+        dro.setLuggage(luggage);
+        dro.setSmoking(smoking);
+        dro.setFoodndrink(foodndrink);
+        dro.setPets(pets);
+        dro.setAc(ac);
+        dro.setTravelingtime(travelingtime);
+        dro.setPrice(price);
+        dro.setSeatleft(seatleft);
+        dro.setLuggageleft(luggageleft);
+        dro.setStatus(status);
+        return dro;
+    }
+
+    public static RideOfferSearchResponse search(RideOfferSearchRequest query) throws InterruptedException, ApiException, IOException {
+        RideOfferSearchResponse response = new RideOfferSearchResponse();
+        GoogleMapAPI gma = new GoogleMapAPI();
+        // todo: add validation on query
+
+
+        int buffer = 15;
+        LinkedList<Trip> trips = new LinkedList<>();
+        PriorityQueue<TmpTrip> heap = new PriorityQueue<>((a, b)->b.getEstimation() - a.getEstimation());
+        TmpTrip start = new TmpTrip();
+        start.setRides(new LinkedList<>());
+        RideOffer first = new RideOffer();
+        first.setDestination(query.getPickuplocation());
+        first.setDatentime(query.getDatentime());
+        first.setTravelingtime(0);
+        start.getRides().add(first);
+        heap.add(start);
+        while (!heap.isEmpty()) {
+            TmpTrip curr = heap.poll();
+            if (curr.getRides().getLast().getDestination().equals(query.getDestination())) {
+                if (curr.getRides().size() - 1 <= query.getNumrides() && query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 > curr.getRides().getFirst().getDatentime().getTime()) {
+                    // curr.getRides().removeFirst();
+                    trips.addLast(curr.toTrip());
+                }
+                continue;
+            }
+            RideOffer lro = curr.getRides().getLast();
+            ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
+                    new Date(query.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    lro.getSeatleft(), lro.getLuggageleft(),
+                    lro.isSmoking(), lro.isFoodndrink(),
+                    lro.isPets(), lro.isAc());
+            if (rs == null) {
+                response.setResult(9);
+                return response;
+            }
+            for (RideOffer r : rs) {
+                System.out.println(new Gson().toJson(r));
+                TmpTrip t = new TmpTrip();
+                t.setRides(new LinkedList<>());
+                for (RideOffer a : curr.getRides()) {
+                    t.getRides().add(a);
+                }
+                if (r.getDatentime().after(new Date(t.getRides().getLast().getDatentime().getTime() + 1000 * 60 * (t.getRides().getLast().getTravelingtime() + buffer)))) {
+                    t.getRides().add(r);
+                    t.setDuration(curr.getDuration() + r.getTravelingtime());
+                    t.setEstimation(t.getDuration() + gma.estimate(r.getDestination(), query.getDestination()));
+                    heap.add(t);
+                }
+            }
+        }
+        if (trips.size() == 0) {
+            response.setResult(9);
+            return response;
+        } else {
+            response.setResult(0);
+            response.setTrips(trips);
+            return response;
+        }
     }
 
 }

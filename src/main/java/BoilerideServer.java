@@ -28,7 +28,10 @@ import com.google.gson.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -196,7 +199,7 @@ public class BoilerideServer {
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     User user = new User();
-                    res = user.updateUser(req);
+                    res = user.updateUser(req, false);
                 }
                 else{
                     res = new UserUpdateResponse(97);
@@ -389,40 +392,48 @@ public class BoilerideServer {
                 response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/request")){
-                RideSearchRequestRequest req = null;
-//                RideSearchRequestResponse res = null;
+                RideRequestSearchRequest req = null;
+                RideRequestSearchResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = gson.fromJson(request, RideSearchRequestRequest.class);
+                    req = gson.fromJson(request, RideRequestSearchRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    res = new RideSearchRequestResponse(0);
+                    try {
+                        res = RideRequest.search(req);
+                    } catch (InterruptedException | ApiException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
-//                    res = new RideSearchRequestResponse(97);
+                    res = new RideRequestSearchResponse(97);
                 }
-//                response = gson.toJson(res);
+                response = gson.toJson(res);
             }
             else if (uri.equals("/ride/search/offer")){
-                RideSearchOfferRequest req = null;
-//                RideSearchOfferResponse res = null;
+                RideOfferSearchRequest req = null;
+                RideOfferSearchResponse res = null;
                 boolean isRightFormat = true;
                 try {
-                    req = gson.fromJson(request, RideSearchOfferRequest.class);
+                    req = gson.fromJson(request, RideOfferSearchRequest.class);
                 }catch (JsonSyntaxException e){
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    res = new RideSearchOfferResponse(0);
+                    try {
+                        res = RideOffer.search(req);
+                    } catch (InterruptedException | ApiException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
-//                    res = new RideSearchOfferResponse(97);
+                    res = new RideOfferSearchResponse(97);
                 }
-//                response = gson.toJson(res);
+                response = gson.toJson(res);
             }
             else {
                 System.out.println("Request " + uri + " is unknown");
@@ -500,6 +511,42 @@ public class BoilerideServer {
         BoilerideServer server = new BoilerideServer();
 
         server.connect();
+
+//        DatabaseCommunicator.rideOfferFrom("Lafayette", new Date(),
+//                1, 1, true, true, true, true);
+//        DatabaseCommunicator.rideRequestFromTo("Lafayette", "Chicago",
+//                new Date(),
+//                1, 1, true, true, true, true);
+
+//        RideRequestSearchRequest query1 = new RideRequestSearchRequest("hyuang", "Hillenbrand Dining Court, 3rd Street, West Lafayette, IN 47906", 10.0, "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0,
+//                new Date(), 10000, 1, 1, true, false, false, false);
+//        RideOfferSearchRequest query2 = new RideOfferSearchRequest("hyuang", "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0, "Lawson Computer Science Building, North University Street, West Lafayette, IN 47906", 10.0,
+//                new Date(), 10000, 10, 1, 1, false, true, false, false);
+//
+//        try {
+//            RideRequestSearchResponse r1 = RideRequest.search(query1);
+//            RideOfferSearchResponse r2 = RideOffer.search(query2);
+//            System.out.println(new Gson().toJson(r1));
+//            System.out.println(new Gson().toJson(r2));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        GoogleMapAPI gma = new GoogleMapAPI();
+//        try {
+//            System.out.println(gma.estimate("PMU, 101 Grant St Room 186 101, West Lafayette, IN 47906", "200 North Second Street, Lafayette, IN 47901"));
+//            System.out.println(gma.getCity("200 North Second Street, Lafayette, IN 47901"));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         //System.out.println(DatabaseCommunicator.loginWithEmailPassword("test3", "test"));
         //System.out.println(DatabaseCommunicator.selectUserByEmail("ryan@mail.com").getNickname());

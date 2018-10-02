@@ -3,6 +3,7 @@ package DTO;
 import java.util.Date;
 
 public class DtoRideRequest {
+    private int requestid;
     private int requestedby;
     private String pickuplocation;
     private String destination;
@@ -17,9 +18,14 @@ public class DtoRideRequest {
     private int price;
     private int status;
 
-    public DtoRideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
+    public DtoRideRequest() {
+
+    }
+
+    public DtoRideRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime,
                           int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                           int travelingtime, int price, int status) {
+        this.requestid = requestid;
         this.requestedby = requestedby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -33,6 +39,14 @@ public class DtoRideRequest {
         this.travelingtime = travelingtime;
         this.price = price;
         this.status = status;
+    }
+
+    public int getRequestid() {
+        return requestid;
+    }
+
+    public void setRequestid(int requestid) {
+        this.requestid = requestid;
     }
 
     public int getRequestedby() {
@@ -141,6 +155,7 @@ public class DtoRideRequest {
 
     public String toString() {
         return "RideRequest{" +
+                "requestid=" + requestid +
                 ", requestedby='" + requestedby + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +

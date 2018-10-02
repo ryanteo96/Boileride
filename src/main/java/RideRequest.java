@@ -1,10 +1,11 @@
+import java.io.IOException;
 import java.util.Date;
-import java.time.format.*;
-import java.time.*;
-import java.sql.*;
 import java.util.ArrayList;
 
 import DTO.*;
+import com.google.maps.errors.ApiException;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 /**
  * CS 40800 - Project: Boileride
@@ -16,6 +17,7 @@ import DTO.*;
  */
 
 public class RideRequest {
+    private int requestid;
     private int requestedby;
     private String pickuplocation;
     private String destination;
@@ -52,6 +54,25 @@ public class RideRequest {
     public RideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
                        int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
                        int travelingtime, int price, int status) {
+        this.requestedby = requestedby;
+        this.pickuplocation = pickuplocation;
+        this.destination = destination;
+        this.datentime = datentime;
+        this.passengers = passengers;
+        this.luggage = luggage;
+        this.smoking = smoking;
+        this.foodndrink = foodndrink;
+        this.pets = pets;
+        this.ac = ac;
+        this.travelingtime = travelingtime;
+        this.price = price;
+        this.status = status;
+    }
+
+    public RideRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime,
+                       int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
+                       int travelingtime, int price, int status) {
+        this.requestid = requestid;
         this.requestedby = requestedby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
@@ -352,6 +373,64 @@ public class RideRequest {
         }
         RideUpdateRequestResponse res = new RideUpdateRequestResponse(result);
         return res;
+    }
+
+    public DtoRideRequest toDtoRideRequest() {
+        DtoRideRequest drr = new DtoRideRequest();
+        drr.setRequestid(requestid);
+        drr.setRequestedby(requestedby);
+        drr.setPickuplocation(pickuplocation);
+        drr.setDestination(destination);
+        drr.setDatentime(datentime);
+        drr.setPassengers(passengers);
+        drr.setLuggage(luggage);
+        drr.setSmoking(smoking);
+        drr.setFoodndrink(foodndrink);
+        drr.setPets(pets);
+        drr.setAc(ac);
+        drr.setTravelingtime(travelingtime);
+        drr.setPrice(price);
+        drr.setStatus(status);
+        return drr;
+    }
+
+    public static RideRequestSearchResponse search (RideRequestSearchRequest query) throws InterruptedException, ApiException, IOException {
+        RideRequestSearchResponse response = new RideRequestSearchResponse();
+        GoogleMapAPI gma = new GoogleMapAPI();
+        // todo: add validation on query
+
+
+        ArrayList<DtoRideRequest> rides = new ArrayList<>();
+        ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(query.getPickuplocation()),
+                gma.getCity(query.getDestination()), query.getDatentime(),
+                query.getSeats(), query.getLuggage(),
+                query.isSmoking(), query.isFoodndrink(),
+                query.isPets(), query.isAc());
+        if (rs == null) {
+            response.setResult(9);
+            return response;
+        }
+        for (RideRequest r : rs) {
+            if (gma.estimate(r.getPickuplocation(), query.getPickuplocation()) <= query.getPickupproximity() &&
+                    gma.estimate(r.getDestination(), query.getDestination()) <= query.getDestinationproximity() &&
+                    query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 >= r.getDatentime().getTime() &&
+                    r.getPassengers() <= query.getSeats() &&
+                    r.getLuggage() <= query.getLuggage() &&
+                    r.isSmoking() == query.isSmoking() &&
+                    r.isFoodndrink() == query.isFoodndrink() &&
+                    r.isPets() == query.isPets() &&
+                    r.isAc() == query.isAc()) {
+                rides.add(r.toDtoRideRequest());
+            }
+        }
+        if (rides.size() == 0) {
+            response.setResult(9);
+            return response;
+        } else {
+            response.setResult(0);
+            response.setRides(rides);
+            return response;
+        }
     }
 
 }
