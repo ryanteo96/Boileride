@@ -474,10 +474,10 @@ public class BoilerideServer {
     private void connect() throws Exception{
         Server server = new Server(8080);
 
-        ServletContextHandler handler = new ServletContextHandler(server, "/example");
+        ServletContextHandler handler = new ServletContextHandler(server, "/");
         server.setHandler(handler);
         handler.setContextPath("/");
-        handler.addServlet(new ServletHolder(new ExampleServlet()), "/");
+        handler.addServlet(new ServletHolder(new ExampleServlet()), "/example");
 
         server.start();
 
