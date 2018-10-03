@@ -58,14 +58,17 @@ public class BoilerideServer {
 
     static Connection conn;
 
-    private static class requestHandler implements HttpHandler {
+    public class BoilerideServlet extends HttpServlet {
+        private String uri;
+        public BoilerideServlet(String uri){
+            this.uri = uri;
+        }
         @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
-
-            String uri = httpExchange.getRequestURI().toString();
+        protected void doPost(HttpServletRequest servletReq, HttpServletResponse servletResp)
+                throws ServletException, IOException {
             System.out.println("Request " + uri + " received");
 
-            InputStreamReader in = new InputStreamReader(httpExchange.getRequestBody());
+            BufferedReader in = new BufferedReader(servletReq.getReader());
 
             JsonObject request = (JsonObject) new JsonParser().parse(in);
             Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
@@ -442,68 +445,57 @@ public class BoilerideServer {
                 response = responseObj.toString();
             }
 
-            httpExchange.getResponseHeaders().set("Content-Type", "application/json");
-            httpExchange.sendResponseHeaders(200, response.length());
-
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-
-            os.close();
+            servletResp.setContentType("application/json");
+            servletResp.getWriter().println(response);
 
             System.out.println("Sent response: " + response.toString());
         }
 
     }
 
-    public class ExampleServlet extends HttpServlet {
-        @Override
-        protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-            BufferedReader in = new BufferedReader(req.getReader());
+    private void connect(){
+        try {
+            //Set up connection to database
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            JsonObject request = (JsonObject) new JsonParser().parse(in);
-            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
-            System.out.println(request);
-            resp.setContentType("application/json");
-            String test = "happy";
-            resp.getWriter().println(new Gson().toJson(test));
+            System.out.println("Connected to database...");
+
+            //Set up server
+            Server server = new Server(8080);
+
+            ServletContextHandler handler = new ServletContextHandler(server, "/");
+            server.setHandler(handler);
+            handler.setContextPath("/");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/signup")), "/user/signup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/verifyemail")), "/user/verifyemail");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/login")), "/user/login");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/forgotpassword")), "/user/forgotpassword");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/resetpassword")), "/user/resetpassword");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/viewaccount")), "/user/viewaccount");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/update")), "/user/update");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/logout")), "/user/logout");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/request")), "/ride/view/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/offer")), "/ride/view/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/request")), "/ride/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/request")), "/ride/cancel/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/request")), "/ride/update/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/offer")), "/ride/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/offer")), "/ride/cancel/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/offer")), "/ride/update/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/request")), "/ride/search/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/offer")), "/ride/search/offer");
+
+            server.start();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
 
-
-    private void connect() throws Exception{
-        Server server = new Server(8080);
-
-        ServletContextHandler handler = new ServletContextHandler(server, "/");
-        server.setHandler(handler);
-        handler.setContextPath("/");
-        handler.addServlet(new ServletHolder(new ExampleServlet()), "/example");
-
-        server.start();
-
-//        try{
-//            //Set up connection to database
-//            Class.forName(JDBC_DRIVER);
-//            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-//            System.out.println("Connected to database...");
-//            //Set up server
-//            HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
-//            server.createContext("/", new requestHandler());
-//            server.setExecutor(null);
-//            server.start();
-//            System.out.println("Connected to server...");
-//
-//        }catch(SQLException se){
-//            //Handle errors for JDBC
-//            se.printStackTrace();
-//        } catch (IOException e) {
-//            //Handle errors for HttpServer
-//            e.printStackTrace();
-//        }
-//        catch(Exception e){
-//            //Handle errors for Class.forName
-//            e.printStackTrace();
-//        }
     }
 
     public static void main(String[] args) throws Exception{
