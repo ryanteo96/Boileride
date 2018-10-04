@@ -2,14 +2,23 @@ package DTO;
 
 import java.util.Date;
 
-public class DtoRideOffer {
+/**
+ * CS 40800 - Project: Boileride
+ * A web application for ride sharing
+ *
+ * DTO version of accepted request object
+ *
+ * @version October 3, 2018
+ */
 
-    private int offerid;
-    private int offeredby;
+public class DtoAcceptedRequest {
+
+    private int requestid;
+    private int requestedby;
     private String pickuplocation;
     private String destination;
     private Date datentime;
-    private int seats;
+    private int passengers;
     private int luggage;
     private boolean smoking;
     private boolean foodndrink;
@@ -17,24 +26,20 @@ public class DtoRideOffer {
     private boolean ac;
     private int travelingtime;
     private int price;
-    private int seatleft;
-    private int luggageleft;
     private int status;
+    private String phone;
     private int pickupstatus;
 
-    public DtoRideOffer() {
-
+    public DtoAcceptedRequest() {
     }
 
-    public DtoRideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
-                        int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
-                        int travelingtime, int price, int seatleft, int luggageleft, int status) {
-        this.offerid = offerid;
-        this.offeredby = offeredby;
+    public DtoAcceptedRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, String phone, int pickupstatus) {
+        this.requestid = requestid;
+        this.requestedby = requestedby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
-        this.seats = seats;
+        this.passengers = passengers;
         this.luggage = luggage;
         this.smoking = smoking;
         this.foodndrink = foodndrink;
@@ -42,25 +47,25 @@ public class DtoRideOffer {
         this.ac = ac;
         this.travelingtime = travelingtime;
         this.price = price;
-        this.seatleft = seatleft;
-        this.luggageleft = luggageleft;
         this.status = status;
+        this.phone = phone;
+        this.pickupstatus = pickupstatus;
     }
 
-    public int getOfferid() {
-        return offerid;
+    public int getRequestid() {
+        return requestid;
     }
 
-    public void setOfferid(int offerid) {
-        this.offerid = offerid;
+    public void setRequestid(int requestid) {
+        this.requestid = requestid;
     }
 
-    public int getOfferedby() {
-        return offeredby;
+    public int getRequestedby() {
+        return requestedby;
     }
 
-    public void setOfferedby(int offeredby) {
-        this.offeredby = offeredby;
+    public void setRequestedby(int requestedby) {
+        this.requestedby = requestedby;
     }
 
     public String getPickuplocation() {
@@ -87,12 +92,12 @@ public class DtoRideOffer {
         this.datentime = datentime;
     }
 
-    public int getSeats() {
-        return seats;
+    public int getPassengers() {
+        return passengers;
     }
 
-    public void setSeats(int seats) {
-        this.seats = seats;
+    public void setPassengers(int passengers) {
+        this.passengers = passengers;
     }
 
     public int getLuggage() {
@@ -151,22 +156,6 @@ public class DtoRideOffer {
         this.price = price;
     }
 
-    public int getSeatleft() {
-        return seatleft;
-    }
-
-    public void setSeatleft(int seatleft) {
-        this.seatleft = seatleft;
-    }
-
-    public int getLuggageleft() {
-        return luggageleft;
-    }
-
-    public void setLuggageleft(int luggageleft) {
-        this.luggageleft = luggageleft;
-    }
-
     public int getStatus() {
         return status;
     }
@@ -175,14 +164,31 @@ public class DtoRideOffer {
         this.status = status;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getPickupstatus() {
+        return pickupstatus;
+    }
+
+    public void setPickupstatus(int pickupstatus) {
+        this.pickupstatus = pickupstatus;
+    }
+
+    @Override
     public String toString() {
-        return "RideOffer{" +
-                "offerid=" + offerid +
-                ", offeredby=" + offeredby +
+        return "DtoAcceptedRequest{" +
+                "requestid=" + requestid +
+                ", requestedby=" + requestedby +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
-                ", seats=" + seats +
+                ", passengers=" + passengers +
                 ", luggage=" + luggage +
                 ", smoking=" + smoking +
                 ", foodndrink=" + foodndrink +
@@ -190,9 +196,10 @@ public class DtoRideOffer {
                 ", ac=" + ac +
                 ", travelingtime=" + travelingtime +
                 ", price=" + price +
-                ", seatleft=" + seatleft +
-                ", luggageleft=" + luggageleft +
                 ", status=" + status +
+                ", phone='" + phone + '\'' +
+                ", pickupstatus=" + pickupstatus +
                 '}';
     }
 }
+

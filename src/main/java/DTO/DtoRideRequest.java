@@ -17,6 +17,7 @@ public class DtoRideRequest {
     private int travelingtime;
     private int price;
     private int status;
+    private int pickupstatus;
 
     public DtoRideRequest() {
 

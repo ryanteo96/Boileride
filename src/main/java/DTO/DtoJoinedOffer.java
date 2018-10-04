@@ -2,15 +2,22 @@ package DTO;
 
 import java.util.Date;
 
-public class DtoRideOffer {
+/**
+ * CS 40800 - Project: Boileride
+ * A web application for ride sharing
+ *
+ * DTO version of joined offer object
+ *
+ * @version October 3, 2018
+ */
+
+public class DtoJoinedOffer {
 
     private int offerid;
-    private int offeredby;
+    private String offeredby;
     private String pickuplocation;
     private String destination;
     private Date datentime;
-    private int seats;
-    private int luggage;
     private boolean smoking;
     private boolean foodndrink;
     private boolean pets;
@@ -19,23 +26,20 @@ public class DtoRideOffer {
     private int price;
     private int seatleft;
     private int luggageleft;
-    private int status;
+    private int joinedpassenger;
+    private int joinedluggage;
+    private String phone;
     private int pickupstatus;
 
-    public DtoRideOffer() {
-
+    public DtoJoinedOffer() {
     }
 
-    public DtoRideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
-                        int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
-                        int travelingtime, int price, int seatleft, int luggageleft, int status) {
+    public DtoJoinedOffer(int offerid, String offeredby, String pickuplocation, String destination, Date datentime, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int seatleft, int luggageleft, int joinedpassenger, int joinedluggage, String phone, int pickupstatus) {
         this.offerid = offerid;
         this.offeredby = offeredby;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
-        this.seats = seats;
-        this.luggage = luggage;
         this.smoking = smoking;
         this.foodndrink = foodndrink;
         this.pets = pets;
@@ -44,7 +48,10 @@ public class DtoRideOffer {
         this.price = price;
         this.seatleft = seatleft;
         this.luggageleft = luggageleft;
-        this.status = status;
+        this.joinedpassenger = joinedpassenger;
+        this.joinedluggage = joinedluggage;
+        this.phone = phone;
+        this.pickupstatus = pickupstatus;
     }
 
     public int getOfferid() {
@@ -55,11 +62,11 @@ public class DtoRideOffer {
         this.offerid = offerid;
     }
 
-    public int getOfferedby() {
+    public String getOfferedby() {
         return offeredby;
     }
 
-    public void setOfferedby(int offeredby) {
+    public void setOfferedby(String offeredby) {
         this.offeredby = offeredby;
     }
 
@@ -85,22 +92,6 @@ public class DtoRideOffer {
 
     public void setDatentime(Date datentime) {
         this.datentime = datentime;
-    }
-
-    public int getSeats() {
-        return seats;
-    }
-
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
-    public int getLuggage() {
-        return luggage;
-    }
-
-    public void setLuggage(int luggage) {
-        this.luggage = luggage;
     }
 
     public boolean isSmoking() {
@@ -167,23 +158,46 @@ public class DtoRideOffer {
         this.luggageleft = luggageleft;
     }
 
-    public int getStatus() {
-        return status;
+    public int getJoinedpassenger() {
+        return joinedpassenger;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setJoinedpassenger(int joinedpassenger) {
+        this.joinedpassenger = joinedpassenger;
     }
 
+    public int getJoinedluggage() {
+        return joinedluggage;
+    }
+
+    public void setJoinedluggage(int joinedluggage) {
+        this.joinedluggage = joinedluggage;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getPickupstatus() {
+        return pickupstatus;
+    }
+
+    public void setPickupstatus(int pickupstatus) {
+        this.pickupstatus = pickupstatus;
+    }
+
+    @Override
     public String toString() {
-        return "RideOffer{" +
+        return "DtoJoinedOffer{" +
                 "offerid=" + offerid +
-                ", offeredby=" + offeredby +
+                ", offeredby='" + offeredby + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
-                ", seats=" + seats +
-                ", luggage=" + luggage +
                 ", smoking=" + smoking +
                 ", foodndrink=" + foodndrink +
                 ", pets=" + pets +
@@ -192,7 +206,10 @@ public class DtoRideOffer {
                 ", price=" + price +
                 ", seatleft=" + seatleft +
                 ", luggageleft=" + luggageleft +
-                ", status=" + status +
+                ", joinedpassenger=" + joinedpassenger +
+                ", joinedluggage=" + joinedluggage +
+                ", phone='" + phone + '\'' +
+                ", pickupstatus=" + pickupstatus +
                 '}';
     }
 }
