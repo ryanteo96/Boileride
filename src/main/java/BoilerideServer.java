@@ -5,20 +5,21 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.TrafficModel;
 import com.google.maps.model.TravelMode;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.session.HashSessionIdManager;
+import org.eclipse.jetty.server.session.HashSessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -63,174 +64,225 @@ public class BoilerideServer {
         public BoilerideServlet(String uri){
             this.uri = uri;
         }
-        @Override
-        protected void doPost(HttpServletRequest servletReq, HttpServletResponse servletResp)
-                throws ServletException, IOException {
-            System.out.println("Request " + uri + " received");
 
-            BufferedReader in = new BufferedReader(servletReq.getReader());
+        private String handleSignup(Gson gson, JsonObject request){
+            UserSignUpRequest req = null;
+            UserSignUpResponse res = null;
+            boolean isRightFormat = true;
+            try {
+                req = gson.fromJson(request, UserSignUpRequest.class);
+            }catch (JsonSyntaxException e){
+                isRightFormat = false;
+            }
+            if (isRightFormat) {
+                System.out.println("Received: " + req.toString());
+                User user = new User();
+                res = user.signUp(req);
+            }
+            else{
+                res = new UserSignUpResponse(97, -1);
+            }
+            return gson.toJson(res);
+        }
 
-            JsonObject request = (JsonObject) new JsonParser().parse(in);
-            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+        private String handleVerifyemail(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserVerifyEmailRequest req = null;
+            UserVerifyEmailResponse res = null;
+            boolean isRightFormat = true;
+            try {
+                req = gson.fromJson(request, UserVerifyEmailRequest.class);
+            }catch (JsonSyntaxException e){
+                isRightFormat = false;
+            }
+            if (isRightFormat) {
+                System.out.println("Received: " + req.toString());
+                User user = new User();
+                res = user.verifyEmailCode(req);
+                if (res.getResult() == 0) {
+                    HttpSession session = servletReq.getSession();
+                    session.setAttribute("name",1);
+                    session.setMaxInactiveInterval(60*60);
+                }
+            }
+            else{
+                res = new UserVerifyEmailResponse(97, -1);
+            }
+            return gson.toJson(res);
+        }
 
-            String response = null;
+        private String handleLogin(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserLoginRequest req = null;
+            UserLoginResponse res = null;
+            boolean isRightFormat = true;
+            try {
+                req = gson.fromJson(request, UserLoginRequest.class);
+            }catch (JsonSyntaxException e){
+                isRightFormat = false;
+            }
+            if (isRightFormat) {
+                System.out.println("Received: " + req.toString());
+                User user = new User();
+                res = user.login(req);
+                if (res.getResult() == 0) {
+                    HttpSession session = servletReq.getSession();
+                    session.setAttribute("name",1);
+                    session.setMaxInactiveInterval(60*60);
+                }
+            }
+            else{
+                res = new UserLoginResponse(97, -1);
+            }
+            return gson.toJson(res);
+        }
 
-            if (uri.equals("/user/signup")){
-                UserSignUpRequest req = null;
-                UserSignUpResponse res = null;
-                boolean isRightFormat = true;
-                try {
-                    req = gson.fromJson(request, UserSignUpRequest.class);
-                }catch (JsonSyntaxException e){
-                    isRightFormat = false;
-                }
-                if (isRightFormat) {
-                    System.out.println("Received: " + req.toString());
-                    User user = new User();
-                    res = user.signUp(req);
-                }
-                else{
-                    res = new UserSignUpResponse(97, -1);
-                }
-                response = gson.toJson(res);
+        private String handleForgotpassword(Gson gson, JsonObject request){
+            UserForgotPasswordRequest req = null;
+            UserForgotPasswordResponse res = null;
+            boolean isRightFormat = true;
+            try {
+                req = gson.fromJson(request, UserForgotPasswordRequest.class);
+            }catch (JsonSyntaxException e){
+                isRightFormat = false;
             }
-            else if (uri.equals("/user/verifyemail")){
-                UserVerifyEmailRequest req = null;
-                UserVerifyEmailResponse res = null;
-                boolean isRightFormat = true;
-                try {
-                    req = gson.fromJson(request, UserVerifyEmailRequest.class);
-                }catch (JsonSyntaxException e){
-                    isRightFormat = false;
-                }
-                if (isRightFormat) {
-                    System.out.println("Received: " + req.toString());
-                    User user = new User();
-                    res = user.verifyEmailCode(req);
-                }
-                else{
-                    res = new UserVerifyEmailResponse(97, -1);
-                }
-                response = gson.toJson(res);
+            if (isRightFormat) {
+                System.out.println("Received: " + req.toString());
+                User user = new User();
+                res = user.forgotPassword(req);
             }
-            else if (uri.equals("/user/login")){
-                UserLoginRequest req = null;
-                UserLoginResponse res = null;
-                boolean isRightFormat = true;
-                try {
-                    req = gson.fromJson(request, UserLoginRequest.class);
-                }catch (JsonSyntaxException e){
-                    isRightFormat = false;
-                }
-                if (isRightFormat) {
-                    System.out.println("Received: " + req.toString());
-                    User user = new User();
-                    res = user.login(req);
-                }
-                else{
-                    res = new UserLoginResponse(97, -1);
-                }
-                response = gson.toJson(res);
+            else{
+                res = new UserForgotPasswordResponse(97);
             }
-            else if (uri.equals("/user/forgotpassword")){
-                UserForgotPasswordRequest req = null;
-                UserForgotPasswordResponse res = null;
-                boolean isRightFormat = true;
-                try {
-                    req = gson.fromJson(request, UserForgotPasswordRequest.class);
-                }catch (JsonSyntaxException e){
-                    isRightFormat = false;
-                }
-                if (isRightFormat) {
-                    System.out.println("Received: " + req.toString());
-                    User user = new User();
-                    res = user.forgotPassword(req);
-                }
-                else{
-                    //remove -1 initially is res = new UserForgotPasswordResponse(97, -1);
-                    res = new UserForgotPasswordResponse(97);
-                }
-                response = gson.toJson(res);
+            return gson.toJson(res);
+        }
+
+        private String handleResetpassword(Gson gson, JsonObject request){
+            UserResetPasswordRequest req = null;
+            UserResetPasswordResponse res = null;
+            boolean isRightFormat = true;
+            try {
+                req = gson.fromJson(request, UserResetPasswordRequest.class);
+            }catch (JsonSyntaxException e){
+                isRightFormat = false;
             }
-            else if (uri.equals("/user/resetpassword")){
-                UserResetPasswordRequest req = null;
-                UserResetPasswordResponse res = null;
-                boolean isRightFormat = true;
-                try {
-                    req = gson.fromJson(request, UserResetPasswordRequest.class);
-                }catch (JsonSyntaxException e){
-                    isRightFormat = false;
-                }
-                if (isRightFormat) {
-                    System.out.println("Received: " + req.toString());
-                    User user = new User();
-                    res = user.resetPassword(req);
-                }
-                else{
-                    res = new UserResetPasswordResponse(97);
-                }
-                response = gson.toJson(res);
+            if (isRightFormat) {
+                System.out.println("Received: " + req.toString());
+                User user = new User();
+                res = user.resetPassword(req);
             }
-            else if (uri.equals("/user/viewaccount")){
-                UserViewAccountRequest req = null;
-                UserViewAccountResponse res = null;
+            else{
+                res = new UserResetPasswordResponse(97);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewaccount(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserViewAccountRequest req = null;
+            UserViewAccountResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, UserViewAccountRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     User user = new User();
                     res = user.viewAccount(req);
-                }
-                else{
+                } else {
                     res = new UserViewAccountResponse(97, "", "", "");
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/user/update")){
-                UserUpdateRequest req = null;
-                UserUpdateResponse res = null;
+            else {
+                res = new UserViewAccountResponse(2, "", "", "");
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleUserupdate(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserUpdateRequest req = null;
+            UserUpdateResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, UserUpdateRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     User user = new User();
                     res = user.updateUser(req, false);
-                }
-                else{
+                } else {
                     res = new UserUpdateResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/user/logout")){
-                UserLogoutRequest req = null;
-                UserLogoutResponse res = null;
+            else {
+                res = new UserUpdateResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewPoints(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserViewPointsRequest req = null;
+            UserViewPointsResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
+                    req = gson.fromJson(request, UserViewPointsRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    User user = new User();
+//                    res = user.updateUser(req, false);
+                } else {
+                    res = new UserViewPointsResponse(97);
+                }
+            }
+            else {
+                res = new UserViewPointsResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleLogout(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserLogoutRequest req = null;
+            UserLogoutResponse res = null;
+            boolean isRightFormat = true;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                try {
                     req = gson.fromJson(request, UserLogoutRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     User user = new User();
                     res = user.logout(req);
-                }
-                else{
+                    if (res.getResult() == 0) {
+                        session.invalidate();
+                    }
+                } else {
                     res = new UserLogoutResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/view/request")){
-                RideViewRequestRequest req = null;
-                RideViewRequestResponse res = null;
+            else{
+                res = new UserLogoutResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideViewRequestRequest req = null;
+            RideViewRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null){
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideViewRequestRequest.class);
@@ -246,197 +298,745 @@ public class BoilerideServer {
                     ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
                     res = new RideViewRequestResponse(97, requestlist);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/view/offer")){
-                RideViewOfferRequest req = null;
-                RideViewOfferResponse res = null;
+            else {
+                ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
+                res = new RideViewRequestResponse(2, requestlist);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideViewOfferRequest req = null;
+            RideViewOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideViewOfferRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideOffer rideOffer = new RideOffer();
                     res = rideOffer.viewRideOfferfromDB(req);
-                }
-                else{
+                } else {
                     ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
                     res = new RideViewOfferResponse(97, offerlist);
                 }
-                response = gson.toJson(res);
             }
-//            else if (uri.equals("/ride/view/acceptedrequest")){
-//                RideViewAcceptedRequestRequest req = gson.fromJson(request, RideViewAcceptedRequestRequest.class);
-//                System.out.println("Received: " + req.toString());
-//                RideViewAcceptedRequestResponse res = new RideViewAcceptedRequestResponse(0);
-//                response = gson.toJson(res);
-//            }
-//           else if (uri.equals("/ride/view/joinedoffer")){
-//                RideViewJoinedOfferRequest req = gson.fromJson(request, RideViewJoinedOfferRequest.class);
-//                System.out.println("Received: " + req.toString());
-//                RideViewJoinedOfferResponse res = new RideViewJoinedOfferResponse(0);
-//                response = gson.toJson(res);
-//            }
-            else if (uri.equals("/ride/request")){
-                RideRequestRequest req = null;
-                RideRequestResponse res = null;
+            else {
+                ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
+                res = new RideViewOfferResponse(2, offerlist);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewAcceptedrequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideViewAcceptedRequestRequest req = null;
+            RideViewAcceptedRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideViewAcceptedRequestRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //RideOffer rideOffer = new RideOffer();
+                    //res = rideOffer.viewRideOfferfromDB(req);
+                } else {
+                    ArrayList<DtoAcceptedRequest> acceptedrequestlist = new ArrayList<DtoAcceptedRequest>();
+                    res = new RideViewAcceptedRequestResponse(97, acceptedrequestlist);
+                }
+            }
+            else {
+                ArrayList<DtoAcceptedRequest> acceptedrequestlist = new ArrayList<DtoAcceptedRequest>();
+                res = new RideViewAcceptedRequestResponse(2, acceptedrequestlist);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewJoinedOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideViewJoinedOfferRequest req = null;
+            RideViewJoinedOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideViewJoinedOfferRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    //RideOffer rideOffer = new RideOffer();
+                    //res = rideOffer.viewRideOfferfromDB(req);
+                } else {
+                    ArrayList<DtoJoinedOffer> joinedofferlist = new ArrayList<DtoJoinedOffer>();
+                    res = new RideViewJoinedOfferResponse(97, joinedofferlist);
+                }
+            }
+            else {
+                ArrayList<DtoJoinedOffer> joinedofferlist = new ArrayList<DtoJoinedOffer>();
+                res = new RideViewJoinedOfferResponse(2, joinedofferlist);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleRideRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideRequestRequest req = null;
+            RideRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideRequestRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideRequest rideRequest = new RideRequest();
                     res = rideRequest.addRideRequestToDB(req);
-                }
-                else {
+                } else {
                     res = new RideRequestResponse(97, -1);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/cancel/request")){
-                RideCancelRequestRequest req = null;
-                RideCancelRequestResponse res = null;
+            else {
+                res = new RideRequestResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleCancelRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideCancelRequestRequest req = null;
+            RideCancelRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideCancelRequestRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideRequest rideRequest = new RideRequest();
                     res = rideRequest.cancelRideRequestInDB(req);
-                }
-                else{
+                } else {
                     res = new RideCancelRequestResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/update/request")){
-                RideUpdateRequestRequest req = null;
-                RideUpdateRequestResponse res = null;
+            else {
+                res = new RideCancelRequestResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleUpdateRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideUpdateRequestRequest req = null;
+            RideUpdateRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideUpdateRequestRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideRequest rideRequest = new RideRequest();
                     res = rideRequest.updateRideRequestInDB(req);
-                }
-                else {
+                } else {
                     res = new RideUpdateRequestResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/offer")){
-                RideOfferRequest req = null;
-                RideOfferResponse res = null;
+            else {
+                res = new RideUpdateRequestResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleRideOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideOfferRequest req = null;
+            RideOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideOfferRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideOffer rideOffer = new RideOffer();
                     res = rideOffer.addRideOfferToDB(req);
-                }
-                else {
+                } else {
                     res = new RideOfferResponse(97, -1);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/cancel/offer")){
-                RideCancelOfferRequest req = null;
-                RideCancelOfferResponse res = null;
+            else {
+                res = new RideOfferResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleCancelOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideCancelOfferRequest req = null;
+            RideCancelOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideCancelOfferRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideOffer rideOffer = new RideOffer();
                     res = rideOffer.cancelRideOfferInDB(req);
-                }
-                else{
+                } else {
                     res = new RideCancelOfferResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/update/offer")){
-                RideUpdateOfferRequest req = null;
-                RideUpdateOfferResponse res = null;
+            else {
+                res = new RideCancelOfferResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleUpdateOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideUpdateOfferRequest req = null;
+            RideUpdateOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideUpdateOfferRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     RideOffer rideOffer = new RideOffer();
                     res = rideOffer.updateRideOfferInDB(req);
-                }
-                else {
+                } else {
                     res = new RideUpdateOfferResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/search/request")){
-                RideRequestSearchRequest req = null;
-                RideRequestSearchResponse res = null;
+            else {
+                res = new RideUpdateOfferResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleSearchRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideRequestSearchRequest req = null;
+            RideRequestSearchResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideRequestSearchRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     try {
                         res = RideRequest.search(req);
-                    } catch (InterruptedException | ApiException e) {
+                    } catch (InterruptedException | ApiException | IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     res = new RideRequestSearchResponse(97);
                 }
-                response = gson.toJson(res);
             }
-            else if (uri.equals("/ride/search/offer")){
-                RideOfferSearchRequest req = null;
-                RideOfferSearchResponse res = null;
+            else {
+                res = new RideRequestSearchResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleSearchOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideOfferSearchRequest req = null;
+            RideOfferSearchResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
                 boolean isRightFormat = true;
                 try {
                     req = gson.fromJson(request, RideOfferSearchRequest.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     try {
                         res = RideOffer.search(req);
-                    } catch (InterruptedException | ApiException e) {
+                    } catch (InterruptedException | ApiException | IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     res = new RideOfferSearchResponse(97);
                 }
-                response = gson.toJson(res);
+            }
+            else {
+                res = new RideOfferSearchResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleAcceptRequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideAcceptRequestRequest req = null;
+            RideAcceptRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideAcceptRequestRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideAcceptRequestResponse(97);
+                }
+            }
+            else {
+                res = new RideAcceptRequestResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleCancelAcceptedrequest(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideCancelAcceptedRequestRequest req = null;
+            RideCancelAcceptedRequestResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideCancelAcceptedRequestRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideCancelAcceptedRequestResponse(97);
+                }
+            }
+            else {
+                res = new RideCancelAcceptedRequestResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleJoinOffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideJoinOfferRequest req = null;
+            RideJoinOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideJoinOfferRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideJoinOfferResponse(97);
+                }
+            }
+            else {
+                res = new RideJoinOfferResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleCancelJoinedoffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideCancelJoinedOfferRequest req = null;
+            RideCancelJoinedOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideCancelJoinedOfferRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideCancelJoinedOfferResponse(97);
+                }
+            }
+            else {
+                res = new RideCancelJoinedOfferResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleUpdateJoinedoffer(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideUpdateJoinedOfferRequest req = null;
+            RideUpdateJoinedOfferResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideUpdateJoinedOfferRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideUpdateJoinedOfferResponse(97);
+                }
+            }
+            else {
+                res = new RideUpdateJoinedOfferResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleRequestPickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideRequestPickupRequest req = null;
+            RideRequestPickupResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideRequestPickupRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideRequestPickupResponse(97, -1);
+                }
+            }
+            else {
+                res = new RideRequestPickupResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleOfferPickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideOfferPickupRequest req = null;
+            RideOfferPickupResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideOfferPickupRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideOfferPickupResponse(97, -1);
+                }
+            }
+            else {
+                res = new RideOfferPickupResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleAcceptedrequestPickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideAcceptedRequestPickupRequest req = null;
+            RideAcceptedRequestPickupResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideAcceptedRequestPickupRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideAcceptedRequestPickupResponse(97, -1);
+                }
+            }
+            else {
+                res = new RideAcceptedRequestPickupResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleJoinedofferPickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideJoinedOfferPickupRequest req = null;
+            RideJoinedOfferPickupResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideJoinedOfferPickupRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideJoinedOfferPickupResponse(97, -1);
+                }
+            }
+            else {
+                res = new RideJoinedOfferPickupResponse(2, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleRequestComfirmpickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideRequestConfirmRequest req = null;
+            RideRequestConfirmResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideRequestConfirmRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideRequestConfirmResponse(97);
+                }
+            }
+            else {
+                res = new RideRequestConfirmResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleOfferComfirmpickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideOfferConfirmRequest req = null;
+            RideOfferConfirmResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideOfferConfirmRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideOfferConfirmResponse(97);
+                }
+            }
+            else {
+                res = new RideOfferConfirmResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleAcceptedrequestComfirmpickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideAcceptedRequestConfirmRequest req = null;
+            RideAcceptedRequestConfirmResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideAcceptedRequestConfirmRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideAcceptedRequestConfirmResponse(97);
+                }
+            }
+            else {
+                res = new RideAcceptedRequestConfirmResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleJoinedofferComfirmpickup(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideJoinedOfferConfirmRequest req = null;
+            RideJoinedOfferConfirmResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideJoinedOfferConfirmRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+//                    RideOffer rideOffer = new RideOffer();
+//                   res = rideOffer.addRideOfferToDB(req);
+                } else {
+                    res = new RideJoinedOfferConfirmResponse(97);
+                }
+            }
+            else {
+                res = new RideJoinedOfferConfirmResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        @Override
+        protected void doPost(HttpServletRequest servletReq, HttpServletResponse servletResp)
+                throws ServletException, IOException {
+            System.out.println("Request " + uri + " received");
+
+            BufferedReader in = new BufferedReader(servletReq.getReader());
+
+            JsonObject request = (JsonObject) new JsonParser().parse(in);
+            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+
+            String response = null;
+
+            if (uri.equals("/user/signup")){
+                response = handleSignup(gson, request);
+            }
+            else if (uri.equals("/user/verifyemail")){
+                response = handleVerifyemail(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/login")){
+                response = handleLogin(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/forgotpassword")){
+                response = handleForgotpassword(gson, request);
+            }
+            else if (uri.equals("/user/resetpassword")){
+                response = handleResetpassword(gson, request);
+            }
+            else if (uri.equals("/user/viewaccount")){
+                response = handleViewaccount(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/update")){
+                response = handleUserupdate(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/view/points")){
+                response = handleViewPoints(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/logout")){
+                response = handleLogout(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/view/request")){
+                response = handleViewRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/view/offer")){
+                response = handleViewOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/view/acceptedrequest")){
+                response = handleViewAcceptedrequest(gson, request, servletReq);
+            }
+           else if (uri.equals("/ride/view/joinedoffer")){
+                response = handleViewJoinedOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/request")){
+                response = handleRideRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/cancel/request")){
+                response = handleCancelRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/update/request")){
+                response = handleUpdateRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/offer")){
+                response = handleRideOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/cancel/offer")){
+                response = handleCancelOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/update/offer")){
+                response = handleUpdateOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/search/request")){
+                response = handleSearchRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/search/offer")){
+                response = handleSearchOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/search/multiplerequest")){
+
+            }
+            else if (uri.equals("/ride/search/multipleoffer")){
+
+            }
+            else if (uri.equals("/ride/accept/request")){
+                response = handleAcceptRequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/cancel/acceptedrequest")){
+                response = handleCancelAcceptedrequest(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/join/offer")){
+                response = handleJoinOffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/cancel/joinedoffer")){
+                response = handleCancelJoinedoffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/update/joinedoffer")){
+                response = handleUpdateJoinedoffer(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/request/pickup")){
+                response = handleRequestPickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/offer/pickup")){
+                response = handleOfferPickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/acceptedrequest/pickup")){
+                response = handleAcceptedrequestPickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/joinedoffer/pickup")){
+                response = handleJoinedofferPickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/request/confirmpickup")){
+                response = handleRequestComfirmpickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/offer/confirmpickup")){
+                response = handleOfferComfirmpickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/acceptedrequest/confirmpickup")){
+                response = handleAcceptedrequestComfirmpickup(gson, request, servletReq);
+            }
+            else if (uri.equals("/ride/joinedoffer/confirmpickup")){
+                response = handleJoinedofferComfirmpickup(gson, request, servletReq);
             }
             else {
                 System.out.println("Request " + uri + " is unknown");
@@ -464,6 +1064,9 @@ public class BoilerideServer {
             //Set up server
             Server server = new Server(8080);
 
+            HashSessionIdManager idmanager = new HashSessionIdManager();
+            server.setSessionIdManager(idmanager);
+
             ServletContextHandler handler = new ServletContextHandler(server, "/");
             server.setHandler(handler);
             handler.setContextPath("/");
@@ -486,7 +1089,12 @@ public class BoilerideServer {
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/request")), "/ride/search/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/offer")), "/ride/search/offer");
 
+            HashSessionManager manager = new HashSessionManager();
+            SessionHandler sessions = new SessionHandler(manager);
+            handler.setHandler(sessions);
+
             server.start();
+            server.join();
 
         } catch (SQLException e) {
             e.printStackTrace();
