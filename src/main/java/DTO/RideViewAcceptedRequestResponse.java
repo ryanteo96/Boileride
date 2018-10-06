@@ -14,9 +14,9 @@ import java.util.Arrays;
 
 public class RideViewAcceptedRequestResponse {
     private int result;
-    private ArrayList<DtoAcceptedRequest>[] acceptedrequestlist;
+    private ArrayList<DtoAcceptedRequest> acceptedrequestlist;
 
-    public RideViewAcceptedRequestResponse(int r, ArrayList<DtoAcceptedRequest>[] acceptedrequestlist) {
+    public RideViewAcceptedRequestResponse(int r, ArrayList<DtoAcceptedRequest> acceptedrequestlist) {
         this.result = r;
         this.acceptedrequestlist = acceptedrequestlist;
     }
@@ -30,20 +30,23 @@ public class RideViewAcceptedRequestResponse {
         result = r;
     }
 
-    public ArrayList<DtoAcceptedRequest>[] getAcceptedrequestlist() {
+    public ArrayList<DtoAcceptedRequest> getAcceptedrequestlist() {
         return acceptedrequestlist;
     }
 
     @Anno(name="acceptedrequestlist")
-    public void setAcceptedrequestlist(ArrayList<DtoAcceptedRequest>[] acceptedrequestlist) {
+    public void setAcceptedrequestlist(ArrayList<DtoAcceptedRequest> acceptedrequestlist) {
         this.acceptedrequestlist = acceptedrequestlist;
     }
 
     @Override
     public String toString() {
-        return "RideViewAcceptedRequestResponse{" +
-                "result=" + result +
-                ", acceptedrequestlist=" + Arrays.toString(acceptedrequestlist) +
-                '}';
+        String str = "result: " + result + ", acceptedrequestlist: ";
+        int index = 0;
+        for (DtoAcceptedRequest acceptedRequest: acceptedrequestlist){
+            str += index + ":[" + acceptedRequest.toString() + "]";
+            index++;
+        }
+        return str;
     }
 }

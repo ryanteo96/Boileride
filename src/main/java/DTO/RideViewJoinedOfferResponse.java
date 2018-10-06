@@ -14,12 +14,12 @@ import java.util.Arrays;
 
 public class RideViewJoinedOfferResponse {
     private int result;
-    private ArrayList<DtoJoinedOffer>[] joinedofferlist;
+    private ArrayList<DtoJoinedOffer> joinedofferlist;
 
     public RideViewJoinedOfferResponse() {
     }
 
-    public RideViewJoinedOfferResponse(int result, ArrayList<DtoJoinedOffer>[] joinedofferlist) {
+    public RideViewJoinedOfferResponse(int result, ArrayList<DtoJoinedOffer> joinedofferlist) {
         this.result = result;
         this.joinedofferlist = joinedofferlist;
     }
@@ -33,20 +33,23 @@ public class RideViewJoinedOfferResponse {
         this.result = result;
     }
 
-    public ArrayList<DtoJoinedOffer>[] getJoinedofferlist() {
+    public ArrayList<DtoJoinedOffer> getJoinedofferlist() {
         return joinedofferlist;
     }
 
     @Anno(name="joinedofferlist")
-    public void setJoinedofferlist(ArrayList<DtoJoinedOffer>[] joinedofferlist) {
+    public void setJoinedofferlist(ArrayList<DtoJoinedOffer> joinedofferlist) {
         this.joinedofferlist = joinedofferlist;
     }
 
     @Override
     public String toString() {
-        return "RideViewJoinedOfferResponse{" +
-                "result=" + result +
-                ", joinedofferlist=" + Arrays.toString(joinedofferlist) +
-                '}';
+        String str = "result: " + result + ", joinedofferlist: ";
+        int index = 0;
+        for (DtoJoinedOffer joinedOffer: joinedofferlist){
+            str += index + ":[" + joinedOffer.toString() + "]";
+            index++;
+        }
+        return str;
     }
 }
