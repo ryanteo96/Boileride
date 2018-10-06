@@ -22,6 +22,27 @@ public class GoogleMapAPI {
         return (int) res.rows[0].elements[0].duration.inSeconds / 60;
     }
 
+    public int[] getDistTime(String address1, String address2) throws InterruptedException, ApiException, IOException {
+        try {
+            DistanceMatrixApiRequest req = new DistanceMatrixApiRequest(ctx);
+            DistanceMatrix res = req.origins(address1)
+                    .destinations(address2)
+                    .mode(TravelMode.DRIVING)
+                    .units(Unit.IMPERIAL)
+                    .await();
+            String distanceWithUnit = res.rows[0].elements[0].distance.humanReadable;
+            String distanceInString = distanceWithUnit.split("\\s+")[0];
+            int distance = (int) Math.floor(Double.parseDouble(distanceInString));
+            int time = (int) res.rows[0].elements[0].duration.inSeconds;
+            int[] distTime = {distance, time};
+            return distTime;
+        } catch (ApiException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String getCity(String address) throws InterruptedException, ApiException, IOException {
         String city = "";
         GeocodingApiRequest req = new GeocodingApiRequest(ctx);
