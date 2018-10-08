@@ -5,6 +5,7 @@ import java.util.Date;
 public class DtoRideRequest {
     private int requestid;
     private int requestedby;
+    private String requestedbyname;
     private String pickuplocation;
     private String destination;
     private Date datentime;
@@ -17,17 +18,19 @@ public class DtoRideRequest {
     private int travelingtime;
     private int price;
     private int status;
+    private int acceptedby;
+    private String acceptedbyname;
+    private String phone;
     private int pickupstatus;
 
     public DtoRideRequest() {
 
     }
 
-    public DtoRideRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime,
-                          int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
-                          int travelingtime, int price, int status) {
+    public DtoRideRequest(int requestid, int requestedby, String requestedbyname, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, int acceptedby, String acceptedbyname, String phone, int pickupstatus) {
         this.requestid = requestid;
         this.requestedby = requestedby;
+        this.requestedbyname = requestedbyname;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
@@ -40,6 +43,10 @@ public class DtoRideRequest {
         this.travelingtime = travelingtime;
         this.price = price;
         this.status = status;
+        this.acceptedby = acceptedby;
+        this.acceptedbyname = acceptedbyname;
+        this.phone = phone;
+        this.pickupstatus = pickupstatus;
     }
 
     public int getRequestid() {
@@ -56,6 +63,14 @@ public class DtoRideRequest {
 
     public void setRequestedby(int requestedby) {
         this.requestedby = requestedby;
+    }
+
+    public String getRequestedbyname() {
+        return requestedbyname;
+    }
+
+    public void setRequestedbyname(String requestedbyname) {
+        this.requestedbyname = requestedbyname;
     }
 
     public String getPickuplocation() {
@@ -154,10 +169,44 @@ public class DtoRideRequest {
         this.status = status;
     }
 
+    public int getAcceptedby() {
+        return acceptedby;
+    }
+
+    public void setAcceptedby(int acceptedby) {
+        this.acceptedby = acceptedby;
+    }
+
+    public String getAcceptedbyname() {
+        return acceptedbyname;
+    }
+
+    public void setAcceptedbyname(String acceptedbyname) {
+        this.acceptedbyname = acceptedbyname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getPickupstatus() {
+        return pickupstatus;
+    }
+
+    public void setPickupstatus(int pickupstatus) {
+        this.pickupstatus = pickupstatus;
+    }
+
+    @Override
     public String toString() {
-        return "RideRequest{" +
+        return "DtoRideRequest{" +
                 "requestid=" + requestid +
-                ", requestedby='" + requestedby + '\'' +
+                ", requestedby=" + requestedby +
+                ", requestedbyname='" + requestedbyname + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
@@ -170,6 +219,10 @@ public class DtoRideRequest {
                 ", travelingtime=" + travelingtime +
                 ", price=" + price +
                 ", status=" + status +
+                ", acceptedby=" + acceptedby +
+                ", acceptedbyname='" + acceptedbyname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", pickupstatus=" + pickupstatus +
                 '}';
     }
 }

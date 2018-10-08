@@ -1,11 +1,13 @@
 package DTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DtoRideOffer {
 
     private int offerid;
     private int offeredby;
+    private String offeredbyname;
     private String pickuplocation;
     private String destination;
     private Date datentime;
@@ -20,17 +22,19 @@ public class DtoRideOffer {
     private int seatleft;
     private int luggageleft;
     private int status;
+    private ArrayList<Integer> joinedby;
+    private ArrayList<String> joinedbyname;
+    private ArrayList<String> phone;
     private int pickupstatus;
 
     public DtoRideOffer() {
 
     }
 
-    public DtoRideOffer(int offerid, int offeredby, String pickuplocation, String destination, Date datentime,
-                        int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac,
-                        int travelingtime, int price, int seatleft, int luggageleft, int status) {
+    public DtoRideOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int seatleft, int luggageleft, int status, ArrayList<Integer> joinedby, ArrayList<String> joinedbyname, ArrayList<String> phone, int pickupstatus) {
         this.offerid = offerid;
         this.offeredby = offeredby;
+        this.offeredbyname = offeredbyname;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
@@ -45,6 +49,10 @@ public class DtoRideOffer {
         this.seatleft = seatleft;
         this.luggageleft = luggageleft;
         this.status = status;
+        this.joinedby = joinedby;
+        this.joinedbyname = joinedbyname;
+        this.phone = phone;
+        this.pickupstatus = pickupstatus;
     }
 
     public int getOfferid() {
@@ -61,6 +69,14 @@ public class DtoRideOffer {
 
     public void setOfferedby(int offeredby) {
         this.offeredby = offeredby;
+    }
+
+    public String getOfferedbyname() {
+        return offeredbyname;
+    }
+
+    public void setOfferedbyname(String offeredbyname) {
+        this.offeredbyname = offeredbyname;
     }
 
     public String getPickuplocation() {
@@ -175,10 +191,44 @@ public class DtoRideOffer {
         this.status = status;
     }
 
+    public ArrayList<Integer> getJoinedby() {
+        return joinedby;
+    }
+
+    public void setJoinedby(ArrayList<Integer> joinedby) {
+        this.joinedby = joinedby;
+    }
+
+    public ArrayList<String> getJoinedbyname() {
+        return joinedbyname;
+    }
+
+    public void setJoinedbyname(ArrayList<String> joinedbyname) {
+        this.joinedbyname = joinedbyname;
+    }
+
+    public ArrayList<String> getPhone() {
+        return phone;
+    }
+
+    public void setPhone(ArrayList<String> phone) {
+        this.phone = phone;
+    }
+
+    public int getPickupstatus() {
+        return pickupstatus;
+    }
+
+    public void setPickupstatus(int pickupstatus) {
+        this.pickupstatus = pickupstatus;
+    }
+
+    @Override
     public String toString() {
-        return "RideOffer{" +
+        return "DtoRideOffer{" +
                 "offerid=" + offerid +
                 ", offeredby=" + offeredby +
+                ", offeredbyname='" + offeredbyname + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
@@ -193,6 +243,10 @@ public class DtoRideOffer {
                 ", seatleft=" + seatleft +
                 ", luggageleft=" + luggageleft +
                 ", status=" + status +
+                ", joinedby=" + joinedby.toString() +
+                ", joinedbyname=" + joinedbyname.toString() +
+                ", phone=" + phone.toString() +
+                ", pickupstatus=" + pickupstatus +
                 '}';
     }
 }

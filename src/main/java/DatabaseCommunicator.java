@@ -217,16 +217,6 @@ public class DatabaseCommunicator {
         return 0;
     }
 
-    /*
-        public static RideRequest[] selectRequestList(int userid){
-            return null;
-        }
-
-        public static RideOffer[] selectOfferList(int userid){
-            return null;
-        }
-    */
-
     public static int updateUserStatus(int i, int j) {
 //        if(conn == null) {
 //            connectDB();
@@ -386,29 +376,39 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEREQUEST WHERE requestedby = " + userid);
+            //ResultSet rs = stmt.executeQuery("SELECT r.*, u.nickname, a FROM RIDEREQUEST WHERE requestedby = " + userid);
+            //ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone from RIDEREQUEST r JOIN USER u1 on r.requestedby = u1.userid JOIN ACCEPTEDRIDEREQUEST a on r.requestid = a.requestid JOIN USER u2 on a.userid = u2.userid WHERE requestedby = " + userid);
+            ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone " +
+                    "FROM RIDEREQUEST r, USER u1, USER u2, ACCEPTEDRIDEREQUEST a WHERE r.requestedby = u1.userid and r.requestid = a.requestid and " +
+                    "a.userid = u2.userid and r.requestedby = " + userid);
             while (rs.next()){
                 int requestid = -1;
                 int requestedby = -1;
+                String requestedbyname = "";
+                String pickuplocation = "";
+                String destination = "";
+                String datentimeStr = null;
                 int passenger = 0;
                 int luggage = 0;
-                int travellingtime = 0;
-                int price = 0;
                 int smoking = 0;
                 int foodndrink = 0;
                 int pets = 0;
                 int AC = 0;
-                int status = 0;
-                String pickuplocation = "";
-                String destination = "";
-                String datentimeStr = null;
                 boolean smoke = false;
                 boolean food =false;
                 boolean pet = false;
                 boolean ac = false;
+                int travellingtime = 0;
+                int price = 0;
+                int status = 0;
+                int acceptedby = -1;
+                String acceptedbyname = "";
+                String phone = "";
+                int pickupstatus = -1;
 
                 requestid = rs.getInt("requestid");
                 requestedby = rs.getInt("requestedby");
+                requestedbyname = rs.getString("requestedbyname");
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
                 datentimeStr = rs.getString("datentime");
@@ -421,6 +421,10 @@ public class DatabaseCommunicator {
                 travellingtime = rs.getInt("travellingtime");
                 price = rs.getInt("price");
                 status = rs.getInt("status");
+                acceptedby = rs.getInt("acceptedby");
+                acceptedbyname = rs.getString("acceptedbyname");
+                phone = rs.getString("phone");
+                pickupstatus = rs.getInt("pickupstatus");
 
                 if (smoking == 1) {
                     smoke = true;
@@ -442,8 +446,8 @@ public class DatabaseCommunicator {
                     e.printStackTrace();
                 }
 
-                DtoRideRequest rideRequest = new DtoRideRequest(requestid, requestedby, pickuplocation, destination, datentime, passenger,
-                        luggage, smoke, food, pet, ac, travellingtime, price, status);
+                DtoRideRequest rideRequest = new DtoRideRequest(requestid, requestedby, requestedbyname, pickuplocation, destination, datentime, passenger,
+                        luggage, smoke, food, pet, ac, travellingtime, price, status, acceptedby, acceptedbyname, phone, pickupstatus);
 
                 requestlist.add(rideRequest);
             }
@@ -595,71 +599,91 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT r.*, u1.nickname as offeredbyname, u2.nickname as joinedbyname, j.userid as joinedby, u2.phone " +
+                    "FROM RIDEOFFER r, USER u1, USER u2, JOINEDRIDEOFFER j WHERE r.offeredby = u1.userid and r.offerid = j.offerid and j.userid = u2.userid " +
+                    "and r.offeredby = "+ userid + " ORDER BY offerid");
+
+            int offerid = -1;
+            int offeredby = -1;
+            String offeredbyname = "";
+            int luggage = 0;
+            int travellingtime = 0;
+            int price = 0;
+            int status = 0;
+            int seatsleft = 0;
+            int luggagesleft = 0;
+            int seats = 0;
+            String pickuplocation = "";
+            String destination = "";
+            String datentimeStr = null;
+            boolean smoke = false;
+            boolean food =false;
+            boolean pet = false;
+            boolean ac = false;
+            ArrayList<Integer> joinedby = new ArrayList<Integer>();
+            ArrayList<String> joinedbyname = new ArrayList<String>();
+            ArrayList<String> phone = new ArrayList<String>();
+            int pickupstatus = -1;
+
             while (rs.next()) {
-                int offerid = -1;
-                int offeredby = -1;
-                int luggage = 0;
-                int travellingtime = 0;
-                int price = 0;
-                int smoking = 0;
-                int foodndrink = 0;
-                int pets = 0;
-                int AC = 0;
-                int status = 0;
-                int seatsleft = 0;
-                int luggagesleft = 0;
-                int seats = 0;
-                String pickuplocation = "";
-                String destination = "";
-                String datentimeStr = null;
-                boolean smoke = false;
-                boolean food =false;
-                boolean pet = false;
-                boolean ac = false;
-
-                offerid = rs.getInt("offerid");
-                offeredby = rs.getInt("offeredby");
-                pickuplocation = rs.getString("pickuplocation");
-                destination = rs.getString("destination");
-                datentimeStr = rs.getString("datentime");
-                seats = rs.getInt("seats");
-                luggage = rs.getInt("luggage");
-                smoking = rs.getInt("smoking");
-                foodndrink = rs.getInt("foodndrink");
-                pets = rs.getInt("pets");
-                AC = rs.getInt("AC");
-                travellingtime = rs.getInt("travellingtime");
-                price = rs.getInt("price");
-                status = rs.getInt("status");
-                seatsleft = rs.getInt("seatsleft");
-                luggagesleft = rs.getInt("luggagesleft");
-
-                if (smoking == 1) {
-                    smoke = true;
+                if (offerid != rs.getInt("offerid")){
+                    if (offerid != -1) {
+                        Date datentime = null;
+                        try {
+                            datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
+                                luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, pickupstatus);
+                        offerlist.add(rideOffer);
+                    }
+                    offerid = rs.getInt("offerid");
+                    offeredby = rs.getInt("offeredby");
+                    offeredbyname = rs.getString("offeredbyname");
+                    pickuplocation = rs.getString("pickuplocation");
+                    destination = rs.getString("destination");
+                    datentimeStr = rs.getString("datentime");
+                    seats = rs.getInt("seats");
+                    luggage = rs.getInt("luggage");
+                    if (rs.getInt("smoking") == 1) smoke = true;
+                    else smoke = false;
+                    if (rs.getInt("foodndrink") == 1) food = true;
+                    else food = false;
+                    if (rs.getInt("pets") == 1) pet = true;
+                    else pet = false;
+                    if (rs.getInt("AC") == 1) ac = true;
+                    else ac = false;
+                    travellingtime = rs.getInt("travellingtime");
+                    price = rs.getInt("price");
+                    status = rs.getInt("status");
+                    seatsleft = rs.getInt("seatsleft");
+                    luggagesleft = rs.getInt("luggagesleft");
+                    joinedby = new ArrayList<Integer>();
+                    joinedbyname = new ArrayList<String>();
+                    phone = new ArrayList<String>();
+                    joinedby.add(rs.getInt("joinedby"));
+                    joinedbyname.add(rs.getString("joinedbyname"));
+                    phone.add(rs.getString("phone"));
+                    pickupstatus = rs.getInt("pickupstatus");
                 }
-                if (foodndrink == 1) {
-                    food = true;
+                else{
+                    joinedby.add(rs.getInt("joinedby"));
+                    joinedbyname.add(rs.getString("joinedbyname"));
+                    phone.add(rs.getString("phone"));
                 }
-                if (pets == 1) {
-                    pet = true;
-                }
-                if (AC == 1) {
-                    ac = true;
-                }
-
-                Date datentime = null;
-                try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, pickuplocation, destination, datentime, seats,
-                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status);
-
-                offerlist.add(rideOffer);
             }
+            Date datentime = null;
+            try {
+                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
+                    luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, pickupstatus);
+            offerlist.add(rideOffer);
+
             rs.close();
             stmt.close();
         }
