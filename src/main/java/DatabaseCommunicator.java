@@ -1048,8 +1048,29 @@ public class DatabaseCommunicator {
         return res;
     }
 
+    public static int addRequestPickup(int requestid, int code){
+        return 0;
+    }
 
+    public static int addOfferPickup(int offerid, int code){
+        return 0;
+    }
 
+    public static int addAcceptedReqPickup(int userid, int requestid, int code){
+        return 0;
+    }
+
+    public static int addJoinedOfferPickup(int userid, int offerid, int code){
+        return 0;
+    }
+
+    public static AcceptedRequest selectAcceptedRequest(int userid, int requestid){
+        return null;
+    }
+
+    public static JoinedOffer selectJoinedOffer(int userid, int requestid){
+        return null;
+    }
 
     public static void main (String args[]) throws ParseException {
         //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );

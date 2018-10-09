@@ -482,4 +482,23 @@ public class RideOffer {
         }
     }
 
+    public RideOfferPickupResponse getOfferPickupCode(RideOfferPickupRequest request){
+        int result = 0;
+        int code = 0;
+        RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
+        if (rideOffer == null) {
+            result = 3;
+        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() > 1) {
+            result = 4;
+        } else if (rideOffer.getPickuplocation() != request.getLocation()) {
+            result = 5;
+        } else {
+            Random rand = new Random();
+            code = rand.nextInt(99999) + 10000;
+            result = DatabaseCommunicator.addOfferPickup(request.getOfferid(), code);
+        }
+        RideOfferPickupResponse res = new RideOfferPickupResponse(result, code);
+        return res;
+    }
+
 }

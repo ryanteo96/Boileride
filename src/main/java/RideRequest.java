@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Random;
 
 import DTO.*;
 import com.google.maps.errors.ApiException;
@@ -455,4 +456,22 @@ public class RideRequest {
         }
     }
 
+    public RideRequestPickupResponse getRequestPickupCode(RideRequestPickupRequest request){
+        int result = 0;
+        int code = 0;
+        RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
+        if (rideRequest == null) {
+            result = 3;
+        } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() > 1) {
+            result = 4;
+        } else if (rideRequest.getPickuplocation() != request.getLocation()) {
+            result = 5;
+        } else {
+            Random rand = new Random();
+            code = rand.nextInt(99999) + 10000;
+            result = DatabaseCommunicator.addRequestPickup(request.getRequestid(), code);
+        }
+        RideRequestPickupResponse res = new RideRequestPickupResponse(result, code);
+        return res;
+    }
 }

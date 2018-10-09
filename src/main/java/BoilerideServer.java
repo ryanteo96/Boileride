@@ -731,8 +731,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.getRequestPickupCode(req);
                 } else {
                     res = new RideRequestPickupResponse(97, -1);
                 }
@@ -756,8 +756,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.getOfferPickupCode(req);
                 } else {
                     res = new RideOfferPickupResponse(97, -1);
                 }
@@ -781,8 +781,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    AcceptedRequest acceptedRequest = new AcceptedRequest();
+                    res = acceptedRequest.getAcceptedRequestPickupCode(req);
                 } else {
                     res = new RideAcceptedRequestPickupResponse(97, -1);
                 }
@@ -806,8 +806,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    JoinedOffer joinedOffer = new JoinedOffer();
+                    res = joinedOffer.getJoinedOfferPickupCode(req);
                 } else {
                     res = new RideJoinedOfferPickupResponse(97, -1);
                 }
