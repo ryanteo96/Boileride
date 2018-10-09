@@ -91,21 +91,22 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nickname, phone, points, status, email, password FROM USER WHERE userid = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE userid = " + userid);
 
-            int id = 0 , points = 0, status = 0;
+            int id = 0 , points = 0, reserve = 0, status = 0;
             String nickname = "", password = "", phone = "", email = "";
 
             if (rs.next()) {
-                //id = rs.getInt("userid");
+                id = rs.getInt("userid");
                 nickname = rs.getString("nickname");
                 phone = rs.getString("phone");
                 points = rs.getInt("points");
+                reserve = rs.getInt("reserve");
                 status = rs.getInt("status");
                 email = rs.getString("email");
                 password = rs.getString("password");
                 //System.out.println("id = "+ id + ", nickname = " + nickname + ", password =" + password + ", phone = " + phone + ", points = " + points + ", status = " + status + ", email = " + email);User(String email, String password, String nickname, String phone, int points, int status)
-                resultUser = new User( email,  password,  nickname,  phone,  points,  status);
+                resultUser = new User( email,  password,  nickname,  phone,  points,  reserve,  status,  id);
             }
             rs.close();
             stmt.close();
@@ -1064,12 +1065,48 @@ public class DatabaseCommunicator {
         return 0;
     }
 
-    public static AcceptedRequest selectAcceptedRequest(int userid, int requestid){
+    public static AcceptedRequest selectAcceptedRequest(int requestid){
         return null;
     }
 
-    public static JoinedOffer selectJoinedOffer(int userid, int requestid){
+    public static JoinedOffer selectJoinedOffer(int userid, int offerid){
         return null;
+    }
+
+    public static ArrayList<JoinedOffer> selectJoinedOfferList(int offerid){
+        return null;
+    }
+
+    public static int updateRequestPickupStatus(int requestid, int pickupstatus, int offerstatus){
+        // update ppickupstatus in ACCEPTEDRIDEREQUEST and update status in RIDEREQUEST
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEREQUEST r, ACCEPTEDRIDEREQUEST a SET r.status = " + offerstatus + ", a.pickupstatus = " + pickupstatus +
+                    " WHERE a.requestid = " + requestid + " and r.requestid = " + requestid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
+    }
+
+    public static int updateOfferPickupStatus(int userid, int offerid, int pickupstatus, int offerstatus){
+        // update pickupstatus in JOINEDRIDEOFFER and update status in RIDEOFFER
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEOFFER r, JOINEDRIDEOFFER j SET r.status = " +offerstatus + ", j.pickupstatus = " + pickupstatus +
+                    " WHERE r.offerid = " + offerid + " and j.offerid = " + offerid + " and j.userid = " + userid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
     }
 
     public static void main (String args[]) throws ParseException {

@@ -501,4 +501,69 @@ public class RideOffer {
         return res;
     }
 
+    public RideOfferConfirmResponse confirmRideOfferPickup(RideOfferConfirmRequest request){
+        int result = 0;
+        int userid = -1;
+        boolean codeIsFound = false;
+        boolean codeIsFoundJoinedUserConfirmed = false;
+        boolean notBothConfirmedIsFound = false;
+        boolean notOfferuserConfirmedIsFound = false;
+        ArrayList<JoinedOffer> joinedOfferList = DatabaseCommunicator.selectJoinedOfferList(request.getOfferid());
+        if (joinedOfferList == null) {
+            return new RideOfferConfirmResponse(3);
+        }
+        else {
+            for (JoinedOffer joinedOffer:joinedOfferList) {
+                if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() != 1) {
+                    return new RideOfferConfirmResponse(4);
+                }
+                else if (joinedOffer.getJoinedusercode() == request.getCode()) {
+                    userid = joinedOffer.getUserid();
+                    if (joinedOffer.getPickupstatus() == 0) {
+                        codeIsFound = true;
+                    }
+                    else if (joinedOffer.getPickupstatus() == 2){
+                        codeIsFoundJoinedUserConfirmed = true;
+                    }
+                    else {
+                        return new RideOfferConfirmResponse(4);
+                    }
+                }
+                else {
+                    if (joinedOffer.getPickupstatus() != 3) {
+                        notBothConfirmedIsFound = true;
+                        if (joinedOffer.getPickupstatus() != 1) {
+                            notOfferuserConfirmedIsFound = true;
+                        }
+                    }
+                }
+            }
+            if (!codeIsFound && !codeIsFoundJoinedUserConfirmed){
+                return new RideOfferConfirmResponse(5);
+            }
+            else if (result != 0) {
+                return new RideOfferConfirmResponse(result);
+            }
+            if (!notBothConfirmedIsFound) {
+                if (codeIsFound)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,4);
+                else if (codeIsFoundJoinedUserConfirmed)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,4);
+            }
+            else if (!notOfferuserConfirmedIsFound) {
+                if (codeIsFound)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,3);
+                else if (codeIsFoundJoinedUserConfirmed)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,3);
+            }
+            else {
+                if (codeIsFound)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,1);
+                else if (codeIsFoundJoinedUserConfirmed)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,1);
+            }
+        }
+        RideOfferConfirmResponse res = new RideOfferConfirmResponse(result);
+        return res;
+    }
 }

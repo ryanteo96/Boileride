@@ -1,7 +1,4 @@
-import DTO.RideJoinedOfferPickupRequest;
-import DTO.RideJoinedOfferPickupResponse;
-import DTO.RideOfferPickupRequest;
-import DTO.RideOfferPickupResponse;
+import DTO.*;
 
 import java.util.Random;
 
@@ -12,23 +9,25 @@ public class JoinedOffer {
     int passenger;
     int luggage;
     int offerusercode;
-    int requestusercode;
+    int joinedusercode;
     int pickupstatus;
+    int offeredby;
     String pickuplocation;
     int status;
 
     public JoinedOffer() {
     }
 
-    public JoinedOffer(int userid, int requestid, int triporder, int passenger, int luggage, int offerusercode, int requestusercode, int pickupstatus, String pickuplocation, int status) {
+    public JoinedOffer(int userid, int requestid, int triporder, int passenger, int luggage, int offerusercode, int joinedusercode, int pickupstatus, int offeredby, String pickuplocation, int status) {
         this.userid = userid;
         this.requestid = requestid;
         this.triporder = triporder;
         this.passenger = passenger;
         this.luggage = luggage;
         this.offerusercode = offerusercode;
-        this.requestusercode = requestusercode;
+        this.joinedusercode = joinedusercode;
         this.pickupstatus = pickupstatus;
+        this.offeredby = offeredby;
         this.pickuplocation = pickuplocation;
         this.status = status;
     }
@@ -81,12 +80,12 @@ public class JoinedOffer {
         this.offerusercode = offerusercode;
     }
 
-    public int getRequestusercode() {
-        return requestusercode;
+    public int getJoinedusercode() {
+        return joinedusercode;
     }
 
-    public void setRequestusercode(int requestusercode) {
-        this.requestusercode = requestusercode;
+    public void setJoinedusercode(int joinedusercode) {
+        this.joinedusercode = joinedusercode;
     }
 
     public int getPickupstatus() {
@@ -95,6 +94,14 @@ public class JoinedOffer {
 
     public void setPickupstatus(int pickupstatus) {
         this.pickupstatus = pickupstatus;
+    }
+
+    public int getOfferedby() {
+        return offeredby;
+    }
+
+    public void setOfferedby(int offeredby) {
+        this.offeredby = offeredby;
     }
 
     public String getPickuplocation() {
@@ -122,8 +129,9 @@ public class JoinedOffer {
                 ", passenger=" + passenger +
                 ", luggage=" + luggage +
                 ", offerusercode=" + offerusercode +
-                ", requestusercode=" + requestusercode +
+                ", joinedusercode=" + joinedusercode +
                 ", pickupstatus=" + pickupstatus +
+                ", offeredby=" + offeredby +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", status=" + status +
                 '}';
@@ -143,6 +151,31 @@ public class JoinedOffer {
             result = DatabaseCommunicator.addJoinedOfferPickup(request.getUserid(), request.getOfferid(), code);
         }
         RideJoinedOfferPickupResponse res = new RideJoinedOfferPickupResponse(result, code);
+        return res;
+    }
+
+    public RideJoinedOfferConfirmResponse confirmJoinedOfferPickup(RideJoinedOfferConfirmRequest request) {
+        int result = 0;
+        JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(request.getUserid(), request.getOfferid());
+        if (joinedOffer == null) {
+            result = 3;
+        } else if (joinedOffer.getUserid() != request.getUserid() || joinedOffer.getStatus() != 1
+                || joinedOffer.getPickupstatus() == 2 || joinedOffer.getPickupstatus() == 3
+                || joinedOffer.getOfferusercode() == 0 || joinedOffer.getJoinedusercode() == 0) {
+            result = 4;
+        } else if (joinedOffer.getOfferusercode() != request.getCode()) {
+            result = 5;
+        } else {
+            if (joinedOffer.getPickupstatus() == 0) {
+                result = DatabaseCommunicator.updateOfferPickupStatus(request.getUserid(), request.getOfferid(),1, 1);
+            } else if (joinedOffer.getPickupstatus() == 2) {
+                if (joinedOffer.getStatus() == 3)
+                    result = DatabaseCommunicator.updateOfferPickupStatus(request.getUserid(), request.getOfferid(), 3, 4);
+                else
+                    result = DatabaseCommunicator.updateOfferPickupStatus(request.getUserid(), request.getOfferid(), 3, 1);
+            }
+        }
+        RideJoinedOfferConfirmResponse res = new RideJoinedOfferConfirmResponse(result);
         return res;
     }
 }

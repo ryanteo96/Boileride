@@ -1,3 +1,5 @@
+import DTO.RideAcceptedRequestConfirmRequest;
+import DTO.RideAcceptedRequestConfirmResponse;
 import DTO.RideAcceptedRequestPickupRequest;
 import DTO.RideAcceptedRequestPickupResponse;
 
@@ -9,18 +11,20 @@ public class AcceptedRequest {
     int requestusercode;
     int acceptedusercode;
     int pickupstatus;
+    int requestedby;
     String pickuplocation;
     int status;
 
     public AcceptedRequest() {
     }
 
-    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int pickupstatus, String pickuplocation, int status) {
+    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int pickupstatus, int requestedby, String pickuplocation, int status) {
         this.userid = userid;
         this.requestid = requestid;
         this.requestusercode = requestusercode;
         this.acceptedusercode = acceptedusercode;
         this.pickupstatus = pickupstatus;
+        this.requestedby = requestedby;
         this.pickuplocation = pickuplocation;
         this.status = status;
     }
@@ -65,6 +69,14 @@ public class AcceptedRequest {
         this.pickupstatus = pickupstatus;
     }
 
+    public int getRequestedby() {
+        return requestedby;
+    }
+
+    public void setRequestedby(int requestedby) {
+        this.requestedby = requestedby;
+    }
+
     public String getPickuplocation() {
         return pickuplocation;
     }
@@ -89,6 +101,7 @@ public class AcceptedRequest {
                 ", requestusercode=" + requestusercode +
                 ", acceptedusercode=" + acceptedusercode +
                 ", pickupstatus=" + pickupstatus +
+                ", requestedby=" + requestedby +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", status=" + status +
                 '}';
@@ -97,7 +110,7 @@ public class AcceptedRequest {
     public RideAcceptedRequestPickupResponse getAcceptedRequestPickupCode(RideAcceptedRequestPickupRequest request){
         int result = 0;
         int code = 0;
-        AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getUserid(), request.getRequestid());
+        AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
         if (acceptedRequest == null || acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() > 1) {
             result = 3;
         } else if (acceptedRequest.getPickuplocation() != request.getLocation()) {
@@ -108,6 +121,31 @@ public class AcceptedRequest {
             result = DatabaseCommunicator.addAcceptedReqPickup(request.getUserid(), request.getRequestid(), code);
         }
         RideAcceptedRequestPickupResponse res = new RideAcceptedRequestPickupResponse(result, code);
+        return res;
+    }
+
+    public RideAcceptedRequestConfirmResponse confirmAcceptedRequestPickup(RideAcceptedRequestConfirmRequest request){
+        int result = 0;
+        AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
+        if (acceptedRequest == null) {
+            result = 3;
+        } else if (acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() != 1
+                || acceptedRequest.getPickupstatus() == 2 || acceptedRequest.getPickupstatus() == 3
+                || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0) {
+            result = 4;
+        }
+        else if (acceptedRequest.getRequestusercode() != request.getCode()){
+            result = 5;
+        }
+        else {
+            if (acceptedRequest.getPickupstatus() == 0){
+                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 1, 3);
+            }
+            else if (acceptedRequest.getPickupstatus() == 2){
+                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 3, 4);
+            }
+        }
+        RideAcceptedRequestConfirmResponse res = new RideAcceptedRequestConfirmResponse(result);
         return res;
     }
 }

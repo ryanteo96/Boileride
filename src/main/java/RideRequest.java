@@ -474,4 +474,29 @@ public class RideRequest {
         RideRequestPickupResponse res = new RideRequestPickupResponse(result, code);
         return res;
     }
+
+    public RideRequestConfirmResponse confirmRideRequestPickup(RideRequestConfirmRequest request){
+        int result = 0;
+        AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
+        if (acceptedRequest == null) {
+            result = 3;
+        } else if (acceptedRequest.getRequestedby() != request.getUserid() || acceptedRequest.getStatus() != 1
+                || acceptedRequest.getPickupstatus() == 1 || acceptedRequest.getPickupstatus() == 3
+                || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0) {
+            result = 4;
+        }
+        else if (acceptedRequest.getAcceptedusercode() != request.getCode()){
+            result = 5;
+        }
+        else {
+            if (acceptedRequest.getPickupstatus() == 0){
+                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 1, 3);
+            }
+            else if (acceptedRequest.getPickupstatus() == 2){
+                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 3, 4);
+            }
+        }
+        RideRequestConfirmResponse res = new RideRequestConfirmResponse(result);
+        return res;
+    }
 }

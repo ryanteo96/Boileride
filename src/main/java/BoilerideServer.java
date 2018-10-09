@@ -241,11 +241,11 @@ public class BoilerideServer {
 //                    User user = new User();
 //                    res = user.updateUser(req, false);
                 } else {
-                    res = new UserViewPointsResponse(97);
+                    res = new UserViewPointsResponse(97, -1, -1);
                 }
             }
             else {
-                res = new UserViewPointsResponse(2);
+                res = new UserViewPointsResponse(2, -1, -1);
             }
             return gson.toJson(res);
         }
@@ -831,8 +831,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.confirmRideRequestPickup(req);
                 } else {
                     res = new RideRequestConfirmResponse(97);
                 }
@@ -856,8 +856,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideOffer rideOffer = new RideOffer();
+                    res = rideOffer.confirmRideOfferPickup(req);
                 } else {
                     res = new RideOfferConfirmResponse(97);
                 }
@@ -881,8 +881,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    AcceptedRequest acceptedRequest = new AcceptedRequest();
+                    res = acceptedRequest.confirmAcceptedRequestPickup(req);
                 } else {
                     res = new RideAcceptedRequestConfirmResponse(97);
                 }
@@ -906,8 +906,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    JoinedOffer joinedOffer = new JoinedOffer();
+                    res = joinedOffer.confirmJoinedOfferPickup(req);
                 } else {
                     res = new RideJoinedOfferConfirmResponse(97);
                 }
