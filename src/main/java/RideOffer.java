@@ -261,9 +261,6 @@ public class RideOffer {
         if (datentime.compareTo(today) <= 0 ){
             return 1;
         }
-//        } catch (DateTimeParseException ex){
-//            return 2;
-//        }
         return 0;
     }
 
@@ -283,6 +280,29 @@ public class RideOffer {
 
     public int isEnoughPoints(User user, int price){
         if (user != null && user.getPoints() < price) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int verifyTimePrice(String location, String destination, int price, int time){
+        GoogleMapAPI mapAPI = new GoogleMapAPI();
+        try {
+            int[] distTime = mapAPI.getDistTime(location, destination);
+            if (distTime == null){
+                return 1;
+            }
+            else if (Math.abs(distTime[0]-price) > 1){
+                return 2;
+            }
+            else if (Math.abs(distTime[1]-time) > 5*60){
+                return 3;
+            }
+        } catch (InterruptedException e) {
+            return 1;
+        } catch (ApiException e) {
+            return 1;
+        } catch (IOException e) {
             return 1;
         }
         return 0;
@@ -311,13 +331,16 @@ public class RideOffer {
         int seatResult = verifySeats(request.getSeats());
         int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
+        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 4;
         else if (dateResult == 1) result = 5;
-        else if (dateResult == 2) result = 7;
         else if (seatResult > 0) result = 97;
         else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 6;
+        else if (distTimeResult == 1) result = 3;
+        else if (distTimeResult == 2) result = 7;
+        else if (distTimeResult == 3) result = 8;
         else {
             RideOffer rideOffer = new RideOffer(request.getUserid(), request.getPickuplocation(), request.getDestination(),
                     request.getDatentime(), request.getSeats(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
@@ -366,13 +389,16 @@ public class RideOffer {
         int seatResult = verifySeats(request.getSeats());
         int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
+        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 7;
         else if (dateResult == 1) result = 8;
-        else if (dateResult == 2) result = 10;
         else if (seatResult > 0) result = 97;
         else if (luggageResult > 0) result = 97;
         else if (priceResult > 0) result = 9;
+        else if (distTimeResult == 1) result = 6;
+        else if (distTimeResult == 2) result = 10;
+        else if (distTimeResult == 3) result = 11;
         else {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {

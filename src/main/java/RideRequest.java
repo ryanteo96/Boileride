@@ -304,7 +304,7 @@ public class RideRequest {
         int passengerResult = verifyPassengers(request.getPassengers());
         int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
-        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
+        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice()/request.getPassengers(), request.getTravelingtime());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 4;
         else if (dateResult > 0) result = 5;
@@ -362,7 +362,7 @@ public class RideRequest {
         int passengerResult = verifyPassengers(request.getPassengers());
         int luggageResult = verifyLuggage(request.getLuggage());
         int priceResult = isEnoughPoints(user, request.getPrice());
-        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
+        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice()/request.getPassengers(), request.getTravelingtime());
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 7;
         else if (dateResult > 0) result = 8;
