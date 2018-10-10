@@ -459,16 +459,16 @@ public class RideRequest {
     public RideRequestPickupResponse getRequestPickupCode(RideRequestPickupRequest request){
         int result = 0;
         int code = 0;
+        Date today = new Date();
         RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
         if (rideRequest == null) {
             result = 3;
-        } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() > 1) {
+        } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() != 1 ||
+                Math.abs(today.getTime()-rideRequest.getDatentime().getTime())/1000 > 1800) {
             result = 4;
-        } else if (rideRequest.getPickuplocation() != request.getLocation()) {
-            result = 5;
         } else {
             Random rand = new Random();
-            code = rand.nextInt(99999) + 10000;
+            code = rand.nextInt(899999) + 100000;
             result = DatabaseCommunicator.addRequestPickup(request.getRequestid(), code);
         }
         RideRequestPickupResponse res = new RideRequestPickupResponse(result, code);
@@ -477,23 +477,22 @@ public class RideRequest {
 
     public RideRequestConfirmResponse confirmRideRequestPickup(RideRequestConfirmRequest request){
         int result = 0;
+        Date today = new Date();
         AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
         if (acceptedRequest == null) {
             result = 3;
-        } else if (acceptedRequest.getRequestedby() != request.getUserid() || acceptedRequest.getStatus() != 1
-                || acceptedRequest.getPickupstatus() == 1 || acceptedRequest.getPickupstatus() == 3
-                || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0) {
+        } else if (acceptedRequest.getRequestedby() != request.getUserid() || acceptedRequest.getStatus() != 1 ||
+                acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0 ||
+                Math.abs(today.getTime()-acceptedRequest.getDatentime().getTime())/1000 > 1800) {
             result = 4;
-        }
-        else if (acceptedRequest.getAcceptedusercode() != request.getCode()){
+        } else if (acceptedRequest.getRequestuserstatus() == 1){
             result = 5;
-        }
-        else {
-            if (acceptedRequest.getPickupstatus() == 0){
-                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 1, 3);
-            }
-            else if (acceptedRequest.getPickupstatus() == 2){
-                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 3, 4);
+        } else if (acceptedRequest.getAcceptedusercode() != request.getCode()){
+            result = 6;
+        } else {
+            result = DatabaseCommunicator.updateRequestUserStatus(request.getRequestid(), 1);
+            if (result == 0){
+                //Make payment
             }
         }
         RideRequestConfirmResponse res = new RideRequestConfirmResponse(result);

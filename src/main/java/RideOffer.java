@@ -485,16 +485,16 @@ public class RideOffer {
     public RideOfferPickupResponse getOfferPickupCode(RideOfferPickupRequest request){
         int result = 0;
         int code = 0;
+        Date today = new Date();
         RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
         if (rideOffer == null) {
             result = 3;
-        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() > 1) {
+        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() != 1
+                || Math.abs(today.getTime()-rideOffer.getDatentime().getTime())/1000 > 1800) {
             result = 4;
-        } else if (rideOffer.getPickuplocation() != request.getLocation()) {
-            result = 5;
         } else {
             Random rand = new Random();
-            code = rand.nextInt(99999) + 10000;
+            code = rand.nextInt(899999) + 100000;
             result = DatabaseCommunicator.addOfferPickup(request.getOfferid(), code);
         }
         RideOfferPickupResponse res = new RideOfferPickupResponse(result, code);
@@ -503,64 +503,22 @@ public class RideOffer {
 
     public RideOfferConfirmResponse confirmRideOfferPickup(RideOfferConfirmRequest request){
         int result = 0;
-        int userid = -1;
-        boolean codeIsFound = false;
-        boolean codeIsFoundJoinedUserConfirmed = false;
-        boolean notBothConfirmedIsFound = false;
-        boolean notOfferuserConfirmedIsFound = false;
-        ArrayList<JoinedOffer> joinedOfferList = DatabaseCommunicator.selectJoinedOfferList(request.getOfferid());
-        if (joinedOfferList == null) {
-            return new RideOfferConfirmResponse(3);
-        }
-        else {
-            for (JoinedOffer joinedOffer:joinedOfferList) {
-                if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() != 1) {
-                    return new RideOfferConfirmResponse(4);
-                }
-                else if (joinedOffer.getJoinedusercode() == request.getCode()) {
-                    userid = joinedOffer.getUserid();
-                    if (joinedOffer.getPickupstatus() == 0) {
-                        codeIsFound = true;
-                    }
-                    else if (joinedOffer.getPickupstatus() == 2){
-                        codeIsFoundJoinedUserConfirmed = true;
-                    }
-                    else {
-                        return new RideOfferConfirmResponse(4);
-                    }
-                }
-                else {
-                    if (joinedOffer.getPickupstatus() != 3) {
-                        notBothConfirmedIsFound = true;
-                        if (joinedOffer.getPickupstatus() != 1) {
-                            notOfferuserConfirmedIsFound = true;
-                        }
-                    }
-                }
-            }
-            if (!codeIsFound && !codeIsFoundJoinedUserConfirmed){
-                return new RideOfferConfirmResponse(5);
-            }
-            else if (result != 0) {
-                return new RideOfferConfirmResponse(result);
-            }
-            if (!notBothConfirmedIsFound) {
-                if (codeIsFound)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,4);
-                else if (codeIsFoundJoinedUserConfirmed)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,4);
-            }
-            else if (!notOfferuserConfirmedIsFound) {
-                if (codeIsFound)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,3);
-                else if (codeIsFoundJoinedUserConfirmed)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,3);
-            }
-            else {
-                if (codeIsFound)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),1,1);
-                else if (codeIsFoundJoinedUserConfirmed)
-                    result = DatabaseCommunicator.updateOfferPickupStatus(userid, request.getOfferid(),3,1);
+        Date today = new Date();
+        JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(request.getJoineduserid(), request.getOfferid());
+        if (joinedOffer == null) {
+            result = 3;
+        } else if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() != 1
+                || joinedOffer.getOfferusercode() == 0 || joinedOffer.getJoinedusercode() == 0
+                || Math.abs(today.getTime()-joinedOffer.getDatentime().getTime())/1000 > 1800) {
+            result = 4;
+        } else if (joinedOffer.getOfferuserstatus() == 1){
+            result = 5;
+        } else if (joinedOffer.getJoinedusercode() != request.getCode()) {
+            result = 6;
+        } else {
+            result = DatabaseCommunicator.updateOfferUserStatus(request.getUserid(), request.getOfferid(), 1);
+            if (result == 0){
+                //Get payment
             }
         }
         RideOfferConfirmResponse res = new RideOfferConfirmResponse(result);

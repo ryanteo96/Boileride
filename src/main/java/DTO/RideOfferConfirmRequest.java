@@ -12,11 +12,13 @@ package DTO;
 public class RideOfferConfirmRequest {
     private int userid;
     private int offerid;
+    private int joineduserid;
     private int code;
 
-    public RideOfferConfirmRequest(int userid, int offerid, int code) {
+    public RideOfferConfirmRequest(int userid, int offerid, int joineduserid, int code) {
         this.userid = userid;
         this.offerid = offerid;
+        this.joineduserid = joineduserid;
         this.code = code;
     }
 
@@ -36,6 +38,14 @@ public class RideOfferConfirmRequest {
         this.offerid = offerid;
     }
 
+    public int getJoineduserid() {
+        return joineduserid;
+    }
+
+    public void setJoineduserid(int joineduserid) {
+        this.joineduserid = joineduserid;
+    }
+
     public int getCode() {
         return code;
     }
@@ -49,6 +59,7 @@ public class RideOfferConfirmRequest {
         return "RideOfferConfirmRequest{" +
                 "userid=" + userid +
                 ", offerid=" + offerid +
+                ", joineduserid=" + joineduserid +
                 ", code=" + code +
                 '}';
     }

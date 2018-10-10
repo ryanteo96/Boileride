@@ -1077,12 +1077,10 @@ public class DatabaseCommunicator {
         return null;
     }
 
-    public static int updateRequestPickupStatus(int requestid, int pickupstatus, int offerstatus){
-        // update ppickupstatus in ACCEPTEDRIDEREQUEST and update status in RIDEREQUEST
+    public static int updateRequestUserStatus(int requestid, int requestuserstatus){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE RIDEREQUEST r, ACCEPTEDRIDEREQUEST a SET r.status = " + offerstatus + ", a.pickupstatus = " + pickupstatus +
-                    " WHERE a.requestid = " + requestid + " and r.requestid = " + requestid);
+            stmt.executeUpdate("UPDATE ACCEPTEDRIDEREQUEST SET requestuserstatus = " + requestuserstatus + " WHERE requestid = " + requestid);
 
             stmt.close();
         }
@@ -1093,12 +1091,38 @@ public class DatabaseCommunicator {
         return 0;
     }
 
-    public static int updateOfferPickupStatus(int userid, int offerid, int pickupstatus, int offerstatus){
-        // update pickupstatus in JOINEDRIDEOFFER and update status in RIDEOFFER
+    public static int updateAcceptedUserStatus(int requestid, int accepteduserstatus){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE RIDEOFFER r, JOINEDRIDEOFFER j SET r.status = " +offerstatus + ", j.pickupstatus = " + pickupstatus +
-                    " WHERE r.offerid = " + offerid + " and j.offerid = " + offerid + " and j.userid = " + userid);
+            stmt.executeUpdate("UPDATE ACCEPTEDRIDEREQUEST SET accepteduserstatus = " + accepteduserstatus + " WHERE requestid = " + requestid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
+    }
+
+    public static int updateOfferUserStatus(int userid, int offerid, int pickupstatus){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET offeruserstatus = " + pickupstatus + " WHERE offerid = " + offerid + " and userid = " + userid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
+    }
+
+    public static int updateJoinedUserStatus(int userid, int offerid, int pickupstatus){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET joineduserstatus = " + pickupstatus + " WHERE offerid = " + offerid + " and userid = " + userid);
 
             stmt.close();
         }

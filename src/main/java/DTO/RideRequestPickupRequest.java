@@ -12,12 +12,10 @@ package DTO;
 public class RideRequestPickupRequest {
     private int userid;
     private int requestid;
-    private String location;
 
     public RideRequestPickupRequest(int userid, int requestid, String location) {
         this.userid = userid;
         this.requestid = requestid;
-        this.location = location;
     }
 
     public int getUserid() {
@@ -36,20 +34,11 @@ public class RideRequestPickupRequest {
         this.requestid = requestid;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     @Override
     public String toString() {
         return "RideRequestPickupRequest{" +
                 "userid=" + userid +
                 ", requestid=" + requestid +
-                ", location='" + location + '\'' +
                 '}';
     }
 }

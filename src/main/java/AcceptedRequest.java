@@ -3,6 +3,7 @@ import DTO.RideAcceptedRequestConfirmResponse;
 import DTO.RideAcceptedRequestPickupRequest;
 import DTO.RideAcceptedRequestPickupResponse;
 
+import java.util.Date;
 import java.util.Random;
 
 public class AcceptedRequest {
@@ -10,22 +11,24 @@ public class AcceptedRequest {
     int requestid;
     int requestusercode;
     int acceptedusercode;
-    int pickupstatus;
+    int requestuserstatus;
+    int accepteduserstatus;
     int requestedby;
-    String pickuplocation;
+    Date datentime;
     int status;
 
     public AcceptedRequest() {
     }
 
-    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int pickupstatus, int requestedby, String pickuplocation, int status) {
+    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int requestuserstatus, int accepteduserstatus, int requestedby, Date datentime, int status) {
         this.userid = userid;
         this.requestid = requestid;
         this.requestusercode = requestusercode;
         this.acceptedusercode = acceptedusercode;
-        this.pickupstatus = pickupstatus;
+        this.requestuserstatus = requestuserstatus;
+        this.accepteduserstatus = accepteduserstatus;
         this.requestedby = requestedby;
-        this.pickuplocation = pickuplocation;
+        this.datentime = datentime;
         this.status = status;
     }
 
@@ -61,12 +64,20 @@ public class AcceptedRequest {
         this.acceptedusercode = acceptedusercode;
     }
 
-    public int getPickupstatus() {
-        return pickupstatus;
+    public int getRequestuserstatus() {
+        return requestuserstatus;
     }
 
-    public void setPickupstatus(int pickupstatus) {
-        this.pickupstatus = pickupstatus;
+    public void setRequestuserstatus(int requestuserstatus) {
+        this.requestuserstatus = requestuserstatus;
+    }
+
+    public int getAccepteduserstatus() {
+        return accepteduserstatus;
+    }
+
+    public void setAccepteduserstatus(int accepteduserstatus) {
+        this.accepteduserstatus = accepteduserstatus;
     }
 
     public int getRequestedby() {
@@ -77,12 +88,12 @@ public class AcceptedRequest {
         this.requestedby = requestedby;
     }
 
-    public String getPickuplocation() {
-        return pickuplocation;
+    public Date getDatentime() {
+        return datentime;
     }
 
-    public void setPickuplocation(String pickuplocation) {
-        this.pickuplocation = pickuplocation;
+    public void setDatentime(Date datentime) {
+        this.datentime = datentime;
     }
 
     public int getStatus() {
@@ -100,9 +111,10 @@ public class AcceptedRequest {
                 ", requestid=" + requestid +
                 ", requestusercode=" + requestusercode +
                 ", acceptedusercode=" + acceptedusercode +
-                ", pickupstatus=" + pickupstatus +
+                ", requestuserstatus=" + requestuserstatus +
+                ", accepteduserstatus=" + accepteduserstatus +
                 ", requestedby=" + requestedby +
-                ", pickuplocation='" + pickuplocation + '\'' +
+                ", datentime=" + datentime +
                 ", status=" + status +
                 '}';
     }
@@ -110,14 +122,14 @@ public class AcceptedRequest {
     public RideAcceptedRequestPickupResponse getAcceptedRequestPickupCode(RideAcceptedRequestPickupRequest request){
         int result = 0;
         int code = 0;
+        Date today = new Date();
         AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
-        if (acceptedRequest == null || acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() > 1) {
+        if (acceptedRequest == null || acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() != 1
+                || Math.abs(today.getTime()-acceptedRequest.getDatentime().getTime())/1000 > 1800) {
             result = 3;
-        } else if (acceptedRequest.getPickuplocation() != request.getLocation()) {
-            result = 4;
         } else {
             Random rand = new Random();
-            code = rand.nextInt(99999) + 10000;
+            code = rand.nextInt(899999) + 100000;
             result = DatabaseCommunicator.addAcceptedReqPickup(request.getUserid(), request.getRequestid(), code);
         }
         RideAcceptedRequestPickupResponse res = new RideAcceptedRequestPickupResponse(result, code);
@@ -126,23 +138,23 @@ public class AcceptedRequest {
 
     public RideAcceptedRequestConfirmResponse confirmAcceptedRequestPickup(RideAcceptedRequestConfirmRequest request){
         int result = 0;
+        Date today = new Date();
         AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
         if (acceptedRequest == null) {
             result = 3;
         } else if (acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() != 1
-                || acceptedRequest.getPickupstatus() == 2 || acceptedRequest.getPickupstatus() == 3
-                || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0) {
+                || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0
+                || Math.abs(today.getTime()-acceptedRequest.getDatentime().getTime())/1000 > 1800) {
             result = 4;
-        }
-        else if (acceptedRequest.getRequestusercode() != request.getCode()){
+        } else if (acceptedRequest.getAccepteduserstatus() == 1) {
             result = 5;
+        }else if (acceptedRequest.getRequestusercode() != request.getCode()){
+            result = 6;
         }
         else {
-            if (acceptedRequest.getPickupstatus() == 0){
-                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 1, 3);
-            }
-            else if (acceptedRequest.getPickupstatus() == 2){
-                result = DatabaseCommunicator.updateRequestPickupStatus(request.getRequestid(), 3, 4);
+            result = DatabaseCommunicator.updateAcceptedUserStatus(request.getRequestid(), 1);
+            if (result == 0){
+                //Get payment
             }
         }
         RideAcceptedRequestConfirmResponse res = new RideAcceptedRequestConfirmResponse(result);
