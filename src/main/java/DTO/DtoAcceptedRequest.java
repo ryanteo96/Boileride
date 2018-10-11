@@ -15,6 +15,7 @@ public class DtoAcceptedRequest {
 
     private int requestid;
     private int requestedby;
+    private String requestedbyname;
     private String pickuplocation;
     private String destination;
     private Date datentime;
@@ -28,14 +29,16 @@ public class DtoAcceptedRequest {
     private int price;
     private int status;
     private String phone;
-    private int pickupstatus;
+    private int accepteduserstatus;
+    private int acceptedstatus;
 
     public DtoAcceptedRequest() {
     }
 
-    public DtoAcceptedRequest(int requestid, int requestedby, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, String phone, int pickupstatus) {
+    public DtoAcceptedRequest(int requestid, int requestedby, String requestedbyname, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, String phone, int accepteduserstatus, int acceptedstatus) {
         this.requestid = requestid;
         this.requestedby = requestedby;
+        this.requestedbyname = requestedbyname;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
@@ -49,7 +52,8 @@ public class DtoAcceptedRequest {
         this.price = price;
         this.status = status;
         this.phone = phone;
-        this.pickupstatus = pickupstatus;
+        this.accepteduserstatus = accepteduserstatus;
+        this.acceptedstatus = acceptedstatus;
     }
 
     public int getRequestid() {
@@ -66,6 +70,14 @@ public class DtoAcceptedRequest {
 
     public void setRequestedby(int requestedby) {
         this.requestedby = requestedby;
+    }
+
+    public String getRequestedbyname() {
+        return requestedbyname;
+    }
+
+    public void setRequestedbyname(String requestedbyname) {
+        this.requestedbyname = requestedbyname;
     }
 
     public String getPickuplocation() {
@@ -172,12 +184,20 @@ public class DtoAcceptedRequest {
         this.phone = phone;
     }
 
-    public int getPickupstatus() {
-        return pickupstatus;
+    public int getAccepteduserstatus() {
+        return accepteduserstatus;
     }
 
-    public void setPickupstatus(int pickupstatus) {
-        this.pickupstatus = pickupstatus;
+    public void setAccepteduserstatus(int accepteduserstatus) {
+        this.accepteduserstatus = accepteduserstatus;
+    }
+
+    public int getAcceptedstatus() {
+        return acceptedstatus;
+    }
+
+    public void setAcceptedstatus(int acceptedstatus) {
+        this.acceptedstatus = acceptedstatus;
     }
 
     @Override
@@ -185,6 +205,7 @@ public class DtoAcceptedRequest {
         return "DtoAcceptedRequest{" +
                 "requestid=" + requestid +
                 ", requestedby=" + requestedby +
+                ", requestedbyname='" + requestedbyname + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
@@ -198,7 +219,8 @@ public class DtoAcceptedRequest {
                 ", price=" + price +
                 ", status=" + status +
                 ", phone='" + phone + '\'' +
-                ", pickupstatus=" + pickupstatus +
+                ", accepteduserstatus=" + accepteduserstatus +
+                ", acceptedstatus=" + acceptedstatus +
                 '}';
     }
 }

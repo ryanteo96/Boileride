@@ -21,13 +21,13 @@ public class DtoRideRequest {
     private int acceptedby;
     private String acceptedbyname;
     private String phone;
-    private int pickupstatus;
+    private int requestuserstatus;
 
     public DtoRideRequest() {
 
     }
 
-    public DtoRideRequest(int requestid, int requestedby, String requestedbyname, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, int acceptedby, String acceptedbyname, String phone, int pickupstatus) {
+    public DtoRideRequest(int requestid, int requestedby, String requestedbyname, String pickuplocation, String destination, Date datentime, int passengers, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int status, int acceptedby, String acceptedbyname, String phone, int requestuserstatus) {
         this.requestid = requestid;
         this.requestedby = requestedby;
         this.requestedbyname = requestedbyname;
@@ -46,7 +46,14 @@ public class DtoRideRequest {
         this.acceptedby = acceptedby;
         this.acceptedbyname = acceptedbyname;
         this.phone = phone;
-        this.pickupstatus = pickupstatus;
+        this.requestuserstatus = requestuserstatus;
+    }
+
+    public DtoRideRequest(int requestid, int requestedby, Date datentime, int price) {
+        this.requestid = requestid;
+        this.requestedby = requestedby;
+        this.datentime = datentime;
+        this.price = price;
     }
 
     public int getRequestid() {
@@ -193,12 +200,12 @@ public class DtoRideRequest {
         this.phone = phone;
     }
 
-    public int getPickupstatus() {
-        return pickupstatus;
+    public int getRequestuserstatus() {
+        return requestuserstatus;
     }
 
-    public void setPickupstatus(int pickupstatus) {
-        this.pickupstatus = pickupstatus;
+    public void setRequestuserstatus(int requestuserstatus) {
+        this.requestuserstatus = requestuserstatus;
     }
 
     @Override
@@ -222,7 +229,7 @@ public class DtoRideRequest {
                 ", acceptedby=" + acceptedby +
                 ", acceptedbyname='" + acceptedbyname + '\'' +
                 ", phone='" + phone + '\'' +
-                ", pickupstatus=" + pickupstatus +
+                ", requestuserstatus=" + requestuserstatus +
                 '}';
     }
 }

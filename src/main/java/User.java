@@ -19,20 +19,23 @@ public class User
     private String nickname;
     private String phone;
     private int points;
+    private int reserve;
     private int status;
     private int userid;
+
     public static DatabaseCommunicator SQL = new DatabaseCommunicator();
 
     public User(){}
 
-    public User(String email, String password, String nickname, String phone, int points, int status) {
+    public User(String email, String password, String nickname, String phone, int points, int reserve, int status, int userid) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.phone = phone;
         this.points = points;
+        this.reserve = reserve;
         this.status = status;
-        //this.userid = userid;
+        this.userid = userid;
     }
 
     public User(String email, String password, String nickname, String phone, int points, int status, int userid) {
@@ -515,6 +518,18 @@ public class User
             result = DatabaseCommunicator.updateUserStatus(request.getUserid(), 0);
         }
         UserLogoutResponse res = new UserLogoutResponse(result);
+        return res;
+    }
+
+    public UserViewPointsResponse viewPointsFromDB(UserViewPointsRequest request){
+        int result = 0;
+        int points = -1;
+        int reserve = -1;
+        User user = DatabaseCommunicator.selectUser(request.getUserid());
+        if (user == null){
+            result = 1;
+        }
+        UserViewPointsResponse res = new UserViewPointsResponse(result, points, reserve);
         return res;
     }
 }

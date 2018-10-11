@@ -25,13 +25,13 @@ public class DtoRideOffer {
     private ArrayList<Integer> joinedby;
     private ArrayList<String> joinedbyname;
     private ArrayList<String> phone;
-    private int pickupstatus;
+    private ArrayList<Integer> offeruserstatus;
 
     public DtoRideOffer() {
 
     }
 
-    public DtoRideOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int seatleft, int luggageleft, int status, ArrayList<Integer> joinedby, ArrayList<String> joinedbyname, ArrayList<String> phone, int pickupstatus) {
+    public DtoRideOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int seatleft, int luggageleft, int status, ArrayList<Integer> joinedby, ArrayList<String> joinedbyname, ArrayList<String> phone, ArrayList<Integer> offeruserstatus) {
         this.offerid = offerid;
         this.offeredby = offeredby;
         this.offeredbyname = offeredbyname;
@@ -52,7 +52,14 @@ public class DtoRideOffer {
         this.joinedby = joinedby;
         this.joinedbyname = joinedbyname;
         this.phone = phone;
-        this.pickupstatus = pickupstatus;
+        this.offeruserstatus = offeruserstatus;
+    }
+
+    public DtoRideOffer(int offerid, int offeredby, Date datentime, int price) {
+        this.offerid = offerid;
+        this.offeredby = offeredby;
+        this.datentime = datentime;
+        this.price = price;
     }
 
     public int getOfferid() {
@@ -215,12 +222,12 @@ public class DtoRideOffer {
         this.phone = phone;
     }
 
-    public int getPickupstatus() {
-        return pickupstatus;
+    public ArrayList<Integer> getOfferuserstatus() {
+        return offeruserstatus;
     }
 
-    public void setPickupstatus(int pickupstatus) {
-        this.pickupstatus = pickupstatus;
+    public void setOfferuserstatus(ArrayList<Integer> offeruserstatus) {
+        this.offeruserstatus = offeruserstatus;
     }
 
     @Override
@@ -246,7 +253,7 @@ public class DtoRideOffer {
                 ", joinedby=" + joinedby.toString() +
                 ", joinedbyname=" + joinedbyname.toString() +
                 ", phone=" + phone.toString() +
-                ", pickupstatus=" + pickupstatus +
+                ", offeruserstatus=" + offeruserstatus.toString() +
                 '}';
     }
 }

@@ -13,22 +13,26 @@ public class AcceptedRequest {
     int acceptedusercode;
     int requestuserstatus;
     int accepteduserstatus;
+    int acceptedstatus;
     int requestedby;
     Date datentime;
+    int price;
     int status;
 
     public AcceptedRequest() {
     }
 
-    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int requestuserstatus, int accepteduserstatus, int requestedby, Date datentime, int status) {
+    public AcceptedRequest(int userid, int requestid, int requestusercode, int acceptedusercode, int requestuserstatus, int accepteduserstatus, int acceptedstatus, int requestedby, Date datentime, int price, int status) {
         this.userid = userid;
         this.requestid = requestid;
         this.requestusercode = requestusercode;
         this.acceptedusercode = acceptedusercode;
         this.requestuserstatus = requestuserstatus;
         this.accepteduserstatus = accepteduserstatus;
+        this.acceptedstatus = acceptedstatus;
         this.requestedby = requestedby;
         this.datentime = datentime;
+        this.price = price;
         this.status = status;
     }
 
@@ -80,6 +84,14 @@ public class AcceptedRequest {
         this.accepteduserstatus = accepteduserstatus;
     }
 
+    public int getAcceptedstatus() {
+        return acceptedstatus;
+    }
+
+    public void setAcceptedstatus(int acceptedstatus) {
+        this.acceptedstatus = acceptedstatus;
+    }
+
     public int getRequestedby() {
         return requestedby;
     }
@@ -104,6 +116,14 @@ public class AcceptedRequest {
         this.status = status;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "AcceptedRequest{" +
@@ -113,9 +133,11 @@ public class AcceptedRequest {
                 ", acceptedusercode=" + acceptedusercode +
                 ", requestuserstatus=" + requestuserstatus +
                 ", accepteduserstatus=" + accepteduserstatus +
+                ", acceptedstatus=" + acceptedstatus +
                 ", requestedby=" + requestedby +
                 ", datentime=" + datentime +
                 ", status=" + status +
+                ", price=" + price +
                 '}';
     }
 

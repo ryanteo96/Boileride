@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class JoinedOffer {
     int userid;
-    int requestid;
+    int offerid;
     int triporder;
     int passenger;
     int luggage;
@@ -13,16 +13,18 @@ public class JoinedOffer {
     int joinedusercode;
     int offeruserstatus;
     int joineduserstatus;
+    int joinedstatus;
     int offeredby;
     Date datentime;
+    int price;
     int status;
 
     public JoinedOffer() {
     }
 
-    public JoinedOffer(int userid, int requestid, int triporder, int passenger, int luggage, int offerusercode, int joinedusercode, int offeruserstatus, int joineduserstatus, int offeredby, Date datentime, int status) {
+    public JoinedOffer(int userid, int offerid, int triporder, int passenger, int luggage, int offerusercode, int joinedusercode, int offeruserstatus, int joineduserstatus, int joinedstatus, int offeredby, Date datentime, int price, int status) {
         this.userid = userid;
-        this.requestid = requestid;
+        this.offerid = offerid;
         this.triporder = triporder;
         this.passenger = passenger;
         this.luggage = luggage;
@@ -30,8 +32,10 @@ public class JoinedOffer {
         this.joinedusercode = joinedusercode;
         this.offeruserstatus = offeruserstatus;
         this.joineduserstatus = joineduserstatus;
+        this.joinedstatus = joinedstatus;
         this.offeredby = offeredby;
         this.datentime = datentime;
+        this.price = price;
         this.status = status;
     }
 
@@ -43,12 +47,12 @@ public class JoinedOffer {
         this.userid = userid;
     }
 
-    public int getRequestid() {
-        return requestid;
+    public int getOfferid() {
+        return offerid;
     }
 
-    public void setRequestid(int requestid) {
-        this.requestid = requestid;
+    public void setOfferid(int offerid) {
+        this.offerid = offerid;
     }
 
     public int getTriporder() {
@@ -107,6 +111,14 @@ public class JoinedOffer {
         this.joineduserstatus = joineduserstatus;
     }
 
+    public int getJoinedstatus() {
+        return joinedstatus;
+    }
+
+    public void setJoinedstatus(int joinedstatus) {
+        this.joinedstatus = joinedstatus;
+    }
+
     public int getOfferedby() {
         return offeredby;
     }
@@ -131,11 +143,19 @@ public class JoinedOffer {
         this.status = status;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "JoinedOffer{" +
                 "userid=" + userid +
-                ", requestid=" + requestid +
+                ", offerid=" + offerid +
                 ", triporder=" + triporder +
                 ", passenger=" + passenger +
                 ", luggage=" + luggage +
@@ -143,8 +163,10 @@ public class JoinedOffer {
                 ", joinedusercode=" + joinedusercode +
                 ", offeruserstatus=" + offeruserstatus +
                 ", joineduserstatus=" + joineduserstatus +
+                ", joinedstatus=" + joinedstatus +
                 ", offeredby=" + offeredby +
                 ", datentime=" + datentime +
+                ", price=" + price +
                 ", status=" + status +
                 '}';
     }

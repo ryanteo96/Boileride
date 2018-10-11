@@ -379,7 +379,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT r.*, u.nickname, a FROM RIDEREQUEST WHERE requestedby = " + userid);
             //ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone from RIDEREQUEST r JOIN USER u1 on r.requestedby = u1.userid JOIN ACCEPTEDRIDEREQUEST a on r.requestid = a.requestid JOIN USER u2 on a.userid = u2.userid WHERE requestedby = " + userid);
-            ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone " +
+            ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone, a.requestuserstatus " +
                     "FROM RIDEREQUEST r, USER u1, USER u2, ACCEPTEDRIDEREQUEST a WHERE r.requestedby = u1.userid and r.requestid = a.requestid and " +
                     "a.userid = u2.userid and r.requestedby = " + userid);
             while (rs.next()){
@@ -405,7 +405,7 @@ public class DatabaseCommunicator {
                 int acceptedby = -1;
                 String acceptedbyname = "";
                 String phone = "";
-                int pickupstatus = -1;
+                int requestuserstatus = -1;
 
                 requestid = rs.getInt("requestid");
                 requestedby = rs.getInt("requestedby");
@@ -425,7 +425,7 @@ public class DatabaseCommunicator {
                 acceptedby = rs.getInt("acceptedby");
                 acceptedbyname = rs.getString("acceptedbyname");
                 phone = rs.getString("phone");
-                pickupstatus = rs.getInt("pickupstatus");
+                requestuserstatus = rs.getInt("requestuserstatus");
 
                 if (smoking == 1) {
                     smoke = true;
@@ -448,7 +448,47 @@ public class DatabaseCommunicator {
                 }
 
                 DtoRideRequest rideRequest = new DtoRideRequest(requestid, requestedby, requestedbyname, pickuplocation, destination, datentime, passenger,
-                        luggage, smoke, food, pet, ac, travellingtime, price, status, acceptedby, acceptedbyname, phone, pickupstatus);
+                        luggage, smoke, food, pet, ac, travellingtime, price, status, acceptedby, acceptedbyname, phone, requestuserstatus);
+
+                requestlist.add(rideRequest);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return requestlist;
+    }
+
+    public static ArrayList<DtoRideRequest> selectCurrentRequestList(int userid){
+        ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            //ResultSet rs = stmt.executeQuery("SELECT r.*, u.nickname, a FROM RIDEREQUEST WHERE requestedby = " + userid);
+            //ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone from RIDEREQUEST r JOIN USER u1 on r.requestedby = u1.userid JOIN ACCEPTEDRIDEREQUEST a on r.requestid = a.requestid JOIN USER u2 on a.userid = u2.userid WHERE requestedby = " + userid);
+            ResultSet rs = stmt.executeQuery("select requestid, requestedby, datentime, price FROM RIDEREQUEST WHERE (status = 0 or status = 1) and requestedby = " + userid);
+            while (rs.next()){
+                int requestid = -1;
+                int requestedby = -1;
+                String datentimeStr = null;
+                int price = 0;
+
+                requestid = rs.getInt("requestid");
+                requestedby = rs.getInt("requestedby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoRideRequest rideRequest = new DtoRideRequest(requestid, requestedby, datentime, price);
 
                 requestlist.add(rideRequest);
             }
@@ -601,7 +641,7 @@ public class DatabaseCommunicator {
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
-            ResultSet rs = stmt.executeQuery("SELECT r.*, u1.nickname as offeredbyname, u2.nickname as joinedbyname, j.userid as joinedby, u2.phone " +
+            ResultSet rs = stmt.executeQuery("SELECT r.*, u1.nickname as offeredbyname, u2.nickname as joinedbyname, j.userid as joinedby, u2.phone, j.offeruserstatus " +
                     "FROM RIDEOFFER r, USER u1, USER u2, JOINEDRIDEOFFER j WHERE r.offeredby = u1.userid and r.offerid = j.offerid and j.userid = u2.userid " +
                     "and r.offeredby = "+ userid + " ORDER BY offerid");
 
@@ -625,7 +665,7 @@ public class DatabaseCommunicator {
             ArrayList<Integer> joinedby = new ArrayList<Integer>();
             ArrayList<String> joinedbyname = new ArrayList<String>();
             ArrayList<String> phone = new ArrayList<String>();
-            int pickupstatus = -1;
+            ArrayList<Integer> offeruserstatus = new ArrayList<Integer>();
 
             while (rs.next()) {
                 if (offerid != rs.getInt("offerid")){
@@ -637,7 +677,7 @@ public class DatabaseCommunicator {
                             e.printStackTrace();
                         }
                         DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
-                                luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, pickupstatus);
+                                luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
                         offerlist.add(rideOffer);
                     }
                     offerid = rs.getInt("offerid");
@@ -664,15 +704,17 @@ public class DatabaseCommunicator {
                     joinedby = new ArrayList<Integer>();
                     joinedbyname = new ArrayList<String>();
                     phone = new ArrayList<String>();
+                    offeruserstatus = new ArrayList<Integer>();
                     joinedby.add(rs.getInt("joinedby"));
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
-                    pickupstatus = rs.getInt("pickupstatus");
+                    offeruserstatus.add(rs.getInt("offeruserstatus"));
                 }
                 else{
                     joinedby.add(rs.getInt("joinedby"));
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
+                    offeruserstatus.add(rs.getInt("offeruserstatus"));
                 }
             }
             Date datentime = null;
@@ -682,8 +724,50 @@ public class DatabaseCommunicator {
                 e.printStackTrace();
             }
             DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
-                    luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, pickupstatus);
+                    luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
             offerlist.add(rideOffer);
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return offerlist;
+    }
+
+    public static ArrayList<DtoRideOffer> selectCurrentOfferList(int userid){
+        ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT offerid, offeredby, price, datentime " +
+                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and r.offeredby = "+ userid);
+
+            while (rs.next()) {
+                int offerid = -1;
+                int offeredby = -1;
+                String datentimeStr = null;
+                int price = 0;
+
+                offerid = rs.getInt("offerid");
+                offeredby = rs.getInt("offeredby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, datentime, price);
+
+                offerlist.add(rideOffer);
+            }
 
             rs.close();
             stmt.close();
@@ -1073,10 +1157,6 @@ public class DatabaseCommunicator {
         return null;
     }
 
-    public static ArrayList<JoinedOffer> selectJoinedOfferList(int offerid){
-        return null;
-    }
-
     public static int updateRequestUserStatus(int requestid, int requestuserstatus){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
@@ -1130,6 +1210,44 @@ public class DatabaseCommunicator {
             e.printStackTrace();
             return 99;
         }
+        return 0;
+    }
+
+    public static int updatePointReserve(int userid, int pointAmount, int reserveAmount){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE USER SET points = points+" + pointAmount + ", reserve = reserve+" + reserveAmount + " WHERE userid = " + userid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
+    }
+
+    public static ArrayList<AcceptedRequest> selectCurrentAcceptedRequestList(int userid){
+        return null;
+    }
+
+    public static ArrayList<JoinedOffer> selectCurrentJoinedOfferList(int userid){
+        return null;
+    }
+
+    public static int updateRequestStatus(int requestid, int status){
+        return 0;
+    }
+
+    public static int updateOfferStatus(int offerid, int userid, int status){
+        return 0;
+    }
+
+    public static int updateAcceptedStatus(int requestid, int status){
+        return 0;
+    }
+
+    public static int updateJoinedStatus(int offerid, int userid, int status){
         return 0;
     }
 

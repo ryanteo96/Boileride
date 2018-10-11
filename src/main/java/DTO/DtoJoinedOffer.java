@@ -14,44 +14,56 @@ import java.util.Date;
 public class DtoJoinedOffer {
 
     private int offerid;
-    private String offeredby;
+    private int offeredby;
+    private String offeredbyname;
     private String pickuplocation;
     private String destination;
     private Date datentime;
+    private int seats;
+    private int luggage;
     private boolean smoking;
     private boolean foodndrink;
     private boolean pets;
     private boolean ac;
     private int travelingtime;
-    private int price;
     private int seatleft;
     private int luggageleft;
+    private int price;
+    private int status;
+    private String phone;
     private int joinedpassenger;
     private int joinedluggage;
-    private String phone;
-    private int pickupstatus;
+    private int joineduserstatus;
+    private int joinedstatus;
+    private int triporder;
 
     public DtoJoinedOffer() {
     }
 
-    public DtoJoinedOffer(int offerid, String offeredby, String pickuplocation, String destination, Date datentime, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int price, int seatleft, int luggageleft, int joinedpassenger, int joinedluggage, String phone, int pickupstatus) {
+    public DtoJoinedOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int seatleft, int luggageleft, int price, int status, String phone, int joinedpassenger, int joinedluggage, int joineduserstatus, int joinedstatus, int triporder) {
         this.offerid = offerid;
         this.offeredby = offeredby;
+        this.offeredbyname = offeredbyname;
         this.pickuplocation = pickuplocation;
         this.destination = destination;
         this.datentime = datentime;
+        this.seats = seats;
+        this.luggage = luggage;
         this.smoking = smoking;
         this.foodndrink = foodndrink;
         this.pets = pets;
         this.ac = ac;
         this.travelingtime = travelingtime;
-        this.price = price;
         this.seatleft = seatleft;
         this.luggageleft = luggageleft;
+        this.price = price;
+        this.status = status;
+        this.phone = phone;
         this.joinedpassenger = joinedpassenger;
         this.joinedluggage = joinedluggage;
-        this.phone = phone;
-        this.pickupstatus = pickupstatus;
+        this.joineduserstatus = joineduserstatus;
+        this.joinedstatus = joinedstatus;
+        this.triporder = triporder;
     }
 
     public int getOfferid() {
@@ -62,12 +74,20 @@ public class DtoJoinedOffer {
         this.offerid = offerid;
     }
 
-    public String getOfferedby() {
+    public int getOfferedby() {
         return offeredby;
     }
 
-    public void setOfferedby(String offeredby) {
+    public void setOfferedby(int offeredby) {
         this.offeredby = offeredby;
+    }
+
+    public String getOfferedbyname() {
+        return offeredbyname;
+    }
+
+    public void setOfferedbyname(String offeredbyname) {
+        this.offeredbyname = offeredbyname;
     }
 
     public String getPickuplocation() {
@@ -92,6 +112,22 @@ public class DtoJoinedOffer {
 
     public void setDatentime(Date datentime) {
         this.datentime = datentime;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
+    public int getLuggage() {
+        return luggage;
+    }
+
+    public void setLuggage(int luggage) {
+        this.luggage = luggage;
     }
 
     public boolean isSmoking() {
@@ -134,14 +170,6 @@ public class DtoJoinedOffer {
         this.travelingtime = travelingtime;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public int getSeatleft() {
         return seatleft;
     }
@@ -156,6 +184,30 @@ public class DtoJoinedOffer {
 
     public void setLuggageleft(int luggageleft) {
         this.luggageleft = luggageleft;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getJoinedpassenger() {
@@ -174,42 +226,56 @@ public class DtoJoinedOffer {
         this.joinedluggage = joinedluggage;
     }
 
-    public String getPhone() {
-        return phone;
+    public int getJoineduserstatus() {
+        return joineduserstatus;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setJoineduserstatus(int joineduserstatus) {
+        this.joineduserstatus = joineduserstatus;
     }
 
-    public int getPickupstatus() {
-        return pickupstatus;
+    public int getJoinedstatus() {
+        return joinedstatus;
     }
 
-    public void setPickupstatus(int pickupstatus) {
-        this.pickupstatus = pickupstatus;
+    public void setJoinedstatus(int joinedstatus) {
+        this.joinedstatus = joinedstatus;
+    }
+
+    public int getTriporder() {
+        return triporder;
+    }
+
+    public void setTriporder(int triporder) {
+        this.triporder = triporder;
     }
 
     @Override
     public String toString() {
         return "DtoJoinedOffer{" +
                 "offerid=" + offerid +
-                ", offeredby='" + offeredby + '\'' +
+                ", offeredby=" + offeredby +
+                ", offeredbyname='" + offeredbyname + '\'' +
                 ", pickuplocation='" + pickuplocation + '\'' +
                 ", destination='" + destination + '\'' +
                 ", datentime=" + datentime +
+                ", seats=" + seats +
+                ", luggage=" + luggage +
                 ", smoking=" + smoking +
                 ", foodndrink=" + foodndrink +
                 ", pets=" + pets +
                 ", ac=" + ac +
                 ", travelingtime=" + travelingtime +
-                ", price=" + price +
                 ", seatleft=" + seatleft +
                 ", luggageleft=" + luggageleft +
+                ", price=" + price +
+                ", status=" + status +
+                ", phone='" + phone + '\'' +
                 ", joinedpassenger=" + joinedpassenger +
                 ", joinedluggage=" + joinedluggage +
-                ", phone='" + phone + '\'' +
-                ", pickupstatus=" + pickupstatus +
+                ", joineduserstatus=" + joineduserstatus +
+                ", joinedstatus=" + joinedstatus +
+                ", triporder=" + triporder +
                 '}';
     }
 }
