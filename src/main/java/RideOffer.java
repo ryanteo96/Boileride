@@ -365,14 +365,14 @@ public class RideOffer {
             } else if (rideOffer.getStatus() == 2) {
                 result = 5;
             } else {
-//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(offer.getOfferid());
+                ArrayList<User> users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
                 result = DatabaseCommunicator.cancelRideOffer(request.getOfferid());
-//              String msg = "We are sorry to inform you that your joined Ride Offer from " + rideOffer.getPickuplocation() +
-//                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
-//                      " is cancelled by the offered driver.";
-//                for (int i=0; i < users.length; i++){
-//                    SendEmail.sendEmail(users[i].getEmail(), "Joined Ride Offer Cancelled", msg);
-//                }
+              String msg = "We are sorry to inform you that your joined Ride Offer from " + rideOffer.getPickuplocation() +
+                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+                      " is cancelled by the offered driver.";
+                for (User u: users){
+                    SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Cancelled", msg);
+                }
 
             }
         }
@@ -412,13 +412,13 @@ public class RideOffer {
                         request.getDatentime(), request.getSeats(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                         request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
                 result = DatabaseCommunicator.updateRideOffer(request.getOfferid(), updatedRideOffer);
-//                User[] users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
-//                String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
-//                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
-//                      " is updated by the offered driver. Please go to our website to check for details.";
-//                for (int i=0; i < users.length; i++){
-//                    SendEmail.sendEmail(users[i].getEmail(), "Joined Ride Offer Updated", msg);
-//                }
+                ArrayList<User> users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
+                String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
+                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+                      " is updated by the offered driver. Please go to our website to check for details.";
+                for (User u: users){
+                    SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Updated", msg);
+                }
             }
         }
         RideUpdateOfferResponse res = new RideUpdateOfferResponse(result);

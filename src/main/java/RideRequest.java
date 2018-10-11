@@ -338,15 +338,14 @@ public class RideRequest {
             } else if (rideRequest.getStatus() == 2) {
                 result = 5;
             } else {
-//                User[] users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
+                ArrayList<User> users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
                 result = DatabaseCommunicator.cancelRideRequest(request.getRequestid());
-//              String msg = "We are sorry to inform you that your accepted Ride Request from " + rideRequest.getPickuplocation() +
-//                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
-//                      " is cancelled by the requested passengers.";
-//                for (int i=0; i < users.length; i++){
-//                    SendEmail.sendEmail(users[i].getEmail(), "Accepted Ride Request Cancelled", msg);
-//                }
-
+                String msg = "We are sorry to inform you that your accepted Ride Request from " + rideRequest.getPickuplocation() +
+                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+                      " is cancelled by the requested passengers.";
+                for (User u: users){
+                    SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Cancelled", msg);
+                }
             }
         }
         RideCancelRequestResponse res = new RideCancelRequestResponse(result);
@@ -385,13 +384,13 @@ public class RideRequest {
                         request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                         request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
                 result = DatabaseCommunicator.updateRideRequest(request.getRequestid(), updatedRideRequest);
-//                User[] users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
-//                String msg = "Your accepted Ride Request from " + rideRequest.getPickuplocation() +
-//                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
-//                      " is updated by the requested passengers. Please go to our website to check for details.";
-//                for (int i=0; i < users.length; i++){
-//                    SendEmail.sendEmail(users[i].getEmail(), "Accepted Ride Request Updated", msg);
-//                }
+                ArrayList<User> users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
+                String msg = "Your accepted Ride Request from " + rideRequest.getPickuplocation() +
+                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+                      " is updated by the requested passengers. Please go to our website to check for details.";
+                for (User u: users){
+                    SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Updated", msg);
+                }
             }
         }
         RideUpdateRequestResponse res = new RideUpdateRequestResponse(result);

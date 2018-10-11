@@ -943,13 +943,69 @@ public class DatabaseCommunicator {
         return 0;
     }
 
-    public static User [ ] selectUserJoinedOffer(int offerid){
-        User[] users = null;
+    public static ArrayList<User>  selectUserAcceptedRequest(int requestid){
+        ArrayList<User> users = new ArrayList<User>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT u.* FROM USER u, ACCEPTEDRIDEREQUEST a WHERE u.userid = a.userid and a.requestid = " + requestid);
+
+            int id = 0 , points = 0, reserve = 0, status = 0;
+            String nickname = "", password = "", phone = "", email = "";
+
+            while (rs.next()) {
+                id = rs.getInt("userid");
+                nickname = rs.getString("nickname");
+                phone = rs.getString("phone");
+                points = rs.getInt("points");
+                reserve = rs.getInt("reserve");
+                status = rs.getInt("status");
+                email = rs.getString("email");
+                password = rs.getString("password");
+                //System.out.println("id = "+ id + ", nickname = " + nickname + ", password =" + password + ", phone = " + phone + ", points = " + points + ", status = " + status + ", email = " + email);User(String email, String password, String nickname, String phone, int points, int status)
+                User resultUser = new User( email,  password,  nickname,  phone,  points,  reserve,  status,  id);
+                users.add(resultUser);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return users;
+        }
         return users;
     }
 
-    public static User [ ] selectUserAcceptedRequest(int requestid){
-        User[] users = null;
+    public static ArrayList<User> selectUserJoinedOffer(int offerid){
+        ArrayList<User> users = new ArrayList<User>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT u.* FROM USER u, JOINEDRIDEOFFER j WHERE u.userid = j.userid and j.offerid = " + offerid);
+
+            int id = 0 , points = 0, reserve = 0, status = 0;
+            String nickname = "", password = "", phone = "", email = "";
+
+            while (rs.next()) {
+                id = rs.getInt("userid");
+                nickname = rs.getString("nickname");
+                phone = rs.getString("phone");
+                points = rs.getInt("points");
+                reserve = rs.getInt("reserve");
+                status = rs.getInt("status");
+                email = rs.getString("email");
+                password = rs.getString("password");
+                //System.out.println("id = "+ id + ", nickname = " + nickname + ", password =" + password + ", phone = " + phone + ", points = " + points + ", status = " + status + ", email = " + email);User(String email, String password, String nickname, String phone, int points, int status)
+                User resultUser = new User( email,  password,  nickname,  phone,  points,  reserve,  status,  id);
+                users.add(resultUser);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return users;
+        }
         return users;
     }
 
