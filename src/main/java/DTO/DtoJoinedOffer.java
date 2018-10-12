@@ -36,11 +36,12 @@ public class DtoJoinedOffer {
     private int joineduserstatus;
     private int joinedstatus;
     private int triporder;
+    private Date joindate;
 
     public DtoJoinedOffer() {
     }
 
-    public DtoJoinedOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int seatleft, int luggageleft, int price, int status, String phone, int joinedpassenger, int joinedluggage, int joineduserstatus, int joinedstatus, int triporder) {
+    public DtoJoinedOffer(int offerid, int offeredby, String offeredbyname, String pickuplocation, String destination, Date datentime, int seats, int luggage, boolean smoking, boolean foodndrink, boolean pets, boolean ac, int travelingtime, int seatleft, int luggageleft, int price, int status, String phone, int joinedpassenger, int joinedluggage, int joineduserstatus, int joinedstatus, int triporder, Date joindate) {
         this.offerid = offerid;
         this.offeredby = offeredby;
         this.offeredbyname = offeredbyname;
@@ -64,6 +65,7 @@ public class DtoJoinedOffer {
         this.joineduserstatus = joineduserstatus;
         this.joinedstatus = joinedstatus;
         this.triporder = triporder;
+        this.joindate = joindate;
     }
 
     public int getOfferid() {
@@ -250,6 +252,14 @@ public class DtoJoinedOffer {
         this.triporder = triporder;
     }
 
+    public Date getJoindate() {
+        return joindate;
+    }
+
+    public void setJoindate(Date joindate) {
+        this.joindate = joindate;
+    }
+
     @Override
     public String toString() {
         return "DtoJoinedOffer{" +
@@ -276,6 +286,7 @@ public class DtoJoinedOffer {
                 ", joineduserstatus=" + joineduserstatus +
                 ", joinedstatus=" + joinedstatus +
                 ", triporder=" + triporder +
+                ", joindate=" + joindate +
                 '}';
     }
 }

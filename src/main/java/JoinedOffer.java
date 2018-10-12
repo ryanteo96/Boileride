@@ -7,6 +7,7 @@ public class JoinedOffer {
     int userid;
     int offerid;
     int triporder;
+    Date joindate;
     int passenger;
     int luggage;
     int offerusercode;
@@ -22,10 +23,11 @@ public class JoinedOffer {
     public JoinedOffer() {
     }
 
-    public JoinedOffer(int userid, int offerid, int triporder, int passenger, int luggage, int offerusercode, int joinedusercode, int offeruserstatus, int joineduserstatus, int joinedstatus, int offeredby, Date datentime, int price, int status) {
+    public JoinedOffer(int userid, int offerid, int triporder, Date joindate, int passenger, int luggage, int offerusercode, int joinedusercode, int offeruserstatus, int joineduserstatus, int joinedstatus, int offeredby, Date datentime, int price, int status) {
         this.userid = userid;
         this.offerid = offerid;
         this.triporder = triporder;
+        this.joindate = joindate;
         this.passenger = passenger;
         this.luggage = luggage;
         this.offerusercode = offerusercode;
@@ -62,6 +64,10 @@ public class JoinedOffer {
     public void setTriporder(int triporder) {
         this.triporder = triporder;
     }
+
+    public Date getJoindate() { return joindate; }
+
+    public void setJoindate(Date joindate) { this.joindate = joindate; }
 
     public int getPassenger() {
         return passenger;
@@ -157,6 +163,7 @@ public class JoinedOffer {
                 "userid=" + userid +
                 ", offerid=" + offerid +
                 ", triporder=" + triporder +
+                ", joindate=" + joindate +
                 ", passenger=" + passenger +
                 ", luggage=" + luggage +
                 ", offerusercode=" + offerusercode +
