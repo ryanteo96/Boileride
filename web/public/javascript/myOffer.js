@@ -142,7 +142,7 @@ function generateViewOfferList(offerList) {
 			offerList[i].pets = "Yes";
 		} else offerList[i].pets = "No";
 
-		offerList.add({
+		myRideOfferList.add({
 			offerid: offerList[i].offerid,
 			pickuplocation: offerList[i].pickuplocation,
 			destination: offerList[i].destination,

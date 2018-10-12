@@ -76,7 +76,6 @@ router.post("/myRequest/edit", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/update/request",
 		json: data,
@@ -129,28 +128,24 @@ router.post("/myOffer", function(req, res) {
 	var data = {
 		userid: req.body.userid,
 	};
-	var data = {
-		result: 0,
-	};
-	res.send(data);
 
 	console.log(data);
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/view/offer",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/ride/view/offer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	console.log(error, response);
-	// 	res.send(response.body);
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 //edit myOffer
@@ -176,7 +171,6 @@ router.post("/myOffer/edit", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/update/offer",
 		json: data,
@@ -202,7 +196,6 @@ router.post("/myOffer/cancel", function(req, res) {
 	};
 	console.log(data);
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/cancel/offer",
 		json: data,
