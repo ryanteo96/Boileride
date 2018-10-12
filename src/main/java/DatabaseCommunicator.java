@@ -1362,7 +1362,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("INSERT INTO TRANSACTION(touserid, foruseid, datentime, amount, description) " +
+            stmt.executeUpdate("INSERT INTO TRANSACTION(touserid, foruserid, datentime, amount, description) " +
                     "VALUES (" + to + "," + from + ",'" + timestamp + "'," + amount + ",'" + description + "')");
 
             //System.out.println(userid);
