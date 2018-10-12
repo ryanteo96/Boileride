@@ -17,6 +17,13 @@ $(document).ready(function() {
 					console.log("success");
 					console.log(res.requestlist);
 					generateRequestList(res.requestlist);
+					$.each(res.requestlist, function(i) {
+						if ($("#status" + i).text() == "Ongoing")
+							$("#request" + i).addClass("border-success");
+
+						if ($("#status" + i).text() == "Cancelled")
+							$("#request" + i).addClass("border-danger");
+					});
 					break;
 				}
 				case 1: {
@@ -101,25 +108,27 @@ function generateRequestList(requestList) {
 			"status",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2" ondblclick=getItem(this)>' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
+			'<div class="card" id="request">' +
+			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
-			'<div class="mb-2 d-flex w-100">' +
+			'<div class="row mb-2 d-flex w-100">' +
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
 			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
-			'<div class="d-flex w-100">' +
-			'<i class="icons fas fa-users p-2 col text-center"><small class="values passengers p-2"></small></i>' +
-			'<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggage p-2"></small></i>' +
-			'<i class="icons fas fa-smoking p-2 col text-center"><small class="values smoking p-2"></small></i>' +
-			'<i class="icons fas fa-cookie-bite p-2 col text-center"><small class="values foodndrink p-2"></small></i>' +
-			'<i class="icons fas fa-paw p-2 col text-center"><small class="values pets p-2"></small></i>' +
-			'<i class="icons far fa-snowflake p-2 col text-center"><small class="values ac p-2"></small></i>' +
-			'<i class="icons fas fa-stopwatch p-2 col text-center"><small class="values travelingtime p-2"></small></i>' +
-			'<i class="icons fas fa-user-circle p-2 col text-center"><small class="values requestedby p-2"></small></i>' +
-			'<i class="icons fas fa-money-bill p-2 col text-center"><small class="values price p-2"></small></i>' +
+			'<div class="row d-flex w-100 justify-content-around">' +
+			'<i class="icons fas fa-users p-2 col-sm-push text-center"><small class="values passengers p-2"></small></i>' +
+			'<i class="icons fas fa-suitcase p-2 col-sm-push text-center"><small class="values luggage p-2"></small></i>' +
+			'<i class="icons fas fa-smoking p-2 col-sm-push text-center"><small class="values smoking p-2"></small></i>' +
+			'<i class="icons fas fa-cookie-bite p-2 col-sm-push text-center"><small class="values foodndrink p-2"></small></i>' +
+			'<i class="icons fas fa-paw p-2 col-sm-push text-center"><small class="values pets p-2"></small></i>' +
+			'<i class="icons far fa-snowflake p-2 col-sm-push text-center"><small class="values ac p-2"></small></i>' +
+			'<i class="icons fas fa-stopwatch p-2 col-sm-push text-center"><small class="values travelingtime p-2"></small></i>' +
+			'<i class="icons fas fa-user-circle p-2 col-sm-push text-center"><small class="values requestedby p-2"></small></i>' +
+			'<i class="icons fas fa-money-bill p-2 col-sm-push text-center"><small class="values price p-2"></small></i>' +
 			"</div>" +
 			"</div>" +
 			"</li>",
@@ -155,6 +164,7 @@ function generateRequestList(requestList) {
 		}
 
 		myRideRequestList.add({
+			request: i,
 			requestid: requestList[i].requestid,
 			pickuplocation: requestList[i].pickuplocation,
 			destination: requestList[i].destination,
@@ -172,6 +182,7 @@ function generateRequestList(requestList) {
 		});
 		//trying to assign a dynamic id here
 		$("#status").attr("id", "status" + i);
+		$("#request").attr("id", "request" + i);
 	}
 }
 

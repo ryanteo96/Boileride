@@ -1,4 +1,4 @@
-.list > li:hover {
+.list > li > .card:hover {
 	cursor: pointer;
 	background-color: lightgrey;
 }
@@ -18,9 +18,9 @@
 	right: 50px;
 }
 
-.myRideRequestList {
+/* .myRideRequestList {
 	padding: 10px;
-}
+} */
 
 .icons {
 	display: flex;
