@@ -322,6 +322,7 @@ public class RideOffer {
     }
 
     public RideOfferResponse addRideOfferToDB(RideOfferRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         int offerid = -1;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
@@ -346,6 +347,9 @@ public class RideOffer {
                     request.getDatentime(), request.getSeats(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                     request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice(), request.getSeats(), request.getLuggage(), 0);
             offerid = DatabaseCommunicator.addRideOffer(rideOffer);
+            if (offerid > -1){
+                result = PointCalculator.reservePoints(request.getUserid(), request.getPrice());
+            }
         }
         RideOfferResponse res = new RideOfferResponse(result, offerid);
         return res;
@@ -367,13 +371,16 @@ public class RideOffer {
             } else {
                 ArrayList<User> users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
                 result = DatabaseCommunicator.cancelRideOffer(request.getOfferid());
-              String msg = "We are sorry to inform you that your joined Ride Offer from " + rideOffer.getPickuplocation() +
-                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
-                      " is cancelled by the offered driver.";
-                for (User u: users){
-                    SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Cancelled", msg);
+                if (result == 0) {
+                    String msg = "We are sorry to inform you that your joined Ride Offer from " + rideOffer.getPickuplocation() +
+                            " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+                            " is cancelled by the offered driver.";
+                    for (User u : users) {
+                        PointCalculator.reservePoints(u.getUserid(),rideOffer.getPrice()*-1);
+                        SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Cancelled", msg);
+                    }
+                    PointCalculator.chargeCancellationFee(request.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(), "Cancel ride offer");
                 }
-
             }
         }
         RideCancelOfferResponse res = new RideCancelOfferResponse(result);
@@ -381,6 +388,7 @@ public class RideOffer {
     }
 
     public RideUpdateOfferResponse updateRideOfferInDB(RideUpdateOfferRequest request) {
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
@@ -412,12 +420,16 @@ public class RideOffer {
                         request.getDatentime(), request.getSeats(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                         request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
                 result = DatabaseCommunicator.updateRideOffer(request.getOfferid(), updatedRideOffer);
-                ArrayList<User> users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
-                String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
-                      " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
-                      " is updated by the offered driver. Please go to our website to check for details.";
-                for (User u: users){
-                    SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Updated", msg);
+                if (result == 0) {
+                    ArrayList<User> users = DatabaseCommunicator.selectUserJoinedOffer(request.getOfferid());
+                    String msg = "Your joined Ride Offer from " + rideOffer.getPickuplocation() +
+                            " to " + rideOffer.getDestination() + " on " + rideOffer.getDatentime() +
+                            " is updated by the offered driver. Please go to our website to check for details.";
+                    for (User u : users) {
+                        PointCalculator.updatePoints(u.getUserid(), request.getPrice(), rideOffer.getPrice());
+                        SendEmail.sendEmail(u.getEmail(), "Joined Ride Offer Updated", msg);
+                    }
+                    PointCalculator.updatePoints(request.getUserid(), request.getPrice(), rideOffer.getPrice());
                 }
             }
         }
@@ -545,6 +557,8 @@ public class RideOffer {
             result = DatabaseCommunicator.updateOfferUserStatus(request.getUserid(), request.getOfferid(), 1);
             if (result == 0){
                 //Get payment
+                result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),3);
             }
         }
         RideOfferConfirmResponse res = new RideOfferConfirmResponse(result);

@@ -177,6 +177,8 @@ public class AcceptedRequest {
             result = DatabaseCommunicator.updateAcceptedUserStatus(request.getRequestid(), 1);
             if (result == 0){
                 //Get payment
+                result = PointCalculator.getPayment(request.getUserid(), acceptedRequest.getRequestedby(), acceptedRequest.getPrice(), "Receive payment from accepted ride request");
+                DatabaseCommunicator.updateAcceptedStatus(request.getRequestid(), 1);
             }
         }
         RideAcceptedRequestConfirmResponse res = new RideAcceptedRequestConfirmResponse(result);

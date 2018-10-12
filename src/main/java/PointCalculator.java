@@ -7,19 +7,27 @@ import java.util.Date;
 public class PointCalculator {
 
     //when passenger confirm pickup (request or joined offer)
-    public static int makePayment(int userid, int price){
+    public static int makePayment(int userid, int receiverid, int price, String msg){
         // reduce passenger reserve
         int result = 0;
         result = DatabaseCommunicator.updatePointReserve(userid, 0, price*-1);
+        if (result == 0){
+            Date now = new Date();
+            DatabaseCommunicator.addTransaction(receiverid, userid, now, price, msg);
+        }
         return result;
     }
 
     //when driver confirm pickup (offer or accepted request)
-    public static int getPayment(int userid, int price){
+    public static int getPayment(int userid, int payerid, int price, String msg){
         // reduce driver reserve
         // increase driver points by price*2 (price + reserve)
         int result = 0;
         result = DatabaseCommunicator.updatePointReserve(userid, price*2, price*-1);
+        if (result == 0){
+            Date now = new Date();
+            DatabaseCommunicator.addTransaction(userid, payerid, now, price, msg);
+        }
         return result;
     }
 
@@ -41,7 +49,7 @@ public class PointCalculator {
     }
 
     //when user cancel request, offer, acceptedrequest, joinedoffer
-    public static int chargeCancellationFee(int userid, Date datentime, int price) {
+    public static int chargeCancellationFee(int userid, Date datentime, int price, String msg) {
         // reduce user reserve
         // move remaining reserve to points
         int result = 0;
@@ -49,12 +57,19 @@ public class PointCalculator {
         long diff = (datentime.getTime() - today.getTime()) / 1000;
         if (diff > 259200) {
             result = DatabaseCommunicator.updatePointReserve(userid, price, price * -1);
+            msg += " (no late penalty)";
         } else if (diff <= 259200 && diff > 172800) {
             result = DatabaseCommunicator.updatePointReserve(userid, (int) (price * 0.5), price * -1);
+            msg += " (50% late penalty)";
         } else if (diff <= 172800 && diff > 86400) {
             result = DatabaseCommunicator.updatePointReserve(userid, (int) (price * 0.25), price * -1);
+            msg += " (75% late penalty)";
         } else {
             result = DatabaseCommunicator.updatePointReserve(userid, 0, price * -1);
+            msg += " (100% late penalty)";
+        }
+        if (result == 0){
+            DatabaseCommunicator.addTransaction(userid, userid, today, price, msg);
         }
         return result;
     }
@@ -149,5 +164,10 @@ public class PointCalculator {
         return 0;
     }
 
+    public static int recordTransaction(int to, int from, Date date, int amount, String description){
+        int result = 0;
+        result = DatabaseCommunicator.addTransaction(to, from, date, amount, description);
+        return result;
+    }
 
 }

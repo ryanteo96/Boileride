@@ -295,6 +295,7 @@ public class RideRequest {
     }
 
     public RideRequestResponse addRideRequestToDB(RideRequestRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         int requestid = -1;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
@@ -319,6 +320,9 @@ public class RideRequest {
                     request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                     request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice(), 0);
             requestid = DatabaseCommunicator.addRideRequest(rideRequest);
+            if (requestid > -1){
+                result = PointCalculator.reservePoints(request.getUserid(),request.getPrice());
+            }
         }
         RideRequestResponse res = new RideRequestResponse(result, requestid);
         return res;
@@ -340,11 +344,16 @@ public class RideRequest {
             } else {
                 ArrayList<User> users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
                 result = DatabaseCommunicator.cancelRideRequest(request.getRequestid());
-                String msg = "We are sorry to inform you that your accepted Ride Request from " + rideRequest.getPickuplocation() +
-                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
-                      " is cancelled by the requested passengers.";
-                for (User u: users){
-                    SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Cancelled", msg);
+                if (result == 0) {
+                    String msg = "We are sorry to inform you that your accepted Ride Request from " + rideRequest.getPickuplocation() +
+                            " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+                            " is cancelled by the requested passengers.";
+                    for (User u : users) {
+                        PointCalculator.reservePoints(u.getUserid(), rideRequest.getPrice()*-1);
+                        SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Cancelled", msg);
+                    }
+                    PointCalculator.chargeCancellationFee(request.getUserid(),rideRequest.getDatentime(),rideRequest.getPrice(), "Cancel ride request");
+
                 }
             }
         }
@@ -353,6 +362,7 @@ public class RideRequest {
     }
 
     public RideUpdateRequestResponse updateRideRequestInDB(RideUpdateRequestRequest request) {
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
         int userResult = verifyUserid(user);
@@ -384,12 +394,16 @@ public class RideRequest {
                         request.getDatentime(), request.getPassengers(), request.getLuggage(), request.getSmoking(), request.getFoodndrink(),
                         request.getPets(), request.getAc(), request.getTravelingtime(), request.getPrice());
                 result = DatabaseCommunicator.updateRideRequest(request.getRequestid(), updatedRideRequest);
-                ArrayList<User> users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
-                String msg = "Your accepted Ride Request from " + rideRequest.getPickuplocation() +
-                      " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
-                      " is updated by the requested passengers. Please go to our website to check for details.";
-                for (User u: users){
-                    SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Updated", msg);
+                if (result == 0) {
+                    ArrayList<User> users = DatabaseCommunicator.selectUserAcceptedRequest(request.getRequestid());
+                    String msg = "Your accepted Ride Request from " + rideRequest.getPickuplocation() +
+                            " to " + rideRequest.getDestination() + " on " + rideRequest.getDatentime() +
+                            " is updated by the requested passengers. Please go to our website to check for details.";
+                    for (User u : users) {
+                        PointCalculator.updatePoints(u.getUserid(),request.getPrice(),rideRequest.getPrice());
+                        SendEmail.sendEmail(u.getEmail(), "Accepted Ride Request Updated", msg);
+                    }
+                    PointCalculator.updatePoints(request.getUserid(),request.getPrice(),rideRequest.getPrice());
                 }
             }
         }
@@ -492,6 +506,8 @@ public class RideRequest {
             result = DatabaseCommunicator.updateRequestUserStatus(request.getRequestid(), 1);
             if (result == 0){
                 //Make payment
+                result = PointCalculator.makePayment(request.getUserid(), acceptedRequest.getUserid(), acceptedRequest.getPrice(), "Make payment for ride request");
+                DatabaseCommunicator.updateRequestStatus(request.getRequestid(), 3);
             }
         }
         RideRequestConfirmResponse res = new RideRequestConfirmResponse(result);

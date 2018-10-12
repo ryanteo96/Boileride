@@ -1307,6 +1307,75 @@ public class DatabaseCommunicator {
         return 0;
     }
 
+    public static ArrayList<DtoTransaction> selectTransactionList(int userid){
+        ArrayList<DtoTransaction> transactionlist = new ArrayList<DtoTransaction>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t, USER u1, USER u2 " +
+                    "WHERE t.touserid = u1.userid and t.foruserid = u2.userid and (foruserid = " + userid + " or touserid = " + userid + ")");
+
+            int transactionid;
+            int touserid;
+            String tousername;
+            int fromuserid;
+            String fromusername;
+            String datentimeStr;
+            Date datentime;
+            int amount;
+            String description;
+
+            while (rs.next()) {
+                transactionid = rs.getInt("transactionid");
+                touserid = rs.getInt("touserid");
+                tousername = rs.getString("tousername");
+                fromuserid = rs.getInt("foruserid");
+                fromusername = rs.getString("fromusername");
+                datentimeStr = rs.getString("datentime");
+                amount = rs.getInt("amount");
+                description = rs.getString("description");
+
+                datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoTransaction transaction = new DtoTransaction(transactionid, touserid, tousername, fromuserid, fromusername, datentime, amount, description);
+                transactionlist.add(transaction);
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return transactionlist;
+        }
+
+        return transactionlist;
+    }
+
+    public static int addTransaction(int to, int from, Date date, int amount, String description){
+
+        Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("INSERT INTO TRANSACTION(touserid, foruseid, datentime, amount, description) " +
+                    "VALUES (" + to + "," + from + ",'" + timestamp + "'," + amount + ",'" + description + "')");
+
+            //System.out.println(userid);
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+
+        return 0;
+    }
+
     public static void main (String args[]) throws ParseException {
         //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );
         //updateSQLUser(1, user);

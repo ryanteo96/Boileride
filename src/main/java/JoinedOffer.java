@@ -206,6 +206,8 @@ public class JoinedOffer {
             result = DatabaseCommunicator.updateJoinedUserStatus(request.getUserid(), request.getOfferid(), 1);
             if (result == 0) {
                 //Make payment
+                result = PointCalculator.makePayment(request.getUserid(), joinedOffer.getOfferedby(), joinedOffer.getPrice(), "Make payment for joined ride offer");
+                DatabaseCommunicator.updateJoinedStatus(request.getOfferid(), request.getUserid(), 1);
             }
         }
         RideJoinedOfferConfirmResponse res = new RideJoinedOfferConfirmResponse(result);

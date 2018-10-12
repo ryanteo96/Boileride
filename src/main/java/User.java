@@ -7,6 +7,7 @@ import DTO.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 /**
  * Created by arthur on 2018/9/13.
@@ -522,6 +523,7 @@ public class User
     }
 
     public UserViewPointsResponse viewPointsFromDB(UserViewPointsRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         int points = -1;
         int reserve = -1;
@@ -530,6 +532,14 @@ public class User
             result = 1;
         }
         UserViewPointsResponse res = new UserViewPointsResponse(result, points, reserve);
+        return res;
+    }
+
+    public UserViewTransactionResponse viewTransactionFromDB(UserViewTransactionRequest request){
+        int result = 0;
+        ArrayList<DtoTransaction> transactionlist = new ArrayList<DtoTransaction>();
+        transactionlist = DatabaseCommunicator.selectTransactionList(request.getUserid());
+        UserViewTransactionResponse res = new UserViewTransactionResponse(result, transactionlist);
         return res;
     }
 }

@@ -238,14 +238,41 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    User user = new User();
-//                    res = user.updateUser(req, false);
+                    User user = new User();
+                    res = user.viewPointsFromDB(req);
                 } else {
                     res = new UserViewPointsResponse(97, -1, -1);
                 }
             }
             else {
                 res = new UserViewPointsResponse(2, -1, -1);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleViewTransaction(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            UserViewTransactionRequest req = null;
+            UserViewTransactionResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, UserViewTransactionRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    User user = new User();
+                    res = user.viewTransactionFromDB(req);
+                } else {
+                    ArrayList<DtoTransaction> transactionlist = new ArrayList<DtoTransaction>();
+                    res = new UserViewTransactionResponse(97, transactionlist);
+                }
+            }
+            else {
+                ArrayList<DtoTransaction> transactionlist = new ArrayList<DtoTransaction>();
+                res = new UserViewTransactionResponse(97, transactionlist);
             }
             return gson.toJson(res);
         }
@@ -953,6 +980,9 @@ public class BoilerideServer {
             }
             else if (uri.equals("/user/view/points")){
                 response = handleViewPoints(gson, request, servletReq);
+            }
+            else if (uri.equals("/user/view/transaction")){
+                response = handleViewTransaction(gson, request, servletReq);
             }
             else if (uri.equals("/user/logout")){
                 response = handleLogout(gson, request, servletReq);
