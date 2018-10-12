@@ -744,7 +744,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             ResultSet rs = stmt.executeQuery("SELECT offerid, offeredby, price, datentime " +
-                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and r.offeredby = "+ userid);
+                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and offeredby = "+ userid);
 
             while (rs.next()) {
                 int offerid = -1;
