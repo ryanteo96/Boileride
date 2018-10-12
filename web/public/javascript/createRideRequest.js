@@ -2,6 +2,7 @@ let pickup;
 let destination;
 let traveltime;
 let price;
+let basePrice;
 
 function init() {
 	pickup = document.getElementById("pickuplocation");
@@ -44,15 +45,12 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
+							basePrice = parseInt(results[0].distance.text);
 
-							priceOutput.value = arr[0];
+							priceOutput.value =
+								basePrice * $("#passengers").val();
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = basePrice * $("#passengers").val();
 						}
 					},
 				);
@@ -86,15 +84,12 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
+							basePrice = parseInt(results[0].distance.text);
 
-							priceOutput.value = arr[0];
+							priceOutput.value =
+								basePrice * $("#passengers").val();
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = basePrice * $("#passengers").val();
 						}
 					},
 				);
@@ -106,6 +101,12 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
+	$("#passengers").change(function() {
+		var priceOutput = document.getElementById("price");
+		priceOutput.value = basePrice * $("#passengers").val();
+		price = basePrice * $("#passengers").val();
+	});
+
 	$("#createRideRequestForm").submit(function(data) {
 		data.preventDefault();
 

@@ -22,7 +22,6 @@ function init() {
 		pickup_autocomplete,
 		"place_changed",
 		function() {
-			console.log(pickup_autocomplete.getPlace());
 			if (destination.value) {
 				service.getDistanceMatrix(
 					{
@@ -45,15 +44,11 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
-
-							priceOutput.value = arr[0];
+							priceOutput.value = parseInt(
+								results[0].distance.text,
+							);
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = parseInt(results[0].distance.text);
 						}
 					},
 				);
@@ -87,15 +82,11 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
-
-							priceOutput.value = arr[0];
+							priceOutput.value = parseInt(
+								results[0].distance.text,
+							);
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = parseInt(results[0].distance.text);
 						}
 					},
 				);
