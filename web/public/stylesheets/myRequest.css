@@ -1,6 +1,6 @@
 .list > li > .card:hover {
 	cursor: pointer;
-	background-color: lightgrey;
+	background-color: rgba(122, 213, 236, 0.664);
 }
 
 #myRequestModal {
