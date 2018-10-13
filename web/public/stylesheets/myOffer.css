@@ -1,6 +1,6 @@
-.myRideOfferList {
+/* .myRideOfferList {
 	padding: 10px;
-}
+} */
 
 .icons {
 	display: flex;
@@ -18,7 +18,7 @@
 	margin: 0px;
 }
 
-.list > li:hover {
+.list > li > .card:hover {
 	cursor: pointer;
 	background-color: lightgrey;
 }

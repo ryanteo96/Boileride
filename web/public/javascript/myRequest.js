@@ -155,16 +155,11 @@ function generateRequestList(requestList) {
 
 		if (requestList[i].status == 0) {
 			requestList[i].status = "Ongoing";
-			//for each dynamic id, assign a css value
-			$("#status" + i).css("color", "blue"); //it worked before, not sure why its not working now
 		} else {
 			requestList[i].status = "Cancelled";
-			//for each dynamic id, assign a css value
-			$("#status" + i).css("color", "red");
 		}
 
 		myRideRequestList.add({
-			request: i,
 			requestid: requestList[i].requestid,
 			pickuplocation: requestList[i].pickuplocation,
 			destination: requestList[i].destination,
@@ -180,7 +175,7 @@ function generateRequestList(requestList) {
 			price: requestList[i].price,
 			status: requestList[i].status,
 		});
-		//trying to assign a dynamic id here
+
 		$("#status").attr("id", "status" + i);
 		$("#request").attr("id", "request" + i);
 	}

@@ -16,6 +16,13 @@ $(document).ready(function() {
 				case 0: {
 					console.log(res.offerlist);
 					generateViewOfferList(res.offerlist);
+					$.each(res.offerlist, function(i) {
+						if ($("#status" + i).text() == "Ongoing")
+							$("#offer" + i).addClass("border-success");
+
+						if ($("#status" + i).text() == "Cancelled")
+							$("#offer" + i).addClass("border-danger");
+					});
 					break;
 				}
 				case 1: {
@@ -98,17 +105,21 @@ function generateViewOfferList(offerList) {
 			"seatleft",
 			"luggageleft",
 			"price",
+			"status",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2" ondblclick=getItem(this)>' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
+			'<div class="card" id="offer">' +
+			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
-			'<div class="mb-2 d-flex w-100">' +
+			'<div class="row mb-2 d-flex w-100">' +
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
+			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
-			'<div class="d-flex w-100">' +
+			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values seatleft p-2"></small></i>' +
 			'<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggageleft p-2"></small></i>' +
 			'<i class="icons fas fa-smoking p-2 col text-center"><small class="values smoking p-2"></small></i>' +
@@ -142,6 +153,12 @@ function generateViewOfferList(offerList) {
 			offerList[i].pets = "Yes";
 		} else offerList[i].pets = "No";
 
+		if (offerList[i].status == 0) {
+			offerList[i].status = "Ongoing";
+		} else {
+			offerList[i].status = "Cancelled";
+		}
+
 		myRideOfferList.add({
 			offerid: offerList[i].offerid,
 			pickuplocation: offerList[i].pickuplocation,
@@ -156,64 +173,68 @@ function generateViewOfferList(offerList) {
 			seatleft: offerList[i].seatleft,
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
+			status: offerList[i].status,
 		});
+
+		$("#status").attr("id", "status" + i);
+		$("#offer").attr("id", "offer" + i);
 	}
 }
 
 function getItem(item) {
 	var offerid = $(item).data("offerid");
 
-	localStorage.key = "offerRequest";
+	localStorage.key = "editOffer";
 	localStorage.setItem(
-		"offerRequest",
+		"editOffer",
 		JSON.stringify(myRideOfferList.get("offerid", offerid)[0]._values),
 	);
 
 	$("#myRideOfferModal").modal("show");
 
 	$("#pickuplocationDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.pickuplocation,
+		myRideOfferList.get("offerid", offerid)[0]._values.pickuplocation,
 	);
 
 	$("#destinationDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.destination,
+		myRideOfferList.get("offerid", offerid)[0]._values.destination,
 	);
 
 	$("#seatsDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.seatleft,
+		myRideOfferList.get("offerid", offerid)[0]._values.seatleft,
 	);
 
 	$("#luggageDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.luggageleft,
+		myRideOfferList.get("offerid", offerid)[0]._values.luggageleft,
 	);
 
 	$("#numridesDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.numrides,
+		myRideOfferList.get("offerid", offerid)[0]._values.numrides,
 	);
 
 	$("#smokingDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.smoking,
+		myRideOfferList.get("offerid", offerid)[0]._values.smoking,
 	);
 
 	$("#foodndrinkDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.foodndrink,
+		myRideOfferList.get("offerid", offerid)[0]._values.foodndrink,
 	);
 
 	$("#petsDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.pets,
+		myRideOfferList.get("offerid", offerid)[0]._values.pets,
 	);
 
-	$("#acDetails").html(myRideOfferList.get("offerid", offerid)[0]._value.ac);
+	$("#acDetails").html(myRideOfferList.get("offerid", offerid)[0]._values.ac);
 
 	$("#travelingtimeDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.travelingtime,
+		myRideOfferList.get("offerid", offerid)[0]._values.travelingtime,
 	);
 
 	$("#offeredbyDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.offeredby,
+		myRideOfferList.get("offerid", offerid)[0]._values.offeredby,
 	);
 
 	$("#priceDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._value.price,
+		myRideOfferList.get("offerid", offerid)[0]._values.price,
 	);
 }
