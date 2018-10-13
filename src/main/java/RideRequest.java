@@ -430,32 +430,32 @@ public class RideRequest {
         return drr;
     }
 
-    public static RideRequestSearchResponse search (RideRequestSearchRequest query) throws InterruptedException, ApiException, IOException {
+    public static RideRequestSearchResponse search (RideRequestSearchRequest request) throws InterruptedException, ApiException, IOException {
         RideRequestSearchResponse response = new RideRequestSearchResponse();
         GoogleMapAPI gma = new GoogleMapAPI();
         // todo: add validation on query
 
 
         ArrayList<DtoRideRequest> rides = new ArrayList<>();
-        ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(query.getPickuplocation()),
-                gma.getCity(query.getDestination()), query.getDatentime(),
-                query.getSeats(), query.getLuggage(),
-                query.isSmoking(), query.isFoodndrink(),
-                query.isPets(), query.isAc());
+        ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(request.getPickuplocation()),
+                gma.getCity(request.getDestination()), request.getDatentime(),
+                request.getSeats(), request.getLuggage(),
+                request.isSmoking(), request.isFoodndrink(),
+                request.isPets(), request.isAc());
         if (rs == null) {
             response.setResult(9);
             return response;
         }
         for (RideRequest r : rs) {
-            if (gma.estimate(r.getPickuplocation(), query.getPickuplocation()) <= query.getPickupproximity() &&
-                    gma.estimate(r.getDestination(), query.getDestination()) <= query.getDestinationproximity() &&
-                    query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 >= r.getDatentime().getTime() &&
-                    r.getPassengers() <= query.getSeats() &&
-                    r.getLuggage() <= query.getLuggage() &&
-                    r.isSmoking() == query.isSmoking() &&
-                    r.isFoodndrink() == query.isFoodndrink() &&
-                    r.isPets() == query.isPets() &&
-                    r.isAc() == query.isAc()) {
+            if (gma.estimate(r.getPickuplocation(), request.getPickuplocation()) <= request.getPickupproximity() &&
+                    gma.estimate(r.getDestination(), request.getDestination()) <= request.getDestinationproximity() &&
+                    request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= r.getDatentime().getTime() &&
+                    r.getPassengers() <= request.getSeats() &&
+                    r.getLuggage() <= request.getLuggage() &&
+                    r.isSmoking() == request.isSmoking() &&
+                    r.isFoodndrink() == request.isFoodndrink() &&
+                    r.isPets() == request.isPets() &&
+                    r.isAc() == request.isAc()) {
                 rides.add(r.toDtoRideRequest());
             }
         }

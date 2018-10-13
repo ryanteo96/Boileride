@@ -1,12 +1,5 @@
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.DistanceMatrixElement;
-import com.google.maps.model.TrafficModel;
-import com.google.maps.model.TravelMode;
 
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -21,23 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jetty.http.HttpStatus;
-
 import com.google.gson.*;
 
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import DTO.*;
-import org.joda.time.DateTime;
 
 /**
  * CS 40800 - Project: Boileride
@@ -941,6 +925,34 @@ public class BoilerideServer {
             }
             else {
                 res = new RideJoinedOfferConfirmResponse(2);
+            }
+            return gson.toJson(res);
+        }
+
+        private String handleRideOfferSearchAlter(Gson gson, JsonObject request, HttpServletRequest servletReq){
+            RideOfferSearchAlterRequest req = null;
+            RideOfferSearchAlterResponse res = null;
+            HttpSession session = servletReq.getSession(false);
+            if(session!=null) {
+                boolean isRightFormat = true;
+                try {
+                    req = gson.fromJson(request, RideOfferSearchAlterRequest.class);
+                } catch (JsonSyntaxException e) {
+                    isRightFormat = false;
+                }
+                if (isRightFormat) {
+                    System.out.println("Received: " + req.toString());
+                    try {
+                        res = RideOffer.searchAlter(req);
+                    } catch (InterruptedException | ApiException | IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    res = new RideOfferSearchAlterResponse(97);
+                }
+            }
+            else {
+                res = new RideOfferSearchAlterResponse(2);
             }
             return gson.toJson(res);
         }
