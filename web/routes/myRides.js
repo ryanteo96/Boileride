@@ -20,6 +20,9 @@ router.get("/myRequest/edit", function(req, res) {
 router.get("/myRequest/cancel", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRequest.html"));
 });
+router.get("/myRequest/pickup", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/html/myRequestPickup.html"));
+});
 
 router.get("/myOffer/edit", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOfferEdit.html"));
@@ -121,6 +124,73 @@ router.post("/myRequest/cancel", function(req, res) {
 		}
 		return;
 	});
+});
+
+// myrequest get pickup code
+router.post("/myRequest/pickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	var body = {
+		result: 0,
+	};
+
+	res.send(body);
+
+	//  temp server connection test
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/request/pickup",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
+
+	console.log(data);
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
+
+// myrequest to confirm pickup code
+router.post("/myRequest/confirmpickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+		code: req.body.code,
+	};
+
+	var body = {
+		result: 0,
+	};
+
+	res.send(body);
+
+	//  temp server connection test
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/request/confirmpickup",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
+
+	// console.log(data);
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
 });
 
 //view myOffer
