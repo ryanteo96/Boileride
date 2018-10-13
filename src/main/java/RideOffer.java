@@ -459,65 +459,68 @@ public class RideOffer {
         return dro;
     }
 
-    public static RideOfferSearchResponse search(RideOfferSearchRequest query) throws InterruptedException, ApiException, IOException {
+    public static RideOfferSearchResponse search(RideOfferSearchRequest request) throws InterruptedException, ApiException, IOException {
         RideOfferSearchResponse response = new RideOfferSearchResponse();
+
+        if (request.getPickupproximity() < 0 || request.getDestinationproximity() < 0 ||
+                request.getDatentimerange() < 0 || request.getNumrides() < 1 ||
+                request.getPassengers() < 1 || request.getLuggage() < 0) {
+            response.setResult(1);
+            return response;
+        }
+
         GoogleMapAPI gma = new GoogleMapAPI();
-        // todo: add validation on query
-
-
-        int buffer = 15;
+        int buffer = 0;
         LinkedList<Trip> trips = new LinkedList<>();
         PriorityQueue<TmpTrip> heap = new PriorityQueue<>((a, b)->b.getEstimation() - a.getEstimation());
         TmpTrip start = new TmpTrip();
         start.setRides(new LinkedList<>());
         RideOffer first = new RideOffer();
-        first.setDestination(query.getPickuplocation());
-        first.setDatentime(query.getDatentime());
+        first.setDestination(request.getPickuplocation());
+        first.setDatentime(new Date(request.getDatentime().getTime() - 1000 * 60 * buffer));
         first.setTravelingtime(0);
         start.getRides().add(first);
         heap.add(start);
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
-            if (curr.getRides().getLast().getDestination().equals(query.getDestination())) {
-                if (curr.getRides().size() - 1 <= query.getNumrides() && query.getDatentime().getTime() + query.getDatentimerange() * 60 * 1000 > curr.getRides().getFirst().getDatentime().getTime()) {
-                    // curr.getRides().removeFirst();
+            if (gma.estimate(request.getDestination(), curr.getRides().getLast().getDestination()) <= request.getDestinationproximity()) {
+                curr.getRides().removeFirst();
+                if (curr.getRides().size() <= request.getNumrides()
+                        && request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= curr.getRides().getFirst().getDatentime().getTime()) {
                     trips.addLast(curr.toTrip());
                 }
                 continue;
             }
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(query.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
-                    lro.getSeatleft(), lro.getLuggageleft(),
-                    lro.isSmoking(), lro.isFoodndrink(),
-                    lro.isPets(), lro.isAc());
+                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    request.getPassengers(), request.getLuggage(),
+                    request.isSmoking(), request.isFoodndrink(),
+                    request.isPets(), request.isAc());
             if (rs == null) {
                 response.setResult(9);
                 return response;
             }
             for (RideOffer r : rs) {
-                System.out.println(new Gson().toJson(r));
+//                System.out.println(new Gson().toJson(r));
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());
                 for (RideOffer a : curr.getRides()) {
                     t.getRides().add(a);
                 }
-                if (r.getDatentime().after(new Date(t.getRides().getLast().getDatentime().getTime() + 1000 * 60 * (t.getRides().getLast().getTravelingtime() + buffer)))) {
-                    t.getRides().add(r);
-                    t.setDuration(curr.getDuration() + r.getTravelingtime());
-                    t.setEstimation(t.getDuration() + gma.estimate(r.getDestination(), query.getDestination()));
-                    heap.add(t);
-                }
+                t.getRides().add(r);
+                t.setDuration(curr.getDuration() + r.getTravelingtime());
+                t.setEstimation(t.getDuration() + gma.estimate(r.getDestination(), request.getDestination()));
+                heap.add(t);
             }
         }
         if (trips.size() == 0) {
             response.setResult(9);
             return response;
-        } else {
-            response.setResult(0);
-            response.setTrips(trips);
-            return response;
         }
+        response.setResult(0);
+        response.setTrips(trips);
+        return response;
     }
 
     public RideOfferPickupResponse getOfferPickupCode(RideOfferPickupRequest request){
@@ -564,4 +567,135 @@ public class RideOffer {
         RideOfferConfirmResponse res = new RideOfferConfirmResponse(result);
         return res;
     }
+
+    public static RideOfferSearchAlterResponse searchAlter(RideOfferSearchAlterRequest request) throws InterruptedException, ApiException, IOException {
+        RideOfferSearchAlterResponse response = new RideOfferSearchAlterResponse();
+
+
+        // validate request
+        if (request.getTrip() == null ||
+                request.getPickupproximity() < 0 || request.getDestinationproximity() < 0 ||
+                request.getDatentimerange() < 0 || request.getNumrides() < 1 ||
+                request.getPassengers() < 1 || request.getLuggage() < 0) {
+            response.setResult(1);
+            return response;
+        }
+
+        int a = -1, b = -1;
+        for (int i = 0; i < request.getTrip().getRides().size(); i++) {
+            int currid = request.getTrip().getRides().get(i).getOfferid();
+            if (request.getStartofferid() == currid) {
+                a = i;
+            }
+            if (request.getEndofferid() == currid) {
+                b = i;
+            }
+        }
+        if (a == -1 || b == -1 || a > b) {
+            response.setResult(1);   // invalid start or end offer id;
+            return response;
+        }
+
+        String suborigin, subdestination;
+        Date subdeparture, subarrival;
+        int subnumrides = request.getNumrides() - a - 1 - (request.getTrip().getRides().size() - b - 1);
+
+        if (a > 0) {
+            suborigin = request.getTrip().getRides().get(a - 1).getDestination();
+            subdeparture = new Date(request.getTrip().getRides().get(a - 1).getDatentime().getTime() +
+                    request.getTrip().getRides().get(a - 1).getTravelingtime() * 60 * 1000);
+        } else {
+            suborigin = request.getOriginalpickuplocation();
+            subdeparture = request.getTrip().getRides().get(a).getDatentime();
+        }
+
+        if (b < request.getTrip().getRides().size() - 1) {
+            subdestination = request.getTrip().getRides().get(b + 1).getPickuplocation();
+            subarrival = request.getTrip().getRides().get(b + 1).getDatentime();
+        } else {
+            subdestination = request.getOriginaldestination();
+            subarrival = new Date(Long.MAX_VALUE);
+        }
+
+        GoogleMapAPI gma = new GoogleMapAPI();
+
+        int buffer = 0;
+        LinkedList<Trip> trips = new LinkedList<>();
+        PriorityQueue<TmpTrip> heap = new PriorityQueue<>((t1, t2)->t2.getEstimation() - t1.getEstimation());
+        TmpTrip start = new TmpTrip();
+        start.setRides(new LinkedList<>());
+        RideOffer first = new RideOffer();
+        first.setDestination(suborigin);
+        first.setDatentime(new Date(subdeparture.getTime() - 1000 * 60 * buffer));
+        first.setTravelingtime(0);
+        start.getRides().add(first);
+        heap.add(start);
+        while (!heap.isEmpty()) {
+            TmpTrip curr = heap.poll();
+            // check if sub destination is arrived and within proximity
+            if ((b == request.getTrip().getRides().size() - 1
+                    && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
+                    || (b < request.getTrip().getRides().size() - 1 && gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(subdestination)))) {
+                curr.getRides().removeFirst();
+                if (subarrival.getTime() < curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) continue;
+                // if the first ride of the original trip is also changed and if pick up location is within proximity
+                if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
+                        && request.getOriginaldatentime().getTime() + request.getDatentimerange() > curr.getRides().getFirst().getDatentime().getTime())
+                        || (a > 0)) {
+                    // check if number of rides exceeds
+                    if (curr.getRides().size() <= subnumrides) {
+                        trips.addLast(curr.toTrip());
+                    }
+                }
+                continue;
+            }
+
+            RideOffer lro = curr.getRides().getLast();
+            ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
+                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    request.getPassengers(), request.getLuggage(),
+                    request.isSmoking(), request.isFoodndrink(),
+                    request.isPets(), request.isAc());
+            if (rs == null) {
+                continue;
+            }
+            for (RideOffer r : rs) {
+//                System.out.println(new Gson().toJson(r));
+                TmpTrip t = new TmpTrip();
+                t.setRides(new LinkedList<>());
+                for (RideOffer tro : curr.getRides()) {
+                    t.getRides().add(tro);
+                }
+                t.getRides().add(r);
+                t.setDuration(curr.getDuration() + r.getTravelingtime());
+                t.setEstimation(t.getDuration() + gma.estimate(r.getDestination(), subdestination));
+                heap.add(t);
+            }
+        }
+
+        if (trips.size() == 0) {
+            // should not reach here, or critical error
+            response.setResult(123);
+            return response;
+        }
+        for (Trip tt : trips) {
+            int aa = a - 1, bb =b + 1, duration = tt.getDuration();
+            while (aa >= 0) {
+                tt.getRides().addFirst(request.getTrip().getRides().get(aa));
+                duration += request.getTrip().getRides().get(aa).getTravelingtime();
+                aa--;
+            }
+
+            while (bb <= request.getTrip().getRides().size() - 1) {
+                tt.getRides().addLast(request.getTrip().getRides().get(bb));
+                duration += request.getTrip().getRides().get(bb).getTravelingtime();
+                bb++;
+            }
+        }
+
+        response.setResult(0);
+        response.setTrips(trips);
+        return response;
+    }
+
 }
