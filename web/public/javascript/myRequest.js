@@ -206,17 +206,8 @@ function generateRequestList(requestList) {
 
 		if (requestList[i].status == 0) {
 			requestList[i].status = "Ongoing";
-<<<<<<< HEAD
-			//for each dynamic id, assign a css value
-			// $("#status" + i).css("color", "blue"); //it worked before, not sure why its not working now
 		} else {
 			requestList[i].status = "Cancelled";
-			//for each dynamic id, assign a css value
-			// $("#status" + i).css("color", "red");
-=======
-		} else {
-			requestList[i].status = "Cancelled";
->>>>>>> e0aba901106462ee20306d7d7f3d710098c13fb6
 		}
 
 		myRideRequestList.add({
