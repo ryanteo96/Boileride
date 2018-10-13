@@ -744,7 +744,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             ResultSet rs = stmt.executeQuery("SELECT offerid, offeredby, price, datentime " +
-                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and r.offeredby = "+ userid);
+                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and offeredby = "+ userid);
 
             while (rs.next()) {
                 int offerid = -1;
@@ -1362,7 +1362,7 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("INSERT INTO TRANSACTION(touserid, foruseid, datentime, amount, description) " +
+            stmt.executeUpdate("INSERT INTO TRANSACTION(touserid, foruserid, datentime, amount, description) " +
                     "VALUES (" + to + "," + from + ",'" + timestamp + "'," + amount + ",'" + description + "')");
 
             //System.out.println(userid);

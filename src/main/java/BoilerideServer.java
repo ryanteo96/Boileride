@@ -1008,7 +1008,7 @@ public class BoilerideServer {
             else if (uri.equals("/ride/view/acceptedrequest")){
                 response = handleViewAcceptedrequest(gson, request, servletReq);
             }
-           else if (uri.equals("/ride/view/joinedoffer")){
+            else if (uri.equals("/ride/view/joinedoffer")){
                 response = handleViewJoinedOffer(gson, request, servletReq);
             }
             else if (uri.equals("/ride/request")){
@@ -1119,9 +1119,13 @@ public class BoilerideServer {
             handler.addServlet(new ServletHolder(new BoilerideServlet("/user/resetpassword")), "/user/resetpassword");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/user/viewaccount")), "/user/viewaccount");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/user/update")), "/user/update");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/view/points")), "/user/view/points");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/user/view/transaction")), "/user/view/transaction");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/user/logout")), "/user/logout");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/request")), "/ride/view/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/offer")), "/ride/view/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/acceptedrequest")), "/ride/view/acceptedrequest");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/view/joinedoffer")), "/ride/view/joinedoffer");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/request")), "/ride/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/request")), "/ride/cancel/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/request")), "/ride/update/request");
@@ -1130,6 +1134,20 @@ public class BoilerideServer {
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/offer")), "/ride/update/offer");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/request")), "/ride/search/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/offer")), "/ride/search/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/multipleoffer")), "/ride/search/multipleoffer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/accept/request")), "/ride/accept/request");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/acceptedrequest")), "/ride/cancel/acceptedrequest");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/join/offer")), "/ride/join/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/joinedoffer")), "/ride/cancel/joinedoffer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/joinedoffer")), "/ride/update/joinedoffer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/request/pickup")), "/ride/request/pickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/offer/pickup")), "/ride/offer/pickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/acceptedrequest/pickup")), "/ride/acceptedrequest/pickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/joinedoffer/pickup")), "/ride/joinedoffer/pickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/request/confirmpickup")), "/ride/request/confirmpickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/offer/confirmpickup")), "/ride/offer/confirmpickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/acceptedrequest/confirmpickup")), "/ride/acceptedrequest/confirmpickup");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/joinedoffer/confirmpickup")), "/ride/joinedoffer/confirmpickup");
 
             HashSessionManager manager = new HashSessionManager();
             SessionHandler sessions = new SessionHandler(manager);

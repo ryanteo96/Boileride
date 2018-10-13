@@ -536,6 +536,7 @@ public class User
     }
 
     public UserViewTransactionResponse viewTransactionFromDB(UserViewTransactionRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         ArrayList<DtoTransaction> transactionlist = new ArrayList<DtoTransaction>();
         transactionlist = DatabaseCommunicator.selectTransactionList(request.getUserid());
