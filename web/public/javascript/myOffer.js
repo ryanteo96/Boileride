@@ -17,11 +17,15 @@ $(document).ready(function() {
 					console.log(res.offerlist);
 					generateViewOfferList(res.offerlist);
 					$.each(res.offerlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing")
+						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
+							$("#offer" + i).css("background", "#7BF08F");
+						}
 
-						if ($("#status" + i).text() == "Cancelled")
+						if ($("#status" + i).text() == "Cancelled") {
 							$("#offer" + i).addClass("border-danger");
+							$("#offer" + i).css("background", "#F07B7B");
+						}
 					});
 					break;
 				}
@@ -87,6 +91,57 @@ $(document).ready(function() {
 			},
 		);
 	});
+
+	//get pickup code
+	$("#getPickUpBtn").click(function(data) {
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		var editOffer = localStorage.getItem("editOffer");
+		var edit = JSON.parse(editOffer);
+		//go to the code confirmation page
+		window.location.href = "/myRides/myOffer/pickup";
+
+		$.post(
+			"/myRides/myOffer/pickup",
+			{
+				userid: obj.userid,
+				offerid: edit.offerid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						//store the code so can display it in confirm myRequestPickup
+						localStorage.key = "code";
+						localStorage.setItem(
+							"code",
+							JSON.stringify({
+								// code: res.code,
+								codeforpassenger: "CODEFORPASSENGER",
+							}),
+						);
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid offerid.");
+						break;
+					}
+					case 4: {
+						alert("Not authorized to get code.");
+						break;
+					}
+				}
+			},
+		);
+	});
 });
 
 function generateViewOfferList(offerList) {
@@ -106,6 +161,7 @@ function generateViewOfferList(offerList) {
 			"luggageleft",
 			"price",
 			"status",
+			"joinedby",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +

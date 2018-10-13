@@ -20,5 +20,5 @@
 
 .list > li > .card:hover {
 	cursor: pointer;
-	background-color: lightgrey;
+	filter: brightness(85%);
 }
