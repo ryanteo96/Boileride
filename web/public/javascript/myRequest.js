@@ -87,6 +87,57 @@ $(document).ready(function() {
 			},
 		);
 	});
+
+	//get pickup code
+	$("#getPickUpBtn").click(function(data) {
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		var editRequest = localStorage.getItem("editRequest");
+		var edit = JSON.parse(editRequest);
+		//go to the code confirmation page
+		window.location.href = "/myRides/myRequest/pickup";
+
+		$.post(
+			"/myRides/myRequest/pickup",
+			{
+				userid: obj.userid,
+				requestid: edit.requestid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						//store the code so can display it in confirm myRequestPickup
+						localStorage.key = "code";
+						localStorage.setItem(
+							"code",
+							JSON.stringify({
+								// code: res.code,
+								code: "CODEFORDRIVER",
+							}),
+						);
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid requestid.");
+						break;
+					}
+					case 4: {
+						alert("Not authorized to get code.");
+						break;
+					}
+				}
+			},
+		);
+	});
 });
 
 function generateRequestList(requestList) {
@@ -155,8 +206,17 @@ function generateRequestList(requestList) {
 
 		if (requestList[i].status == 0) {
 			requestList[i].status = "Ongoing";
+<<<<<<< HEAD
+			//for each dynamic id, assign a css value
+			// $("#status" + i).css("color", "blue"); //it worked before, not sure why its not working now
 		} else {
 			requestList[i].status = "Cancelled";
+			//for each dynamic id, assign a css value
+			// $("#status" + i).css("color", "red");
+=======
+		} else {
+			requestList[i].status = "Cancelled";
+>>>>>>> e0aba901106462ee20306d7d7f3d710098c13fb6
 		}
 
 		myRideRequestList.add({

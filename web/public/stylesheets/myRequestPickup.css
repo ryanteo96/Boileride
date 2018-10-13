@@ -1,0 +1,12 @@
+#pickUpBox {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10%;
+}
+
+#headerCode {
+	font-family: Impact, Charcoal, sans-serif;
+	font-size: 60px;
+	color: green;
+}
