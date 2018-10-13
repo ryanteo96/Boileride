@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
 
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -61,6 +62,7 @@ public class BoilerideServer {
 
     public class BoilerideServlet extends HttpServlet {
         private String uri;
+        private Cookie userCookie;
         public BoilerideServlet(String uri){
             this.uri = uri;
         }
@@ -110,7 +112,7 @@ public class BoilerideServer {
             return gson.toJson(res);
         }
 
-        private String handleLogin(Gson gson, JsonObject request, HttpServletRequest servletReq){
+        private String handleLogin(Gson gson, JsonObject request, HttpServletRequest servletReq, HttpServletResponse servletResp){
             UserLoginRequest req = null;
             UserLoginResponse res = null;
             boolean isRightFormat = true;
@@ -127,6 +129,11 @@ public class BoilerideServer {
                     HttpSession session = servletReq.getSession();
                     session.setAttribute("name",1);
                     session.setMaxInactiveInterval(60*60);
+
+                    userCookie = new Cookie("JSESSIONID", session.getId());
+                    userCookie.setMaxAge(60*60);
+                    servletResp.addCookie(userCookie);
+
                 }
             }
             else{
@@ -179,6 +186,7 @@ public class BoilerideServer {
             UserViewAccountRequest req = null;
             UserViewAccountResponse res = null;
             HttpSession session = servletReq.getSession(false);
+
             if(session!=null) {
                 boolean isRightFormat = true;
                 try {
@@ -277,7 +285,7 @@ public class BoilerideServer {
             return gson.toJson(res);
         }
 
-        private String handleLogout(Gson gson, JsonObject request, HttpServletRequest servletReq){
+        private String handleLogout(Gson gson, JsonObject request, HttpServletRequest servletReq, HttpServletResponse servletResp){
             UserLogoutRequest req = null;
             UserLogoutResponse res = null;
             boolean isRightFormat = true;
@@ -293,6 +301,16 @@ public class BoilerideServer {
                     User user = new User();
                     res = user.logout(req);
                     if (res.getResult() == 0) {
+                        Cookie cookies[]=servletReq.getCookies();
+                        if (cookies != null) {
+                            for (int i = 0; i < cookies.length; i++) {
+                                Cookie cookie = cookies[i];
+                                if ((cookie.getName()).compareTo("JSESSIONID") == 0) {
+                                    cookie.setMaxAge(0);
+                                    servletResp.addCookie(cookie);
+                                }
+                            }
+                        }
                         session.invalidate();
                     }
                 } else {
@@ -964,7 +982,7 @@ public class BoilerideServer {
                 response = handleVerifyemail(gson, request, servletReq);
             }
             else if (uri.equals("/user/login")){
-                response = handleLogin(gson, request, servletReq);
+                response = handleLogin(gson, request, servletReq, servletResp);
             }
             else if (uri.equals("/user/forgotpassword")){
                 response = handleForgotpassword(gson, request);
@@ -985,7 +1003,7 @@ public class BoilerideServer {
                 response = handleViewTransaction(gson, request, servletReq);
             }
             else if (uri.equals("/user/logout")){
-                response = handleLogout(gson, request, servletReq);
+                response = handleLogout(gson, request, servletReq, servletResp);
             }
             else if (uri.equals("/ride/view/request")){
                 response = handleViewRequest(gson, request, servletReq);
