@@ -230,6 +230,9 @@ function generateRequestList(requestList) {
 			status: requestList[i].status,
 		});
 
+		myRideRequestList.sort("datentime", { order: "asc" });
+		myRideRequestList.sort("status", { order: "desc" });
+
 		$("#status").attr("id", "status" + i);
 		$("#request").attr("id", "request" + i);
 	}
