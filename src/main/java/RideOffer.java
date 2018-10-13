@@ -637,6 +637,7 @@ public class RideOffer {
                     && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
                     || (b < request.getTrip().getRides().size() - 1 && gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(subdestination)))) {
                 curr.getRides().removeFirst();
+                if (subarrival.getTime() < curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) continue;
                 // if the first ride of the original trip is also changed and if pick up location is within proximity
                 if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
                         && request.getOriginaldatentime().getTime() + request.getDatentimerange() > curr.getRides().getFirst().getDatentime().getTime())
