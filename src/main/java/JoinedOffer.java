@@ -1,5 +1,6 @@
 import DTO.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -176,6 +177,14 @@ public class JoinedOffer {
                 ", price=" + price +
                 ", status=" + status +
                 '}';
+    }
+
+    public RideViewJoinedOfferResponse viewJoinedOfferfromDB(RideViewJoinedOfferRequest request){
+        int result = 0;
+        ArrayList<DtoJoinedOffer> joinedofferlist = new ArrayList<DtoJoinedOffer>();
+        joinedofferlist = DatabaseCommunicator.selectJoinedOfferList(request.getUserid());
+        RideViewJoinedOfferResponse res = new RideViewJoinedOfferResponse(result, joinedofferlist);
+        return res;
     }
 
     public RideJoinedOfferPickupResponse getJoinedOfferPickupCode(RideJoinedOfferPickupRequest request){

@@ -1,8 +1,6 @@
-import DTO.RideAcceptedRequestConfirmRequest;
-import DTO.RideAcceptedRequestConfirmResponse;
-import DTO.RideAcceptedRequestPickupRequest;
-import DTO.RideAcceptedRequestPickupResponse;
+import DTO.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -139,6 +137,14 @@ public class AcceptedRequest {
                 ", status=" + status +
                 ", price=" + price +
                 '}';
+    }
+
+    public RideViewAcceptedRequestResponse viewAcceptedRequestfromDB(RideViewAcceptedRequestRequest request){
+        int result = 0;
+        ArrayList<DtoAcceptedRequest> acceptedRequestlist = new ArrayList<DtoAcceptedRequest>();
+        acceptedRequestlist = DatabaseCommunicator.selectAcceptedRequestList(request.getUserid());
+        RideViewAcceptedRequestResponse res = new RideViewAcceptedRequestResponse(result, acceptedRequestlist);
+        return res;
     }
 
     public RideAcceptedRequestPickupResponse getAcceptedRequestPickupCode(RideAcceptedRequestPickupRequest request){

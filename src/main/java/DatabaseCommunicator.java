@@ -1284,11 +1284,205 @@ public class DatabaseCommunicator {
     }
 
     public static ArrayList<AcceptedRequest> selectCurrentAcceptedRequestList(int userid){
-        return null;
+        ArrayList<AcceptedRequest> requestlist = new ArrayList<AcceptedRequest>();
+        return requestlist;
     }
 
     public static ArrayList<JoinedOffer> selectCurrentJoinedOfferList(int userid){
-        return null;
+        ArrayList<JoinedOffer> offerlist = new ArrayList<JoinedOffer>();
+        return offerlist;
+    }
+
+    public static ArrayList<DtoAcceptedRequest> selectAcceptedRequestList(int userid){
+        ArrayList<DtoAcceptedRequest> requestlist = new ArrayList<DtoAcceptedRequest>();
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT r.*, a.accepteduserstatus, a.acceptedstatus, u1.nickname as requestedbyname, u1.phone " +
+                    "FROM RIDEREQUEST r, ACCEPTEDRIDEREQUEST a, USER u1, USER u2 " +
+                    "WHERE r.requestid=a.requestid and u1.userid=r.requestedby and u2.userid=a.userid and a.userid = " + userid);
+
+            int requestid = 0;
+            int requestedby = 0;
+            String requestedbyname = "";
+            String pickuplocation = "";
+            String destination = "";
+            String datentimeStr = null;
+            int passengers = 0;
+            int luggage = 0;
+            int smoking = 0;
+            int foodndrink = 0;
+            int pets = 0;
+            int AC = 0;
+            int travellingtime = 0;
+            int price = 0;
+            int status = 0;
+            String phone = "";
+            int accepteduserstatus = 0;
+            int acceptedstatus = 0;
+
+            while (rs.next()) {
+                requestid = rs.getInt("requestid");
+                requestedby = rs.getInt("requestedby");
+                requestedbyname = rs.getString("requestedbyname");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                passengers = rs.getInt("passengers");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+                phone = rs.getString("phone");
+                accepteduserstatus = rs.getInt("joineduserstatus");
+                acceptedstatus = rs.getInt("joinedstatus");
+
+                boolean smoke = false, food =false, pet = false, ac = false;
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoAcceptedRequest acceptedRequest = new DtoAcceptedRequest(requestid, requestedby, requestedbyname, pickuplocation, destination, datentime,
+                        passengers, luggage, smoke, food, pet, ac, travellingtime, price, status, phone, accepteduserstatus, acceptedstatus);
+                requestlist.add(acceptedRequest);
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return requestlist;
+    }
+
+    public static ArrayList<DtoJoinedOffer> selectJoinedOfferList(int userid){
+        ArrayList<DtoJoinedOffer> offerlist = new ArrayList<DtoJoinedOffer>();
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
+            ResultSet rs = stmt.executeQuery("SELECT o.*, j.passenger as joinedpassenger, j.luggage as joinedluggage, " +
+                    "j.joineduserstatus, j.joinedstatus, j.triporder, j.joindate, u1.nickname as offeredbyname, u1.phone " +
+                    "FROM RIDEOFFER o, JOINEDRIDEOFFER j, USER u1, USER u2 " +
+                    "WHERE o.offerid=j.offerid and u1.userid=o.offeredby and u2.userid=j.userid and j.userid = " + userid +
+                    " ORDER BY j.joindate and j.triporder");
+
+            int offerid = 0;
+            int offeredby = 0;
+            String offeredbyname = "";
+            String pickuplocation = "";
+            String destination = "";
+            String datentimeStr = null;
+            int seats = 0;
+            int luggage = 0;
+            int smoking = 0;
+            int foodndrink = 0;
+            int pets = 0;
+            int AC = 0;
+            int travellingtime = 0;
+            int seatsleft = 0;
+            int luggagesleft = 0;
+            int price = 0;
+            int status = 0;
+            String phone = "";
+            int joinedpassenger = 0;
+            int joinedluggage = 0;
+            int joineduserstatus = 0;
+            int joinedstatus = 0;
+            int triporder = 0;
+            String joindateStr = null;
+
+            while (rs.next()) {
+                offerid = rs.getInt("offerid");
+                offeredby = rs.getInt("offeredby");
+                offeredbyname = rs.getString("offeredbyname");
+                pickuplocation = rs.getString("pickuplocation");
+                destination = rs.getString("destination");
+                datentimeStr = rs.getString("datentime");
+                seats = rs.getInt("seats");
+                luggage = rs.getInt("luggage");
+                smoking = rs.getInt("smoking");
+                foodndrink = rs.getInt("foodndrink");
+                pets = rs.getInt("pets");
+                AC = rs.getInt("AC");
+                travellingtime = rs.getInt("travellingtime");
+                seatsleft = rs.getInt("seatsleft");
+                luggagesleft = rs.getInt("luggagesleft");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+                phone = rs.getString("phone");
+                joinedpassenger = rs.getInt("joinedpassenger");
+                joinedluggage = rs.getInt("joinedluggage");
+                joineduserstatus = rs.getInt("joineduserstatus");
+                joinedstatus = rs.getInt("joinedstatus");
+                triporder = rs.getInt("triporder");
+                joindateStr = rs.getString("joindate");
+
+                boolean smoke = false, food =false, pet = false, ac = false;
+
+                if (smoking == 1) {
+                    smoke = true;
+                }
+                if (foodndrink == 1) {
+                    food = true;
+                }
+                if (pets == 1) {
+                    pet = true;
+                }
+                if (AC == 1) {
+                    ac = true;
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Date joindate = null;
+                try {
+                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DtoJoinedOffer joinedOffer = new DtoJoinedOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, seatsleft, luggagesleft, price, status, phone, joinedpassenger, joinedluggage,
+                        joineduserstatus, joinedstatus, triporder, joindate);
+                offerlist.add(joinedOffer);
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return offerlist;
     }
 
     public static int updateRequestStatus(int requestid, int status){

@@ -375,8 +375,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //RideOffer rideOffer = new RideOffer();
-                    //res = rideOffer.viewRideOfferfromDB(req);
+                    AcceptedRequest acceptedRequest = new AcceptedRequest();
+                    res = acceptedRequest.viewAcceptedRequestfromDB(req);
                 } else {
                     ArrayList<DtoAcceptedRequest> acceptedrequestlist = new ArrayList<DtoAcceptedRequest>();
                     res = new RideViewAcceptedRequestResponse(97, acceptedrequestlist);
@@ -402,8 +402,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-                    //RideOffer rideOffer = new RideOffer();
-                    //res = rideOffer.viewRideOfferfromDB(req);
+                    JoinedOffer joinedOffer = new JoinedOffer();
+                    res = joinedOffer.viewJoinedOfferfromDB(req);
                 } else {
                     ArrayList<DtoJoinedOffer> joinedofferlist = new ArrayList<DtoJoinedOffer>();
                     res = new RideViewJoinedOfferResponse(97, joinedofferlist);
