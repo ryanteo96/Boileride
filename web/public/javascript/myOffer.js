@@ -176,6 +176,9 @@ function generateViewOfferList(offerList) {
 			status: offerList[i].status,
 		});
 
+		myRideOfferList.sort("datentime", { order: "asc" });
+		myRideOfferList.sort("status", { order: "desc" });
+
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
 	}
