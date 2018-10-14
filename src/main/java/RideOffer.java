@@ -7,6 +7,8 @@ import DTO.*;
 import com.google.gson.Gson;
 import com.google.maps.errors.ApiException;
 
+import javax.xml.crypto.Data;
+
 /**
  * CS 40800 - Project: Boileride
  * A web application for ride sharing
@@ -307,6 +309,303 @@ public class RideOffer {
         }
         return 0;
     }
+
+    public RideJoinOfferResponse joinOffer(RideJoinOfferRequest req)
+    {
+        RideJoinOfferResponse response = new RideJoinOfferResponse(-1);
+        User user = DatabaseCommunicator.selectUser(req.getUserid());
+        if(user != null)
+        {
+            if(user.getStatus() == 1)
+            {
+                int[] offers = req.getOfferidlist();
+                int joinedOffers = 0;
+                for(int i =0;i<offers.length;i++)
+                {
+                    RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
+                    if(rideOffer != null)
+                    {
+                        if(rideOffer.getOfferedby() != user.getUserid())
+                        {
+
+                                ArrayList<Integer> passengers = new ArrayList<Integer>();
+                                int[] passengersArr= DatabaseCommunicator.selectUsersFromOfferList(offers[i]);
+
+                                for(int j =0;j< passengersArr.length;j++)
+                                {
+                                    passengers.add(passengersArr[j]);
+                                }
+
+
+                                if( !passengers.contains(user.getUserid()) )
+                                {
+                                    if(user.getPoints() >= rideOffer.getPrice())
+
+                                    if(isEnoughPoints(user,rideOffer.getPrice()) == 0)
+                                    {
+                                        int seatsWant = req.getPassenger();
+                                        int luggagesWant = req.getLuggage();
+
+                                        if(verifySeats(seatsWant) != 0 && verifyLuggage(luggagesWant) != 0)
+                                        {
+                                            response.setResult(9);
+                                            break;
+                                        }
+                                        else if(verifySeats(seatsWant) != 0)
+                                        {
+                                            response.setResult(7);
+                                            break;
+                                        }
+                                        else if(verifyLuggage(luggagesWant) != 0)
+                                        {
+                                            response.setResult(8);
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
+                                            {
+
+                                                rideOffer.setStatus(1);
+                                                rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
+                                                rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
+
+                                                PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
+                                                int updateOfferResult = DatabaseCommunicator.updateRideOffer(offers[i], rideOffer);
+
+                                                if(updateOfferResult == 0)
+                                                {
+                                                    int addOfferResult = DatabaseCommunicator.insertNewJoinedOffer(user.getUserid(), offers[i], req.getPassenger(),req.getLuggage(), i, 0, 0, 0, 0 ,0, rideOffer.getDatentime());
+                                                    if(addOfferResult == 0)
+                                                    {
+                                                        joinedOffers ++;
+                                                    }
+                                                    else if(addOfferResult == 1)
+                                                    {
+                                                        System.out.println("There exists a record with the same userid and offerid");
+                                                    }
+
+
+                                                }
+                                                else
+                                                {
+                                                    System.out.println("Failed to update the rideOffer status in DB");
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                System.out.println("Cant join the offer since the seatsLeft or LuggageLeft is not enough");
+                                            }
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        response.setResult(6);
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    response.setResult(5);
+                                    break;
+                                }
+
+                        }
+                        else
+                        {
+                            response.setResult(4);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        response.setResult(3);
+                        break;
+                    }
+                }
+                if(joinedOffers == offers.length)
+                {
+                    response.setResult(0);
+                }
+                else
+                {
+                    System.out.println("The number of joined offer is not the same as the length of the offer list");
+                }
+            }
+            else
+            {
+                response.setResult(2);
+            }
+        }
+        else
+        {
+            response.setResult(1);
+        }
+        return response;
+    }
+
+    public RideCancelJoinedOfferResponse cancelJoinedOffer(RideCancelJoinedOfferRequest req)
+    {
+        RideCancelJoinedOfferResponse response = new RideCancelJoinedOfferResponse(-1);
+        User user = DatabaseCommunicator.selectUser(req.getUserid());
+        if(user != null)
+        {
+            if(user.getStatus() == 1)
+            {
+                RideOffer rideOffer= DatabaseCommunicator.selectRideOffer(req.getOfferid());
+                if(rideOffer != null)
+                {
+
+                    ArrayList<Integer> passengers = new ArrayList<Integer>();
+                    int[] passengersArr= DatabaseCommunicator.selectUsersFromOfferList(req.getOfferid());
+
+                    for(int j =0;j< passengersArr.length;j++)
+                    {
+                        passengers.add(passengersArr[j]);
+                    }
+
+                    if( passengers.contains(user.getUserid()))
+                    {
+
+                        int result = DatabaseCommunicator.removeJoinedOffer(user.getUserid(), req.getOfferid());
+                        if(result == 0)
+                        {
+                            response.setResult(0);
+                        }
+                        else
+                        {
+                            System.out.println("Failed to update the rideOffer status in DB");
+                        }
+                    }
+                    else
+                    {
+                        response.setResult(3);
+                    }
+
+                }
+                else
+                {
+                    response.setResult(4);
+                }
+            }
+            else
+            {
+                response.setResult(2);
+            }
+        }
+        else
+        {
+            response.setResult(1);
+        }
+
+
+        return response;
+    }
+    public RideUpdateJoinedOfferResponse updateJoinedOffer(RideUpdateJoinedOfferRequest req)
+    {
+        RideUpdateJoinedOfferResponse response = new RideUpdateJoinedOfferResponse(-1);
+        User user = DatabaseCommunicator.selectUser(req.getUserid());
+        if(user != null)
+        {
+            if(user.getStatus() == 1)
+            {
+                int[] offers = req.getOfferidlist();
+                int updatedOffers = 0;
+                for(int i =0;i<offers.length;i++)
+                {
+                    RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
+                    if(rideOffer != null)
+                    {
+                        ArrayList<Integer> passengers = new ArrayList<Integer>();
+                        int[] passengersArr= DatabaseCommunicator.selectUsersFromOfferList(offers[i]);
+
+                        for(int j =0;j< passengersArr.length;j++)
+                        {
+                            passengers.add(passengersArr[j]);
+                        }
+                        if( !passengers.contains(user.getUserid()) )
+                        {
+                            int seatsWant = req.getPassenger();
+                            int luggagesWant = req.getLuggage();
+                            if(verifySeats(seatsWant) != 0)
+                            {
+                                response.setResult(6);
+                                break;
+                            }
+                            else if(verifyLuggage(luggagesWant) != 0)
+                            {
+                                response.setResult(5);
+                                break;
+                            }
+                            else
+                            {
+                                if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
+                                {
+
+                                    rideOffer.setStatus(1);
+                                    rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
+                                    rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
+
+                                    PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
+                                    int updateOfferResult = DatabaseCommunicator.updateJoinedOffer(user.getUserid(), offers[i], seatsWant, luggagesWant);
+
+                                    if(updateOfferResult == 0)
+                                    {
+                                        updatedOffers ++;
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Failed to update the rideOffer status in DB");
+                                    }
+
+                                }
+                                else
+                                {
+                                    System.out.println("Cant join the offer since the seatsLeft or LuggageLeft is not enough");
+                                }
+                            }
+
+                        }
+
+                        else
+                        {
+                            response.setResult(3);
+                            break;
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        response.setResult(4);
+                        break;
+                    }
+                }
+                if(updatedOffers == offers.length)
+                {
+                    response.setResult(0);
+                }
+                else
+                {
+                    System.out.println("The number of joined offer is not the same as the length of the offer list");
+                }
+            }
+            else
+            {
+                response.setResult(2);
+            }
+        }
+        else
+        {
+            response.setResult(1);
+        }
+        return  response;
+    }
+
 
     public RideViewOfferResponse viewRideOfferfromDB(RideViewOfferRequest request){
         int result = 0;

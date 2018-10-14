@@ -33,6 +33,9 @@ public class RideRequest {
     private int price;
     private int status;
 
+    public static DatabaseCommunicator SQL = new DatabaseCommunicator();
+
+
     public RideRequest(){}
 
     public RideRequest(int requestedby, String pickuplocation, String destination, Date datentime,
@@ -281,6 +284,123 @@ public class RideRequest {
         return 0;
     }
 
+    public RideAcceptRequestResponse acceptRideRequest(RideAcceptRequestRequest req)
+    {
+        RideAcceptRequestResponse response = new RideAcceptRequestResponse(-1);
+        User user = SQL.selectUser(req.getUserid());
+        if(user == null)
+        {
+            response.setResult(1);
+        }
+        else
+        {
+            if(user.getStatus() == 1)
+            {
+                RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(req.getRequestid());
+                if(rideRequest != null)
+                {
+
+//                    if(DatabaseCommunicator.rideRequestBy(req.getRequestid()) != req.getUserid())
+                    if(rideRequest.getRequestedby() != req.getUserid())
+                    {
+                        if(rideRequest.getStatus() != 1)
+                        {
+                            if(user.getPoints() >= rideRequest.getPrice() )
+                            {
+                                rideRequest.setStatus(1);
+                                if(DatabaseCommunicator.updateRideRequest(req.getRequestid(), rideRequest) == 0)
+                                {
+                                    PointCalculator.reservePoints(req.getUserid(), rideRequest.getPrice());
+                                    response.setResult(0);
+                                }
+                                else
+                                {
+                                    System.out.println("Failed to accept ride request in DB");
+                                }
+                            }
+                            else
+                            {
+                                   response.setResult(6);
+                            }
+                        }
+                        else
+                        {
+                            response.setResult(5);
+                        }
+
+                    }
+                    else
+                    {
+                        response.setResult(4);
+                    }
+
+                }
+                else
+                {
+                    response.setResult(3);
+                }
+            }
+            else
+            {
+                response.setResult(2);
+            }
+        }
+
+
+        return  response;
+    }
+    public RideCancelAcceptedRequestResponse cancelAcceptedRequest(RideCancelAcceptedRequestRequest req)
+    {
+        RideCancelAcceptedRequestResponse response = new RideCancelAcceptedRequestResponse(-1);
+        User user = SQL.selectUser(req.getUserid());
+        if(user != null)
+        {
+            if(user.getStatus() == 1)
+            {
+                RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(req.getRequestID());
+                if(rideRequest != null)
+                {
+                    if(rideRequest.getRequestedby() == req.getGetUserid())
+                    {
+                        int result = DatabaseCommunicator.cancelRideRequest(req.getRequestID());
+                        if(result == 0)
+                        {
+                            PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
+                            response.setResult(0);
+
+                        }
+                        else if(result == 99)
+                        {
+                            System.out.println("Failed to cancel ride request in DB");
+                        }
+                        else
+                        {
+                            System.out.println("Something went wrong in cancelAcceptedRequest");
+                        }
+
+                    }
+                    else
+                    {
+                        response.setResult(3);
+                    }
+
+                }
+                else
+                {
+                    response.setResult(4);
+                }
+            }
+            else
+            {
+                response.setResult(2);
+            }
+        }
+        else
+        {
+            response.setResult(1);
+        }
+        return  response;
+    }
     public RideViewRequestResponse viewRideRequestfromDB(RideViewRequestRequest request){
         int result = 0;
         ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
