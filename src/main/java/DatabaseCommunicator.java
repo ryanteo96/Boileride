@@ -1570,6 +1570,23 @@ public class DatabaseCommunicator {
         return 0;
     }
 
+    public static int[] selectUsersFromOfferList(int offerid){
+        int[] userid = {};
+        return userid;
+    }
+
+    public static int updateJoinedOffer(int userid, int offerid, int seat, int passenger){
+        return 0;
+    }
+
+    public static int removeJoinedOffer(int userid, int offerid){
+        return 0;
+    }
+
+    public static int insertNewJoinedOffer(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, Date date){
+        return 0;
+    }
+
     public static void main (String args[]) throws ParseException {
         //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );
         //updateSQLUser(1, user);
