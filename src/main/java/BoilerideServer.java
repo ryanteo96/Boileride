@@ -111,12 +111,12 @@ public class BoilerideServer {
                 res = user.login(req);
                 if (res.getResult() == 0) {
                     HttpSession session = servletReq.getSession();
-                    session.setAttribute("name",1);
+                    session.setAttribute("userid",user.getUserid());
                     session.setMaxInactiveInterval(60*60);
 
-                    userCookie = new Cookie("JSESSIONID", session.getId());
-                    userCookie.setMaxAge(60*60);
-                    servletResp.addCookie(userCookie);
+//                    userCookie = new Cookie("JSESSIONID", session.getId());
+//                    userCookie.setMaxAge(60*60);
+//                    servletResp.addCookie(userCookie);
 
                 }
             }
@@ -1106,6 +1106,11 @@ public class BoilerideServer {
             }
 
             servletResp.setContentType("application/json");
+
+            if(servletResp.containsHeader("SET-COOKIE")) {
+                String sessionid = servletReq.getSession().getId();
+                servletResp.setHeader("SET-COOKIE", "JSESSIONID=" + sessionid + ";Path=/" + ";");
+            }
             servletResp.getWriter().println(response);
 
             System.out.println("Sent response: " + response.toString());
