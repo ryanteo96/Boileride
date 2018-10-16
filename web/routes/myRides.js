@@ -23,6 +23,9 @@ router.get("/myRequest/cancel", function(req, res) {
 router.get("/myRequest/pickup", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRequestPickup.html"));
 });
+router.get("/myRequest/edit", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/html/myAcceptedRequest.html"));
+});
 router.get("/myOffer/edit", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOfferEdit.html"));
 });
@@ -32,7 +35,11 @@ router.get("/myOffer/cancel", function(req, res) {
 router.get("/myRequest/pickup", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOfferPickup.html"));
 });
+router.get("/myRequest/edit", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/html/myAcceptedOffer.html"));
+});
 
+//view request
 router.post("/myRequest", function(req, res) {
 	var data = {
 		userid: req.body.userid,
@@ -41,6 +48,33 @@ router.post("/myRequest", function(req, res) {
 	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/view/request",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+// view accepted request
+router.post("/myRequest/accepted", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	var options = {
+		uri: "http://localhost:8080/ride/view/acceptedrequest",
 		json: data,
 		method: "POST",
 		headers: {
@@ -210,6 +244,33 @@ router.post("/myOffer", function(req, res) {
 			Cookie: global.cookie,
 		},
 	};
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+// view joined offer
+router.post("/myOffer/joined", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	var options = {
+		uri: "http://localhost:8080/ride/view/joinedoffer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
