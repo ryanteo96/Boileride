@@ -3,6 +3,38 @@ let destination;
 let traveltime;
 let price;
 
+$("html").hide();
+
+var credentials = localStorage.getItem("credentials");
+var obj = JSON.parse(credentials);
+
+if (!obj) {
+	window.location.href = "/signin";
+}
+
+$.post(
+	"/authLoggedIn",
+	{
+		userid: obj.userid,
+	},
+	function(res) {
+		switch (res.result) {
+			case 0: {
+				$("html").show();
+				break;
+			}
+			case 2: {
+				window.location.href = "/signin";
+				break;
+			}
+			default: {
+				$("html").show();
+				break;
+			}
+		}
+	},
+);
+
 function init() {
 	pickup = document.getElementById("pickuplocation");
 	destination = document.getElementById("destination");
