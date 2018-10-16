@@ -5,8 +5,9 @@ const fs = require("fs");
 const http = require("http");
 const https = require("https");
 const bodyParser = require("body-parser");
-
+const cookieParser = require("cookie-parser");
 const app = express();
+
 // route declarations
 const routes = require("./routes/index");
 const signIn = require("./routes/signIn");
@@ -24,6 +25,7 @@ const searchRideOffer = require("./routes/searchRideOffer");
 const searchRideRequest = require("./routes/searchRideRequest");
 const myPoints = require("./routes/myPoints");
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));

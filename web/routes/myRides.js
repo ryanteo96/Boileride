@@ -43,6 +43,7 @@ router.post("/myRequest", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -133,30 +134,23 @@ router.post("/myRequest/pickup", function(req, res) {
 		requestid: req.body.requestid,
 	};
 
-	var body = {
-		result: 0,
+	var options = {
+		uri: "http://localhost:8080/ride/request/pickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
 	};
-
-	res.send(body);
-
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/request/pickup",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// };
 
 	console.log(data);
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response.body);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 // myrequest to confirm pickup code

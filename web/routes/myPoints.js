@@ -22,6 +22,7 @@ router.post("/", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -46,6 +47,7 @@ router.post("/myTransactions", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 

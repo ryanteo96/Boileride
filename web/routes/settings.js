@@ -26,6 +26,7 @@ router.post("/changeNickname", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -54,6 +55,7 @@ router.post("/changeEmail", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -82,6 +84,7 @@ router.post("/changePassword", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -110,6 +113,7 @@ router.post("/changePhone", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 

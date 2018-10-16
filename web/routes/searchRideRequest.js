@@ -37,6 +37,7 @@ router.post("/", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 

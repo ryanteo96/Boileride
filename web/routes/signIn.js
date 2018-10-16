@@ -3,7 +3,6 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const request = require("request");
 const crypto = require("crypto-js/sha3");
-
 const router = express.Router();
 
 router.get("/", function(req, res) {
@@ -28,6 +27,7 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
+		global.cookie = response.headers["set-cookie"];
 		if (response) {
 			res.send(response.body);
 		}
