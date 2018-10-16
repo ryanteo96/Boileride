@@ -18,11 +18,14 @@ $(document).ready(function() {
 					console.log(res.requestlist);
 					generateRequestList(res.requestlist);
 					$.each(res.requestlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing")
+						if ($("#status" + i).text() == "Ongoing") {
 							$("#request" + i).addClass("border-success");
-
-						if ($("#status" + i).text() == "Cancelled")
+							$("#request" + i).css("background", "#7BF08F");
+						}
+						if ($("#status" + i).text() == "Cancelled") {
 							$("#request" + i).addClass("border-danger");
+							$("#request" + i).css("background", "#F07B7B");
+						}
 					});
 					break;
 				}
@@ -113,7 +116,7 @@ $(document).ready(function() {
 							"code",
 							JSON.stringify({
 								// code: res.code,
-								code: "CODEFORDRIVER",
+								codefordriver: "CODEFORDRIVER",
 							}),
 						);
 						break;

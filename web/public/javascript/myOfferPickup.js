@@ -1,8 +1,7 @@
 $(document).ready(function() {
 	var codePickup = localStorage.getItem("code");
 	var objCode = JSON.parse(codePickup);
-	$("#headerCode").html(objCode.codefordriver);
-	console.log("code for driver is: " + objCode.codefordriver);
+	$("#headerCode").html(objCode.code);
 
 	$("#pickUpForm").submit(function(data) {
 		data.preventDefault();
@@ -15,16 +14,17 @@ $(document).ready(function() {
 		console.log(obj);
 		//click submit to confirm the pickup
 		$.post(
-			"/myRides/myRequest/confirmpickup",
+			"/myRides/myOffer/confirmpickup",
 			{
 				userid: obj.userid,
-				requestid: edit.requestid,
+				offerid: edit.offerid,
+				joineduserid: "something",
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						window.location.href = "/myRides/myRequest";
+						window.location.href = "/myRides/myOffer";
 						alert("Pick up confirmed!");
 						break;
 					}

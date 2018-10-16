@@ -23,12 +23,14 @@ router.get("/myRequest/cancel", function(req, res) {
 router.get("/myRequest/pickup", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRequestPickup.html"));
 });
-
 router.get("/myOffer/edit", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOfferEdit.html"));
 });
 router.get("/myOffer/cancel", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOffer.html"));
+});
+router.get("/myRequest/pickup", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/html/myOfferPickup.html"));
 });
 
 router.post("/myRequest", function(req, res) {
@@ -256,7 +258,7 @@ router.post("/myOffer/edit", function(req, res) {
 router.post("/myOffer/cancel", function(req, res) {
 	var data = {
 		userid: req.body.userid,
-		requestid: req.body.requestid,
+		offerid: req.body.offerid,
 	};
 	console.log(data);
 
@@ -275,6 +277,74 @@ router.post("/myOffer/cancel", function(req, res) {
 		}
 		return;
 	});
+});
+
+// myoffer get pickup code
+router.post("/myOffer/pickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+	};
+
+	var body = {
+		result: 0,
+	};
+
+	res.send(body);
+
+	//  temp server connection test
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/offer/pickup",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
+
+	console.log(data);
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
+
+// myoffer to confirm pickup code
+router.post("/myOffer/confirmpickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+		joineduserid: req.body.joineduserid,
+		code: req.body.code,
+	};
+
+	var body = {
+		result: 0,
+	};
+
+	res.send(body);
+
+	//  temp server connection test
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/offer/confirmpickup",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
+
+	// console.log(data);
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
 });
 
 module.exports = router;
