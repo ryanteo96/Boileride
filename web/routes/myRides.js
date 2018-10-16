@@ -88,6 +88,7 @@ router.post("/myRequest/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -116,6 +117,7 @@ router.post("/myRequest/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -142,6 +144,7 @@ router.post("/myRequest/pickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -176,6 +179,7 @@ router.post("/myRequest/confirmpickup", function(req, res) {
 	// 	method: "POST",
 	// 	headers: {
 	// 		"Content-Type": "application/json",
+	//		Cookie: global.cookie,
 	// 	},
 	// };
 
@@ -203,6 +207,7 @@ router.post("/myOffer", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -243,6 +248,7 @@ router.post("/myOffer/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -268,6 +274,7 @@ router.post("/myOffer/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: global.cookie,
 		},
 	};
 
@@ -299,6 +306,7 @@ router.post("/myOffer/pickup", function(req, res) {
 	// 	method: "POST",
 	// 	headers: {
 	// 		"Content-Type": "application/json",
+	//		Cookie: global.cookie,
 	// 	},
 	// };
 
@@ -334,6 +342,7 @@ router.post("/myOffer/confirmpickup", function(req, res) {
 	// 	method: "POST",
 	// 	headers: {
 	// 		"Content-Type": "application/json",
+	//		Cookie: global.cookie,
 	// 	},
 	// };
 
