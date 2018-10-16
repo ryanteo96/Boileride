@@ -310,8 +310,25 @@ public class RideRequest {
                                 rideRequest.setStatus(1);
                                 if(DatabaseCommunicator.updateRideRequest(req.getRequestid(), rideRequest) == 0)
                                 {
-                                    PointCalculator.reservePoints(req.getUserid(), rideRequest.getPrice());
-                                    response.setResult(0);
+                                    int addRequestResult = DatabaseCommunicator.insertNewAcceptedRequest(user.getUserid(), req.getRequestid(), 0, 0, 0, 0, 0);
+                                    if(addRequestResult == 0)
+                                    {
+                                        PointCalculator.reservePoints(req.getUserid(), rideRequest.getPrice());
+                                        response.setResult(0);
+                                    }
+                                    else if(addRequestResult == 1)
+                                    {
+                                        System.out.println("There exists a record with the same userid and offerid in \"ACCEPTEDRIDEREQUEST\"");
+                                    }
+                                    else if(addRequestResult == 99)
+                                    {
+                                        System.out.println("Failed to insert new joined offer to the table \"ACCEPTEDRIDEREQUEST\"");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Something went wrong while inserting new accepted request");
+                                    }
+
                                 }
                                 else
                                 {
@@ -363,10 +380,22 @@ public class RideRequest {
                     if(rideRequest.getRequestedby() == req.getGetUserid())
                     {
                         int result = DatabaseCommunicator.cancelRideRequest(req.getRequestID());
-                        if(result == 0)
-                        {
-                            PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
-                            response.setResult(0);
+                        if(result == 0) {
+                            int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestID());
+                            if (removeResult == 0)
+                            {
+                                PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
+                                response.setResult(0);
+                            }
+                            else if(result == 99)
+                            {
+                                System.out.println("Failed to remove the accepted request in ACCEPTEDRIDEREQUEST");
+                            }
+                            else
+                            {
+                                System.out.println("Something went wrong while removing accepted request in  ACCEPTEDRIDEREQUEST");
+                            }
+
 
                         }
                         else if(result == 99)

@@ -382,7 +382,15 @@ public class RideOffer {
                                                     }
                                                     else if(addOfferResult == 1)
                                                     {
-                                                        System.out.println("There exists a record with the same userid and offerid");
+                                                        System.out.println("There exists a record with the same userid and offerid in \"JOINEDRIDEOFFER\"");
+                                                    }
+                                                    else if(addOfferResult == 99)
+                                                    {
+                                                        System.out.println("Failed to insert new joined offer to the table \"JOINEDRIDEOFFER\"");
+                                                    }
+                                                    else
+                                                    {
+                                                        System.out.println("Something went wrong while inserting new joined offer");
                                                     }
 
 
