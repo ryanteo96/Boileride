@@ -1582,10 +1582,17 @@ public class DatabaseCommunicator {
         return 0;
     }
 
+    public static int removeAcceptedRequest(int userid, int requestid)
+    {
+        return 0;
+    }
     public static int removeJoinedOffer(int userid, int offerid){
         return 0;
     }
-
+    public static int insertNewAcceptedRequest(int userid, int requestid, int requestUserCode, int acceptedUserCode, int acceptedUserStatus, int requestUserStatus, int acceptedStatus)
+    {
+        return 0;
+    }
     public static int insertNewJoinedOffer(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, Date date){
         return 0;
     }

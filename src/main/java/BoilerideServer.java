@@ -635,6 +635,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.acceptRideRequest(req);
 //                    RideOffer rideOffer = new RideOffer();
 //                   res = rideOffer.addRideOfferToDB(req);
                 } else {
@@ -660,6 +662,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
+                    RideRequest rideRequest = new RideRequest();
+                    res = rideRequest.cancelAcceptedRequest(req);
 //                    RideOffer rideOffer = new RideOffer();
 //                   res = rideOffer.addRideOfferToDB(req);
                 } else {
@@ -685,8 +689,10 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+
+                    RideOffer rideOffer = new RideOffer();
+                   res = rideOffer.joinOffer(req);
+
                 } else {
                     res = new RideJoinOfferResponse(97);
                 }
@@ -710,8 +716,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideOffer rideOffer = new RideOffer();
+                   res = rideOffer.cancelJoinedOffer(req);
                 } else {
                     res = new RideCancelJoinedOfferResponse(97);
                 }
@@ -735,8 +741,8 @@ public class BoilerideServer {
                 }
                 if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
-//                    RideOffer rideOffer = new RideOffer();
-//                   res = rideOffer.addRideOfferToDB(req);
+                    RideOffer rideOffer = new RideOffer();
+                   res = rideOffer.updateJoinedOffer(req);
                 } else {
                     res = new RideUpdateJoinedOfferResponse(97);
                 }
