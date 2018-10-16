@@ -24,6 +24,7 @@ const createRideRequest = require("./routes/createRideRequest");
 const searchRideOffer = require("./routes/searchRideOffer");
 const searchRideRequest = require("./routes/searchRideRequest");
 const myPoints = require("./routes/myPoints");
+const authLoggedIn = require("./routes/authLoggedIn");
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,6 +46,7 @@ app.use("/createRideRequest", createRideRequest);
 app.use("/searchRideOffer", searchRideOffer);
 app.use("/searchRideRequest", searchRideRequest);
 app.use("/myPoints", myPoints);
+app.use("/authLoggedIn", authLoggedIn);
 
 // https setup
 // const privateKey = fs.readFileSync(
