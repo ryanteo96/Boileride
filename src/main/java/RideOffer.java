@@ -323,7 +323,7 @@ public class RideOffer {
                 for(int i =0;i<offers.length;i++)
                 {
                     RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
-                    if(rideOffer != null)
+                    if(rideOffer != null && rideOffer.getStatus() == 0)
                     {
                         if(rideOffer.getOfferedby() != user.getUserid())
                         {
@@ -339,7 +339,7 @@ public class RideOffer {
 
                                 if( !passengers.contains(user.getUserid()) )
                                 {
-                                    if(user.getPoints() >= rideOffer.getPrice())
+//                                    if(user.getPoints() >= rideOffer.getPrice())
 
                                     if(isEnoughPoints(user,rideOffer.getPrice()) == 0)
                                     {

@@ -894,9 +894,9 @@ public class DatabaseCommunicator {
         boolean ac = offer.isAc();
         int travellingtime = offer.getTravelingtime();
         int price = offer.getPrice();
-        //int status = offer.getStatus();
-        //int seatsleft = offer.getSeatleft();
-        //int luggagesleft = offer.getLuggageleft();
+        int status = offer.getStatus();
+        int seatsleft = offer.getSeatleft();
+        int luggagesleft = offer.getLuggageleft();
         String pickuplocation = offer.getPickuplocation();
         String destination = offer.getDestination();
         Date datentime = offer.getDatentime();
@@ -910,7 +910,7 @@ public class DatabaseCommunicator {
             String query = "UPDATE RIDEOFFER SET pickuplocation = ?, destination = ?, datentime = ?, " +
                     "seatsleft = seatsleft + (? - seats), luggagesleft = luggagesleft + (? - luggage), " +
                     "seats = ?, luggage = ?, " + "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, " +
-                    "price = ? WHERE offerid = ?";
+                    "price = ?, status = ?, seatsleft = ?, luggagesleft = ? WHERE offerid = ?";
             PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
 
 
@@ -934,7 +934,10 @@ public class DatabaseCommunicator {
             stmt.setBoolean(11,ac);
             stmt.setInt(12,travellingtime);
             stmt.setInt(13,price);
-            stmt.setInt(14, offerid);
+            stmt.setInt(14,status);
+            stmt.setInt(15,seatsleft);
+            stmt.setInt(16,luggagesleft);
+            stmt.setInt(17, offerid);
 
             stmt.executeUpdate();
 
