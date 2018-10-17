@@ -35,7 +35,6 @@ $.post(
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	//generateRequestList(requestlist);
 	console.log(obj.userid);
 
 	$.post(
@@ -179,7 +178,7 @@ function generateRequestList(requestList) {
 	var options = {
 		valueNames: [
 			{ data: ["requestid"] },
-			"requestedby",
+			"requestedbyname",
 			"datentime",
 			"pickuplocation",
 			"destination",
@@ -213,7 +212,7 @@ function generateRequestList(requestList) {
 			'<i class="icons fas fa-paw p-2 col-sm-push text-center"><small class="values pets p-2"></small></i>' +
 			'<i class="icons far fa-snowflake p-2 col-sm-push text-center"><small class="values ac p-2"></small></i>' +
 			'<i class="icons fas fa-stopwatch p-2 col-sm-push text-center"><small class="values travelingtime p-2"></small></i>' +
-			'<i class="icons fas fa-user-circle p-2 col-sm-push text-center"><small class="values requestedby p-2"></small></i>' +
+			'<i class="icons fas fa-user-circle p-2 col-sm-push text-center"><small class="values requestedbyname p-2"></small></i>' +
 			'<i class="icons fas fa-money-bill p-2 col-sm-push text-center"><small class="values price p-2"></small></i>' +
 			"</div>" +
 			"</div>" +
@@ -257,7 +256,7 @@ function generateRequestList(requestList) {
 			pets: requestList[i].pets,
 			luggage: requestList[i].luggage,
 			travelingtime: requestList[i].travelingtime,
-			requestedby: requestList[i].requestedby,
+			requestedbyname: requestList[i].requestedbyname,
 			price: requestList[i].price,
 			status: requestList[i].status,
 		});
@@ -324,7 +323,8 @@ function getItem(item) {
 	);
 
 	$("#requestedbyDetails").html(
-		myRideRequestList.get("requestid", requestid)[0]._values.requestedby,
+		myRideRequestList.get("requestid", requestid)[0]._values
+			.requestedbyname,
 	);
 
 	$("#priceDetails").html(
