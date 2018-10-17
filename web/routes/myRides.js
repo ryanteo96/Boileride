@@ -23,7 +23,7 @@ router.get("/myRequest/cancel", function(req, res) {
 router.get("/myRequest/pickup", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myRequestPickup.html"));
 });
-router.get("/myRequest/edit", function(req, res) {
+router.get("/myRequest/accepted", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myAcceptedRequest.html"));
 });
 router.get("/myOffer/edit", function(req, res) {
@@ -32,11 +32,11 @@ router.get("/myOffer/edit", function(req, res) {
 router.get("/myOffer/cancel", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOffer.html"));
 });
-router.get("/myRequest/pickup", function(req, res) {
+router.get("/myOffer/pickup", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/html/myOfferPickup.html"));
 });
-router.get("/myRequest/edit", function(req, res) {
-	res.sendFile(path.join(__dirname, "../public/html/myAcceptedOffer.html"));
+router.get("/myOffer/joined", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/html/myJoinedOffer.html"));
 });
 
 //view request
@@ -147,6 +147,37 @@ router.post("/myRequest/cancel", function(req, res) {
 	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/cancel/request",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+//cancel my accepted request
+router.post("/myRequest/accepted/cancel", function(req, res) {
+	let date = req.body.date;
+	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
+
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	//  temp server connection test
+	var options = {
+		uri: "http://localhost:8080/ride/cancel/acceptedrequest",
 		json: data,
 		method: "POST",
 		headers: {
@@ -331,6 +362,32 @@ router.post("/myOffer/cancel", function(req, res) {
 
 	var options = {
 		uri: "http://localhost:8080/ride/cancel/offer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+//cancel myOffer
+router.post("/myOffer/joined/cancel", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+	};
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/cancel/joinedoffer",
 		json: data,
 		method: "POST",
 		headers: {
