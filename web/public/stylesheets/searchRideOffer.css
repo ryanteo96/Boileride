@@ -51,3 +51,8 @@
 .row {
 	margin: 0px;
 }
+
+.list > li:hover {
+	cursor: pointer;
+	filter: brightness(85%);
+}
