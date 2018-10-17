@@ -188,7 +188,7 @@ function generateViewOfferList(offerList) {
 			"foodndrink",
 			"pets",
 			"travelingtime",
-			"offeredby",
+			"offeredbyname",
 			"seatleft",
 			"luggageleft",
 			"price",
@@ -215,7 +215,7 @@ function generateViewOfferList(offerList) {
 			'<i class="icons fas fa-paw p-2 col text-center"><small class="values pets p-2"></small></i>' +
 			'<i class="icons far fa-snowflake p-2 col text-center"><small class="values ac p-2"></small></i>' +
 			'<i class="icons fas fa-stopwatch p-2 col text-center"><small class="values travelingtime p-2"></small></i>' +
-			'<i class="icons fas fa-user-circle p-2 col text-center"><small class="values offeredby p-2"></small></i>' +
+			'<i class="icons fas fa-user-circle p-2 col text-center"><small class="values offeredbyname p-2"></small></i>' +
 			'<i class="icons fas fa-money-bill p-2 col text-center"><small class="values price p-2"></small></i>' +
 			"</div>" +
 			"</div>" +
@@ -257,7 +257,7 @@ function generateViewOfferList(offerList) {
 			foodndrink: offerList[i].foodndrink,
 			pets: offerList[i].pets,
 			travelingtime: offerList[i].travelingtime,
-			offeredby: offerList[i].offeredby,
+			offeredbyname: offerList[i].offeredbyname,
 			seatleft: offerList[i].seatleft,
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
@@ -322,7 +322,7 @@ function getItem(item) {
 	);
 
 	$("#offeredbyDetails").html(
-		myRideOfferList.get("offerid", offerid)[0]._values.offeredby,
+		myRideOfferList.get("offerid", offerid)[0]._values.offeredbyname,
 	);
 
 	$("#priceDetails").html(
