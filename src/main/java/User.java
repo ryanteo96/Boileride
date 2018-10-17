@@ -275,16 +275,16 @@ public class User
     {
 
         UserViewAccountResponse response = new UserViewAccountResponse(-1, "", "", "");
-        User user;
-        /*
+        User user = SQL.selectUser(req.getUserid());
 
-            if(user = selectUser(req.getUserid()) && user != NULL)
+
+            if(user != null)
             {
                 if(user.status == 1)
                 {
                     System.out.println("Success getting user in db from viewAccount function.");
                     response.setResult(0);
-                    response.setNickname(user.getNickName());
+                    response.setNickname(user.getNickname());
                     response.setPhone(user.getPhone());
                     response.setEmail(user.getEmail());
                 }
@@ -300,7 +300,7 @@ public class User
             }
 
 
-        */
+
 
         return response;
     }

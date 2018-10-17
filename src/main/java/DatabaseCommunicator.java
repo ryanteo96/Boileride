@@ -533,7 +533,7 @@ public class DatabaseCommunicator {
         boolean ac = request.isAc();
         int travellingtime = request.getTravelingtime();
         int price = request.getPrice();
-        //int status = request.getStatus();
+        int status = request.getStatus();
         String pickuplocation = request.getPickuplocation();
         String destination = request.getDestination();
         Date datentime = request.getDatentime();
@@ -545,7 +545,7 @@ public class DatabaseCommunicator {
         try {
             //took out status (remy says requestedby, status shouldn't be updated)
             String query = "UPDATE RIDEREQUEST SET pickuplocation = ?, destination = ?, datentime = ?, passenger = ?, luggage = ?, " +
-                    "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, price = ? WHERE requestid = ?";
+                    "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, price = ?, status = ? WHERE requestid = ?";
             PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
 
             stmt.setString(1, pickuplocation);
@@ -559,7 +559,9 @@ public class DatabaseCommunicator {
             stmt.setBoolean(9,ac);
             stmt.setInt(10,travellingtime);
             stmt.setInt(11,price);
-            stmt.setInt(12, requestid);
+            stmt.setInt(12, status);
+            stmt.setInt(13, requestid);
+
 
             stmt.executeUpdate();
 
@@ -1582,10 +1584,17 @@ public class DatabaseCommunicator {
         return 0;
     }
 
+    public static int removeAcceptedRequest(int userid, int requestid)
+    {
+        return 0;
+    }
     public static int removeJoinedOffer(int userid, int offerid){
         return 0;
     }
-
+    public static int insertNewAcceptedRequest(int userid, int requestid, int requestUserCode, int acceptedUserCode, int acceptedUserStatus, int requestUserStatus, int acceptedStatus)
+    {
+        return 0;
+    }
     public static int insertNewJoinedOffer(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, Date date){
         return 0;
     }
