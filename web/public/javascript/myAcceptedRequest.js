@@ -329,59 +329,59 @@ function getItem(item) {
 	$("#myRideRequestModal").modal("show");
 
 	$("#pickuplocationDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.pickuplocation,
 	);
 
 	$("#destinationDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.destination,
 	);
 
 	$("#passengersDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.passengers,
 	);
 
 	$("#luggageDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.luggage,
 	);
 
 	$("#numridesDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.numrides,
 	);
 
 	$("#smokingDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.smoking,
 	);
 
 	$("#foodndrinkDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.foodndrink,
 	);
 
 	$("#petsDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values.pets,
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values.pets,
 	);
 
 	$("#acDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values.ac,
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values.ac,
 	);
 
 	$("#travelingtimeDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.travelingtime,
 	);
 
 	$("#requestedbyDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values
 			.requestedbyname,
 	);
 
 	$("#priceDetails").html(
-		myRideacceptedRequestList.get("requestid", requestid)[0]._values.price,
+		myRideAcceptedRequestList.get("requestid", requestid)[0]._values.price,
 	);
 }

@@ -188,7 +188,7 @@ function generateViewOfferList(offerList) {
 			"foodndrink",
 			"pets",
 			"travelingtime",
-			"offeredbyname",
+			"offeredbyname", //my own name as user?
 			"seatleft",
 			"luggageleft",
 			"price",
