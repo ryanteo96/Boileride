@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>My Ride Offers</title>
+    <title>My Joined Rides</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
@@ -47,12 +47,14 @@
                         My Rides
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a id="myRequest" class="dropdown-item" href="/myRides/myRequest">Ride Requests</a>
-                        <a id="myOffer" class="dropdown-item" href="/myRides/myOffer">Ride Offers</a>
-                        <a id="myAcceptedRequest" class="dropdown-item" href="/myRides/myAcceptedRequest">Accepted Ride
-                            Offers</a>
-                        <a id="myJoinedOffer" class="dropdown-item" href="/myRides/myJoinedOffer">Joined Ride
-                            Offers</a>
+                        <h6 class="dropdown-header" style="font-weight: bold">As passenger</h6>
+                        <a id="myRequest" class="dropdown-item" href="/myRides/myRequest">My Ride Requests</a>
+                        <a id="myJoinedOffer" class="dropdown-item" href="/myRides/myOffer/joined">Joined Rides</a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header" style="font-weight: bold">As driver</h6>
+                        <a id="myOffer" class="dropdown-item" href="/myRides/myOffer">My Ride Offers</a>
+                        <a id="myAcceptedRequest" class="dropdown-item" href="/myRides/myRequest/accepted">Accepted
+                            Rides</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -61,8 +63,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/settings">Settings</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/signOut">Sign Out</a>
+                    <a id="signOutBtn" class="nav-link" href="">Sign Out</a>
                 </li>
             </ul>
         </div>
@@ -70,7 +74,7 @@
     </nav>
 
     <div id="myRideOfferList" class="myRideOfferList">
-        <h5 id="myRideOfferListTitle" class="p-3 m-0">My Ride Offers</h5>
+        <h5 id="myRideOfferListTitle" class="p-3 m-0">Joined Ride Offers</h5>
         <ul class="list list-group list-group-flush"></ul>
     </div>
 
