@@ -286,6 +286,7 @@ public class RideRequest {
 
     public RideAcceptRequestResponse acceptRideRequest(RideAcceptRequestRequest req)
     {
+        PointCalculator.chargeFailConfirmationFee(req.getUserid());
         RideAcceptRequestResponse response = new RideAcceptRequestResponse(-1);
         User user = SQL.selectUser(req.getUserid());
         if(user == null)

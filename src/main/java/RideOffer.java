@@ -312,6 +312,7 @@ public class RideOffer {
 
     public RideJoinOfferResponse joinOffer(RideJoinOfferRequest req)
     {
+        PointCalculator.chargeFailConfirmationFee(req.getUserid());
         RideJoinOfferResponse response = new RideJoinOfferResponse(-1);
         User user = DatabaseCommunicator.selectUser(req.getUserid());
         if(user != null)
@@ -514,6 +515,7 @@ public class RideOffer {
     }
     public RideUpdateJoinedOfferResponse updateJoinedOffer(RideUpdateJoinedOfferRequest req)
     {
+        PointCalculator.chargeFailConfirmationFee(req.getUserid());
         RideUpdateJoinedOfferResponse response = new RideUpdateJoinedOfferResponse(-1);
         User user = DatabaseCommunicator.selectUser(req.getUserid());
         if(user != null)
@@ -868,7 +870,7 @@ public class RideOffer {
             if (result == 0){
                 //Get payment
                 result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
-                DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),3);
+                //DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),4);
             }
         }
         RideOfferConfirmResponse res = new RideOfferConfirmResponse(result);
