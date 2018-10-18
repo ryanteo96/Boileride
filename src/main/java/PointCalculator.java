@@ -139,15 +139,15 @@ public class PointCalculator {
                                 hasPickedUpSomeone = true;
                             }
                         }
-                    }
-                    if (hasGetCode && !hasPickedUpSomeone) {
-                        DatabaseCommunicator.updatePointReserve(userid, rideOffer.getPrice(), rideOffer.getPrice() * -1);
-                        System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
-                    }
-                    else if (!hasGetCode && !hasPickedUpSomeone) {
-                        DatabaseCommunicator.updatePointReserve(userid, 0, rideOffer.getPrice() * -1);
-                        recordTransaction(userid, userid, today, rideOffer.getPrice(), "Fail ride offer pickup charge");
-                        System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + 0 + " reserve: " + rideOffer.getPrice() * -1);
+                        if (hasGetCode && !hasPickedUpSomeone) {
+                            DatabaseCommunicator.updatePointReserve(userid, rideOffer.getPrice(), rideOffer.getPrice() * -1);
+                            System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
+                        }
+                        else if (!hasGetCode && !hasPickedUpSomeone) {
+                            DatabaseCommunicator.updatePointReserve(userid, 0, rideOffer.getPrice() * -1);
+                            recordTransaction(userid, userid, today, rideOffer.getPrice(), "Fail ride offer pickup charge");
+                            System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + 0 + " reserve: " + rideOffer.getPrice() * -1);
+                        }
                     }
                     DatabaseCommunicator.updateOfferStatus(rideOffer.getOfferid(), userid, 3);
                 }
