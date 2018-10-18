@@ -1,11 +1,9 @@
 package DTO;
 
-import org.joda.time.DateTime;
-
 import java.util.Date;
 
 public class RideOfferSearchRequest {
-    private String userid;
+    private int userid;
     private String pickuplocation;
     private double pickupproximity;
     private String destination;
@@ -24,7 +22,7 @@ public class RideOfferSearchRequest {
 
     }
 
-    public RideOfferSearchRequest(String userid,
+    public RideOfferSearchRequest(int userid,
                                   String pickuplocation,
                                   double pickupproximity,
                                   String destination,
@@ -54,7 +52,7 @@ public class RideOfferSearchRequest {
         this.ac = ac;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
@@ -110,7 +108,7 @@ public class RideOfferSearchRequest {
         return ac;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 

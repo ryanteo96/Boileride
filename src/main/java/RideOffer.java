@@ -792,9 +792,12 @@ public class RideOffer {
             TmpTrip curr = heap.poll();
             if (gma.estimate(request.getDestination(), curr.getRides().getLast().getDestination()) <= request.getDestinationproximity()) {
                 curr.getRides().removeFirst();
-                if (curr.getRides().size() <= request.getNumrides()
-                        && request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= curr.getRides().getFirst().getDatentime().getTime()) {
-                    trips.addLast(curr.toTrip());
+                if (curr.getRides().size() > 0 && curr.getRides().size() <= request.getNumrides()) {
+                    if (gma.estimate(request.getPickuplocation(), curr.getRides().getFirst().getPickuplocation()) <= request.getPickupproximity()) {
+                        if (request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= curr.getRides().getFirst().getDatentime().getTime()) {
+                            trips.addLast(curr.toTrip());
+                        }
+                    }
                 }
                 continue;
             }
@@ -805,11 +808,9 @@ public class RideOffer {
                     request.isSmoking(), request.isFoodndrink(),
                     request.isPets(), request.isAc());
             if (rs == null) {
-                response.setResult(9);
-                return response;
+                continue;
             }
             for (RideOffer r : rs) {
-//                System.out.println(new Gson().toJson(r));
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());
                 for (RideOffer a : curr.getRides()) {
@@ -943,18 +944,20 @@ public class RideOffer {
             if ((b == request.getTrip().getRides().size() - 1
                     && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
                     || (b < request.getTrip().getRides().size() - 1 && gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(subdestination)))) {
-                curr.getRides().removeFirst();
-                if (subarrival.getTime() < curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) continue;
-                // if the first ride of the original trip is also changed and if pick up location is within proximity
-                if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
-                        && request.getOriginaldatentime().getTime() + request.getDatentimerange() > curr.getRides().getFirst().getDatentime().getTime())
-                        || (a > 0)) {
-                    // check if number of rides exceeds
-                    if (curr.getRides().size() <= subnumrides) {
-                        trips.addLast(curr.toTrip());
+                // check if arrives before the next ride
+                if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
+                    // if the first ride of the original trip is also changed and if pick up location is within proximity
+                    if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
+                            && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
+                            || (a > 0)) {
+                        // check if number of rides exceeds
+                        if (curr.getRides().size() - 1 <= subnumrides && curr.getRides().size() > 1) {
+                            curr.getRides().removeFirst();
+                            trips.addLast(curr.toTrip());
+                        }
                     }
                 }
-                continue;
+
             }
 
             RideOffer lro = curr.getRides().getLast();

@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import java.util.Date;
 
 public class RideRequestSearchRequest {
-    private String userid;
+    private int userid;
     private String pickuplocation;
     private double pickupproximity;
     private String destination;
@@ -23,7 +23,7 @@ public class RideRequestSearchRequest {
 
     }
 
-    public RideRequestSearchRequest(String userid,
+    public RideRequestSearchRequest(int userid,
                                     String pickuplocation,
                                     double pickupproximity,
                                     String destination,
@@ -51,7 +51,7 @@ public class RideRequestSearchRequest {
         this.ac = ac;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
@@ -103,7 +103,7 @@ public class RideRequestSearchRequest {
         return ac;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
