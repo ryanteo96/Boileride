@@ -286,6 +286,7 @@ public class RideRequest {
 
     public RideAcceptRequestResponse acceptRideRequest(RideAcceptRequestRequest req)
     {
+        PointCalculator.chargeFailConfirmationFee(req.getUserid());
         RideAcceptRequestResponse response = new RideAcceptRequestResponse(-1);
         User user = SQL.selectUser(req.getUserid());
         if(user == null)
@@ -303,8 +304,9 @@ public class RideRequest {
 //                    if(DatabaseCommunicator.rideRequestBy(req.getRequestid()) != req.getUserid())
                     if(rideRequest.getRequestedby() != req.getUserid())
                     {
-                        if(rideRequest.getStatus() != 1)
+                        if(rideRequest.getStatus() == 0 )
                         {
+
                             if(user.getPoints() >= rideRequest.getPrice() )
                             {
                                 rideRequest.setStatus(1);
