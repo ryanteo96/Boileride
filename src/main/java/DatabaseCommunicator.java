@@ -1198,27 +1198,184 @@ public class DatabaseCommunicator {
     }
 
     public static int addRequestPickup(int requestid, int code){
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE ACCEPTEDRIDEREQUEST SET requestusercode = " + code + " WHERE requestid = " + requestid);
+
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
+
     }
 
     public static int addOfferPickup(int offerid, int code){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET offerusercode = " + code + " WHERE offerid = " + offerid);
+
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int addAcceptedReqPickup(int userid, int requestid, int code){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE ACCEPTEDRIDEREQUEST SET acceptedusercode = " + code + " WHERE requestid = " + requestid + " and userid = " + userid);
+
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int addJoinedOfferPickup(int userid, int offerid, int code){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET offerusercode = " + code + " WHERE offerid = " + offerid + " and userid = " + userid);
+
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static AcceptedRequest selectAcceptedRequest(int requestid){
-        return null;
+        AcceptedRequest acceptedRequest = null;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT a.*, r.requestedby, r.datentime, r.price, r.status " +
+                    "FROM ACCEPTEDRIDEREQUEST a, RIDEREQUEST r WHERE a.requestid = r.requestid and a.requestid = "+ requestid);
+
+            if (rs.next()) {
+                int userid = 0;
+                int requestusercode = 0;
+                int acceptedusercode = 0;
+                int requestuserstatus = 0;
+                int accepteduserstatus = 0;
+                int acceptedstatus = 0;
+                int requestedby = 0;
+                String datentimeStr = "";
+                int price = 0;
+                int status = 0;
+
+                userid = rs.getInt("userid");
+                requestusercode = rs.getInt("requestusercode");
+                acceptedusercode = rs.getInt("acceptedusercode");
+                requestuserstatus = rs.getInt("requestuserstatus");
+                accepteduserstatus = rs.getInt("accepteduserstatus");
+                acceptedstatus = rs.getInt("acceptedstatus");
+                requestedby = rs.getInt("requestedby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                acceptedRequest = new AcceptedRequest(userid, requestid, requestusercode, acceptedusercode, requestuserstatus, accepteduserstatus, acceptedstatus, requestedby, datentime, price, status);
+
+            }rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return acceptedRequest;
     }
 
     public static JoinedOffer selectJoinedOffer(int userid, int offerid){
-        return null;
+
+        JoinedOffer joinedOffer = null;
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT j.*, r.offeredby, r.datentime, r.price, r.status " +
+                    "FROM JOINEDRIDEOFFER j, RIDEOFFER r WHERE j.offerid = r.offerid and j.userid = " + userid + " and j.offerid = " + offerid);
+
+            if (rs.next()) {
+
+                int triporder = 0;
+                String joindateStr = "";
+                int passenger = 0;
+                int luggage = 0;
+                int offerusercode = 0;
+                int joinedusercode = 0;
+                int offeruserstatus = 0;
+                int joineduserstatus = 0;
+                int joinedstatus = 0;
+                int offeredby = 0;
+                String datentimeStr = "";
+                int price = 0;
+                int status = 0;
+
+                triporder = rs.getInt("triporder");
+                joindateStr = rs.getString("joindate");
+                passenger = rs.getInt("passenger");
+                luggage = rs.getInt("luggage");
+                offerusercode = rs.getInt("offerusercode");
+                joinedusercode = rs.getInt("joinedusercode");
+                offeruserstatus = rs.getInt("offeruserstatus");
+                joineduserstatus = rs.getInt("joineduserstatus");
+                joinedstatus = rs.getInt("joinedstatus");
+                offeredby = rs.getInt("offeredby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                Date joindate = null;
+                try {
+                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                joinedOffer = new JoinedOffer(userid, offerid, triporder, joindate, passenger, luggage, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, offeredby, datentime, price, status);
+
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return joinedOffer;
     }
 
     public static int updateRequestUserStatus(int requestid, int requestuserstatus){
@@ -1293,11 +1450,123 @@ public class DatabaseCommunicator {
 
     public static ArrayList<AcceptedRequest> selectCurrentAcceptedRequestList(int userid){
         ArrayList<AcceptedRequest> requestlist = new ArrayList<AcceptedRequest>();
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT a.*, r.requestedby, r.datentime, r.price, r.status " +
+                    "FROM ACCEPTEDRIDEREQUEST a, RIDEREQUEST r WHERE a.requestid = r.requestid and " +
+                    "r.status != 2 and a.acceptedstatus = 0 and a.userid = "+ userid);
+
+            while (rs.next()) {
+                int requestid = 0;
+                int requestusercode = 0;
+                int acceptedusercode = 0;
+                int requestuserstatus = 0;
+                int accepteduserstatus = 0;
+                int acceptedstatus = 0;
+                int requestedby = 0;
+                String datentimeStr = "";
+                int price = 0;
+                int status = 0;
+
+                requestid = rs.getInt("requestid");
+                requestusercode = rs.getInt("requestusercode");
+                acceptedusercode = rs.getInt("acceptedusercode");
+                requestuserstatus = rs.getInt("requestuserstatus");
+                accepteduserstatus = rs.getInt("accepteduserstatus");
+                acceptedstatus = rs.getInt("acceptedstatus");
+                requestedby = rs.getInt("requestedby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                AcceptedRequest acceptedRequest = new AcceptedRequest(userid, requestid, requestusercode, acceptedusercode, requestuserstatus, accepteduserstatus, acceptedstatus, requestedby, datentime, price, status);
+
+                requestlist.add(acceptedRequest);
+            }rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
         return requestlist;
     }
 
     public static ArrayList<JoinedOffer> selectCurrentJoinedOfferList(int userid){
         ArrayList<JoinedOffer> offerlist = new ArrayList<JoinedOffer>();
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT j.*, r.offeredby, r.datentime, r.price, r.status " +
+                    "FROM JOINEDRIDEOFFER j, RIDEOFFER r WHERE j.offerid = r.offerid and " +
+                    "r.status != 2 and j.joinedstatus = 0 and j.userid = "+ userid);
+
+            while (rs.next()) {
+
+                int offerid = 0;
+                int triporder = 0;
+                String joindateStr = "";
+                int passenger = 0;
+                int luggage = 0;
+                int offerusercode = 0;
+                int joinedusercode = 0;
+                int offeruserstatus = 0;
+                int joineduserstatus = 0;
+                int joinedstatus = 0;
+                int offeredby = 0;
+                String datentimeStr = "";
+                int price = 0;
+                int status = 0;
+
+                offerid = rs.getInt("offerid");
+                triporder = rs.getInt("triporder");
+                joindateStr = rs.getString("joindate");
+                passenger = rs.getInt("passenger");
+                luggage = rs.getInt("luggage");
+                offerusercode = rs.getInt("offerusercode");
+                joinedusercode = rs.getInt("joinedusercode");
+                offeruserstatus = rs.getInt("offeruserstatus");
+                joineduserstatus = rs.getInt("joineduserstatus");
+                joinedstatus = rs.getInt("joinedstatus");
+                offeredby = rs.getInt("offeredby");
+                datentimeStr = rs.getString("datentime");
+                price = rs.getInt("price");
+                status = rs.getInt("status");
+
+                Date joindate = null;
+                try {
+                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                JoinedOffer joinedOffer = new JoinedOffer(userid, offerid, triporder, joindate, passenger, luggage, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, offeredby, datentime, price, status);
+
+                offerlist.add(joinedOffer);
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return offerlist;
     }
 
@@ -1346,8 +1615,8 @@ public class DatabaseCommunicator {
                 price = rs.getInt("price");
                 status = rs.getInt("status");
                 phone = rs.getString("phone");
-                accepteduserstatus = rs.getInt("joineduserstatus");
-                acceptedstatus = rs.getInt("joinedstatus");
+                accepteduserstatus = rs.getInt("accepteduserstatus");
+                acceptedstatus = rs.getInt("acceptedstatus");
 
                 boolean smoke = false, food =false, pet = false, ac = false;
 
@@ -1494,18 +1763,58 @@ public class DatabaseCommunicator {
     }
 
     public static int updateRequestStatus(int requestid, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEREQUEST SET status = " + status + " WHERE requestid = " + requestid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int updateOfferStatus(int offerid, int userid, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEOFFER SET status = " + status + " WHERE offerid = " + offerid + " and offeredby = " + userid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int updateAcceptedStatus(int requestid, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE ACCEPTEDRIDEREQUEST SET acceptedstatus = " + status + " WHERE requestid = " + requestid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int updateJoinedStatus(int offerid, int userid, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDOFFER SET joinedstatus = " + status + " WHERE offerid = " + offerid + " and userid = " + userid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
