@@ -1286,41 +1286,31 @@ public class BoilerideServer {
 
     public static void main(String[] args) throws Exception{
 
-//        BoilerideServer server = new BoilerideServer();
+        BoilerideServer server = new BoilerideServer();
+
+        server.connect();
+
+//        conn = DriverManager.getConnection(DB_URL, USER, PASS);
 //
-//        server.connect();
-
-        conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-//        ArrayList<RideOffer> ret1 = DatabaseCommunicator.rideOfferFrom("West Lafayette", sdf.parse("2018-09-29 15:45:00"),
-//                1, 1, true, true, true, true);
-//        if (ret1.size() == 0) {
-//            System.out.println("no result");
-//        }
-//        for (RideOffer ro : ret1) {
-//            System.out.println(ro.toString());
-//        }
-//        ArrayList<RideRequest> ret2 = DatabaseCommunicator.rideRequestFromTo("Lafayette", "Chicago", sdf.parse("2018-09-29 15:45:00"),
-//                1, 1, true, true, true, true);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        
 
 //        RideRequestSearchRequest query1 = new RideRequestSearchRequest(123, "Hillenbrand Dining Court, 3rd Street, West Lafayette, IN 47906", 10.0, "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0,
 //                sdf.parse("2018-09-29 15:45:00"), 10000, 1, 1, true, true, true, true);
-        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "PMU, Grant Street, West Lafayette, IN", 0, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0,
-                sdf.parse("2018-10-28 03:57:00"), 10000, 10, 1, 1, true, true, true, true);
-        try {
+//        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "PMU, Grant Street, West Lafayette, IN", 0, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0,
+//                sdf.parse("2018-10-28 03:57:00"), 10000, 10, 1, 1, true, true, true, true);
+//        try {
 //            RideRequestSearchResponse r1 = RideRequest.search(query1);
-            RideOfferSearchResponse r2 = RideOffer.search(query2);
+//            RideOfferSearchResponse r2 = RideOffer.search(query2);
 //            System.out.println(new Gson().toJson(r1));
-            System.out.println(new Gson().toJson(r2));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//            System.out.println(new Gson().toJson(r2));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
 
