@@ -22,6 +22,7 @@ $.post(
 		switch (res.result) {
 			case 0: {
 				$("html").show();
+				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 			case 2: {
@@ -30,6 +31,7 @@ $.post(
 			}
 			default: {
 				$("html").show();
+				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 		}

@@ -15,16 +15,9 @@ $.post(
 	function(res) {
 		switch (res.result) {
 			case 0: {
-				console.log(res.nickname);
-				console.log("SO WHAT IS INSIDE?" + res);
+				console.log("nickname: " + res.nickname);
 				$("html").show();
-				localStorage.key = "nickname";
-				localStorage.setItem(
-					"nickname",
-					JSON.stringify({
-						nickname: res.nickname,
-					}),
-				);
+				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 			case 2: {
@@ -33,6 +26,7 @@ $.post(
 			}
 			default: {
 				$("html").show();
+				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 		}

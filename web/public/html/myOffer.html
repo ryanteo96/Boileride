@@ -61,16 +61,19 @@
                     <a class="nav-link" href="/myPoints">My Points</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/settings">Settings</a>
+                    <a class="nav-link disabled" id="nickname" style="color:white">User's nickname</a>
                 </li>
+
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/settings">Settings</a>
+                </li>
                 <li class="nav-item">
                     <a id="signOutBtn" class="nav-link" href="">Sign Out</a>
                 </li>
             </ul>
         </div>
-
     </nav>
 
     <div id="myRideOfferList" class="myRideOfferList">
@@ -89,71 +92,105 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-left col">Pick Up Location</h5>
-                            <h5 class="mb-1 text-right col">Destination</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="pickuplocationDetails" class="mb-1 text-left col-5 text-primary"></h6>
-                            <i class="fas fa-arrow-right text-center col-2"></i>
-                            <h6 id="destinationDetails" class="mb-1 text-right col-5 text-primary"></h6>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Number of Seat(s) Available</h5>
-                            <h5 class="mb-1 text-center col">Number of Luggage(s)</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="seatsDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="luggageDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Smoking Allowed</h5>
-                            <h5 class="mb-1 text-center col">Food and Drinks Allowed</h5>
-                            <h5 class="mb-1 text-center col">Pets Allowed</h5>
-                            <h5 class="mb-1 text-center col">A.C. Available</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="smokingDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="foodndrinkDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="petsDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="acDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
+                <div class="modal-body" id="test">
+                    <!--START CAROUSEL-->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-wrap="false" data-interval="false"
+                        data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        </ol>
 
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Travel Time</h5>
-                            <h5 class="mb-1 text-center col">Offer by</h5>
-                            <h5 class="mb-1 text-center col">Price</h5>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h6 id="travelingtimeDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="offeredbyDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="priceDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="cancelOfferBtn" type="button" class="btn btn-secondary" data-dismiss="modal" href="/myRides/myOffer/cancel">Cancel
-                            Ride</button>
-                        <button id="editOfferBtn" type="button" class="btn btn-primary" href="/myRides/myOffer/edit">Edit
-                            Ride</button>
-                        <!-- getPickUpBtn: href="/myRides/myOffer/pickup" later add to a new button -->
-                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#showPassengers"
-                            aria-expanded="false" aria-controls="showPassengers">
-                            Show all passengers
-                        </button>
+                        <!--INSIDE OF CAROUSEL-->
+                        <div class="carousel-inner">
+                            <!--carousel item 1-->
+                            <div id="firstslide" class="carousel-item active">
+                                <!--START CONTENT OF RIDE DETAILS-->
+                                <div class="row">
+                                    <div class="mb-2 d-flex w-100">
+                                        <h5 class="mb-1 text-left col">Pick Up Location</h5>
+                                        <h5 class="mb-1 text-right col">Destination</h5>
+                                    </div>
+                                    <div class="mb-2 pb-5 d-flex w-100">
+                                        <h6 id="pickuplocationDetails" class="mb-1 text-left col-5 text-primary"></h6>
+                                        <i class="fas fa-arrow-right text-center col-2"></i>
+                                        <h6 id="destinationDetails" class="mb-1 text-right col-5 text-primary"></h6>
+                                    </div>
+                                    <div class="mb-2 d-flex w-100">
+                                        <h5 class="mb-1 text-center col">Number of Seat(s) Available</h5>
+                                        <h5 class="mb-1 text-center col">Number of Luggage(s)</h5>
+                                    </div>
+                                    <div class="mb-2 pb-5 d-flex w-100">
+                                        <h6 id="seatsDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="luggageDetails" class="mb-1 text-center col text-primary"></h6>
+                                    </div>
+                                    <div class="mb-2 d-flex w-100">
+                                        <h5 class="mb-1 text-center col">Smoking Allowed</h5>
+                                        <h5 class="mb-1 text-center col">Food and Drinks Allowed</h5>
+                                        <h5 class="mb-1 text-center col">Pets Allowed</h5>
+                                        <h5 class="mb-1 text-center col">A.C. Available</h5>
+                                    </div>
+                                    <div class="mb-2 pb-5 d-flex w-100">
+                                        <h6 id="smokingDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="foodndrinkDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="petsDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="acDetails" class="mb-1 text-center col text-primary"></h6>
+                                    </div>
 
-                    </div>
-                    <div class="collapse" id="showPassengers">
-                        <div class="card card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson
-                            ad squid. Nihil anim
-                            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                                    <div class="mb-2 d-flex w-100">
+                                        <h5 class="mb-1 text-center col">Travel Time</h5>
+                                        <h5 class="mb-1 text-center col">Offer by</h5>
+                                        <h5 class="mb-1 text-center col">Price</h5>
+                                    </div>
+                                    <div class="mb-2 d-flex w-100">
+                                        <h6 id="travelingtimeDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="offeredbyDetails" class="mb-1 text-center col text-primary"></h6>
+                                        <h6 id="priceDetails" class="mb-1 text-center col text-primary"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END CONTENT OF RIDE DETAILS-->
+
+                            <!--carousel item 2-->
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <h5 id="passengersListTitle" class="p-3 m-0">Passengers</h5>
+                                    <div class="mb-2 d-flex w-100">
+                                        <div id="passengersList" class="passengersList mb-2 d-flex w-100">
+                                            <ul class="list list-group list-group-flush"></ul>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <!--Control next and prev-->
+                        <a class="carousel-control-prev" style="color:black" href="#carouselExampleIndicators" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" style="color:black;" href="#carouselExampleIndicators" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div> <!-- END CAROUSEL-->
+                </div>
+
+                <div class="modal-footer">
+                    <button id="cancelOfferBtn" type="button" class="btn btn-secondary" data-dismiss="modal" href="/myRides/myOffer/cancel">Cancel
+                        Ride</button>
+                    <button id="editOfferBtn" type="button" class="btn btn-primary" href="/myRides/myOffer/edit">Edit
+                        Ride</button>
+                    <!-- getPickUpBtn: href="/myRides/myOffer/pickup" later add to a new button -->
+                    <!--END CONTENT-->
+
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
