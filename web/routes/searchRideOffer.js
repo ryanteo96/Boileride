@@ -43,12 +43,6 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		var body = {
-			result: 0,
-		};
-
-		res.send(body);
-
 		if (response) {
 			res.send(response.body);
 		}

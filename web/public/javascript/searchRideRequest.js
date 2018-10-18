@@ -150,8 +150,61 @@ $(document).ready(function() {
 						alert("Invalid datentime range.");
 						break;
 					}
-					case 8: {
+					case 9: {
 						alert("No results found.");
+						break;
+					}
+				}
+			},
+		);
+	});
+
+	$("#acceptRideRequestBtn").click(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		var request = localStorage.getItem("currentRequest");
+		var req = JSON.parse(request);
+
+		console.log(obj.userid);
+
+		$.post(
+			"/searchRideRequest/accept",
+			{
+				userid: obj.userid,
+				requestid: req.requestid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						// window.location.href = "/myRides/myOffer/";
+						alert("Success");
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Ride does not exist.");
+						break;
+					}
+					case 4: {
+						alert("Cannot accept your own request");
+						break;
+					}
+					case 5: {
+						alert("Ride already accepted.");
+						break;
+					}
+					case 6: {
+						alert("Not enough points.");
 						break;
 					}
 				}
@@ -178,15 +231,17 @@ function generateSearchRequestList(searchlist) {
 			"price",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2" ondblclick=getItem(this)>' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
+			'<div class="card" id="request">' +
+			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
-			'<div class="mb-2 d-flex w-100">' +
+			'<div class="row mb-2 d-flex w-100">' +
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
 			"</div>" +
-			'<div class="d-flex w-100">' +
+			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values passengers p-2"></small></i>' +
 			'<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggage p-2"></small></i>' +
 			'<i class="icons fas fa-smoking p-2 col text-center"><small class="values smoking p-2"></small></i>' +
@@ -240,6 +295,12 @@ function generateSearchRequestList(searchlist) {
 
 function getItem(item) {
 	var requestid = $(item).data("requestid");
+
+	localStorage.key = "currentRequest";
+	localStorage.setItem(
+		"currentRequest",
+		JSON.stringify(requestlist.get("requestid", requestid)[0]._values),
+	);
 
 	$("#rideRequestModal").modal("show");
 

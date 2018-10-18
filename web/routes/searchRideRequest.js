@@ -48,4 +48,31 @@ router.post("/", function(req, res) {
 		return;
 	});
 });
+
+router.post("/accept", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/accept/request",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
 module.exports = router;

@@ -46,7 +46,7 @@
 	margin: 0px;
 }
 
-.list > li:hover {
+.list > li > .card:hover {
 	cursor: pointer;
 	filter: brightness(85%);
 }
