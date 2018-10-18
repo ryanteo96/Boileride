@@ -106,6 +106,9 @@ $(document).ready(function() {
 							$("#offer" + i).css("background", "#F07B7B");
 						}
 					});
+
+					$("#firstslide").css("overflow-y", "hidden"); //hide first slide scroll
+
 					// generatePassengersList(res.offerlist);
 					break;
 				}
