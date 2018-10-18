@@ -303,8 +303,9 @@ public class RideRequest {
 //                    if(DatabaseCommunicator.rideRequestBy(req.getRequestid()) != req.getUserid())
                     if(rideRequest.getRequestedby() != req.getUserid())
                     {
-                        if(rideRequest.getStatus() != 1)
+                        if(rideRequest.getStatus() == 0 )
                         {
+
                             if(user.getPoints() >= rideRequest.getPrice() )
                             {
                                 rideRequest.setStatus(1);
