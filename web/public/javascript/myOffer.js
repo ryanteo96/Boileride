@@ -34,10 +34,55 @@ $.post(
 	},
 );
 
+/*============================== TEST DATA START HERE!!!! /*==============================*/
+let test = [
+	{
+		offerid: 2,
+		datentime: 2020 / 8 / 10,
+		pickuplocation: "my house",
+		destination: "your house",
+		smoking: "true",
+		ac: "true",
+		foodndrink: "false",
+		pets: "true",
+		travelingtime: "100000000",
+		offeredbyname: "Shinigami",
+		seatleft: 5,
+		luggageleft: 2,
+		price: 9000,
+		status: "Ongoing",
+		joinedby: [4, 5, 6],
+		requestuserstatus: 1,
+		phone: [123456789, 456789123, 654987321],
+		joinedbyname: ["a", "b", "c"],
+	},
+	{
+		offerid: 2,
+		datentime: 9999 / 8 / 10,
+		pickuplocation: "your house",
+		destination: "my house",
+		smoking: "true",
+		ac: "true",
+		foodndrink: "false",
+		pets: "true",
+		travelingtime: "57564651",
+		offeredbyname: "shingekinokyojin",
+		seatleft: 5,
+		luggageleft: 2,
+		price: 98987987,
+		status: "Cancelled",
+		joinedby: [1, 2, 3],
+		requestuserstatus: 1,
+		phone: [987654321, 159874632, 34785169],
+		joinedbyname: ["c", "d", "e"],
+	},
+];
+/*============================== TEST DATA END HERE!!!! /*==============================*/
+
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-
+	generateViewOfferList(test);
 	console.log(obj.userid);
 
 	$.post(
@@ -49,7 +94,7 @@ $(document).ready(function() {
 			switch (res.result) {
 				case 0: {
 					console.log(res.offerlist);
-					generateViewOfferList(res.offerlist);
+					// generateViewOfferList(res.offerlist);
 					$.each(res.offerlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
@@ -61,6 +106,7 @@ $(document).ready(function() {
 							$("#offer" + i).css("background", "#F07B7B");
 						}
 					});
+					// generatePassengersList(res.offerlist);
 					break;
 				}
 				case 1: {
@@ -178,6 +224,64 @@ $(document).ready(function() {
 	});
 });
 
+// function generatePassengersList(offerList) {
+// 	var options = {
+// 		valueNames: [
+// 			{ data: ["joinedby"] },
+// 			"requestuserstatus",
+// 			"phone",
+// 			"joinedbyname",
+// 		],
+// 		item:
+// 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
+// 			'<div class="card" id="joined">' +
+// 			'<div class="card-body">' +
+// 			'<div class="row" style="font-size:20px">' +
+// 			'<div class="row mb-2 d-flex w-100">' +
+// 			'<h5 class="mb-1 joinedby col text-left"></h5>' +
+// 			'<h5 class="mb-1 phone col text-right"></h5>' +
+// 			'<small id="requestuserstatus" class="requestuserstatus text-right"></small>' +
+// 			'<button id="sendCode">test</button>' +
+// 			"</div>" +
+// 			"</div>" +
+// 			"</div>" +
+// 			"</li>",
+// 	};
+
+// 	passengersList = new List("passengersList", options);
+
+// 	//this if for the big list
+// 	for (var i = 0; i < offerList.length; i++) {
+// 		if (offerList[i].offeruserstatus == 0) {
+// 			offerList[i].offeruserstatus = "Not confirmed";
+// 		} else {
+// 			offerList[i].offeruserstatus = "Confirmed";
+// 		}
+// 		console.log(offerList[i].joinedbyname);
+// 		//if its null then show no passenger
+// 		if (offerList[i].joinedbyname[0] == null) {
+// 			console.log("It comes in if!");
+// 			$("#passengersListTitle").text("No one joined yet.");
+// 		} else {
+// 			console.log("It comes in else!");
+// 			//check if the offer is confirmed
+// 			passengersList.add({
+// 				requestuserstatus: offerList[i].requestuserstatus,
+// 			});
+// 			//loop for joinedby, this is for the small list inside the modal showing passengers that joined
+
+// 			for (var j = 0; j < offerList[i].joinedby.length; j++) {
+// 				passengersList.add({
+// 					phone: offerList[i].phone[j],
+// 					joinedby: offerList[i].joinedby[j],
+// 					joinedbyname: offerList[i].joinedbyname[j],
+// 				});
+// 			}
+// 			$("#joined").attr("id", "joined" + i);
+// 		}
+// 	}
+// }
+
 function generateViewOfferList(offerList) {
 	var options = {
 		valueNames: [
@@ -195,7 +299,6 @@ function generateViewOfferList(offerList) {
 			"luggageleft",
 			"price",
 			"status",
-			"joinedby",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
@@ -224,7 +327,33 @@ function generateViewOfferList(offerList) {
 			"</li>",
 	};
 
+	//to create the list for passengers
+	var passengers = {
+		valueNames: [
+			{ data: ["offerid"] },
+			"requestuserstatus",
+			"phone",
+			"joinedbyname",
+			"joinedby",
+		],
+		item:
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
+			'<div class="card" style="width:600px" id="joined">' +
+			'<div class="card-body ">' +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="row mb-2 d-flex w-100">' +
+			'<h5 class="mb-1 joinedby col text-left"></h5>' +
+			'<h5 class="mb-1 phone col text-right"></h5>' +
+			'<small class="requestuserstatus text-right"></small>' +
+			'<button id="sendCode">test</button>' +
+			"</div>" +
+			"</div>" +
+			"</div>" +
+			"</li>",
+	};
+
 	myRideOfferList = new List("myRideOfferList", options);
+	passengersList = new List("passengersList", passengers);
 
 	for (var i = 0; i < offerList.length; i++) {
 		if (offerList[i].smoking == true) {
@@ -264,7 +393,38 @@ function generateViewOfferList(offerList) {
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
 			status: offerList[i].status,
+			joinedby: [1, 2, 3],
+			requestuserstatus: 1,
+			phone: [7658447809, 7654044609, 7654044695],
+			joinedbyname: ["a", "b", "c"],
 		});
+
+		//passengers list inside modal
+		if (offerList[i].offeruserstatus == 0) {
+			offerList[i].offeruserstatus = "Not confirmed";
+		} else {
+			offerList[i].offeruserstatus = "Confirmed";
+		}
+		console.log(offerList[i].joinedbyname);
+		//if its null then show no passenger
+		if (offerList[i].joinedbyname[0] == null) {
+			console.log("It comes in if!");
+			$("#passengersListTitle").text("No one joined yet.");
+		} else {
+			console.log("It comes in else!");
+			//check if the offer is confirmed
+			passengersList.add({
+				requestuserstatus: offerList[i].requestuserstatus,
+			});
+			//loop for joinedby, this is for the small list inside the modal showing passengers that joined
+			for (var j = 0; j < offerList[i].joinedby.length; j++) {
+				passengersList.add({
+					phone: offerList[i].phone[j],
+					joinedby: offerList[i].joinedby[j],
+					joinedbyname: offerList[i].joinedbyname[j],
+				});
+			}
+		}
 
 		myRideOfferList.sort("datentime", { order: "asc" });
 		myRideOfferList.sort("status", { order: "desc" });
