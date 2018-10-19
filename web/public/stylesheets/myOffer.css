@@ -30,7 +30,7 @@
 
 .carousel-item {
 	height: 470px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .carousel-indicators {
@@ -58,4 +58,12 @@
 
 .list-group-item {
 	background: transparent;
+}
+
+#controlnext:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+#controlprev:hover {
+	background: rgba(0, 0, 0, 0.1);
 }
