@@ -203,7 +203,7 @@ public class PointCalculator {
                     else if (joinedOffer.getJoinedstatus() == 0 && joinedOffer.getJoinedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, joinedOffer.getPrice()*-1);
                         recordTransaction(userid, userid, today, joinedOffer.getPrice(), "Fail joined ride offer pickup charge");
-                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + joinedOffer.getPrice() + " reserve: " + joinedOffer.getPrice()*-1);
+                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + 0 + " reserve: " + joinedOffer.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateJoinedStatus(joinedOffer.offerid, userid, 1);
                 }

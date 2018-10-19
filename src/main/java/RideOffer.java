@@ -875,6 +875,7 @@ public class RideOffer {
                 }
                 else {
                     result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                    DatabaseCommunicator.updateOfferStatus(request.getOfferid(), request.getUserid(), 3);
                 }
                 //DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),4);
             }
