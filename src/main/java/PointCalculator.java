@@ -33,6 +33,20 @@ public class PointCalculator {
         return result;
     }
 
+    //when driver confirm offer pickup after first passenger
+    public static int getSecondPayment(int userid, int payerid, int price, String msg){
+        // reduce driver reserve
+        // increase driver points by price*2 (price + reserve)
+        int result = 0;
+        result = DatabaseCommunicator.updatePointReserve(userid, price, 0);
+        System.out.println("get payment: " + userid + " points: " + price + " reserve: " + 0);
+        if (result == 0){
+            Date now = new Date();
+            recordTransaction(userid, payerid, now, price, msg);
+        }
+        return result;
+    }
+
     //when user post request, post offer, accept request, join offer
     public static int reservePoints(int userid, int price){
         // reduce points by price
