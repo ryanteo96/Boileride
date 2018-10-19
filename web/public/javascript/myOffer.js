@@ -80,7 +80,7 @@ let test = [
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	// generateViewOfferList(test);
+	generateViewOfferList(test);
 	console.log(obj.userid);
 
 	$.post(
@@ -92,7 +92,7 @@ $(document).ready(function() {
 			switch (res.result) {
 				case 0: {
 					// console.log(res.offerlist);
-					generateViewOfferList(res.offerlist);
+					// generateViewOfferList(res.offerlist);
 					$.each(res.offerlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
@@ -224,7 +224,7 @@ $(document).ready(function() {
 });
 
 function generateViewOfferList(offerList) {
-	$("#testmodal").modal("hide");
+	$("#confirmCodeModal").modal("hide");
 	var options = {
 		valueNames: [
 			{ data: ["offerid"] },
@@ -463,5 +463,5 @@ function getItem(item) {
 	}
 }
 function getPassengerCode() {
-	$("#testmodal").modal("show");
+	$("#confirmCodeModal").modal("show");
 }
