@@ -15,7 +15,6 @@ $(document).ready(function() {
 
 	$("#signUpForm").submit(function(data) {
 		data.preventDefault();
-
 		$.post(
 			"/signUp",
 			{
@@ -35,6 +34,11 @@ $(document).ready(function() {
 							}),
 						);
 
+						$("#loading").modal({
+							backdrop: "static", //remove ability to close modal with click
+							keyboard: false, //remove option to close with keyboard
+							show: true, // display loader
+						});
 						window.location.href = "/verifyEmail";
 						break;
 					}
