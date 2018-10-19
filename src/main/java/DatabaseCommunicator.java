@@ -1981,7 +1981,7 @@ public class DatabaseCommunicator {
     {
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = " + userid + " AND requestid = " + requestid);
+            stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = "+userid+" AND requestid = " +requestid);
 
             stmt.close();
         }
@@ -1994,7 +1994,7 @@ public class DatabaseCommunicator {
     public static int removeJoinedOffer(int userid, int offerid){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = " + userid + " AND offerid = " + offerid);
+            stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = "+userid+" AND offerid = " + offerid);
 
             stmt.close();
         }
@@ -2015,8 +2015,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'ACCEPTEDRIDEREQUEST' ('userid', 'requestid', 'requestusercode', 'acceptedusercode', 'accepteduserstatus', 'requestuserstatus', 'acceptedstatus') " +
-                        "VALUES ("+userid +", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
+                stmt.executeUpdate("INSERT INTO ACCEPTEDRIDEREQUEST (userid, requestid, requestusercode, acceptedusercode, accepteduserstatus, requestuserstatus, acceptedstatus) " +
+                        "VALUES ("+userid+", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
             }
 
             rs.close();
@@ -2039,8 +2039,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'JOINEDRIDEOFFER' ('userid', 'offerid', 'passenger', 'luggage', 'triporder', 'offerusercode', 'joinedusercode', 'offeruserstatus', 'joineduserstatus', 'joinedstatus', 'joindate') " +
-                        "VALUES ("+userid +", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+                stmt.executeUpdate("INSERT INTO JOINEDRIDEOFFER (userid, offerid, passenger, luggage, triporder, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, joindate) " +
+                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
             }
 
             rs.close();
