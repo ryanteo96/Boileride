@@ -17,7 +17,7 @@ $.post(
 			case 0: {
 				console.log("nickname: " + res.nickname);
 				$("html").show();
-				$("#nickname").text("Hello, " + res.nickname);
+				$("#nickname").text("Hello, " + res.nickname + "!");
 				break;
 			}
 			case 2: {

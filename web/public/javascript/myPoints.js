@@ -39,6 +39,7 @@ function generateTransactionList(transactionlist) {
 			"fromuserid",
 			"fromusername",
 			"datentime",
+			"datentimetext",
 			"amount",
 			"description",
 		],
@@ -52,7 +53,7 @@ function generateTransactionList(transactionlist) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 tousername col text-right"></h5>' +
 			'<small class="amount col-2 text-right"></small>' +
-			'<small class="datentime col-2 text-right"></small>' +
+			'<small class="datentimetext col-2 text-right"></small>' +
 			"</div>" +
 			"</li>",
 	};
@@ -60,6 +61,10 @@ function generateTransactionList(transactionlist) {
 	transactionList = new List("transactionList", options);
 
 	for (var i = 0; i < transactionlist.length; i++) {
+		var time = moment.duration("04:00:00");
+		var datentime = moment(transactionlist[i].datentime);
+		datentime.subtract(time);
+
 		transactionList.add({
 			transactionid: transactionlist[i].transactionid,
 			touserid: transactionlist[i].touserid,
@@ -67,6 +72,7 @@ function generateTransactionList(transactionlist) {
 			fromuserid: transactionlist[i].fromuserid,
 			fromusername: transactionlist[i].fromusername,
 			datentime: transactionlist[i].datentime,
+			datentimetext: datentime.format("hh:mm A MMM DD, YYYY"),
 			amount: transactionlist[i].amount,
 			description: transactionlist[i].description,
 		});
@@ -92,22 +98,6 @@ function getItem(item) {
 		transactionList.get("transactionid", transactionid)[0]._values
 			.description,
 	);
-
-	// $("#destinationDetails").html(
-	// 	myRideOfferList.get("offerid", offerid)[0]._values.destination,
-	// );
-
-	// $("#seatsDetails").html(
-	// 	myRideOfferList.get("offerid", offerid)[0]._values.seatleft,
-	// );
-
-	// $("#luggageDetails").html(
-	// 	myRideOfferList.get("offerid", offerid)[0]._values.luggageleft,
-	// );
-
-	// $("#numridesDetails").html(
-	// 	myRideOfferList.get("offerid", offerid)[0]._values.numrides,
-	// );
 }
 
 $(document).ready(function() {

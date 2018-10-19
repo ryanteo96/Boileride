@@ -43,7 +43,7 @@ let test = [
 		ac: "true",
 		foodndrink: "false",
 		pets: "true",
-		travelingtime: "100000000",
+		travelingtime: 10000,
 		offeredbyname: "Shinigami",
 		seatleft: 5,
 		luggageleft: 2,
@@ -63,7 +63,7 @@ let test = [
 		ac: "true",
 		foodndrink: "false",
 		pets: "true",
-		travelingtime: "57564651",
+		travelingtime: 57564,
 		offeredbyname: "shingekinokyojin",
 		seatleft: 5,
 		luggageleft: 2,
@@ -229,6 +229,7 @@ function generateViewOfferList(offerList) {
 		valueNames: [
 			{ data: ["offerid"] },
 			"datentime",
+			"datentimetext",
 			"pickuplocation",
 			"destination",
 			"smoking",
@@ -252,7 +253,7 @@ function generateViewOfferList(offerList) {
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
-			'<small class="datentime col-2 text-right"></small>' +
+			'<small class="datentimetext col-2 text-right"></small>' +
 			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
@@ -295,16 +296,25 @@ function generateViewOfferList(offerList) {
 			offerList[i].status = "Cancelled";
 		}
 
+		travelingtime = moment
+			.duration(offerList[i].travelingtime, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(offerList[i].datentime);
+		datentime.subtract(time);
+
 		myRideOfferList.add({
 			offerid: offerList[i].offerid,
 			pickuplocation: offerList[i].pickuplocation,
 			destination: offerList[i].destination,
 			datentime: offerList[i].datentime,
+			datentimetext: datentime.format("hh:mm A MMM DD, YYYY"),
 			smoking: offerList[i].smoking,
 			ac: offerList[i].ac,
 			foodndrink: offerList[i].foodndrink,
 			pets: offerList[i].pets,
-			travelingtime: offerList[i].travelingtime,
+			travelingtime: travelingtime,
 			offeredbyname: offerList[i].offeredbyname,
 			seatleft: offerList[i].seatleft,
 			luggageleft: offerList[i].luggageleft,

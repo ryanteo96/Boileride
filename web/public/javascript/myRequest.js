@@ -198,6 +198,7 @@ function generateRequestList(requestList) {
 			{ data: ["requestid"] },
 			"requestedbyname",
 			"datentime",
+			"datentimetext",
 			"pickuplocation",
 			"destination",
 			"passengers",
@@ -219,7 +220,7 @@ function generateRequestList(requestList) {
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
-			'<small class="datentime col-2 text-right"></small>' +
+			'<small class="datentimetext col-2 text-right"></small>' +
 			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
@@ -262,18 +263,27 @@ function generateRequestList(requestList) {
 			requestList[i].status = "Cancelled";
 		}
 
+		travelingtime = moment
+			.duration(requestList[i].travelingtime, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(requestList[i].datentime);
+		datentime.subtract(time);
+
 		myRideRequestList.add({
 			requestid: requestList[i].requestid,
 			pickuplocation: requestList[i].pickuplocation,
 			destination: requestList[i].destination,
 			datentime: requestList[i].datentime,
+			datentimetext: datentime.format("hh:mm A MMM DD, YYYY"),
 			passengers: requestList[i].passengers,
 			smoking: requestList[i].smoking,
 			ac: requestList[i].ac,
 			foodndrink: requestList[i].foodndrink,
 			pets: requestList[i].pets,
 			luggage: requestList[i].luggage,
-			travelingtime: requestList[i].travelingtime,
+			travelingtime: travelingtime,
 			requestedbyname: requestList[i].requestedbyname,
 			price: requestList[i].price,
 			status: requestList[i].status,
