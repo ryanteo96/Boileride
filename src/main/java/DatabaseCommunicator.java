@@ -1959,7 +1959,26 @@ public class DatabaseCommunicator {
     }
 
     public static int[] selectUsersFromOfferList(int offerid){
-        int[] userid = {};
+        int[] invalid = {};
+        ArrayList<Integer> list=new ArrayList<>();
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT userid FROM JOINEDRIDEOFFER WHERE offerid = " + offerid);
+
+            while(rs.next()) {
+                list.add(rs.getInt("userid"));
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return invalid;
+        }
+        int[] userid = new int[list.size()];
+        for(int i = 0; i < list.size(); i++) {
+            userid[i] = list.get(i);
+        }
         return userid;
     }
 
@@ -1979,9 +1998,10 @@ public class DatabaseCommunicator {
 
     public static int removeAcceptedRequest(int userid, int requestid)
     {
+        int deleted = -1;
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = " + userid + " AND requestid = " + requestid);
+            deleted = stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = "+userid+" AND requestid = " +requestid);
 
             stmt.close();
         }
@@ -1989,17 +2009,24 @@ public class DatabaseCommunicator {
             e.printStackTrace();
             return 99;
         }
+        if(deleted == 0) {
+            return 99;
+        }
         return 0;
     }
     public static int removeJoinedOffer(int userid, int offerid){
+        int deleted = -1;
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = " + userid + " AND offerid = " + offerid);
+            deleted = stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = "+userid+" AND offerid = " + offerid);
 
             stmt.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
+            return 99;
+        }
+        if(deleted == 0) {
             return 99;
         }
         return 0;
@@ -2015,8 +2042,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'ACCEPTEDRIDEREQUEST' ('userid', 'requestid', 'requestusercode', 'acceptedusercode', 'accepteduserstatus', 'requestuserstatus', 'acceptedstatus') " +
-                        "VALUES ("+userid +", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
+                stmt.executeUpdate("INSERT INTO ACCEPTEDRIDEREQUEST (userid, requestid, requestusercode, acceptedusercode, accepteduserstatus, requestuserstatus, acceptedstatus) " +
+                        "VALUES ("+userid+", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
             }
 
             rs.close();
@@ -2039,8 +2066,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'JOINEDRIDEOFFER' ('userid', 'offerid', 'passenger', 'luggage', 'triporder', 'offerusercode', 'joinedusercode', 'offeruserstatus', 'joineduserstatus', 'joinedstatus', 'joindate') " +
-                        "VALUES ("+userid +", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+                stmt.executeUpdate("INSERT INTO JOINEDRIDEOFFER (userid, offerid, passenger, luggage, triporder, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, joindate) " +
+                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
             }
 
             rs.close();
