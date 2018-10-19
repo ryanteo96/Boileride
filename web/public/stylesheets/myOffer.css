@@ -45,13 +45,41 @@
 	display: block;
 }
 
-.modal-body {
+#generalListModal {
 	height: 500px;
 	background: linear-gradient(
 		135deg,
 		rgba(224, 242, 175, 1) 0%,
 		rgba(20, 250, 216, 1) 50%,
 		rgba(207, 184, 242, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f2af', endColorstr='#cfb8f2', GradientType=1 );
+}
+
+#confirmCodeContent {
+	top: 100px;
+}
+
+#confirmCodeModalBody {
+	background: white;
+}
+
+#confirmCodeModalHeader {
+	background: linear-gradient(
+		135deg,
+		rgb(0, 0, 0) 0%,
+		rgb(236, 192, 48) 70%,
+		rgb(233, 248, 19) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f2af', endColorstr='#cfb8f2', GradientType=1 );
+}
+
+#confirmCodeModalFooter {
+	background: linear-gradient(
+		135deg,
+		rgb(233, 248, 19) 0%,
+		rgb(236, 192, 48) 70%,
+		rgb(0, 0, 0) 100%
 	);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f2af', endColorstr='#cfb8f2', GradientType=1 );
 }
