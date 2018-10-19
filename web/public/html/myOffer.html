@@ -89,7 +89,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="test">
+                <div class="modal-body" id="generalListModal">
                     <!--START CAROUSEL-->
                     <div id="carouselExampleIndicators" class="carousel slide" data-wrap="false" data-interval="false"
                         data-ride="carousel">
@@ -193,21 +193,30 @@
     </div>
 
     <!-- Testing modal -->
-    <div id="testmodal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="confirmCodeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+            <div class="modal-content" id="confirmCodeContent">
+                <div class="modal-header" id="confirmCodeModalHeader">
+                    <h5 class="modal-title" style="color:white">Enter the pick up code</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
+                <div class="modal-body" id="confirmCodeModalBody">
+                    <h6 style="color:red;">Show this code to USER</h6>
+                    <h2 id="headerCode"> NO RESULT </h2>
+                    <h6>Please enter the pickup code you obtained from the passenger.</h6>
+                    <form id="pickUpForm" class="form-horizontal" role="form" method="post">
+                        <!-- input for pickupcode -->
+                        <div class="form-group" style="margin-top:10px">
+                            <input id="verifyPickupCode" type="text" class="form-control" name="code" placeholder="Enter your code here"
+                                required>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="modal-footer" id="confirmCodeModalFooter">
+                    <button id="verifyPickupBtn" class="btn btn-success float-right" type="submit">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
