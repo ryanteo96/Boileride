@@ -943,23 +943,22 @@ public class RideOffer {
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
             // check if sub destination is arrived and within proximity
-            if ((b == request.getTrip().getRides().size() - 1
-                    && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
+            if ((b == request.getTrip().getRides().size() - 1 && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
                     || (b < request.getTrip().getRides().size() - 1 && gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(subdestination)))) {
-                // check if arrives before the next ride
-                if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
-                    // if the first ride of the original trip is also changed and if pick up location is within proximity
-                    if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
-                            && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
-                            || (a > 0)) {
-                        // check if number of rides exceeds
-                        if (curr.getRides().size() - 1 <= subnumrides && curr.getRides().size() > 1) {
-                            curr.getRides().removeFirst();
+                curr.getRides().removeFirst();
+                // check if number of rides exceeds
+                if (curr.getRides().size() <= subnumrides && curr.getRides().size() > 0) {
+                    // check if arrives before the next ride
+                    if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
+                        // if the first ride of the original trip is also changed and if pick up location is within proximity
+                        if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
+                                && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
+                                || (a > 0)) {
                             trips.addLast(curr.toTrip());
                         }
                     }
                 }
-
+                continue;
             }
 
             RideOffer lro = curr.getRides().getLast();
@@ -972,7 +971,6 @@ public class RideOffer {
                 continue;
             }
             for (RideOffer r : rs) {
-//                System.out.println(new Gson().toJson(r));
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());
                 for (RideOffer tro : curr.getRides()) {
