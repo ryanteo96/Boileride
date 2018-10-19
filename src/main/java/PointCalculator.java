@@ -168,7 +168,7 @@ public class PointCalculator {
                     else if (acceptedRequest.getAcceptedstatus() == 0 && acceptedRequest.getAcceptedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, acceptedRequest.getPrice()*-1);
                         recordTransaction(userid, userid, today, acceptedRequest.getPrice(), "Fail accepted ride request pickup charge");
-                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + acceptedRequest.getPrice() + " reserve: " + acceptedRequest.getPrice()*-1);
+                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + 0 + " reserve: " + acceptedRequest.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateAcceptedStatus(acceptedRequest.requestid, 1);
                 }
