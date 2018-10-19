@@ -152,7 +152,7 @@ public class AcceptedRequest {
         int code = 0;
         Date today = new Date();
         AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
-        if (acceptedRequest == null || acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() != 1
+        if (acceptedRequest == null || acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() == 0 || acceptedRequest.getStatus() == 2
                 || Math.abs(today.getTime()-acceptedRequest.getDatentime().getTime())/1000 > 1800) {
             result = 3;
         } else {
@@ -170,7 +170,7 @@ public class AcceptedRequest {
         AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(request.getRequestid());
         if (acceptedRequest == null) {
             result = 3;
-        } else if (acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() != 1
+        } else if (acceptedRequest.getUserid() != request.getUserid() || acceptedRequest.getStatus() == 0 || acceptedRequest.getStatus() == 2 || acceptedRequest.getAcceptedstatus() == 1
                 || acceptedRequest.getRequestusercode() == 0 || acceptedRequest.getAcceptedusercode() == 0
                 || Math.abs(today.getTime()-acceptedRequest.getDatentime().getTime())/1000 > 1800) {
             result = 4;
