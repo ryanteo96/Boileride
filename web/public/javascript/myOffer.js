@@ -18,7 +18,6 @@ $.post(
 		switch (res.result) {
 			case 0: {
 				$("html").show();
-				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 			case 2: {
@@ -27,7 +26,6 @@ $.post(
 			}
 			default: {
 				$("html").show();
-				$("#nickname").text("Hello, " + res.nickname);
 				break;
 			}
 		}
@@ -52,7 +50,7 @@ let test = [
 		price: 9000,
 		status: "Ongoing",
 		joinedby: [4, 5, 6],
-		requestuserstatus: [1, 1, 1],
+		requestuserstatus: 0,
 		phone: [123456789, 456789123, 654987321],
 		joinedbyname: ["a", "b", "c"],
 	},
@@ -72,7 +70,7 @@ let test = [
 		price: 98987987,
 		status: "Cancelled",
 		joinedby: [1, 2, 3],
-		requestuserstatus: [1, 1, 1],
+		requestuserstatus: 1,
 		phone: [987654321, 159874632, 34785169],
 		joinedbyname: ["c", "d", "e"],
 	},
@@ -235,65 +233,8 @@ $(document).ready(function() {
 	});
 });
 
-// function generatePassengersList(offerList) {
-// 	var options = {
-// 		valueNames: [
-// 			{ data: ["joinedby"] },
-// 			"requestuserstatus",
-// 			"phone",
-// 			"joinedbyname",
-// 		],
-// 		item:
-// 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
-// 			'<div class="card" id="joined">' +
-// 			'<div class="card-body">' +
-// 			'<div class="row" style="font-size:20px">' +
-// 			'<div class="row mb-2 d-flex w-100">' +
-// 			'<h5 class="mb-1 joinedby col text-left"></h5>' +
-// 			'<h5 class="mb-1 phone col text-right"></h5>' +
-// 			'<small id="requestuserstatus" class="requestuserstatus text-right"></small>' +
-// 			'<button id="sendCode">test</button>' +
-// 			"</div>" +
-// 			"</div>" +
-// 			"</div>" +
-// 			"</li>",
-// 	};
-
-// 	passengersList = new List("passengersList", options);
-
-// 	//this if for the big list
-// 	for (var i = 0; i < offerList.length; i++) {
-// 		if (offerList[i].offeruserstatus == 0) {
-// 			offerList[i].offeruserstatus = "Not confirmed";
-// 		} else {
-// 			offerList[i].offeruserstatus = "Confirmed";
-// 		}
-// 		console.log(offerList[i].joinedbyname);
-// 		//if its null then show no passenger
-// 		if (offerList[i].joinedbyname[0] == null) {
-// 			console.log("It comes in if!");
-// 			$("#passengersListTitle").text("No one joined yet.");
-// 		} else {
-// 			console.log("It comes in else!");
-// 			//check if the offer is confirmed
-// 			passengersList.add({
-// 				requestuserstatus: offerList[i].requestuserstatus,
-// 			});
-// 			//loop for joinedby, this is for the small list inside the modal showing passengers that joined
-
-// 			for (var j = 0; j < offerList[i].joinedby.length; j++) {
-// 				passengersList.add({
-// 					phone: offerList[i].phone[j],
-// 					joinedby: offerList[i].joinedby[j],
-// 					joinedbyname: offerList[i].joinedbyname[j],
-// 				});
-// 			}
-// 			$("#joined").attr("id", "joined" + i);
-// 		}
-// 	}
-// }
-
 function generateViewOfferList(offerList) {
+	$("#testmodal").modal("hide");
 	var options = {
 		valueNames: [
 			{ data: ["offerid"] },
@@ -363,6 +304,12 @@ function generateViewOfferList(offerList) {
 			offerList[i].status = "Cancelled";
 		}
 
+		// check if the offer is confirmed
+		if (offerList[i].offeruserstatus == 0) {
+			offerList[i].offeruserstatus = "Not confirmed";
+		} else {
+			offerList[i].offeruserstatus = "Confirmed";
+		}
 		myRideOfferList.add({
 			offerid: offerList[i].offerid,
 			pickuplocation: offerList[i].pickuplocation,
@@ -399,7 +346,9 @@ function getItem(item) {
 	localStorage.key = "editOffer";
 	localStorage.setItem(
 		"editOffer",
-		JSON.stringify(myRideOfferList.get("offerid", offerid)[0]._values),
+		JSON.stringify(
+			myRideOfferList.get("offerid", offerid)[0]._values.offerid,
+		),
 	);
 
 	$("#myRideOfferModal").modal("show");
@@ -459,14 +408,13 @@ function getItem(item) {
 			"joinedbyname",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getPassengerCode()>' +
 			'<div class="card" style="width:700px" id="joined">' +
 			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
 			'<div class="row mb-2 d-flex w-100">' +
 			'<h5 class="mb-1 joinedbyname col text-left"></h5>' +
 			'<h5 class="mb-1 phone col text-right"></h5>' +
-			'<button id="sendCode">test</button>' +
 			"</div>" +
 			"</div>" +
 			"</div>" +
@@ -476,15 +424,10 @@ function getItem(item) {
 	passengersList = new List("passengersList", passengers);
 	passengersList.clear();
 
-	//passengers list inside modal
-	//check if the offer is confirmed
-	// if (myRideOfferList.get("offerid", offerid)[0].offeruserstatus == 0) {
-	// 	offerList[i].offeruserstatus = "Not confirmed";
-	// } else {
-	// 	offerList[i].offeruserstatus = "Confirmed";
-	// }
+	// passengers list inside modal
 	console.log(
-		myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname,
+		"offer id:" +
+			myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname,
 	);
 	//if its null then show no passenger
 	if (
@@ -493,7 +436,6 @@ function getItem(item) {
 	) {
 		$("#passengersListTitle").text("No one joined yet.");
 	} else {
-		//loop for joinedby, this is for the small list inside the modal showing passengers that joined
 		for (
 			var j = 0;
 			j <
@@ -512,4 +454,8 @@ function getItem(item) {
 			$("#joined").attr("id", "joined" + j);
 		}
 	}
+}
+
+function getPassengerCode() {
+	$("#testmodal").modal("show");
 }

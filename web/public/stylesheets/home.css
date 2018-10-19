@@ -12,3 +12,8 @@
 .dropdown-menu {
 	left: auto;
 }
+
+#nickname {
+	font-family: Impact;
+	font-size: 40px;
+}
