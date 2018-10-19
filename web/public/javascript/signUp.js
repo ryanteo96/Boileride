@@ -48,6 +48,7 @@ $(document).ready(function() {
 					}
 					case 3: {
 						alert("Email has been taken.");
+
 						break;
 					}
 					case 4: {

@@ -37,6 +37,12 @@ $(document).ready(function() {
 	var obj = JSON.parse(credentials);
 	console.log(obj.userid);
 
+	$("#loading").modal({
+		backdrop: "static", //remove ability to close modal with click
+		keyboard: false, //remove option to close with keyboard
+		show: true, // display loader
+	});
+
 	$.post(
 		"/myRides/myRequest",
 		{
@@ -58,13 +64,24 @@ $(document).ready(function() {
 							$("#request" + i).css("background", "#F07B7B");
 						}
 					});
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
 					break;
 				}
 				case 1: {
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
+
 					alert("Invalid userid.");
 					break;
 				}
 				case 2: {
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
+
 					alert("User not logged in.");
 					break;
 				}
@@ -175,6 +192,7 @@ $(document).ready(function() {
 });
 
 function generateRequestList(requestList) {
+	console.log("here");
 	var options = {
 		valueNames: [
 			{ data: ["requestid"] },

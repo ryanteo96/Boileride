@@ -2,6 +2,12 @@ $(document).ready(function() {
 	$("#forgotPwForm").submit(function(data) {
 		data.preventDefault();
 
+		$("#loading").modal({
+			backdrop: "static", //remove ability to close modal with click
+			keyboard: false, //remove option to close with keyboard
+			show: true, // display loader
+		});
+
 		$.post(
 			"/forgotPw",
 			{
@@ -17,6 +23,10 @@ $(document).ready(function() {
 								email: $("#forgotPwEmail").val(),
 							}),
 						);
+
+						$("#loading").on("shown.bs.modal", function() {
+							$("#loading").modal("hide"); // hide loader
+						});
 
 						window.location.href = "/resetPw";
 						break;

@@ -116,6 +116,12 @@ $(document).ready(function() {
 
 	console.log(obj.userid);
 
+	$("#loading").modal({
+		backdrop: "static", //remove ability to close modal with click
+		keyboard: false, //remove option to close with keyboard
+		show: true, // display loader
+	});
+
 	$.post(
 		"/myPoints",
 		{
@@ -126,13 +132,16 @@ $(document).ready(function() {
 				case 0: {
 					$("#currentPoint").text(res.points);
 					$("#reservePoint").text(res.reserve);
+					$("#loading").modal("hide"); // hide loader
 					break;
 				}
 				case 1: {
+					$("#loading").modal("hide");
 					alert("Invalid userid.");
 					break;
 				}
 				case 2: {
+					$("#loading").modal("hide");
 					alert("User not logged in.");
 					break;
 				}
@@ -149,14 +158,16 @@ $(document).ready(function() {
 			switch (res.result) {
 				case 0: {
 					generateTransactionList(res.transactionlist);
-					// generateTransactionList(test);
+					$("#loading").modal("hide");
 					break;
 				}
 				case 1: {
+					$("#loading").modal("hide");
 					alert("Invalid userid.");
 					break;
 				}
 				case 2: {
+					$("#loading").modal("hide");
 					alert("User not logged in.");
 					break;
 				}
