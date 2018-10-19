@@ -80,7 +80,7 @@ let test = [
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	generateViewOfferList(test);
+	// generateViewOfferList(test);
 	console.log(obj.userid);
 
 	$.post(
@@ -91,8 +91,8 @@ $(document).ready(function() {
 		function(res) {
 			switch (res.result) {
 				case 0: {
-					console.log(res.offerlist);
-					// generateViewOfferList(res.offerlist);
+					// console.log(res.offerlist);
+					generateViewOfferList(res.offerlist);
 					$.each(res.offerlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
@@ -331,9 +331,7 @@ function getItem(item) {
 	localStorage.key = "editOffer";
 	localStorage.setItem(
 		"editOffer",
-		JSON.stringify(
-			myRideOfferList.get("offerid", offerid)[0]._values.offerid,
-		),
+		JSON.stringify(myRideOfferList.get("offerid", offerid)[0]._values),
 	);
 
 	$("#myRideOfferModal").modal("show");

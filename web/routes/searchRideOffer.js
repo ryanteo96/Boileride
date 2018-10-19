@@ -49,4 +49,32 @@ router.post("/", function(req, res) {
 		return;
 	});
 });
+
+router.post("/accept", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offeridlist: req.body.offeridlist,
+		passenger: req.body.passenger,
+		luggage: req.body.luggage,
+	};
+
+	console.log(data);
+
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/join/offer",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 		Cookie: global.cookie,
+	// 	},
+	// };
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
 module.exports = router;

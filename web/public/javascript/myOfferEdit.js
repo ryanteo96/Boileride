@@ -129,6 +129,7 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
+	loadOriginalValue();
 	$("#editRideOfferForm").submit(function(data) {
 		data.preventDefault();
 
@@ -190,35 +191,44 @@ $(document).ready(function() {
 });
 
 function loadOriginalValue() {
-	var requestlist = localStorage.getItem("offerlist");
-	var obj = JSON.parse(requestlist);
+	var editOffer = localStorage.getItem("editOffer");
+	var obj = JSON.parse(editOffer);
+
+	var datentime = obj.datentime.split(" ");
+	var date = datentime[0];
+	var time = datentime[1];
 
 	$("#pickuplocation").val(obj.pickuplocation);
 	$("#destination").val(obj.destination);
-	$("#date").val(obj.date);
-	$("#time").val(obj.time);
-	$("#seats").val(obj.seats);
-	$("#luggage").val(obj.luggage);
-	if (obj.smoking == "true") {
+	$("#date").val(date);
+	$("#time").val(time);
+	$("#seats").val(obj.seatleft);
+	$("#luggage").val(obj.luggageleft);
+
+	if (obj.smoking == "Yes") {
 		$("#smoking").prop("checked", true);
 	} else {
 		$("#smoking").prop("checked", false);
 	}
-	if (obj.foodndrink == "true") {
+
+	if (obj.foodndrink == "Yes") {
 		$("#foodndrink").prop("checked", true);
 	} else {
 		$("#foodndrink").prop("checked", false);
 	}
-	if (obj.pets == "true") {
+
+	if (obj.pets == "Yes") {
 		$("#pets").prop("checked", true);
 	} else {
 		$("#pets").prop("checked", false);
 	}
-	if (obj.ac == "true") {
+
+	if (obj.ac == "Yes") {
 		$("#ac").prop("checked", true);
 	} else {
 		$("#ac").prop("checked", false);
 	}
+
 	$("#traveltime").val(obj.travelingtime);
 	$("#price").val(obj.price);
 }
