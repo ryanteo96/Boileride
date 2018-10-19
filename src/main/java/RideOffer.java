@@ -867,7 +867,7 @@ public class RideOffer {
         } else if (joinedOffer.getJoinedusercode() != request.getCode()) {
             result = 6;
         } else {
-            result = DatabaseCommunicator.updateOfferUserStatus(request.getUserid(), request.getOfferid(), 1);
+            result = DatabaseCommunicator.updateOfferUserStatus(joinedOffer.getUserid(), request.getOfferid(), 1);
             if (result == 0){
                 //Get payment
                 result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
