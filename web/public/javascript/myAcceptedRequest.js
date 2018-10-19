@@ -71,17 +71,17 @@ $(document).ready(function() {
 	var obj = JSON.parse(credentials);
 	console.log(obj.userid);
 	/*============================== TEST DATA START HERE!!!! /*==============================*/
-	generateAcceptedRequestList(test);
-	$("#status0").text("Ongoing");
-	if ($("#status0").text() == "Ongoing") {
-		$("#request0").addClass("border-success");
-		$("#request0").css("background", "#7BF08F");
-	}
-	if ($("#status1").text() == "Cancelled") {
-		$("#request1").addClass("border-danger");
-		$("#request1").css("background", "#F07B7B");
-	}
-	/*============================== TEST DATA END HERE!!!! /*==============================*/
+	// generateAcceptedRequestList(test);
+	// $("#status0").text("Ongoing");
+	// if ($("#status0").text() == "Ongoing") {
+	// 	$("#request0").addClass("border-success");
+	// 	$("#request0").css("background", "#7BF08F");
+	// }
+	// if ($("#status1").text() == "Cancelled") {
+	// 	$("#request1").addClass("border-danger");
+	// 	$("#request1").css("background", "#F07B7B");
+	// }
+	// /*============================== TEST DATA END HERE!!!! /*==============================*/
 
 	$.post(
 		"/myRides/myRequest/accepted",
@@ -91,10 +91,14 @@ $(document).ready(function() {
 		function(res) {
 			switch (res.result) {
 				case 0: {
-					console.log("success");
-					console.log(res.acceptedRequestList);
-					generateAcceptedRequestList(res.acceptedRequestList);
-					$.each(res.acceptedRequestList, function(i) {
+					console.log(res.acceptedrequestlist);
+					if (res.acceptedrequestlist.length == 0) {
+						$("#rideExist").html(
+							'<i class="icons fas fa-users mr-4"> You haven\'t accepted any rides.',
+						);
+					}
+					generateAcceptedRequestList(res.acceptedrequestlist);
+					$.each(res.acceptedrequestlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#request" + i).addClass("border-success");
 							$("#request" + i).css("background", "#7BF08F");

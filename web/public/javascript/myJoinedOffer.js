@@ -72,29 +72,34 @@ $(document).ready(function() {
 
 	console.log(obj.userid);
 	/*============================== TEST DATA START HERE!!!! /*==============================*/
-	generateJoinedOfferList(test);
-	$("#status0").text("Ongoing");
-	if ($("#status0").text() == "Ongoing") {
-		$("#offer0").addClass("border-success");
-		$("#offer0").css("background", "#7BF08F");
-	}
-	if ($("#status1").text() == "Cancelled") {
-		$("#offer1").addClass("border-danger");
-		$("#offer1").css("background", "#F07B7B");
-	}
+	// generateJoinedOfferList(test);
+	// $("#status0").text("Ongoing");
+	// if ($("#status0").text() == "Ongoing") {
+	// 	$("#offer0").addClass("border-success");
+	// 	$("#offer0").css("background", "#7BF08F");
+	// }
+	// if ($("#status1").text() == "Cancelled") {
+	// 	$("#offer1").addClass("border-danger");
+	// 	$("#offer1").css("background", "#F07B7B");
+	// }
 	/*============================== TEST DATA END HERE!!!! /*==============================*/
 
 	$.post(
-		"/myRides/myOffer",
+		"/myRides/myOffer/joined",
 		{
 			userid: obj.userid,
 		},
 		function(res) {
 			switch (res.result) {
 				case 0: {
-					console.log(res.joinedOfferList);
-					generateJoinedOfferList(res.joinedOfferList);
-					$.each(res.joinedOfferList, function(i) {
+					console.log(res.joinedofferlist);
+					if (res.joinedofferlist.length == 0) {
+						$("#passengerExist").html(
+							'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
+						);
+					}
+					generateJoinedOfferList(res.joinedofferlist);
+					$.each(res.joinedofferlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
 							$("#offer" + i).css("background", "#7BF08F");
