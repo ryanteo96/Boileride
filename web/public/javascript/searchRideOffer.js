@@ -93,82 +93,6 @@ function init() {
 
 google.maps.event.addDomListener(window, "load", init);
 
-$(document).ready(function() {
-	generateSearchOfferList(test);
-	$("#searchRideOfferForm").submit(function(data) {
-		data.preventDefault();
-
-		var credentials = localStorage.getItem("credentials");
-		var obj = JSON.parse(credentials);
-
-		$.post(
-			"/searchRideOffer",
-			{
-				userid: obj.userid,
-				pickuplocation: pickup.value,
-				destination: destination.value,
-				pickupproximity: $("#pickupproximity").val(),
-				destinationproximity: $("#destinationproximity").val(),
-				date: $("#date").val(),
-				time: $("#time").val(),
-				datentimerange: $("#datentimerange").val(),
-				passengers: $("#passengers").val(),
-				numrides: $("#numrides").val(),
-				luggage: $("#luggage").val(),
-				smoking: $("#smoking").prop("checked"),
-				foodndrink: $("#foodndrink").prop("checked"),
-				pets: $("#pets").prop("checked"),
-				ac: $("#ac").prop("checked"),
-			},
-			function(res) {
-				switch (res.result) {
-					case 0: {
-						console.log(res.offersearchlist);
-						generateSearchOfferList(res.offersearchlist);
-						break;
-					}
-					case 1: {
-						alert("Invalid userid.");
-						break;
-					}
-					case 2: {
-						alert("User not logged in.");
-						break;
-					}
-					case 3: {
-						alert("Invalid pickup location.");
-						break;
-					}
-					case 4: {
-						alert("Invalid destination.");
-						break;
-					}
-					case 5: {
-						alert("Invalid pickup proximity.");
-						break;
-					}
-					case 6: {
-						alert("Invalid destination proximity.");
-						break;
-					}
-					case 7: {
-						alert("Invalid datentime.");
-						break;
-					}
-					case 8: {
-						alert("Invalid datentime range.");
-						break;
-					}
-					case 9: {
-						alert("No results found.");
-						break;
-					}
-				}
-			},
-		);
-	});
-});
-
 function generateSearchOfferList(searchlist) {
 	var options = {
 		valueNames: [
@@ -301,3 +225,147 @@ function getItem(item) {
 		offerlist.get("offertid", offertid)[0]._values.price,
 	);
 }
+
+$(document).ready(function() {
+	generateSearchOfferList(test);
+	$("#searchRideOfferForm").submit(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		$.post(
+			"/searchRideOffer",
+			{
+				userid: obj.userid,
+				pickuplocation: pickup.value,
+				destination: destination.value,
+				pickupproximity: $("#pickupproximity").val(),
+				destinationproximity: $("#destinationproximity").val(),
+				date: $("#date").val(),
+				time: $("#time").val(),
+				datentimerange: $("#datentimerange").val(),
+				passengers: $("#passengers").val(),
+				numrides: $("#numrides").val(),
+				luggage: $("#luggage").val(),
+				smoking: $("#smoking").prop("checked"),
+				foodndrink: $("#foodndrink").prop("checked"),
+				pets: $("#pets").prop("checked"),
+				ac: $("#ac").prop("checked"),
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						console.log(res.offersearchlist);
+						generateSearchOfferList(res.offersearchlist);
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid pickup location.");
+						break;
+					}
+					case 4: {
+						alert("Invalid destination.");
+						break;
+					}
+					case 5: {
+						alert("Invalid pickup proximity.");
+						break;
+					}
+					case 6: {
+						alert("Invalid destination proximity.");
+						break;
+					}
+					case 7: {
+						alert("Invalid datentime.");
+						break;
+					}
+					case 8: {
+						alert("Invalid datentime range.");
+						break;
+					}
+					case 9: {
+						alert("No results found.");
+						break;
+					}
+				}
+			},
+		);
+	});
+
+	$("#joinRideDetailsBtn").click(function(data) {
+		data.preventDefault();
+
+		$("#rideOfferModal").modal("hide");
+		$("#joinRideOfferModal").modal("show");
+	});
+
+	$("#joinRideBtn").click(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		$.post(
+			"/searchRideOffer/accept",
+			{
+				userid: obj.userid,
+				offeridlist: "temp",
+				passenger: $("#numPassenger").val(),
+				luggage: $("#numLuggage").val(),
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						alert("Success.");
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Ride does not exist.");
+						break;
+					}
+					case 4: {
+						alert("Cannot join your own offer.");
+						break;
+					}
+					case 5: {
+						alert("Already joined.");
+						break;
+					}
+					case 6: {
+						alert("Not enough points.");
+						break;
+					}
+					case 7: {
+						alert("Invalid number of passengers.");
+						break;
+					}
+					case 8: {
+						alert("Invalid number of luggage.");
+						break;
+					}
+					case 9: {
+						alert("Invalid number of passengers and luggage.");
+						break;
+					}
+				}
+			},
+		);
+	});
+});
