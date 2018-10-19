@@ -624,10 +624,10 @@ public class BoilerideServer {
                 } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
-//                if ((int)session.getAttribute("userid") != req.getUserid()){
-//                    res = new RideRequestSearchResponse(1);
-//                }else
-                if (isRightFormat) {
+                if ((int)session.getAttribute("userid") != req.getUserid()){
+                    res = new RideRequestSearchResponse(1);
+                }
+                else if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     try {
                         res = RideRequest.search(req);
@@ -655,10 +655,10 @@ public class BoilerideServer {
                 } catch (JsonSyntaxException e) {
                     isRightFormat = false;
                 }
-//                if ((int)session.getAttribute("userid") != req.getUserid()){
-//                    res = new RideOfferSearchResponse(1);
-//                }else
-                if (isRightFormat) {
+                if ((int)session.getAttribute("userid") != req.getUserid()){
+                    res = new RideOfferSearchResponse(1);
+                }
+                else if (isRightFormat) {
                     System.out.println("Received: " + req.toString());
                     try {
                         res = RideOffer.search(req);
