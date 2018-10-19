@@ -56,6 +56,7 @@ public class User
     int getPoints() { return points; }
     int getStatus() { return status; }
     int getUserid() {return userid;}
+    int getReserve() {return reserve;}
 
     @java.lang.Override
     public java.lang.String toString() {
@@ -531,7 +532,7 @@ public class User
         if (user == null){
             result = 1;
         }
-        UserViewPointsResponse res = new UserViewPointsResponse(result, points, reserve);
+        UserViewPointsResponse res = new UserViewPointsResponse(result, user.getPoints(), user.getReserve());
         return res;
     }
 
