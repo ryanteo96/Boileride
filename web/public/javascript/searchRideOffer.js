@@ -159,7 +159,7 @@ $(document).ready(function() {
 						alert("Invalid datentime range.");
 						break;
 					}
-					case 8: {
+					case 9: {
 						alert("No results found.");
 						break;
 					}
@@ -188,15 +188,17 @@ function generateSearchOfferList(searchlist) {
 			"price",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2" ondblclick=getItem(this)>' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
+			'<div class="card" id="offer">' +
+			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
-			'<div class="mb-2 d-flex w-100">' +
+			'<div class="row mb-2 d-flex w-100">' +
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
 			"</div>" +
-			'<div class="d-flex w-100">' +
+			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values seatsleft p-2"></small></i>' +
 			'<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggage p-2"></small></i>' +
 			'<i class="icons fas fa-car p-2 col text-center"><small class="values numrides p-2"></small></i>' +
