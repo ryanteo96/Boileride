@@ -324,7 +324,7 @@ public class RideOffer {
                 for(int i =0;i<offers.length;i++)
                 {
                     RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
-                    if(rideOffer != null && rideOffer.getStatus() == 0)
+                    if(rideOffer != null && rideOffer.getStatus() != 2 && rideOffer.getStatus() !=3)
                     {
                         if(rideOffer.getOfferedby() != user.getUserid())
                         {
@@ -482,6 +482,7 @@ public class RideOffer {
                         int result = DatabaseCommunicator.removeJoinedOffer(user.getUserid(), req.getOfferid());
                         if(result == 0)
                         {
+                            PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
                             response.setResult(0);
                         }
                         else
@@ -536,7 +537,7 @@ public class RideOffer {
                         {
                             passengers.add(passengersArr[j]);
                         }
-                        if( !passengers.contains(user.getUserid()) )
+                        if( passengers.contains(user.getUserid()) )
                         {
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
@@ -558,7 +559,7 @@ public class RideOffer {
                                     rideOffer.setStatus(1);
                                     rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
                                     rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
-
+                                    PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice())
                                     PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
                                     int updateOfferResult = DatabaseCommunicator.updateJoinedOffer(user.getUserid(), offers[i], seatsWant, luggagesWant);
 

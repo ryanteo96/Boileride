@@ -379,34 +379,18 @@ public class RideRequest {
                 RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(req.getRequestID());
                 if(rideRequest != null)
                 {
-                    if(rideRequest.getRequestedby() == req.getGetUserid())
+                    int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestID());
+                    if(removeResult == 0)
                     {
                         int result = DatabaseCommunicator.cancelRideRequest(req.getRequestID());
-                        if(result == 0) {
-                            int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestID());
-                            if (removeResult == 0)
-                            {
-                                PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
-                                response.setResult(0);
-                            }
-                            else if(result == 99)
-                            {
-                                System.out.println("Failed to remove the accepted request in ACCEPTEDRIDEREQUEST");
-                            }
-                            else
-                            {
-                                System.out.println("Something went wrong while removing accepted request in  ACCEPTEDRIDEREQUEST");
-                            }
-
-
-                        }
-                        else if(result == 99)
+                        if(result == 0)
                         {
-                            System.out.println("Failed to cancel ride request in DB");
+                            PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
+                            response.setResult(0);
                         }
                         else
                         {
-                            System.out.println("Something went wrong in cancelAcceptedRequest");
+                            System.out.println("Failed to cancel ride request in RIDEREQUEST table");
                         }
 
                     }
