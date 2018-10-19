@@ -1964,23 +1964,96 @@ public class DatabaseCommunicator {
     }
 
     public static int updateJoinedOffer(int userid, int offerid, int seat, int passenger){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET seat = "+seat+", passenger = "+passenger+" WHERE userid = " + userid + " AND offerid = " + offerid);
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
 
     public static int removeAcceptedRequest(int userid, int requestid)
     {
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = " + userid + " AND requestid = " + requestid);
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
     public static int removeJoinedOffer(int userid, int offerid){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = " + userid + " AND offerid = " + offerid);
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
         return 0;
     }
     public static int insertNewAcceptedRequest(int userid, int requestid, int requestUserCode, int acceptedUserCode, int acceptedUserStatus, int requestUserStatus, int acceptedStatus)
     {
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCEPTEDRIDEREQUEST WHERE userid = "+userid+" AND requestid = "+requestid);
+
+            if (rs.next()) {
+                return 1;
+            }
+            else {
+                stmt.executeUpdate("INSERT INTO 'ACCEPTEDRIDEREQUEST' ('userid', 'requestid', 'requestusercode', 'acceptedusercode', 'accepteduserstatus', 'requestuserstatus', 'acceptedstatus') " +
+                        "VALUES ("+userid +", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+
+        return 0;
+
+    }
+    public static int insertNewJoinedOffer(int userid, int offerid, int passenger, int luggage, int tripOrder, int offerUserCode, int joinedUserCode, int offerUserStatus, int joinedUserStatus, int joinedStatus, Date joinDate){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM JOINEDRIDEOFFER WHERE userid = "+userid+" AND offerid = "+offerid);
+
+            if (rs.next()) {
+                return 1;
+            }
+            else {
+                stmt.executeUpdate("INSERT INTO 'JOINEDRIDEOFFER' ('userid', 'offerid', 'passenger', 'luggage', 'triporder', 'offerusercode', 'joinedusercode', 'offeruserstatus', 'joineduserstatus', 'joinedstatus', 'joindate') " +
+                        "VALUES ("+userid +", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+
         return 0;
     }
-    public static int insertNewJoinedOffer(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, Date date){
-        return 0;
-    }
+
 
     public static void main (String args[]) throws ParseException {
         //User user = new User( "henry@mail.com", "tnc", "armiel", "8888", 1000, 0 );
