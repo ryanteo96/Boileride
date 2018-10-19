@@ -346,9 +346,7 @@ function getItem(item) {
 	localStorage.key = "editOffer";
 	localStorage.setItem(
 		"editOffer",
-		JSON.stringify(
-			myRideOfferList.get("offerid", offerid)[0]._values.offerid,
-		),
+		JSON.stringify(myRideOfferList.get("offerid", offerid)[0]._values),
 	);
 
 	$("#myRideOfferModal").modal("show");
