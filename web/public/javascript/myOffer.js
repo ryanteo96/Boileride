@@ -49,10 +49,10 @@ let test = [
 		luggageleft: 2,
 		price: 9000,
 		status: "Ongoing",
-		joinedby: [4, 5, 6],
-		requestuserstatus: 0,
-		phone: [123456789, 456789123, 654987321],
-		joinedbyname: ["a", "b", "c"],
+		joinedby: [4, 5, 6, 7],
+		offeruserstatus: [1, 0, 0, 1],
+		phone: [74747474, 85858585, 96969696, 31235474],
+		joinedbyname: ["a", "b", "f", "g"],
 	},
 	{
 		offerid: 3,
@@ -70,7 +70,7 @@ let test = [
 		price: 98987987,
 		status: "Cancelled",
 		joinedby: [1, 2, 3],
-		requestuserstatus: 1,
+		offeruserstatus: [0, 1, 0],
 		phone: [987654321, 159874632, 34785169],
 		joinedbyname: ["c", "d", "e"],
 	},
@@ -103,19 +103,9 @@ $(document).ready(function() {
 							$("#offer" + i).addClass("border-danger");
 							$("#offer" + i).css("background", "#F07B7B");
 						}
-
-						if ($("#requestuserstatus").text() == "Confirmed") {
-							$("#confirmStatus").html("Ride Confirmed");
-							$("#confirmStatus").css("font-color", "green");
-						} else {
-							$("#confirmStatus").html("Ride Pending");
-							$("#confirmStatus").css("font-color", "orange");
-						}
 					});
 
 					$("#firstslide").css("overflow-y", "hidden"); //hide first slide scroll
-
-					// generatePassengersList(res.offerlist);
 					break;
 				}
 				case 1: {
@@ -251,6 +241,7 @@ function generateViewOfferList(offerList) {
 			"luggageleft",
 			"price",
 			"status",
+			"offeruserstatus",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
@@ -304,12 +295,6 @@ function generateViewOfferList(offerList) {
 			offerList[i].status = "Cancelled";
 		}
 
-		// check if the offer is confirmed
-		if (offerList[i].offeruserstatus == 0) {
-			offerList[i].offeruserstatus = "Not confirmed";
-		} else {
-			offerList[i].offeruserstatus = "Confirmed";
-		}
 		myRideOfferList.add({
 			offerid: offerList[i].offerid,
 			pickuplocation: offerList[i].pickuplocation,
@@ -325,22 +310,22 @@ function generateViewOfferList(offerList) {
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
 			status: offerList[i].status,
-
 			joinedby: offerList[i].joinedby,
-			requestuserstatus: offerList[i].requestuserstatus,
+			offeruserstatus: offerList[i].offeruserstatus,
 			phone: offerList[i].phone,
 			joinedbyname: offerList[i].joinedbyname,
 		});
 
 		myRideOfferList.sort("datentime", { order: "asc" });
 		myRideOfferList.sort("status", { order: "desc" });
-
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
 	}
 }
 
 function getItem(item) {
+	$("#carouselExampleIndicators").carousel(0); //to reset the slide back to data-slide 0 everytime opening a modal
+
 	var offerid = $(item).data("offerid");
 
 	localStorage.key = "editOffer";
@@ -403,9 +388,9 @@ function getItem(item) {
 	var passengers = {
 		valueNames: [
 			{ data: ["joinedby"] },
-			"requestuserstatus",
 			"phone",
 			"joinedbyname",
+			"offeruserstatus",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getPassengerCode()>' +
@@ -413,8 +398,9 @@ function getItem(item) {
 			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
 			'<div class="row mb-2 d-flex w-100">' +
-			'<h5 class="mb-1 joinedbyname col text-left"></h5>' +
-			'<h5 class="mb-1 phone col text-right"></h5>' +
+			'<i class="icons fas fa-user p-2 mr-5 col-3 text-left"> <small class="values joinedbyname p-2"></small></i>' +
+			'<i class="icons fas fa-phone p-2 col-3 text-left"><small class="values phone p-2"></small></i>' +
+			'<i class="icons fas p-2 col text-left"><small class="values offeruserstatus p-2"></small></i>' +
 			"</div>" +
 			"</div>" +
 			"</div>" +
@@ -426,22 +412,39 @@ function getItem(item) {
 
 	// passengers list inside modal
 	console.log(
-		"offer id:" +
+		"Joined passengers:" +
 			myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname,
 	);
+	var temparray;
+	temparray = myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname;
 	//if its null then show no passenger
-	if (
-		myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname[0] ==
-		null
-	) {
-		$("#passengersListTitle").text("No one joined yet.");
+	if (temparray.length == 1 && temparray[0] == null) {
+		$("#passengersListTitle").html("No one joined yet");
 	} else {
+		$("#passengersListTitle").html("Passengers");
+
+		//loop to get passengers
 		for (
 			var j = 0;
 			j <
 			myRideOfferList.get("offerid", offerid)[0]._values.joinedby.length;
 			j++
 		) {
+			// console.log(
+			// 	"STATUS: " +
+			// 		myRideOfferList.get("offerid", offerid)[0]._values
+			// 			.offeruserstatus[j],
+			// );
+			var tempString;
+			//1 == confirmed, 0 == not confirmed
+			if (
+				myRideOfferList.get("offerid", offerid)[0]._values
+					.offeruserstatus[j] == 1
+			) {
+				tempString = "Ride Confirmed";
+			} else {
+				tempString = "Ride Pending";
+			}
 			passengersList.add({
 				phone: myRideOfferList.get("offerid", offerid)[0]._values.phone[
 					j
@@ -450,12 +453,17 @@ function getItem(item) {
 					.joinedby[j],
 				joinedbyname: myRideOfferList.get("offerid", offerid)[0]._values
 					.joinedbyname[j],
+				offeruserstatus: "Status: " + tempString,
 			});
+			console.log(
+				"STATUS: " +
+					myRideOfferList.get("offerid", offerid)[0]._values
+						.offeruserstatus[j],
+			);
 			$("#joined").attr("id", "joined" + j);
 		}
 	}
 }
-
 function getPassengerCode() {
 	$("#testmodal").modal("show");
 }
