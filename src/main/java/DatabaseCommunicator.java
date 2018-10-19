@@ -1878,7 +1878,7 @@ public class DatabaseCommunicator {
     public static int updateJoinedStatus(int offerid, int userid, int status){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE JOINEDOFFER SET joinedstatus = " + status + " WHERE offerid = " + offerid + " and userid = " + userid);
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET joinedstatus = " + status + " WHERE offerid = " + offerid + " and userid = " + userid);
 
             stmt.close();
         }
