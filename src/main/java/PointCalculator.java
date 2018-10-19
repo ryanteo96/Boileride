@@ -33,6 +33,20 @@ public class PointCalculator {
         return result;
     }
 
+    //when driver confirm offer pickup after first passenger
+    public static int getSecondPayment(int userid, int payerid, int price, String msg){
+        // reduce driver reserve
+        // increase driver points by price*2 (price + reserve)
+        int result = 0;
+        result = DatabaseCommunicator.updatePointReserve(userid, price, 0);
+        System.out.println("get payment: " + userid + " points: " + price + " reserve: " + 0);
+        if (result == 0){
+            Date now = new Date();
+            recordTransaction(userid, payerid, now, price, msg);
+        }
+        return result;
+    }
+
     //when user post request, post offer, accept request, join offer
     public static int reservePoints(int userid, int price){
         // reduce points by price
@@ -168,7 +182,7 @@ public class PointCalculator {
                     else if (acceptedRequest.getAcceptedstatus() == 0 && acceptedRequest.getAcceptedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, acceptedRequest.getPrice()*-1);
                         recordTransaction(userid, userid, today, acceptedRequest.getPrice(), "Fail accepted ride request pickup charge");
-                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + acceptedRequest.getPrice() + " reserve: " + acceptedRequest.getPrice()*-1);
+                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + 0 + " reserve: " + acceptedRequest.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateAcceptedStatus(acceptedRequest.requestid, 1);
                 }
@@ -189,7 +203,7 @@ public class PointCalculator {
                     else if (joinedOffer.getJoinedstatus() == 0 && joinedOffer.getJoinedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, joinedOffer.getPrice()*-1);
                         recordTransaction(userid, userid, today, joinedOffer.getPrice(), "Fail joined ride offer pickup charge");
-                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + joinedOffer.getPrice() + " reserve: " + joinedOffer.getPrice()*-1);
+                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + 0 + " reserve: " + joinedOffer.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateJoinedStatus(joinedOffer.offerid, userid, 1);
                 }

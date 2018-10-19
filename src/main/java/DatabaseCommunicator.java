@@ -1247,7 +1247,7 @@ public class DatabaseCommunicator {
     public static int addJoinedOfferPickup(int userid, int offerid, int code){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET offerusercode = " + code + " WHERE offerid = " + offerid + " and userid = " + userid);
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET joinedusercode = " + code + " WHERE offerid = " + offerid + " and userid = " + userid);
 
             stmt.close();
 

@@ -1045,7 +1045,7 @@ public class BoilerideServer {
             return gson.toJson(res);
         }
 
-        private String handleRideOfferSearchAlter(Gson gson, JsonObject request, HttpServletRequest servletReq){
+        private String handleSearchOfferAlter(Gson gson, JsonObject request, HttpServletRequest servletReq){
             RideOfferSearchAlterRequest req = null;
             RideOfferSearchAlterResponse res = null;
             HttpSession session = servletReq.getSession(false);
@@ -1154,6 +1154,9 @@ public class BoilerideServer {
             else if (uri.equals("/ride/search/offer")){
                 response = handleSearchOffer(gson, request, servletReq);
             }
+            else if (uri.equals("/ride/search/offer/alter")){
+                response = handleSearchOfferAlter(gson, request, servletReq);
+            }
             else if (uri.equals("/ride/accept/request")){
                 response = handleAcceptRequest(gson, request, servletReq);
             }
@@ -1252,6 +1255,7 @@ public class BoilerideServer {
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/update/offer")), "/ride/update/offer");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/request")), "/ride/search/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/offer")), "/ride/search/offer");
+            handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/offer/alter")), "/ride/search/offer/alter");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/search/multipleoffer")), "/ride/search/multipleoffer");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/accept/request")), "/ride/accept/request");
             handler.addServlet(new ServletHolder(new BoilerideServlet("/ride/cancel/acceptedrequest")), "/ride/cancel/acceptedrequest");
@@ -1293,7 +1297,7 @@ public class BoilerideServer {
 //        conn = DriverManager.getConnection(DB_URL, USER, PASS);
 //
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        
+//
 
 //        RideRequestSearchRequest query1 = new RideRequestSearchRequest(123, "Hillenbrand Dining Court, 3rd Street, West Lafayette, IN 47906", 10.0, "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0,
 //                sdf.parse("2018-09-29 15:45:00"), 10000, 1, 1, true, true, true, true);

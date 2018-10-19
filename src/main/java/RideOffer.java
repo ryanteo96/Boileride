@@ -841,7 +841,7 @@ public class RideOffer {
         RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
         if (rideOffer == null) {
             result = 3;
-        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() != 1
+        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 0 || rideOffer.getStatus() == 2
                 || Math.abs(today.getTime()-rideOffer.getDatentime().getTime())/1000 > 1800) {
             result = 4;
         } else {
@@ -859,7 +859,7 @@ public class RideOffer {
         JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(request.getJoineduserid(), request.getOfferid());
         if (joinedOffer == null) {
             result = 3;
-        } else if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() != 1
+        } else if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() == 0 || joinedOffer.getStatus() == 2 || joinedOffer.getOfferuserstatus() == 1
                 || joinedOffer.getOfferusercode() == 0 || joinedOffer.getJoinedusercode() == 0
                 || Math.abs(today.getTime()-joinedOffer.getDatentime().getTime())/1000 > 1800) {
             result = 4;
@@ -868,10 +868,16 @@ public class RideOffer {
         } else if (joinedOffer.getJoinedusercode() != request.getCode()) {
             result = 6;
         } else {
-            result = DatabaseCommunicator.updateOfferUserStatus(request.getUserid(), request.getOfferid(), 1);
+            result = DatabaseCommunicator.updateOfferUserStatus(joinedOffer.getUserid(), request.getOfferid(), 1);
             if (result == 0){
                 //Get payment
-                result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                if (joinedOffer.getStatus() == 3){
+                    result = PointCalculator.getSecondPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                }
+                else {
+                    result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                    DatabaseCommunicator.updateOfferStatus(request.getOfferid(), request.getUserid(), 3);
+                }
                 //DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),4);
             }
         }
@@ -944,23 +950,22 @@ public class RideOffer {
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
             // check if sub destination is arrived and within proximity
-            if ((b == request.getTrip().getRides().size() - 1
-                    && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
+            if ((b == request.getTrip().getRides().size() - 1 && gma.estimate(curr.getRides().getLast().getDestination(), subdestination) <= request.getDestinationproximity())
                     || (b < request.getTrip().getRides().size() - 1 && gma.getCity(curr.getRides().getLast().getDestination()).equals(gma.getCity(subdestination)))) {
-                // check if arrives before the next ride
-                if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
-                    // if the first ride of the original trip is also changed and if pick up location is within proximity
-                    if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
-                            && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
-                            || (a > 0)) {
-                        // check if number of rides exceeds
-                        if (curr.getRides().size() - 1 <= subnumrides && curr.getRides().size() > 1) {
-                            curr.getRides().removeFirst();
+                curr.getRides().removeFirst();
+                // check if number of rides exceeds
+                if (curr.getRides().size() <= subnumrides && curr.getRides().size() > 0) {
+                    // check if arrives before the next ride
+                    if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
+                        // if the first ride of the original trip is also changed and if pick up location is within proximity
+                        if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
+                                && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
+                                || (a > 0)) {
                             trips.addLast(curr.toTrip());
                         }
                     }
                 }
-
+                continue;
             }
 
             RideOffer lro = curr.getRides().getLast();
@@ -973,7 +978,6 @@ public class RideOffer {
                 continue;
             }
             for (RideOffer r : rs) {
-//                System.out.println(new Gson().toJson(r));
                 TmpTrip t = new TmpTrip();
                 t.setRides(new LinkedList<>());
                 for (RideOffer tro : curr.getRides()) {
