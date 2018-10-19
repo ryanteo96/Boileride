@@ -1894,8 +1894,9 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t, USER u1, USER u2 " +
-                    "WHERE t.touserid = u1.userid and t.foruserid = u2.userid and (foruserid = " + userid + " or touserid = " + userid + ")");
+            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t " +
+                    "JOIN USER u1 on t.touserid = u1.userid JOIN USER u2 on t.foruserid = u2.userid " +
+                    "WHERE (foruserid = " + userid + " && description not LIKE 'Receive payment%') or (touserid = " + userid + " && description not LIKE 'Make payment%')");
 
             int transactionid;
             int touserid;
