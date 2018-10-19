@@ -559,7 +559,7 @@ public class RideOffer {
                                     rideOffer.setStatus(1);
                                     rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
                                     rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
-                                    PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice())
+                                    PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice());
                                     PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
                                     int updateOfferResult = DatabaseCommunicator.updateJoinedOffer(user.getUserid(), offers[i], seatsWant, luggagesWant);
 
