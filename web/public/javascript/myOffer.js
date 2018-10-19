@@ -57,7 +57,7 @@ let test = [
 		joinedbyname: ["a", "b", "c"],
 	},
 	{
-		offerid: 2,
+		offerid: 3,
 		datentime: 9999 / 8 / 10,
 		pickuplocation: "your house",
 		destination: "my house",
@@ -338,31 +338,7 @@ function generateViewOfferList(offerList) {
 			"</li>",
 	};
 
-	//to create the list for passengers
-	var passengers = {
-		valueNames: [
-			{ data: ["joinedby"] },
-			"requestuserstatus",
-			"phone",
-			"joinedbyname",
-		],
-		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
-			'<div class="card" style="width:700px" id="joined">' +
-			'<div class="card-body">' +
-			'<div class="row" style="font-size:20px">' +
-			'<div class="row mb-2 d-flex w-100">' +
-			'<h5 class="mb-1 joinedbyname col text-left"></h5>' +
-			'<h5 class="mb-1 phone col text-right"></h5>' +
-			'<button id="sendCode">test</button>' +
-			"</div>" +
-			"</div>" +
-			"</div>" +
-			"</li>",
-	};
-
 	myRideOfferList = new List("myRideOfferList", options);
-	passengersList = new List("passengersList", passengers);
 
 	for (var i = 0; i < offerList.length; i++) {
 		if (offerList[i].smoking == true) {
@@ -402,33 +378,12 @@ function generateViewOfferList(offerList) {
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
 			status: offerList[i].status,
+
+			joinedby: offerList[i].joinedby,
+			requestuserstatus: offerList[i].requestuserstatus,
+			phone: offerList[i].phone,
+			joinedbyname: offerList[i].joinedbyname,
 		});
-
-		//passengers list inside modal
-		//check if the offer is confirmed
-		if (offerList[i].offeruserstatus == 0) {
-			offerList[i].offeruserstatus = "Not confirmed";
-		} else {
-			offerList[i].offeruserstatus = "Confirmed";
-		}
-		console.log(offerList[i].joinedbyname);
-		//if its null then show no passenger
-		if (offerList[i].joinedbyname[0] == null) {
-			console.log("It comes in if!");
-			$("#passengersListTitle").text("No one joined yet.");
-		} else {
-			console.log("It comes in else!");
-
-			//loop for joinedby, this is for the small list inside the modal showing passengers that joined
-			for (var j = 0; j < offerList[i].joinedby.length; j++) {
-				passengersList.add({
-					phone: offerList[i].phone[j],
-					joinedby: offerList[i].joinedby[j],
-					joinedbyname: offerList[i].joinedbyname[j],
-				});
-				$("#joined").attr("id", "joined" + j);
-			}
-		}
 
 		myRideOfferList.sort("datentime", { order: "asc" });
 		myRideOfferList.sort("status", { order: "desc" });
@@ -494,4 +449,67 @@ function getItem(item) {
 	$("#priceDetails").html(
 		myRideOfferList.get("offerid", offerid)[0]._values.price,
 	);
+
+	//to create the list for passengers
+	var passengers = {
+		valueNames: [
+			{ data: ["joinedby"] },
+			"requestuserstatus",
+			"phone",
+			"joinedbyname",
+		],
+		item:
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0">' +
+			'<div class="card" style="width:700px" id="joined">' +
+			'<div class="card-body">' +
+			'<div class="row" style="font-size:20px">' +
+			'<div class="row mb-2 d-flex w-100">' +
+			'<h5 class="mb-1 joinedbyname col text-left"></h5>' +
+			'<h5 class="mb-1 phone col text-right"></h5>' +
+			'<button id="sendCode">test</button>' +
+			"</div>" +
+			"</div>" +
+			"</div>" +
+			"</li>",
+	};
+
+	passengersList = new List("passengersList", passengers);
+	passengersList.clear();
+
+	//passengers list inside modal
+	//check if the offer is confirmed
+	// if (myRideOfferList.get("offerid", offerid)[0].offeruserstatus == 0) {
+	// 	offerList[i].offeruserstatus = "Not confirmed";
+	// } else {
+	// 	offerList[i].offeruserstatus = "Confirmed";
+	// }
+	console.log(
+		myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname,
+	);
+	//if its null then show no passenger
+	if (
+		myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname[0] ==
+		null
+	) {
+		$("#passengersListTitle").text("No one joined yet.");
+	} else {
+		//loop for joinedby, this is for the small list inside the modal showing passengers that joined
+		for (
+			var j = 0;
+			j <
+			myRideOfferList.get("offerid", offerid)[0]._values.joinedby.length;
+			j++
+		) {
+			passengersList.add({
+				phone: myRideOfferList.get("offerid", offerid)[0]._values.phone[
+					j
+				],
+				joinedby: myRideOfferList.get("offerid", offerid)[0]._values
+					.joinedby[j],
+				joinedbyname: myRideOfferList.get("offerid", offerid)[0]._values
+					.joinedbyname[j],
+			});
+			$("#joined").attr("id", "joined" + j);
+		}
+	}
 }

@@ -33,3 +33,14 @@
 .row {
 	margin: 0px;
 }
+
+.modal-body {
+	height: 500px;
+	background: linear-gradient(
+		135deg,
+		rgba(224, 242, 175, 1) 0%,
+		rgba(20, 250, 216, 1) 50%,
+		rgba(207, 184, 242, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f2af', endColorstr='#cfb8f2', GradientType=1 );
+}
