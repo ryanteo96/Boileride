@@ -101,21 +101,28 @@ function generateSearchOfferList(searchlist) {
 		} else searchlist[i].pets = "No";
 
 		totalprice = 0;
-		totaltravelingtime = 0;
 
 		for (var j = 0; j < searchlist[i].rides.length; j++) {
 			totalprice += searchlist[i].rides[j].price;
 		}
 
+		duration = moment
+			.duration(searchlist[i].duration, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(searchlist[i].rides[0].datentime);
+		datentime.subtract(time);
+
 		offerlist.add({
 			tripid: i,
-			duration: searchlist[i].duration,
+			duration: duration,
 			rides: searchlist[i].rides,
 			pickuplocation: searchlist[i].rides[0].pickuplocation,
 			destination:
 				searchlist[i].rides[searchlist[i].rides.length - 1].destination,
 			numrides: searchlist[i].rides.length,
-			datentime: searchlist[i].rides[0].datentime,
+			datentime: datentime.format("hh:mm A MMM DD, YYYY"),
 			price: totalprice,
 		});
 	}
@@ -137,5 +144,6 @@ $(document).ready(function() {
 	var searchResults = localStorage.getItem("searchResults");
 	var obj = JSON.parse(searchResults);
 
+	console.log(obj);
 	generateSearchOfferList(obj);
 });

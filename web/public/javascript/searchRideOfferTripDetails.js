@@ -63,7 +63,6 @@ function generateTripRideList(trip) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentimetext col-2 text-right"></small>' +
-			'<small id="status" class="status text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values seatsleft p-2"></small></i>' +
@@ -120,12 +119,14 @@ function generateTripRideList(trip) {
 			travelingtime: travelingtime,
 			offeredby: trip[i].offeredby,
 			seats: trip[i].seats,
-			seatsleft: trip[i].seatsleft,
+			seatsleft: trip[i].seatleft,
 			luggage: trip[i].luggage,
 			luggageleft: trip[i].luggageleft,
 			price: trip[i].price,
 			status: trip[i].status,
 		});
+
+		console.log(trip[i]);
 
 		ridelist.sort("datentime", { order: "asc" });
 		ridelist.sort("status", { order: "desc" });
