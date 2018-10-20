@@ -1295,36 +1295,29 @@ public class BoilerideServer {
     public static void main(String[] args) throws Exception{
 
         BoilerideServer server = new BoilerideServer();
-
-
         server.connect();
 
 
-
-//        RideOfferSearchRequest query4 = new RideOfferSearchRequest(234, "Earhart Residence Hall, 1st Street, West Lafayette, IN, USA", 0, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0,
-//                sdf.parse("2018-09-21 01:00:00"), 0, 1, 1, 1, true, false, false, false);
-
-
-
-
+//        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//        RideRequestSearchRequest query1 = new RideRequestSearchRequest(123, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0, "Subway, West State Street, West Lafayette, IN, USA", 0,
+//               sdf.parse("2018-10-26 18:34:00"), 10, 1, 1, true, true, true, true);
+//        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "Purdue Memorial Union, Grant Street, West Lafayette, IN, USA", 0, "2415 Sagamore Pkwy S, Lafayette, IN, USA", 0,
+//                sdf.parse("2018-10-20 01:45:10"), 10, 10, 1, 1, true, true, true, true);
+//
 //        try {
 //            RideRequestSearchResponse r1 = RideRequest.search(query1);
 //            System.out.println(new Gson().toJson(r1));
-
+//
 //            RideOfferSearchResponse r2 = RideOffer.search(query2);
 //            System.out.println(new Gson().toJson(r2));
-
-
-//            RideOfferSearchResponse r22 = RideOffer.search(query2);
-//            System.out.println(new Gson().toJson(r22));
 //
-//            RideOfferSearchResponse r222 = RideOffer.search(query2);
-//            System.out.println(new Gson().toJson(r222));
-
-
-//            RideOfferSearchResponse r4 = RideOffer.search(query4);
-//            System.out.println(new Gson().toJson(r4));
-
+////            RideOfferSearchResponse r22 = RideOffer.search(query2);
+////            System.out.println(new Gson().toJson(r22));
+////            RideOfferSearchResponse r222 = RideOffer.search(query2);
+////            System.out.println(new Gson().toJson(r222));
+//
 //            Trip t = r2.getTrips().get(0);
 //            RideOfferSearchAlterRequest q3 = new RideOfferSearchAlterRequest(234, 28, 28, t,
 //                    "PMU, Grant Street, West Lafayette, IN", "2415 Sagamore Pkwy S, Lafayette, IN, USA",
@@ -1332,7 +1325,6 @@ public class BoilerideServer {
 //                    1, 1, true, true, true, true);
 //            RideOfferSearchAlterResponse r3 = RideOffer.searchAlter(q3);
 //            System.out.println(new Gson().toJson(r3));
-
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        } catch (ApiException e) {
@@ -1340,81 +1332,5 @@ public class BoilerideServer {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
-
-
-//        GoogleMapAPI gma = new GoogleMapAPI();
-//        try {
-//            System.out.println(gma.estimate("PMU, 101 Grant St Room 186 101, West Lafayette, IN 47906", "200 North Second Street, Lafayette, IN 47901"));
-//            System.out.println(gma.getCity("200 North Second Street, Lafayette, IN 47901"));
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ApiException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        //System.out.println(DatabaseCommunicator.loginWithEmailPassword("test3", "test"));
-        //System.out.println(DatabaseCommunicator.selectUserByEmail("ryan@mail.com").getNickname());
-        //System.out.println("hello");
-//        String[] o = {"West Lafayette"};
-//        String[] d = {"Chicago"};
-//        GeoApiContext c = new GeoApiContext.Builder().apiKey("AIzaSyCgUC4EOMBRtNI32zglDvMveuiiJgW_uOI").build();
-//        try {
-//            DistanceMatrix m = DistanceMatrixApi.getDistanceMatrix(c, o, d)
-//                    //.newRequest(c)
-//                    //.origins(o)
-//                    //.destinations(d)
-//                    //.mode(TravelMode.DRIVING)
-//                    //.trafficModel(TrafficModel.OPTIMISTIC)
-//                    //.departureTime(new DateTime(System.currentTimeMillis()))
-//                    .await();
-//            System.out.println("out");
-//            DistanceMatrixElement res = m.rows[0].elements[0];
-//            System.out.println(res.duration);
-//            System.out.println(res.distance);
-//            System.out.println(res.durationInTraffic);
-//
-//        } catch (ApiException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-        //new JsonParser().parse();
-//        JsonObject test = new JsonObject();
-//        test.addProperty("email", "aaaaa@gmail.com");
-//        test.addProperty("password", "aaaaa");
-//        test.addProperty("nickname", "bbbbb");
-//        test.addProperty("phone", "12345");
-//
-//        UserSignUpRequest x1 = null;
-//        try {
-//            x1 = new Gson().fromJson(test, UserSignUpRequest.class);
-//        }catch (JsonSyntaxException e){
-//            System.out.println("wrong format");
-//            }
-//        UserSignUpRequest x2 = new Gson().fromJson(test, UserSignUpRequest.class);
-//
-//        UserSignUpRequest[] arr = {x1, x2};
-//
-//        System.out.println(x1.getEmail());
-//
-//        System.out.println(new Gson().toJson(x1));
-//        System.out.println(new Gson().toJson(arr));
-//
-//
-//        RideOffer rideOffer = new RideOffer();
-//        List<Trip> result = rideOffer.search("A", "E");
-//        for (Trip t : result) {
-//            for (RideOffer r : t.getRides()) {
-//                System.out.println(r.toString());
-//            }
-//        }
-
     }
 }

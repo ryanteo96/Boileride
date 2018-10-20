@@ -1044,7 +1044,7 @@ public class DatabaseCommunicator {
         String query = "";
         if (before == null) {
             query = String.format("SELECT * FROM RIDEOFFER " +
-                            "WHERE status <> 2 " +
+                            "WHERE (status = 0 or status = 1 or status = 4)" +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
                             "AND seatsleft >= %d " +
@@ -1056,7 +1056,7 @@ public class DatabaseCommunicator {
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
         } else {
             query = String.format("SELECT * FROM RIDEOFFER " +
-                            "WHERE status <> 2 " +
+                            "WHERE (status = 0 or status = 1 or status = 4) " +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
                             "AND datentime <= '%s' " +
@@ -1155,7 +1155,7 @@ public class DatabaseCommunicator {
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
             String query = String.format("SELECT * FROM RIDEREQUEST " +
-                    "WHERE status <> 2 " +
+                    "WHERE status = 0 " +
                     "AND pickuplocation like '%%%s%%' " +
                     "AND destination like '%%%s%%' " +
                     "AND datentime >= '%s' " +
