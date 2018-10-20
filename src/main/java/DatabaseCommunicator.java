@@ -1700,7 +1700,7 @@ public class DatabaseCommunicator {
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
                 datentimeStr = rs.getString("datentime");
-                passengers = rs.getInt("passengers");
+                passengers = rs.getInt("passenger");
                 luggage = rs.getInt("luggage");
                 smoking = rs.getInt("smoking");
                 foodndrink = rs.getInt("foodndrink");
