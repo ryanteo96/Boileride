@@ -478,16 +478,38 @@ public class RideOffer {
 
                     if( passengers.contains(user.getUserid()))
                     {
+                        JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(), req.getOfferid());
+                        rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
+                        rideOffer.setLuggageleft(rideOffer.getLuggageleft() + joinedOffer.getLuggage());
 
-                        int result = DatabaseCommunicator.removeJoinedOffer(user.getUserid(), req.getOfferid());
-                        if(result == 0)
+
+                        int removeResult = DatabaseCommunicator.removeJoinedOffer(user.getUserid(), req.getOfferid());
+                        if(removeResult == 0)
                         {
-                            PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
-                            response.setResult(0);
+                            if(rideOffer.getSeats() == rideOffer.getSeatleft())
+                            {
+                                rideOffer.setStatus(0);
+                                int result = DatabaseCommunicator.updateRideOffer(req.getOfferid(), rideOffer);
+                                if(result == 0)
+                                {
+                                    PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
+                                    response.setResult(0);
+                                }
+                                else
+                                {
+                                    System.out.println("Failed to update rideOffer status back to 0 in DB");
+                                }
+                            }
+                            else
+                            {
+                                PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
+                                response.setResult(0);
+                            }
+
                         }
                         else
                         {
-                            System.out.println("Failed to update the rideOffer status in DB");
+                            System.out.println("Failed to update the joinedOffer status in DB");
                         }
                     }
                     else
