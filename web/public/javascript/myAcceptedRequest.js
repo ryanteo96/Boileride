@@ -107,12 +107,23 @@ $(document).ready(function() {
 						generateAcceptedRequestList(res.acceptedrequestlist);
 						$.each(res.acceptedrequestlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
-								$("#request" + i).addClass("border-success");
-								$("#request" + i).css("background", "#7BF08F");
+								$("#request" + i).addClass("border-info");
+								$("#request" + i).addClass("bg-info");
 							}
+
+							if ($("#status" + i).text() == "Accepted") {
+								$("#request" + i).addClass("border-success");
+								$("#request" + i).addClass("bg-success");
+							}
+
 							if ($("#status" + i).text() == "Cancelled") {
 								$("#request" + i).addClass("border-danger");
-								$("#request" + i).css("background", "#F07B7B");
+								$("#request" + i).addClass("bg-danger");
+							}
+
+							if ($("#status" + i).text() == "Ended") {
+								$("#request" + i).addClass("border-secondary");
+								$("#request" + i).addClass("bg-secondary");
 							}
 						});
 
@@ -253,6 +264,7 @@ function generateAcceptedRequestList(acceptedRequestList) {
 			"travelingtime",
 			"price",
 			"status",
+			"statustext",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
@@ -264,7 +276,7 @@ function generateAcceptedRequestList(acceptedRequestList) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentime col-2 text-right"></small>' +
-			'<small id="status" class="status text-right"></small>' +
+			'<small id="status" class="statustext text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col-sm-push text-center"><small class="values passengers p-2"></small></i>' +
@@ -301,9 +313,13 @@ function generateAcceptedRequestList(acceptedRequestList) {
 		} else acceptedRequestList[i].pets = "No";
 
 		if (acceptedRequestList[i].status == 0) {
-			acceptedRequestList[i].status = "Ongoing";
-		} else {
-			acceptedRequestList[i].status = "Cancelled";
+			statustext = "Ongoing";
+		} else if (acceptedRequestList[i].status == 1) {
+			statustext = "Accepted";
+		} else if (acceptedRequestList[i].status == 2) {
+			statustext = "Cancelled";
+		} else if (acceptedRequestList[i].status == 3) {
+			statustext = "Ended";
 		}
 
 		myRideAcceptedRequestList.add({
@@ -321,10 +337,11 @@ function generateAcceptedRequestList(acceptedRequestList) {
 			requestedbyname: acceptedRequestList[i].requestedbyname,
 			price: acceptedRequestList[i].price,
 			status: acceptedRequestList[i].status,
+			statustext: statustext,
 		});
 
 		myRideAcceptedRequestList.sort("datentime", { order: "asc" });
-		myRideAcceptedRequestList.sort("status", { order: "desc" });
+		myRideAcceptedRequestList.sort("status", { order: "asc" });
 
 		$("#status").attr("id", "status" + i);
 		$("#request").attr("id", "request" + i);

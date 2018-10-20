@@ -104,14 +104,23 @@ $(document).ready(function() {
 						generateViewOfferList(res.offerlist);
 						$.each(res.offerlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
+								$("#offer" + i).addClass("border-info");
+								$("#offer" + i).addClass("bg-info");
+							}
+
+							if ($("#status" + i).text() == "Still Ongoing") {
 								$("#offer" + i).addClass("border-success");
-								$("#offer" + i).css("background", "#7BF08F");
+								$("#offer" + i).addClass("bg-success");
 							}
 
 							if ($("#status" + i).text() == "Cancelled") {
 								$("#offer" + i).addClass("border-danger");
-								$("#offer" + i).css("background", "#F07B7B");
-								``;
+								$("#offer" + i).addClass("bg-danger");
+							}
+
+							if ($("#status" + i).text() == "Ended") {
+								$("#offer" + i).addClass("border-secondary");
+								$("#offer" + i).addClass("bg-secondary");
 							}
 						});
 
@@ -290,6 +299,7 @@ function generateViewOfferList(offerList) {
 			"luggageleft",
 			"price",
 			"status",
+			"statustext",
 			"offeruserstatus",
 		],
 		item:
@@ -302,7 +312,7 @@ function generateViewOfferList(offerList) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentimetext col-2 text-right"></small>' +
-			'<small id="status" class="status text-right"></small>' +
+			'<small id="status" class="statustext text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col text-center"><small class="values seatleft p-2"></small></i>' +
@@ -339,13 +349,13 @@ function generateViewOfferList(offerList) {
 		} else offerList[i].pets = "No";
 
 		if (offerList[i].status == 0) {
-			offerList[i].status = "Ongoing";
+			statustext = "Ongoing";
 		} else if (offerList[i].status == 1) {
-			offerList[i].status = "Still Ongoing";
+			statustext = "Still Ongoing";
 		} else if (offerList[i].status == 2) {
-			offerList[i].status = "Cancelled";
+			statustext = "Cancelled";
 		} else if (offerList[i].status == 3) {
-			offerList[i].status = "Ended";
+			statustext = "Ended";
 		}
 
 		travelingtime = moment
@@ -372,6 +382,7 @@ function generateViewOfferList(offerList) {
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
 			status: offerList[i].status,
+			statustext: statustext,
 			joinedby: offerList[i].joinedby,
 			offeruserstatus: offerList[i].offeruserstatus,
 			phone: offerList[i].phone,
@@ -379,7 +390,7 @@ function generateViewOfferList(offerList) {
 		});
 
 		myRideOfferList.sort("datentime", { order: "asc" });
-		myRideOfferList.sort("status", { order: "desc" });
+		myRideOfferList.sort("status", { order: "asc" });
 
 		//assign dynamic id
 		$("#status").attr("id", "status" + i);

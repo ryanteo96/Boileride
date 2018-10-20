@@ -54,13 +54,24 @@ $(document).ready(function() {
 					case 0: {
 						generateRequestList(res.requestlist);
 						$.each(res.requestlist, function(i) {
-							if ($("#status" + i).text() == "Ongoing") {
+							if ($("#status" + i).text() == "Accepted") {
 								$("#request" + i).addClass("border-success");
-								$("#request" + i).css("background", "#7BF08F");
+								$("#request" + i).addClass("bg-success");
 							}
+
+							if ($("#status" + i).text() == "Ongoing") {
+								$("#request" + i).addClass("border-info");
+								$("#request" + i).addClass("bg-info");
+							}
+
 							if ($("#status" + i).text() == "Cancelled") {
 								$("#request" + i).addClass("border-danger");
-								$("#request" + i).css("background", "#F07B7B");
+								$("#request" + i).addClass("bg-danger");
+							}
+
+							if ($("#status" + i).text() == "Ended") {
+								$("#request" + i).addClass("border-secondary");
+								$("#request" + i).addClass("bg-secondary");
 							}
 						});
 
@@ -203,6 +214,7 @@ function generateRequestList(requestList) {
 			"travelingtime",
 			"price",
 			"status",
+			"statustext",
 		],
 		item:
 			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getItem(this)>' +
@@ -214,7 +226,7 @@ function generateRequestList(requestList) {
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
 			'<small class="datentimetext col-2 text-right"></small>' +
-			'<small id="status" class="status text-right"></small>' +
+			'<small id="status" class="statustext text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-users p-2 col-sm-push text-center"><small class="values passengers p-2"></small></i>' +
@@ -251,9 +263,13 @@ function generateRequestList(requestList) {
 		} else requestList[i].pets = "No";
 
 		if (requestList[i].status == 0) {
-			requestList[i].status = "Ongoing";
-		} else {
-			requestList[i].status = "Cancelled";
+			statustext = "Ongoing";
+		} else if (requestList[i].status == 1) {
+			statustext = "Accepted";
+		} else if (requestList[i].status == 2) {
+			statustext = "Cancelled";
+		} else if (requestList[i].status == 3) {
+			statustext = "Ended";
 		}
 
 		travelingtime = moment
@@ -280,10 +296,11 @@ function generateRequestList(requestList) {
 			requestedbyname: requestList[i].requestedbyname,
 			price: requestList[i].price,
 			status: requestList[i].status,
+			statustext: statustext,
 		});
 
 		myRideRequestList.sort("datentime", { order: "asc" });
-		myRideRequestList.sort("status", { order: "desc" });
+		myRideRequestList.sort("status", { order: "asc" });
 
 		$("#status").attr("id", "status" + i);
 		$("#request").attr("id", "request" + i);
