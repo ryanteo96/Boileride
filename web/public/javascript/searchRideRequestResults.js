@@ -152,18 +152,27 @@ function generateSearchRequestList(searchlist) {
 			searchlist[i].pets = "Yes";
 		} else searchlist[i].pets = "No";
 
+		travelingtime = moment
+			.duration(searchlist[i].travelingtime, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(searchlist[i].datentime);
+		datentime.subtract(time);
+
 		requestlist.add({
 			requestid: searchlist[i].requestid,
+			requestedby: searchlist[i].passenger,
 			pickuplocation: searchlist[i].pickuplocation,
 			destination: searchlist[i].destination,
-			datentime: searchlist[i].datentime,
+			datentime: datentime.format("hh:mm A MMM DD, YYYY"),
 			passengers: searchlist[i].passengers,
 			smoking: searchlist[i].smoking,
 			ac: searchlist[i].ac,
 			foodndrink: searchlist[i].foodndrink,
 			pets: searchlist[i].pets,
 			luggage: searchlist[i].luggage,
-			travelingtime: searchlist[i].travelingtime,
+			travelingtime: travelingtime,
 			requestedby: searchlist[i].requestedby,
 			price: searchlist[i].price,
 		});

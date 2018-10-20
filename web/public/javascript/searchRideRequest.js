@@ -34,41 +34,6 @@ $.post(
 	},
 );
 
-let test = [
-	{
-		requestid: 1,
-		requestedby: "test",
-		pickuplocation: "Earhart",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		passengers: 4,
-		luggage: 4,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 1,
-		status: "true",
-	},
-	{
-		requestid: 2,
-		requestedby: "test2",
-		pickuplocation: "Hillenbrand",
-		destination: "Purdue",
-		datentime: "1/1/1",
-		passengers: 3,
-		luggage: 3,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 3,
-		price: 100,
-		status: "true",
-	},
-];
-
 function init() {
 	pickup = document.getElementById("pickuplocation");
 	destination = document.getElementById("destination");
@@ -86,11 +51,6 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
-	// localStorage.key = "searchResults";
-	// localStorage.setItem("searchResults", JSON.stringify(test));
-
-	// window.location.href = "/searchRideRequestResults";
-
 	$("#searchRideRequestForm").submit(function(data) {
 		data.preventDefault();
 
