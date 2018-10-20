@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Ride Offer Trip</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <!-- List.js framework -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+
+    <!-- Icons import -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+        crossorigin="anonymous">
+
+    <!-- Public Google Maps API Key -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU6wXZ3iun_QhpFv1VnVVRaqKUFuG5f8U&libraries=places"></script> -->
+
+    <!-- Local Testing Google Maps API Key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmBth00ynuUTuc-Rw2VK46naRps1ZrNDA&libraries=places"></script>
+
+    <!-- Moment.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="../../javascript/moment-duration-format.js" type="text/javascript"></script>
+
+    <!-- Javascript and Stylesheets imports -->
+    <link href="../stylesheets/searchRideOfferResults.css" rel="stylesheet" type="text/css">
+    <link href="../stylesheets/loader.css" rel="stylesheet" type="text/css">
+    <script src="../javascript/searchRideOfferResults.js" type="text/javascript"></script>
+    <script src="../javascript/signOut.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <a class="navbar-brand" href="/home">Boileride</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        My Rides
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <h6 class="dropdown-header" style="font-weight: bold">As passenger</h6>
+                        <a id="myRequest" class="dropdown-item" href="/myRides/myRequest">My Ride Requests</a>
+                        <a id="myJoinedOffer" class="dropdown-item" href="/myRides/myOffer/joined">Joined Rides</a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header" style="font-weight: bold">As driver</h6>
+                        <a id="myOffer" class="dropdown-item" href="/myRides/myOffer">My Ride Offers</a>
+                        <a id="myAcceptedRequest" class="dropdown-item" href="/myRides/myRequest/accepted">Accepted
+                            Rides</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/myPoints">My Points</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/settings">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a id="signOutBtn" class="nav-link" href="">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="searchRideOfferList" class="searchRideOfferList">
+        <h5 id="searchRideOfferListTitle">Search Results</h5>
+        <ul class="list list-group list-group-flush"></ul>
+    </div>
+
+    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="loader"></div>
+                    <div clas="loader-txt">
+                        <p>Loading... </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

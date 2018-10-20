@@ -27,6 +27,10 @@
     <!-- Local Testing Google Maps API Key -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmBth00ynuUTuc-Rw2VK46naRps1ZrNDA&libraries=places"></script>
 
+    <!-- Moment.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="../../javascript/moment-duration-format.js" type="text/javascript"></script>
+
     <!-- Javascript and Stylesheets imports -->
     <link href="../stylesheets/searchRideOffer.css" rel="stylesheet" type="text/css">
     <link href="../stylesheets/loader.css" rel="stylesheet" type="text/css">
@@ -177,11 +181,6 @@
         </form>
     </div>
 
-    <div id="searchRideOfferList" class="searchRideOfferList">
-        <h5 id="searchRideOfferListTitle">Search Results</h5>
-        <ul class="list list-group list-group-flush"></ul>
-    </div>
-
     <!-- Modal -->
     <div id="rideOfferModal" class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -189,59 +188,21 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Ride Offer Details</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Trip Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-left col">Pick Up Location</h5>
-                            <h5 class="mb-1 text-right col">Destination</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="pickuplocationDetails" class="mb-1 text-left col-5 text-primary"></h6>
-                            <i class="fas fa-arrow-right text-center col-2"></i>
-                            <h6 id="destinationDetails" class="mb-1 text-right col-5 text-primary"></h6>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Number of Seat(s) Available</h5>
-                            <h5 class="mb-1 text-center col">Number of Luggage(s)</h5>
-                            <h5 class="mb-1 text-center col">Number of Ride(s)</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="seatsDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="luggageDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="numridesDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Smoking Allowed</h5>
-                            <h5 class="mb-1 text-center col">Food and Drinks Allowed</h5>
-                            <h5 class="mb-1 text-center col">Pets Allowed</h5>
-                            <h5 class="mb-1 text-center col">A.C. Available</h5>
-                        </div>
-                        <div class="mb-2 pb-5 d-flex w-100">
-                            <h6 id="smokingDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="foodndrinkDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="petsDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="acDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
-
-                        <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Travel Time</h5>
-                            <h5 class="mb-1 text-center col">Offer by</h5>
-                            <h5 class="mb-1 text-center col">Price</h5>
-                        </div>
-                        <div class="mb-2 d-flex w-100">
-                            <h6 id="travelingtimeDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="offeredbyDetails" class="mb-1 text-center col text-primary"></h6>
-                            <h6 id="priceDetails" class="mb-1 text-center col text-primary"></h6>
-                        </div>
+                    <div id="tripRideList" class="tripRideList">
+                        <h5 class="m-0">Ride List</h5>
+                        <ul class="list list-group list-group-flush"></ul>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="joinRideDetailsBtn" type="button" class="btn btn-primary">Join</button>
+                        <button id="editTripBtn" type="button" class="btn btn-primary">Edit Trip</button>
+                        <button id="joinTripBtn" type="button" class="btn btn-success">Join</button>
                     </div>
                 </div>
             </div>
@@ -262,12 +223,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md mb-3">
                             <label for="validationDefault01">Number of passengers</label>
                             <input id="numPassenger" type="number" class="form-control" id="validationDefault01" name="passenger"
                                 placeholder="" min=1 value="1" required>
                         </div>
-                        <div class="col-md-2 mb-3">
+                        <div class="col-md mb-3 col">
                             <label for="validationDefault01">Number of luggage</label>
                             <input id="numLuggage" type="number" class="form-control" id="validationDefault01" name="luggage"
                                 placeholder="" min=0 value="1" required>
