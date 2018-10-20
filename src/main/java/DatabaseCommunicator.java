@@ -749,7 +749,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             ResultSet rs = stmt.executeQuery("SELECT offerid, offeredby, price, datentime " +
-                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and offeredby = "+ userid);
+                    "FROM RIDEOFFER WHERE (status = 0 or status = 1 or status = 4) and offeredby = "+ userid);
 
             while (rs.next()) {
                 int offerid = -1;
@@ -1017,7 +1017,7 @@ public class DatabaseCommunicator {
         return users;
     }
 
-    public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
+    public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, Date before, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
         ArrayList<RideOffer> res = new ArrayList<>();
 
         int offerid = -1;
@@ -1041,9 +1041,9 @@ public class DatabaseCommunicator {
         boolean pet = false;
         boolean ac = false;
 
-        try {
-            Statement stmt = BoilerideServer.conn.createStatement();
-            String query = String.format("SELECT * FROM RIDEOFFER " +
+        String query = "";
+        if (before == null) {
+            query = String.format("SELECT * FROM RIDEOFFER " +
                             "WHERE status <> 2 " +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
@@ -1054,6 +1054,27 @@ public class DatabaseCommunicator {
                             "AND pets = %d " +
                             "AND ac = %d", city, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+        } else {
+            query = String.format("SELECT * FROM RIDEOFFER " +
+                            "WHERE status <> 2 " +
+                            "AND pickuplocation like '%%%s%%' " +
+                            "AND datentime >= '%s' " +
+                            "AND datentime <= '%s' " +
+                            "AND seatsleft >= %d " +
+                            "AND luggagesleft >= %d " +
+                            "AND smoking = %d " +
+                            "AND foodndrink = %d " +
+                            "AND pets = %d " +
+                            "AND ac = %d",
+                    city,
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(before),
+                    qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+        }
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 offerid = rs.getInt("offerid");
@@ -1894,8 +1915,9 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t, USER u1, USER u2 " +
-                    "WHERE t.touserid = u1.userid and t.foruserid = u2.userid and (foruserid = " + userid + " or touserid = " + userid + ")");
+            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t " +
+                    "JOIN USER u1 on t.touserid = u1.userid JOIN USER u2 on t.foruserid = u2.userid " +
+                    "WHERE (foruserid = " + userid + " && description not LIKE 'Receive payment%') or (touserid = " + userid + " && description not LIKE 'Make payment%')");
 
             int transactionid;
             int touserid;
@@ -2066,8 +2088,9 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
+                Timestamp timestamp = new java.sql.Timestamp(joinDate.getTime());
                 stmt.executeUpdate("INSERT INTO JOINEDRIDEOFFER (userid, offerid, passenger, luggage, triporder, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, joindate) " +
-                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+timestamp+"');");
             }
 
             rs.close();

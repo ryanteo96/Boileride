@@ -19,6 +19,9 @@ public class GoogleMapAPI {
                 .destinations(address2)
                 .mode(TravelMode.DRIVING)
                 .await();
+        if (res == null) {
+            System.out.println("not getting result from google map api, check with inputs");
+        }
         return (int) res.rows[0].elements[0].duration.inSeconds / 60;
     }
 

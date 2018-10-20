@@ -1297,17 +1297,37 @@ public class BoilerideServer {
 //        conn = DriverManager.getConnection(DB_URL, USER, PASS);
 //
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
+
 
 //        RideRequestSearchRequest query1 = new RideRequestSearchRequest(123, "Hillenbrand Dining Court, 3rd Street, West Lafayette, IN 47906", 10.0, "Recreational Sports Center, North Martin Jischke Drive, West Lafayette, IN 47906", 10.0,
 //                sdf.parse("2018-09-29 15:45:00"), 10000, 1, 1, true, true, true, true);
-//        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "PMU, Grant Street, West Lafayette, IN", 0, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0,
-//                sdf.parse("2018-10-28 03:57:00"), 10000, 10, 1, 1, true, true, true, true);
+//        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "PMU, Grant Street, West Lafayette, IN", 0, "2415 Sagamore Pkwy S, Lafayette, IN, USA", 0,
+//                sdf.parse("2018-10-19 01:45:10"), 10, 10, 1, 1, true, true, true, true);
+
+//        RideOfferSearchRequest query4 = new RideOfferSearchRequest(234, "Earhart Residence Hall, 1st Street, West Lafayette, IN, USA", 0, "Triple XXX Family Restaurant, North Salisbury Street, West Lafayette, IN, USA", 0,
+//                sdf.parse("2018-09-21 01:00:00"), 0, 1, 1, 1, true, false, false, false);
+
+
+
+
 //        try {
 //            RideRequestSearchResponse r1 = RideRequest.search(query1);
-//            RideOfferSearchResponse r2 = RideOffer.search(query2);
 //            System.out.println(new Gson().toJson(r1));
+
+//            RideOfferSearchResponse r2 = RideOffer.search(query2);
 //            System.out.println(new Gson().toJson(r2));
+
+//            RideOfferSearchResponse r4 = RideOffer.search(query4);
+//            System.out.println(new Gson().toJson(r4));
+
+//            Trip t = r2.getTrips().get(0);
+//            RideOfferSearchAlterRequest q3 = new RideOfferSearchAlterRequest(234, 23, 23, t,
+//                    "PMU, Grant Street, West Lafayette, IN", "2415 Sagamore Pkwy S, Lafayette, IN, USA",
+//                    sdf.parse("2018-10-30 11:00:00"), 0, 0, 10, 10,
+//                    1, 1, true, true, true, true);
+//            RideOfferSearchAlterResponse r3 = RideOffer.searchAlter(q3);
+//            System.out.println(new Gson().toJson(r3));
+
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        } catch (ApiException e) {
