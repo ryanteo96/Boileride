@@ -7,6 +7,7 @@ import DTO.*;
 import com.google.gson.Gson;
 import com.google.maps.errors.ApiException;
 
+import javax.jws.soap.SOAPBinding;
 import javax.xml.crypto.Data;
 
 /**
@@ -380,6 +381,11 @@ public class RideOffer {
                                                     if(addOfferResult == 0)
                                                     {
                                                         joinedOffers ++;
+
+                                                        User owner = DatabaseCommunicator.selectUser(rideOffer.getOfferedby());
+
+                                                        SendEmail sender = new SendEmail();
+                                                        sender.sendEmail(owner.getEmail(), "Your offer has been joined by someone.", user.getNickname()+ "has just joined your offer. \nDetail info:\nNickname: " + user.getNickname() + "\nEmail: " + user.getEmail() );
                                                     }
                                                     else if(addOfferResult == 1)
                                                     {
@@ -494,6 +500,8 @@ public class RideOffer {
                                 {
                                     PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
                                     response.setResult(0);
+                                    SendEmail sender = new SendEmail();
+                                    sender.sendEmail(user.getEmail(), "You have cancelled your offer.", "You have cancelled your offer.");
                                 }
                                 else
                                 {
@@ -597,6 +605,12 @@ public class RideOffer {
                                         if(result == 0)
                                         {
                                             updatedOffers ++;
+
+                                            User owner = DatabaseCommunicator.selectUser(rideOffer.getOfferedby());
+
+                                            SendEmail sender = new SendEmail();
+
+                                            sender.sendEmail(owner.getEmail(), "Someone has updated their needs", user.getNickname() + " has updated his/hers needs.\n Detail info:\nNickname: " + user.getNickname() + "\nEmail: " + user.getEmail()+ "\nSeats requirment: " + req.getPassenger() + "\nLuggages requirment:  " + req.getLuggage() );
                                         }
                                         else if(result == 99)
                                         {
