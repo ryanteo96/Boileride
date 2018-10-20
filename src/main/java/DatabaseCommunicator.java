@@ -1017,7 +1017,7 @@ public class DatabaseCommunicator {
         return users;
     }
 
-    public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
+    public static ArrayList<RideOffer> rideOfferFrom(String city, Date date, Date before, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
         ArrayList<RideOffer> res = new ArrayList<>();
 
         int offerid = -1;
@@ -1041,9 +1041,9 @@ public class DatabaseCommunicator {
         boolean pet = false;
         boolean ac = false;
 
-        try {
-            Statement stmt = BoilerideServer.conn.createStatement();
-            String query = String.format("SELECT * FROM RIDEOFFER " +
+        String query = "";
+        if (before == null) {
+            query = String.format("SELECT * FROM RIDEOFFER " +
                             "WHERE status <> 2 " +
                             "AND pickuplocation like '%%%s%%' " +
                             "AND datentime >= '%s' " +
@@ -1054,6 +1054,27 @@ public class DatabaseCommunicator {
                             "AND pets = %d " +
                             "AND ac = %d", city, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+        } else {
+            query = String.format("SELECT * FROM RIDEOFFER " +
+                            "WHERE status <> 2 " +
+                            "AND pickuplocation like '%%%s%%' " +
+                            "AND datentime >= '%s' " +
+                            "AND datentime <= '%s' " +
+                            "AND seatsleft >= %d " +
+                            "AND luggagesleft >= %d " +
+                            "AND smoking = %d " +
+                            "AND foodndrink = %d " +
+                            "AND pets = %d " +
+                            "AND ac = %d",
+                    city,
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(before),
+                    qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
+        }
+
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 offerid = rs.getInt("offerid");
