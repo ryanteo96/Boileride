@@ -45,35 +45,8 @@ router.post("/myRequest", function(req, res) {
 		userid: req.body.userid,
 	};
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/view/request",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Cookie: global.cookie,
-		},
-	};
-
-	console.log(data);
-
-	request(options, function(error, response) {
-		if (response) {
-			res.send(response.body);
-		}
-		return;
-	});
-});
-
-// view accepted request
-router.post("/myRequest/accepted", function(req, res) {
-	var data = {
-		userid: req.body.userid,
-	};
-
-	var options = {
-		uri: "http://localhost:8080/ride/view/acceptedrequest",
 		json: data,
 		method: "POST",
 		headers: {
@@ -143,40 +116,8 @@ router.post("/myRequest/cancel", function(req, res) {
 		requestid: req.body.requestid,
 	};
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/cancel/request",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Cookie: global.cookie,
-		},
-	};
-
-	console.log(data);
-
-	request(options, function(error, response) {
-		if (response) {
-			res.send(response.body);
-		}
-		return;
-	});
-});
-
-//cancel my accepted request
-router.post("/myRequest/accepted/cancel", function(req, res) {
-	let date = req.body.date;
-	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
-
-	var data = {
-		userid: req.body.userid,
-		requestid: req.body.requestid,
-	};
-
-	//  temp server connection test
-	var options = {
-		uri: "http://localhost:8080/ride/cancel/acceptedrequest",
 		json: data,
 		method: "POST",
 		headers: {
@@ -230,24 +171,128 @@ router.post("/myRequest/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
-	var body = {
-		result: 0,
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/request/confirmpickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
 	};
 
-	res.send(body);
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/request/confirmpickup",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	//		Cookie: global.cookie,
-	// 	},
-	// };
+// view accepted request
+router.post("/myRequest/accepted", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+	};
 
-	// console.log(data);
+	var options = {
+		uri: "http://localhost:8080/ride/view/acceptedrequest",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+//cancel my accepted request
+router.post("/myRequest/accepted/cancel", function(req, res) {
+	let date = req.body.date;
+	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
+
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	var options = {
+		uri: "http://localhost:8080/ride/cancel/acceptedrequest",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
+
+// myrequest get pickup code
+router.post("/myRequest/accepted/pickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+	};
+
+	var options = {
+		uri: "http://localhost:8080/ride/acceptedrequest/pickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+// accepted myrequest to confirm pickup code
+router.post("/myRequest/accepted/confirmpickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		requestid: req.body.requestid,
+		code: req.body.code,
+	};
+
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/acceptedrequest/confirmpickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
@@ -274,32 +319,6 @@ router.post("/myOffer", function(req, res) {
 			Cookie: global.cookie,
 		},
 	};
-
-	request(options, function(error, response) {
-		if (response) {
-			res.send(response.body);
-		}
-		return;
-	});
-});
-
-// view joined offer
-router.post("/myOffer/joined", function(req, res) {
-	var data = {
-		userid: req.body.userid,
-	};
-
-	var options = {
-		uri: "http://localhost:8080/ride/view/joinedoffer",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Cookie: global.cookie,
-		},
-	};
-
-	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
@@ -376,32 +395,6 @@ router.post("/myOffer/cancel", function(req, res) {
 	});
 });
 
-//cancel myOffer
-router.post("/myOffer/joined/cancel", function(req, res) {
-	var data = {
-		userid: req.body.userid,
-		offerid: req.body.offerid,
-	};
-	console.log(data);
-
-	var options = {
-		uri: "http://localhost:8080/ride/cancel/joinedoffer",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Cookie: global.cookie,
-		},
-	};
-
-	request(options, function(error, response) {
-		if (response) {
-			res.send(response.body);
-		}
-		return;
-	});
-});
-
 // myoffer get pickup code
 router.post("/myOffer/pickup", function(req, res) {
 	var data = {
@@ -411,7 +404,6 @@ router.post("/myOffer/pickup", function(req, res) {
 
 	console.log(data);
 
-	//  temp server connection test
 	var options = {
 		uri: "http://localhost:8080/ride/offer/pickup",
 		json: data,
@@ -439,24 +431,152 @@ router.post("/myOffer/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
-	var body = {
-		result: 0,
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/offer/confirmpickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
 	};
 
-	res.send(body);
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
 
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/offer/confirmpickup",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	//		Cookie: global.cookie,
-	// 	},
-	// };
+// view joined offer
+router.post("/myOffer/joined", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+	};
 
-	// console.log(data);
+	var options = {
+		uri: "http://localhost:8080/ride/view/joinedoffer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log(data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+//edit joined myOffer
+router.post("/myOffer/joined/edit", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offeridlist: req.body.offeridlist,
+		passenger: req.body.passenger,
+		luggage: req.body.luggage,
+	};
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/update/joinedoffer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
+
+//cancel myOffer
+router.post("/myOffer/joined/cancel", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+	};
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/cancel/joinedoffer",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
+});
+
+// myoffer get pickup code
+router.post("/myOffer/joined/pickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+	};
+
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/joinedoffer/pickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
+});
+
+// myoffer to confirm pickup code
+router.post("/myOffer/joined/confirmpickup", function(req, res) {
+	var data = {
+		userid: req.body.userid,
+		offerid: req.body.offerid,
+		code: req.body.code,
+	};
+
+	console.log(data);
+
+	var options = {
+		uri: "http://localhost:8080/ride/joinedoffer/confirmpickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
