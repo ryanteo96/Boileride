@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
         crossorigin="anonymous">
 
+    <!-- Moment.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="../../javascript/moment-duration-format.js" type="text/javascript"></script>
+
     <!-- Javascript and Stylesheets imports -->
     <link href="../../stylesheets/loader.css" rel="stylesheet" type="text/css">
     <link href="../../stylesheets/myAcceptedRequest.css" rel="stylesheet" type="text/css">
@@ -135,11 +139,39 @@
                     <div class="modal-footer">
                         <button id="cancelRequestBtn" type="button" class="btn btn-secondary" data-dismiss="modal" href="/myRides/myRequest/cancel">Cancel
                             Ride</button>
-                        <button id="editRequestBtn" type="button" class="btn btn-primary" href="/myRides/myRequest/edit">Edit
-                            Ride</button>
-                        <button id="getPickUpBtn" type="button" class="btn btn-success" href="/myRides/myRequest/pickup">Get
-                            Pickup Code</button>
+                        <!-- <button id="editRequestBtn" type="button" class="btn btn-primary" href="/myRides/myRequest/edit">Edit
+                            Ride</button> -->
+                        <button id="getPickUpBtn" type="button" class="btn btn-success">Get Pickup Code</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmCodeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="confirmCodeContent">
+                <div class="modal-header" id="confirmCodeModalHeader">
+                    <h5 class="modal-title" style="color:white">Enter the pick up code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmCodeModalBody">
+                    <h2 id="headerCode"> NO RESULT </h2>
+                    <h6 style="color:red;">Show this code to your passengers</h6>
+                    <h6>Please enter the pickup code you obtained from your passengers.</h6>
+                    <form id="pickUpForm" class="form-horizontal" role="form" method="post">
+                        <!-- input for pickupcode -->
+                        <div class="form-group" style="margin-top:10px">
+                            <input id="verifyPickupCode" type="text" class="form-control" name="code" placeholder="Enter your code here"
+                                required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" id="confirmCodeModalFooter">
+                    <button id="verifyPickupBtn" class="btn btn-success float-right" type="submit">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

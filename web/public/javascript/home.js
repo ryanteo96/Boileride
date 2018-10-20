@@ -20,6 +20,10 @@ $.post(
 				$("#nickname").text("Hello, " + res.nickname + "!");
 				break;
 			}
+			case 1: {
+				window.location.href = "/signin";
+				break;
+			}
 			case 2: {
 				window.location.href = "/signin";
 				break;

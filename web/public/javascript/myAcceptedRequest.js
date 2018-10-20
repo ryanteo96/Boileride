@@ -31,57 +31,11 @@ $.post(
 		}
 	},
 );
-/*============================== TEST DATA START HERE!!!! /*==============================*/
-let test = [
-	{
-		requestedbyname: "adwad",
-		datentime: "1/1/1",
-		pickuplocation: "tesawdwadt1",
-		destination: "tesadwawdt2",
-		passengers: 2,
-		luggage: 1,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 5,
-		price: 1,
-		status: "Ongoing",
-	},
-	{
-		requestedbyname: "test",
-		datentime: "1/1/1",
-		pickuplocation: "test1",
-		destination: "test2",
-		passengers: 2,
-		luggage: 1,
-		smoking: "true",
-		foodndrink: "false",
-		pets: "true",
-		ac: "true",
-		travelingtime: 5,
-		price: 1,
-		status: "Cancelled",
-	},
-];
-/*============================== TEST DATA END HERE!!!! /*==============================*/
 
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
 	console.log(obj.userid);
-	/*============================== TEST DATA START HERE!!!! /*==============================*/
-	// generateAcceptedRequestList(test);
-	// $("#status0").text("Ongoing");
-	// if ($("#status0").text() == "Ongoing") {
-	// 	$("#request0").addClass("border-success");
-	// 	$("#request0").css("background", "#7BF08F");
-	// }
-	// if ($("#status1").text() == "Cancelled") {
-	// 	$("#request1").addClass("border-danger");
-	// 	$("#request1").css("background", "#F07B7B");
-	// }
-	// /*============================== TEST DATA END HERE!!!! /*==============================*/
 
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
@@ -202,8 +156,8 @@ $(document).ready(function() {
 
 		var editRequest = localStorage.getItem("editRequest");
 		var edit = JSON.parse(editRequest);
-		//go to the code confirmation page
-		window.location.href = "/myRides/myRequest/pickup";
+
+		$("#confirmCodeModal").modal("show");
 
 		$.post(
 			"/myRides/myRequest/pickup",
@@ -238,7 +192,7 @@ $(document).ready(function() {
 						break;
 					}
 					case 4: {
-						alert("Not authorized to get code.");
+						// alert("Not authorized to get code.");
 						break;
 					}
 				}
@@ -322,18 +276,26 @@ function generateAcceptedRequestList(acceptedRequestList) {
 			statustext = "Ended";
 		}
 
+		travelingtime = moment
+			.duration(acceptedRequestList[i].travelingtime, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(acceptedRequestList[i].datentime);
+		datentime.subtract(time);
+
 		myRideAcceptedRequestList.add({
 			requestid: acceptedRequestList[i].requestid,
 			pickuplocation: acceptedRequestList[i].pickuplocation,
 			destination: acceptedRequestList[i].destination,
-			datentime: acceptedRequestList[i].datentime,
+			datentime: datentime.format("hh:mm A MMM DD, YYYY"),
 			passengers: acceptedRequestList[i].passengers,
 			smoking: acceptedRequestList[i].smoking,
 			ac: acceptedRequestList[i].ac,
 			foodndrink: acceptedRequestList[i].foodndrink,
 			pets: acceptedRequestList[i].pets,
 			luggage: acceptedRequestList[i].luggage,
-			travelingtime: acceptedRequestList[i].travelingtime,
+			travelingtime: travelingtime,
 			requestedbyname: acceptedRequestList[i].requestedbyname,
 			price: acceptedRequestList[i].price,
 			status: acceptedRequestList[i].status,

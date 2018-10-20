@@ -56,9 +56,9 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f2af', endColorstr='#cfb8f2', GradientType=1 );
 }
 
-#confirmCodeContent {
+/* #confirmCodeContent {
 	top: 100px;
-}
+} */
 
 #confirmCodeModalBody {
 	background: white;

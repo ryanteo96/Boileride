@@ -107,12 +107,20 @@
                             <h6 id="destinationDetails" class="mb-1 text-right col-5 text-primary"></h6>
                         </div>
                         <div class="mb-2 d-flex w-100">
-                            <h5 class="mb-1 text-center col">Number of Seat(s) Available</h5>
-                            <h5 class="mb-1 text-center col">Number of Luggage(s)</h5>
+                            <h5 class="mb-1 text-center col">Number of Seat(s)</h5>
+                            <h5 class="mb-1 text-center col">Number for Luggage(s)</h5>
                         </div>
                         <div class="mb-2 pb-5 d-flex w-100">
                             <h6 id="seatsDetails" class="mb-1 text-center col text-primary"></h6>
                             <h6 id="luggageDetails" class="mb-1 text-center col text-primary"></h6>
+                        </div>
+                        <div class="mb-2 d-flex w-100">
+                            <h5 class="mb-1 text-center col">Number of Seat(s) Available</h5>
+                            <h5 class="mb-1 text-center col">Space for Luggage(s) Available</h5>
+                        </div>
+                        <div class="mb-2 pb-5 d-flex w-100">
+                            <h6 id="seatsLeftDetails" class="mb-1 text-center col text-primary"></h6>
+                            <h6 id="luggageLeftDetails" class="mb-1 text-center col text-primary"></h6>
                         </div>
                         <div class="mb-2 d-flex w-100">
                             <h5 class="mb-1 text-center col">Smoking Allowed</h5>
@@ -141,22 +149,69 @@
                     <div class="modal-footer">
                         <button id="cancelOfferBtn" type="button" class="btn btn-secondary" data-dismiss="modal" href="/myRides/myOffer/cancel">Cancel
                             Ride</button>
-                        <button id="editOfferBtn" type="button" class="btn btn-primary" href="/myRides/myOffer/edit">Edit
-                            Ride</button>
-                        <!-- getPickUpBtn: href="/myRides/myOffer/pickup" later add to a new button -->
-                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#showPassengers"
-                            aria-expanded="false" aria-controls="showPassengers">
-                            Show all passengers
-                        </button>
-
+                        <button id="editOfferBtn" type="button" class="btn btn-primary">Edit Ride</button>
+                        <button id="getPickUpBtn" type="button" class="btn btn-success">Confirm your ride</button>
                     </div>
-                    <div class="collapse" id="showPassengers">
-                        <div class="card card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson
-                            ad squid. Nihil anim
-                            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmCodeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="confirmCodeContent">
+                <div class="modal-header" id="confirmCodeModalHeader">
+                    <h5 class="modal-title" style="color:white">Enter the pick up code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmCodeModalBody">
+                    <h2 id="headerCode"> NO RESULT </h2>
+                    <h6 style="color:red;">Show this code to your passengers</h6>
+                    <h6>Please enter the pickup code you obtained from your passengers.</h6>
+                    <form id="pickUpForm" class="form-horizontal" role="form" method="post">
+                        <!-- input for pickupcode -->
+                        <div class="form-group" style="margin-top:10px">
+                            <input id="verifyPickupCode" type="text" class="form-control" name="code" placeholder="Enter your code here"
+                                required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" id="confirmCodeModalFooter">
+                    <button id="verifyPickupBtn" class="btn btn-success float-right" type="submit">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editOfferModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="confirmCodeContent">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Joined Offer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md mb-3">
+                            <label for="validationDefault01">Number of passengers</label>
+                            <input id="numPassenger" type="number" class="form-control" id="validationDefault01" name="passenger"
+                                placeholder="" min=1 value="1" required>
+                        </div>
+                        <div class="col-md mb-3 col">
+                            <label for="validationDefault01">Number of luggage</label>
+                            <input id="numLuggage" type="number" class="form-control" id="validationDefault01" name="luggage"
+                                placeholder="" min=0 value="1" required>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="editOfferDetailsBtn" class="btn btn-success float-right" type="submit">Edit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

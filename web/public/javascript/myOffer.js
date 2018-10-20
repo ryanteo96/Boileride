@@ -34,51 +34,6 @@ $.post(
 	},
 );
 
-/*============================== TEST DATA START HERE!!!! /*==============================*/
-let test = [
-	{
-		offerid: 2,
-		datentime: 2020 / 8 / 10,
-		pickuplocation: "my house",
-		destination: "your house",
-		smoking: "true",
-		ac: "true",
-		foodndrink: "false",
-		pets: "true",
-		travelingtime: 10000,
-		offeredbyname: "Shinigami",
-		seatleft: 5,
-		luggageleft: 2,
-		price: 9000,
-		status: "Ongoing",
-		joinedby: [4, 5, 6, 7],
-		offeruserstatus: [1, 0, 0, 1],
-		phone: [74747474, 85858585, 96969696, 31235474],
-		joinedbyname: ["a", "b", "f", "g"],
-	},
-	{
-		offerid: 3,
-		datentime: 9999 / 8 / 10,
-		pickuplocation: "your house",
-		destination: "my house",
-		smoking: "true",
-		ac: "true",
-		foodndrink: "false",
-		pets: "true",
-		travelingtime: 57564,
-		offeredbyname: "shingekinokyojin",
-		seatleft: 5,
-		luggageleft: 2,
-		price: 98987987,
-		status: "Cancelled",
-		joinedby: [1, 2, 3],
-		offeruserstatus: [0, 1, 0],
-		phone: [987654321, 159874632, 34785169],
-		joinedbyname: ["c", "d", "e"],
-	},
-];
-/*============================== TEST DATA END HERE!!!! /*==============================*/
-
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
@@ -100,8 +55,19 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						console.log(res.offerlist);
+						res.offerlist.sort(function(a, b) {
+							var dateA = new Date(a.datentime),
+								dateB = new Date(b.datentime);
+
+							if (a.status - b.status) {
+								return a.status - b.status;
+							} else {
+								return dateA - dateB;
+							}
+						});
+
 						generateViewOfferList(res.offerlist);
+
 						$.each(res.offerlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
 								$("#offer" + i).addClass("border-info");
@@ -193,60 +159,11 @@ $(document).ready(function() {
 			},
 		);
 	});
-
-	//get pickup code
-	// 	$("#getPickUpBtn").click(function(data) {
-	// 		var credentials = localStorage.getItem("credentials");
-	// 		var obj = JSON.parse(credentials);
-
-	// 		var editOffer = localStorage.getItem("editOffer");
-	// 		var edit = JSON.parse(editOffer);
-	// 		//go to the code confirmation page
-	// 		window.location.href = "/myRides/myOffer/pickup";
-
-	// 		$.post(
-	// 			"/myRides/myOffer/pickup",
-	// 			{
-	// 				userid: obj.userid,
-	// 				offerid: edit.offerid,
-	// 			},
-	// 			function(res) {
-	// 				switch (res.result) {
-	// 					case 0: {
-	// 						//store the code so can display it in confirm myRequestPickup
-	// 						localStorage.key = "code";
-	// 						localStorage.setItem(
-	// 							"code",
-	// 							JSON.stringify({
-	// 								// code: res.code,
-	// 								codeforpassenger: "CODEFORPASSENGER",
-	// 							}),
-	// 						);
-	// 						break;
-	// 					}
-	// 					case 1: {
-	// 						alert("Invalid userid.");
-	// 						break;
-	// 					}
-	// 					case 2: {
-	// 						alert("User not logged in.");
-	// 						break;
-	// 					}
-	// 					case 3: {
-	// 						alert("Invalid offerid.");
-	// 						break;
-	// 					}
-	// 					case 4: {
-	// 						alert("Not authorized to get code.");
-	// 						break;
-	// 					}
-	// 				}
-	// 			},
-	// 		);
-	// 	});
 });
 
 function generateViewOfferList(offerList) {
+	console.log(offerList);
+
 	$("#confirmCodeModal").modal("hide");
 	var options = {
 		valueNames: [
@@ -358,9 +275,6 @@ function generateViewOfferList(offerList) {
 			joinedbyname: offerList[i].joinedbyname,
 		});
 
-		myRideOfferList.sort("datentime", { order: "asc" });
-		myRideOfferList.sort("status", { order: "asc" });
-
 		//assign dynamic id
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
@@ -371,6 +285,9 @@ function getItem(item) {
 	//to reset the slide back to data-slide 0 everytime opening a modal
 	$("#carouselExampleIndicators").carousel(0);
 	var offerid = $(item).data("offerid");
+
+	var credentials = localStorage.getItem("credentials");
+	var obj = JSON.parse(credentials);
 
 	localStorage.key = "editOffer";
 	localStorage.setItem(
@@ -430,7 +347,7 @@ function getItem(item) {
 		"/myRides/myOffer/pickup",
 		{
 			userid: obj.userid,
-			offerid: edit.offerid,
+			offerid: myRideOfferList.get("offerid", offerid)[0]._values.offerid,
 		},
 		function(res) {
 			switch (res.result) {
@@ -542,6 +459,5 @@ function getItem(item) {
 }
 function getPassengerCode(item) {
 	$("#confirmCodeModal").modal("show");
-	console.log(item);
 	var joinedby = $(item).data("joinedby");
 }

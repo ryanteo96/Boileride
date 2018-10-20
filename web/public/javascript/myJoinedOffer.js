@@ -71,18 +71,6 @@ $(document).ready(function() {
 	var obj = JSON.parse(credentials);
 
 	console.log(obj.userid);
-	/*============================== TEST DATA START HERE!!!! /*==============================*/
-	// generateJoinedOfferList(test);
-	// $("#status0").text("Ongoing");
-	// if ($("#status0").text() == "Ongoing") {
-	// 	$("#offer0").addClass("border-success");
-	// 	$("#offer0").css("background", "#7BF08F");
-	// }
-	// if ($("#status1").text() == "Cancelled") {
-	// 	$("#offer1").addClass("border-danger");
-	// 	$("#offer1").css("background", "#F07B7B");
-	// }
-	/*============================== TEST DATA END HERE!!!! /*==============================*/
 
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
@@ -148,8 +136,61 @@ $(document).ready(function() {
 
 	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
-		window.location.href = "/myRides/myOffer/edit";
+
+		$("#editOfferModal").modal("show");
+
+		var editOffer = localStorage.getItem("editOffer");
+		var edit = JSON.parse(editOffer);
+
+		$("#numPassengers").val(edit.seats);
+		$("#numLuggage").val(edit.luggage);
 	});
+
+	// $("#editOfferDetailsBtn").click(function(data) {
+	// 	data.preventDefault();
+
+	// 	var credentials = localStorage.getItem("credentials");
+	// 	var obj = JSON.parse(credentials);
+
+	// 	var editOffer = localStorage.getItem("editOffer");
+	// 	var edit = JSON.parse(editOffer);
+
+	// 	console.log(obj.userid);
+	// 	console.log(obj.offerid);
+
+	// 	$.post(
+	// 		"/myRides/myOffer/edit",
+	// 		{
+	// 			userid: obj.userid,
+	// 			offerid: edit.offerid,
+	// 		},
+	// 		function(res) {
+	// 			switch (res.result) {
+	// 				case 0: {
+	// 					window.location.href = "/myRides/myOffer/";
+	// 					break;
+	// 				}
+	// 				case 1: {
+	// 					alert("Invalid userid.");
+	// 					break;
+	// 				}
+	// 				case 2: {
+	// 					alert("User not logged in.");
+	// 					break;
+	// 				}
+	// 				case 3: {
+	// 					alert("Not authorized to cancel.");
+	// 				}
+	// 				case 4: {
+	// 					alert("Ride not exist.");
+	// 				}
+	// 				case 5: {
+	// 					alert("Ride already cancelled.");
+	// 				}
+	// 			}
+	// 		},
+	// 	);
+	// });
 
 	$("#cancelOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -204,8 +245,8 @@ $(document).ready(function() {
 
 		var editOffer = localStorage.getItem("editOffer");
 		var edit = JSON.parse(editOffer);
-		//go to the code confirmation page
-		window.location.href = "/myRides/myOffer/pickup";
+
+		$("#confirmCodeModal").modal("show");
 
 		$.post(
 			"/myRides/myOffer/pickup",
@@ -240,7 +281,7 @@ $(document).ready(function() {
 						break;
 					}
 					case 4: {
-						alert("Not authorized to get code.");
+						// alert("Not authorized to get code.");
 						break;
 					}
 				}
@@ -262,7 +303,9 @@ function generateJoinedOfferList(joinedOfferList) {
 			"pets",
 			"travelingtime",
 			"offeredbyname", //the guy who offered the ride
+			"seat",
 			"seatleft",
+			"luggage",
 			"luggageleft",
 			"price",
 			"status",
@@ -343,7 +386,9 @@ function generateJoinedOfferList(joinedOfferList) {
 			pets: joinedOfferList[i].pets,
 			travelingtime: travelingtime,
 			offeredbyname: joinedOfferList[i].offeredbyname,
+			seats: joinedOfferList[i].joinedpassenger,
 			seatleft: joinedOfferList[i].seatleft,
+			luggage: joinedOfferList[i].joinedluggage,
 			luggageleft: joinedOfferList[i].luggageleft,
 			price: joinedOfferList[i].price,
 			status: joinedOfferList[i].status,
@@ -380,10 +425,18 @@ function getItem(item) {
 	);
 
 	$("#seatsDetails").html(
+		myRideJoinedOfferList.get("offerid", offerid)[0]._values.seats,
+	);
+
+	$("#seatsLeftDetails").html(
 		myRideJoinedOfferList.get("offerid", offerid)[0]._values.seatleft,
 	);
 
 	$("#luggageDetails").html(
+		myRideJoinedOfferList.get("offerid", offerid)[0]._values.luggage,
+	);
+
+	$("#luggageLeftDetails").html(
 		myRideJoinedOfferList.get("offerid", offerid)[0]._values.luggageleft,
 	);
 
