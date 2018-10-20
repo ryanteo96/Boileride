@@ -3,6 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import DTO.*;
 /**
@@ -845,7 +846,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
