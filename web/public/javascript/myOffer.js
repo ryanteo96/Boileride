@@ -4,6 +4,8 @@ $("html").hide();
 
 var credentials = localStorage.getItem("credentials");
 var obj = JSON.parse(credentials);
+var editOffer = localStorage.getItem("editOffer");
+var edit = JSON.parse(editOffer);
 
 if (!obj) {
 	window.location.href = "/signin";
@@ -114,6 +116,40 @@ $(document).ready(function() {
 				}
 				case 2: {
 					alert("User not logged in.");
+					break;
+				}
+			}
+		},
+	);
+
+	$.post(
+		"/myRides/myOffer/pickup",
+		{
+			userid: obj.userid,
+			offerid: edit.offerid,
+		},
+		function(res) {
+			switch (res.result) {
+				case 0: {
+					// $("#headerCode").html("CODEFORPASSENGER");
+					console.log("SUCCESS");
+					$("#headerCode").html(res.code);
+					break;
+				}
+				case 1: {
+					alert("Invalid userid.");
+					break;
+				}
+				case 2: {
+					alert("User not logged in.");
+					break;
+				}
+				case 3: {
+					alert("Invalid offerid.");
+					break;
+				}
+				case 4: {
+					alert("Not authorized to get code.");
 					break;
 				}
 			}
