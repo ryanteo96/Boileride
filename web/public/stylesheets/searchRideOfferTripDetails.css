@@ -1,0 +1,58 @@
+#searchRideOfferDiv,
+.list {
+	padding: 10px;
+}
+
+#searchRideOfferTitle,
+#searchRideOfferListTitle {
+	padding: 0px 10px;
+}
+
+#searchRideOfferDetails {
+	padding: 10px;
+}
+
+#searchRideOfferForm {
+	padding: 0px 10px;
+}
+
+#searchRideOfferAmenities {
+	padding: 10px 0px;
+}
+
+#searchRideOfferPreferences {
+	padding: 10px 0px;
+}
+
+#amenitiesDiv {
+	padding: 0px 5px;
+}
+
+.dropdown-menu {
+	left: auto;
+}
+
+.searchRideOfferList {
+	padding: 10px;
+}
+
+.icons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.values {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+.row {
+	margin: 0px;
+}
+
+.list > li > .card:hover {
+	cursor: pointer;
+	filter: brightness(85%);
+}

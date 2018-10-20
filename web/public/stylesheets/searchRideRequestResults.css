@@ -1,0 +1,52 @@
+#searchRideRequestDiv {
+	padding: 10px;
+}
+
+#searchRideRequestTitle {
+	padding: 0px 10px;
+}
+
+#searchRideRequestDetails {
+	padding: 10px;
+}
+
+#searchRideRequestForm {
+	padding: 0px 10px;
+}
+
+#searchRideRequestPreferences {
+	padding: 10px 0px;
+}
+
+#preferencesDiv {
+	padding: 0px 5px;
+}
+
+.dropdown-menu {
+	left: auto;
+}
+
+.searchRideRequestList {
+	padding: 10px;
+}
+
+.icons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.values {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+.row {
+	margin: 0px;
+}
+
+.list > li > .card:hover {
+	cursor: pointer;
+	filter: brightness(85%);
+}
