@@ -115,22 +115,22 @@ router.post("/myRequest/edit", function(req, res) {
 
 	console.log(data);
 
-	var options = {
-		uri: "http://localhost:8080/ride/update/request",
-		json: data,
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Cookie: global.cookie,
-		},
-	};
+	// var options = {
+	// 	uri: "http://localhost:8080/ride/update/request",
+	// 	json: data,
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 		Cookie: global.cookie,
+	// 	},
+	// };
 
-	request(options, function(error, response) {
-		if (response) {
-			res.send(response.body);
-		}
-		return;
-	});
+	// request(options, function(error, response) {
+	// 	if (response) {
+	// 		res.send(response.body);
+	// 	}
+	// 	return;
+	// });
 });
 
 //cancel myrequest
@@ -319,7 +319,7 @@ router.post("/myOffer/edit", function(req, res) {
 		offerid: req.body.offerid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
-		datentime: req.body.datentime,
+		datentime: date + " " + time,
 		seats: req.body.seats,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,
@@ -409,11 +409,7 @@ router.post("/myOffer/pickup", function(req, res) {
 		offerid: req.body.offerid,
 	};
 
-	// var body = {
-	// 	result: 0,
-	// };
-
-	// res.send(body);
+	console.log(data);
 
 	//  temp server connection test
 	var options = {
@@ -425,8 +421,6 @@ router.post("/myOffer/pickup", function(req, res) {
 			Cookie: global.cookie,
 		},
 	};
-
-	console.log("data:" + data);
 
 	request(options, function(error, response) {
 		if (response) {

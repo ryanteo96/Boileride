@@ -2,6 +2,7 @@ let pickup;
 let destination;
 let traveltime;
 let price;
+let basePrice;
 
 $("html").hide();
 
@@ -76,15 +77,12 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
+							basePrice = parseInt(results[0].distance.text);
 
-							priceOutput.value = arr[0];
+							priceOutput.value =
+								basePrice * $("#passengers").val();
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = basePrice * $("#passengers").val();
 						}
 					},
 				);
@@ -118,15 +116,12 @@ function init() {
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
 
-							if (results[0].distance.text.indexOf(".") >= 0) {
-								var arr = results[0].distance.text.split(".");
-							} else {
-								var arr = results[0].distance.text.split(" mi");
-							}
+							basePrice = parseInt(results[0].distance.text);
 
-							priceOutput.value = arr[0];
+							priceOutput.value =
+								basePrice * $("#passengers").val();
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = basePrice * $("#passengers").val();
 						}
 					},
 				);
@@ -138,6 +133,7 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
+	$("#confirmEditBtn").prop("disabled", true);
 	loadOriginalValue();
 	$("#editRideRequestForm").submit(function(data) {
 		data.preventDefault();
@@ -216,7 +212,10 @@ function loadOriginalValue() {
 	var editRequest = localStorage.getItem("editRequest");
 	var obj = JSON.parse(editRequest);
 
-	var datentime = obj.datentime.split(" ");
+	var time = moment.duration("04:00:00");
+	var converteddatentime = moment(obj.datentime);
+	converteddatentime.subtract(time);
+	datentime = converteddatentime.format("YYYY-MM-DD HH:mm").split(" ");
 	var date = datentime[0];
 	var time = datentime[1];
 
@@ -251,6 +250,38 @@ function loadOriginalValue() {
 		$("#ac").prop("checked", false);
 	}
 
-	$("#traveltime").val(obj.travelingtime);
-	$("#price").val(obj.price);
+	var service = new google.maps.DistanceMatrixService();
+
+	pickup = document.getElementById("pickuplocation");
+	destination = document.getElementById("destination");
+
+	service.getDistanceMatrix(
+		{
+			origins: [pickup.value],
+			destinations: [destination.value],
+			travelMode: "DRIVING",
+			unitSystem: google.maps.UnitSystem.IMPERIAL,
+			avoidHighways: false,
+			avoidTolls: false,
+		},
+		function(response, status) {
+			if (status !== "OK") {
+				alert("Error was: " + status);
+			} else {
+				var travelTimeOutput = document.getElementById("traveltime");
+				var priceOutput = document.getElementById("price");
+
+				var results = response.rows[0].elements;
+				travelTimeOutput.value = results[0].duration.text;
+
+				basePrice = parseInt(results[0].distance.text);
+
+				priceOutput.value = basePrice * $("#passengers").val();
+				traveltime = results[0].duration.value;
+				price = basePrice * $("#passengers").val();
+
+				$("#confirmEditBtn").prop("disabled", false);
+			}
+		},
+	);
 }

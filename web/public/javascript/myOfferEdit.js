@@ -76,11 +76,12 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							priceOutput.value = parseInt(
+								results[0].distance.text,
+							);
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = parseInt(results[0].distance.text);
 						}
 					},
 				);
@@ -113,11 +114,12 @@ function init() {
 
 							var results = response.rows[0].elements;
 							travelTimeOutput.value = results[0].duration.text;
-							var arr = results[0].distance.text.split(".");
-							priceOutput.value = arr[0];
 
+							priceOutput.value = parseInt(
+								results[0].distance.text,
+							);
 							traveltime = results[0].duration.value;
-							price = arr[0];
+							price = parseInt(results[0].distance.text);
 						}
 					},
 				);
@@ -129,6 +131,7 @@ function init() {
 google.maps.event.addDomListener(window, "load", init);
 
 $(document).ready(function() {
+	$("#confirmEditBtn").prop("disabled", true);
 	loadOriginalValue();
 	$("#editRideOfferForm").submit(function(data) {
 		data.preventDefault();
@@ -136,10 +139,14 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
+		var editOffer = localStorage.getItem("editOffer");
+		var edit = JSON.parse(editOffer);
+
 		$.post(
-			"/myOffer/edit",
+			"/myRides/myOffer/edit",
 			{
 				userid: obj.userid,
+				offerid: edit.offerid,
 				pickuplocation: pickup.value,
 				destination: destination.value,
 				date: $("#date").val(),
@@ -150,14 +157,14 @@ $(document).ready(function() {
 				foodndrink: $("#foodndrink").prop("checked"),
 				pets: $("#pets").prop("checked"),
 				ac: $("#ac").prop("checked"),
-				travellingtime: traveltime,
+				travelingtime: traveltime,
 				price: price,
 			},
 			function(res) {
 				switch (res.result) {
 					case 0: {
 						alert("Ride Offer successfully updated.");
-						window.location.href = "/myOffer";
+						window.location.href = "/myRides/myOffer";
 						break;
 					}
 					case 1: {
@@ -194,7 +201,10 @@ function loadOriginalValue() {
 	var editOffer = localStorage.getItem("editOffer");
 	var obj = JSON.parse(editOffer);
 
-	var datentime = obj.datentime.split(" ");
+	var time = moment.duration("04:00:00");
+	var converteddatentime = moment(obj.datentime);
+	converteddatentime.subtract(time);
+	datentime = converteddatentime.format("YYYY-MM-DD HH:mm").split(" ");
 	var date = datentime[0];
 	var time = datentime[1];
 
@@ -202,8 +212,8 @@ function loadOriginalValue() {
 	$("#destination").val(obj.destination);
 	$("#date").val(date);
 	$("#time").val(time);
-	$("#seats").val(obj.seatleft);
-	$("#luggage").val(obj.luggageleft);
+	$("#seats").val(obj.seats);
+	$("#luggage").val(obj.luggage);
 
 	if (obj.smoking == "Yes") {
 		$("#smoking").prop("checked", true);
@@ -229,6 +239,38 @@ function loadOriginalValue() {
 		$("#ac").prop("checked", false);
 	}
 
-	$("#traveltime").val(obj.travelingtime);
-	$("#price").val(obj.price);
+	var service = new google.maps.DistanceMatrixService();
+
+	pickup = document.getElementById("pickuplocation");
+	destination = document.getElementById("destination");
+
+	service.getDistanceMatrix(
+		{
+			origins: [pickup.value],
+			destinations: [destination.value],
+			travelMode: "DRIVING",
+			unitSystem: google.maps.UnitSystem.IMPERIAL,
+			avoidHighways: false,
+			avoidTolls: false,
+		},
+		function(response, status) {
+			if (status !== "OK") {
+				alert("Error was: " + status);
+			} else {
+				var travelTimeOutput = document.getElementById("traveltime");
+				var priceOutput = document.getElementById("price");
+
+				var results = response.rows[0].elements;
+
+				console.log(results);
+				travelTimeOutput.value = results[0].duration.text;
+
+				priceOutput.value = parseInt(results[0].distance.text);
+				traveltime = results[0].duration.value;
+				price = parseInt(results[0].distance.text);
+
+				$("#confirmEditBtn").prop("disabled", false);
+			}
+		},
+	);
 }

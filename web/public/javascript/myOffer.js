@@ -100,7 +100,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.result) {
 					case 0: {
-						// console.log(res.offerlist);
+						console.log(res.offerlist);
 						generateViewOfferList(res.offerlist);
 						$.each(res.offerlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
@@ -142,40 +142,6 @@ $(document).ready(function() {
 			},
 		);
 	});
-
-	// $.post(
-	// 	"/myRides/myOffer/pickup",
-	// 	{
-	// 		userid: obj.userid,
-	// 		offerid: edit.offerid,
-	// 	},
-	// 	function(res) {
-	// 		switch (res.result) {
-	// 			case 0: {
-	// 				// $("#headerCode").html("CODEFORPASSENGER");
-	// 				console.log("SUCCESS");
-	// 				$("#headerCode").html(res.code);
-	// 				break;
-	// 			}
-	// 			case 1: {
-	// 				alert("Invalid userid.");
-	// 				break;
-	// 			}
-	// 			case 2: {
-	// 				alert("User not logged in.");
-	// 				break;
-	// 			}
-	// 			case 3: {
-	// 				alert("Invalid offerid.");
-	// 				break;
-	// 			}
-	// 			case 4: {
-	// 				alert("Not authorized to get code.");
-	// 				break;
-	// 			}
-	// 		}
-	// 	},
-	// );
 
 	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -229,55 +195,55 @@ $(document).ready(function() {
 	});
 
 	//get pickup code
-	$("#getPickUpBtn").click(function(data) {
-		var credentials = localStorage.getItem("credentials");
-		var obj = JSON.parse(credentials);
+	// 	$("#getPickUpBtn").click(function(data) {
+	// 		var credentials = localStorage.getItem("credentials");
+	// 		var obj = JSON.parse(credentials);
 
-		var editOffer = localStorage.getItem("editOffer");
-		var edit = JSON.parse(editOffer);
-		//go to the code confirmation page
-		window.location.href = "/myRides/myOffer/pickup";
+	// 		var editOffer = localStorage.getItem("editOffer");
+	// 		var edit = JSON.parse(editOffer);
+	// 		//go to the code confirmation page
+	// 		window.location.href = "/myRides/myOffer/pickup";
 
-		$.post(
-			"/myRides/myOffer/pickup",
-			{
-				userid: obj.userid,
-				offerid: edit.offerid,
-			},
-			function(res) {
-				switch (res.result) {
-					case 0: {
-						//store the code so can display it in confirm myRequestPickup
-						localStorage.key = "code";
-						localStorage.setItem(
-							"code",
-							JSON.stringify({
-								// code: res.code,
-								codeforpassenger: "CODEFORPASSENGER",
-							}),
-						);
-						break;
-					}
-					case 1: {
-						alert("Invalid userid.");
-						break;
-					}
-					case 2: {
-						alert("User not logged in.");
-						break;
-					}
-					case 3: {
-						alert("Invalid offerid.");
-						break;
-					}
-					case 4: {
-						alert("Not authorized to get code.");
-						break;
-					}
-				}
-			},
-		);
-	});
+	// 		$.post(
+	// 			"/myRides/myOffer/pickup",
+	// 			{
+	// 				userid: obj.userid,
+	// 				offerid: edit.offerid,
+	// 			},
+	// 			function(res) {
+	// 				switch (res.result) {
+	// 					case 0: {
+	// 						//store the code so can display it in confirm myRequestPickup
+	// 						localStorage.key = "code";
+	// 						localStorage.setItem(
+	// 							"code",
+	// 							JSON.stringify({
+	// 								// code: res.code,
+	// 								codeforpassenger: "CODEFORPASSENGER",
+	// 							}),
+	// 						);
+	// 						break;
+	// 					}
+	// 					case 1: {
+	// 						alert("Invalid userid.");
+	// 						break;
+	// 					}
+	// 					case 2: {
+	// 						alert("User not logged in.");
+	// 						break;
+	// 					}
+	// 					case 3: {
+	// 						alert("Invalid offerid.");
+	// 						break;
+	// 					}
+	// 					case 4: {
+	// 						alert("Not authorized to get code.");
+	// 						break;
+	// 					}
+	// 				}
+	// 			},
+	// 		);
+	// 	});
 });
 
 function generateViewOfferList(offerList) {
@@ -330,6 +296,7 @@ function generateViewOfferList(offerList) {
 	};
 
 	myRideOfferList = new List("myRideOfferList", options);
+	myRideOfferList.clear();
 
 	for (var i = 0; i < offerList.length; i++) {
 		if (offerList[i].smoking == true) {
@@ -378,7 +345,9 @@ function generateViewOfferList(offerList) {
 			pets: offerList[i].pets,
 			travelingtime: travelingtime,
 			offeredbyname: offerList[i].offeredbyname,
+			seats: offerList[i].seats,
 			seatleft: offerList[i].seatleft,
+			luggage: offerList[i].luggage,
 			luggageleft: offerList[i].luggageleft,
 			price: offerList[i].price,
 			status: offerList[i].status,
@@ -395,12 +364,6 @@ function generateViewOfferList(offerList) {
 		//assign dynamic id
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
-
-		// the status i saw in db is 1
-		// which means someone joined
-		// 2 mean cancel
-		// 3 mean over
-		// 4 mean someone confirmed
 	}
 }
 
@@ -461,6 +424,40 @@ function getItem(item) {
 
 	$("#priceDetails").html(
 		myRideOfferList.get("offerid", offerid)[0]._values.price,
+	);
+
+	$.post(
+		"/myRides/myOffer/pickup",
+		{
+			userid: obj.userid,
+			offerid: edit.offerid,
+		},
+		function(res) {
+			switch (res.result) {
+				case 0: {
+					// $("#headerCode").html("CODEFORPASSENGER");
+					console.log("SUCCESS");
+					$("#headerCode").html(res.code);
+					break;
+				}
+				case 1: {
+					alert("Invalid userid.");
+					break;
+				}
+				case 2: {
+					alert("User not logged in.");
+					break;
+				}
+				case 3: {
+					alert("Invalid offerid.");
+					break;
+				}
+				case 4: {
+					// alert("Not authorized to get code.");
+					break;
+				}
+			}
+		},
 	);
 
 	//to create the list for passengers
