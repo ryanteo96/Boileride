@@ -318,14 +318,16 @@ function generateViewOfferList(offerList) {
 
 		myRideOfferList.sort("datentime", { order: "asc" });
 		myRideOfferList.sort("status", { order: "desc" });
+
+		//assign dynamic id
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
 	}
 }
 
 function getItem(item) {
-	$("#carouselExampleIndicators").carousel(0); //to reset the slide back to data-slide 0 everytime opening a modal
-
+	//to reset the slide back to data-slide 0 everytime opening a modal
+	$("#carouselExampleIndicators").carousel(0);
 	var offerid = $(item).data("offerid");
 
 	localStorage.key = "editOffer";
@@ -391,7 +393,7 @@ function getItem(item) {
 			"offeruserstatus",
 		],
 		item:
-			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getPassengerCode()>' +
+			'<li class="list-group-item items flex-column align-items-start pl-2 pr-2 border-0" ondblclick=getPassengerCode(this)>' +
 			'<div class="card" style="width:700px" id="joined">' +
 			'<div class="card-body">' +
 			'<div class="row" style="font-size:20px">' +
@@ -462,6 +464,8 @@ function getItem(item) {
 		}
 	}
 }
-function getPassengerCode() {
+function getPassengerCode(item) {
 	$("#confirmCodeModal").modal("show");
+	console.log(item);
+	var joinedby = $(item).data("joinedby");
 }
