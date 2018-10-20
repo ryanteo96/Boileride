@@ -373,7 +373,7 @@ public class RideOffer {
                                                 rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
 
                                                 PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
-                                                int updateOfferResult = DatabaseCommunicator.updateRideOffer(offers[i], rideOffer);
+                                                int updateOfferResult = DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i],rideOffer.getSeatleft()- seatsWant, rideOffer.getLuggageleft() - luggagesWant, 1);
 
                                                 if(updateOfferResult == 0)
                                                 {
@@ -571,8 +571,9 @@ public class RideOffer {
                         if( passengers.contains(user.getUserid()) )
                         {
                             JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
-                            rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
-                            rideOffer.setLuggageleft(rideOffer.getLuggageleft()+joinedOffer.getLuggage());
+                            DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), rideOffer.getStatus());
+
+
 
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
@@ -591,9 +592,7 @@ public class RideOffer {
                                 if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
                                 {
 
-                                    rideOffer.setStatus(1);
-                                    rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
-                                    rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
+
 
                                     PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice()*joinedOffer.getPassenger());
 
@@ -601,7 +600,7 @@ public class RideOffer {
 
                                     if(updateOfferResult == 0)
                                     {
-                                        int result = DatabaseCommunicator.updateRideOffer(offers[i],rideOffer);
+                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
                                         if(result == 0)
                                         {
                                             updatedOffers ++;

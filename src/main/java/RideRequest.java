@@ -309,8 +309,8 @@ public class RideRequest {
 
                             if(user.getPoints() >= rideRequest.getPrice() )
                             {
-                                rideRequest.setStatus(1);
-                                if(DatabaseCommunicator.updateRideRequest(req.getRequestid(), rideRequest) == 0)
+                                
+                                if(DatabaseCommunicator.updateRequestStatus(req.getRequestid(), 1) == 0)
                                 {
                                     int addRequestResult = DatabaseCommunicator.insertNewAcceptedRequest(user.getUserid(), req.getRequestid(), 0, 0, 0, 0, 0);
                                     if(addRequestResult == 0)
