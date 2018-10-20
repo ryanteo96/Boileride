@@ -411,31 +411,31 @@ router.post("/myOffer/pickup", function(req, res) {
 		offerid: req.body.offerid,
 	};
 
-	var body = {
-		result: 0,
-	};
-
-	res.send(body);
-
-	//  temp server connection test
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/offer/pickup",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	//		Cookie: global.cookie,
-	// 	},
+	// var body = {
+	// 	result: 0,
 	// };
 
-	console.log(data);
+	// res.send(body);
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response.body);
-	// 	}
-	// 	return;
-	// });
+	//  temp server connection test
+	var options = {
+		uri: "http://localhost:8080/ride/offer/pickup",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
+
+	console.log("data:" + data);
+
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 // myoffer to confirm pickup code
