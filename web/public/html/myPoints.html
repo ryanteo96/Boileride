@@ -23,6 +23,7 @@
 
     <!-- Javascript and Stylesheets imports -->
     <link href="../stylesheets/myPoints.css" rel="stylesheet" type="text/css">
+    <link href="../stylesheets/loader.css" rel="stylesheet" type="text/css">
     <script src="../javascript/myPoints.js" type="text/javascript"></script>
     <script src="../javascript/signOut.js" type="text/javascript"></script>
 </head>
@@ -116,6 +117,20 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="loader"></div>
+                    <div clas="loader-txt">
+                        <p>Loading... </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

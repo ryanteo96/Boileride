@@ -93,6 +93,12 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
+		$("#loading").modal({
+			backdrop: "static", //remove ability to close modal with click
+			keyboard: false, //remove option to close with keyboard
+			show: true, // display loader
+		});
+
 		$.post(
 			"/searchRideRequest",
 			{
@@ -116,41 +122,51 @@ $(document).ready(function() {
 					case 0: {
 						console.log(res.requestsearchlist);
 						generateSearchRequestList(res.requestsearchlist);
+						$("#loading").modal("hide"); // hide loader
 						break;
 					}
 					case 1: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid userid.");
 						break;
 					}
 					case 2: {
+						$("#loading").modal("hide"); // hide loader
 						alert("User not logged in.");
 						break;
 					}
 					case 3: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid pickup location.");
 						break;
 					}
 					case 4: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid destination.");
 						break;
 					}
 					case 5: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid pickup proximity.");
 						break;
 					}
 					case 6: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid destination proximity.");
 						break;
 					}
 					case 7: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid datentime.");
 						break;
 					}
 					case 8: {
+						$("#loading").modal("hide"); // hide loader
 						alert("Invalid datentime range.");
 						break;
 					}
 					case 9: {
+						$("#loading").modal("hide"); // hide loader
 						alert("No results found.");
 						break;
 					}

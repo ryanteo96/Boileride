@@ -34,7 +34,7 @@
 	margin: 0px;
 }
 
-.modal-body {
+#myRideRequestModal > .modal-body {
 	height: 500px;
 	background: linear-gradient(
 		135deg,
