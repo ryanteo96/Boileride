@@ -368,10 +368,7 @@ public class RideOffer {
                                             if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
                                             {
 
-                                                rideOffer.setStatus(1);
-                                                rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
-                                                rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
-
+//
                                                 PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
                                                 int updateOfferResult = DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i],rideOffer.getSeatleft()- seatsWant, rideOffer.getLuggageleft() - luggagesWant, 1);
 
