@@ -16,6 +16,9 @@ $.post(
 		switch (res.result) {
 			case 0: {
 				$("html").show();
+				$("#newNickname").val(res.nickname);
+				$("#newEmail").val(res.email);
+				$("#newPhone").val(res.phone);
 				break;
 			}
 			case 2: {
@@ -24,6 +27,9 @@ $.post(
 			}
 			default: {
 				$("html").show();
+				$("#newNickname").val(res.nickname);
+				$("#newEmail").val(res.email);
+				$("#newPhone").val(res.phone);
 				break;
 			}
 		}
