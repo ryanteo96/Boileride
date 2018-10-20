@@ -2004,10 +2004,10 @@ public class DatabaseCommunicator {
         return userid;
     }
 
-    public static int updateJoinedOffer(int userid, int offerid, int seat, int passenger){
+    public static int updateJoinedOffer(int userid, int offerid, int passenger, int luggage){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET seat = "+seat+", passenger = "+passenger+" WHERE userid = " + userid + " AND offerid = " + offerid);
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET luggage = "+luggage+", passenger = "+passenger+" WHERE userid = " + userid + " AND offerid = " + offerid);
 
             stmt.close();
         }

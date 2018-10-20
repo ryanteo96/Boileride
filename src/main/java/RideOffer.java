@@ -528,6 +528,7 @@ public class RideOffer {
                 for(int i =0;i<offers.length;i++)
                 {
                     RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
+
                     if(rideOffer != null)
                     {
                         ArrayList<Integer> passengers = new ArrayList<Integer>();
@@ -539,6 +540,10 @@ public class RideOffer {
                         }
                         if( passengers.contains(user.getUserid()) )
                         {
+                            JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
+                            rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
+                            rideOffer.setLuggageleft(rideOffer.getLuggageleft()+joinedOffer.getLuggage());
+
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
                             if(verifySeats(seatsWant) != 0)
@@ -559,17 +564,26 @@ public class RideOffer {
                                     rideOffer.setStatus(1);
                                     rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
                                     rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
-                                    PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice());
-                                    PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
+
+                                    PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice()*joinedOffer.getPassenger());
+
                                     int updateOfferResult = DatabaseCommunicator.updateJoinedOffer(user.getUserid(), offers[i], seatsWant, luggagesWant);
 
                                     if(updateOfferResult == 0)
                                     {
-                                        updatedOffers ++;
+                                        int result = DatabaseCommunicator.updateRideOffer(offers[i],rideOffer);
+                                        if(result == 0)
+                                        {
+                                            updatedOffers ++;
+                                        }
+                                        else if(result == 99)
+                                        {
+                                            System.out.println("Failed to update the rideOffer status in DB");
+                                        }
                                     }
                                     else
                                     {
-                                        System.out.println("Failed to update the rideOffer status in DB");
+                                        System.out.println("Failed to update the joinedRideOffer status in DB");
                                     }
 
                                 }
