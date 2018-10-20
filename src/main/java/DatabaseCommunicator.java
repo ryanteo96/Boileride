@@ -749,7 +749,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             ResultSet rs = stmt.executeQuery("SELECT offerid, offeredby, price, datentime " +
-                    "FROM RIDEOFFER WHERE (status = 0 or status = 1) and offeredby = "+ userid);
+                    "FROM RIDEOFFER WHERE (status = 0 or status = 1 or status = 4) and offeredby = "+ userid);
 
             while (rs.next()) {
                 int offerid = -1;
@@ -1268,7 +1268,7 @@ public class DatabaseCommunicator {
     public static int addJoinedOfferPickup(int userid, int offerid, int code){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET offerusercode = " + code + " WHERE offerid = " + offerid + " and userid = " + userid);
+            stmt.executeUpdate("UPDATE JOINEDRIDEOFFER SET joinedusercode = " + code + " WHERE offerid = " + offerid + " and userid = " + userid);
 
             stmt.close();
 
@@ -1915,8 +1915,9 @@ public class DatabaseCommunicator {
 
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t, USER u1, USER u2 " +
-                    "WHERE t.touserid = u1.userid and t.foruserid = u2.userid and (foruserid = " + userid + " or touserid = " + userid + ")");
+            ResultSet rs = stmt.executeQuery("SELECT t.*, u1.nickname as tousername, u2.nickname as fromusername FROM TRANSACTION t " +
+                    "JOIN USER u1 on t.touserid = u1.userid JOIN USER u2 on t.foruserid = u2.userid " +
+                    "WHERE (foruserid = " + userid + " && description not LIKE 'Receive payment%') or (touserid = " + userid + " && description not LIKE 'Make payment%')");
 
             int transactionid;
             int touserid;
@@ -1980,7 +1981,26 @@ public class DatabaseCommunicator {
     }
 
     public static int[] selectUsersFromOfferList(int offerid){
-        int[] userid = {};
+        int[] invalid = {};
+        ArrayList<Integer> list=new ArrayList<>();
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT userid FROM JOINEDRIDEOFFER WHERE offerid = " + offerid);
+
+            while(rs.next()) {
+                list.add(rs.getInt("userid"));
+            }
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return invalid;
+        }
+        int[] userid = new int[list.size()];
+        for(int i = 0; i < list.size(); i++) {
+            userid[i] = list.get(i);
+        }
         return userid;
     }
 
@@ -2000,9 +2020,10 @@ public class DatabaseCommunicator {
 
     public static int removeAcceptedRequest(int userid, int requestid)
     {
+        int deleted = -1;
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = " + userid + " AND requestid = " + requestid);
+            deleted = stmt.executeUpdate("DELETE FROM ACCEPTEDRIDEREQUEST WHERE userid = "+userid+" AND requestid = " +requestid);
 
             stmt.close();
         }
@@ -2010,17 +2031,24 @@ public class DatabaseCommunicator {
             e.printStackTrace();
             return 99;
         }
+        if(deleted == 0) {
+            return 99;
+        }
         return 0;
     }
     public static int removeJoinedOffer(int userid, int offerid){
+        int deleted = -1;
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = " + userid + " AND offerid = " + offerid);
+            deleted = stmt.executeUpdate("DELETE FROM JOINEDRIDEOFFER WHERE userid = "+userid+" AND offerid = " + offerid);
 
             stmt.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
+            return 99;
+        }
+        if(deleted == 0) {
             return 99;
         }
         return 0;
@@ -2036,8 +2064,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'ACCEPTEDRIDEREQUEST' ('userid', 'requestid', 'requestusercode', 'acceptedusercode', 'accepteduserstatus', 'requestuserstatus', 'acceptedstatus') " +
-                        "VALUES ("+userid +", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
+                stmt.executeUpdate("INSERT INTO ACCEPTEDRIDEREQUEST (userid, requestid, requestusercode, acceptedusercode, accepteduserstatus, requestuserstatus, acceptedstatus) " +
+                        "VALUES ("+userid+", "+requestid+", "+requestUserCode+", "+acceptedUserCode+", "+acceptedUserStatus+", "+requestUserStatus+", "+acceptedStatus+");");
             }
 
             rs.close();
@@ -2060,8 +2088,8 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
-                stmt.executeUpdate("INSERT INTO 'JOINEDRIDEOFFER' ('userid', 'offerid', 'passenger', 'luggage', 'triporder', 'offerusercode', 'joinedusercode', 'offeruserstatus', 'joineduserstatus', 'joinedstatus', 'joindate') " +
-                        "VALUES ("+userid +", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+                stmt.executeUpdate("INSERT INTO JOINEDRIDEOFFER (userid, offerid, passenger, luggage, triporder, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, joindate) " +
+                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
             }
 
             rs.close();

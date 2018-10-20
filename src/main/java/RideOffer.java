@@ -868,7 +868,8 @@ public class RideOffer {
         RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
         if (rideOffer == null) {
             result = 3;
-        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() != 1
+        } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 0
+                || rideOffer.getStatus() == 2 || rideOffer.getStatus() == 3
                 || Math.abs(today.getTime()-rideOffer.getDatentime().getTime())/1000 > 1800) {
             result = 4;
         } else {
@@ -886,7 +887,8 @@ public class RideOffer {
         JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(request.getJoineduserid(), request.getOfferid());
         if (joinedOffer == null) {
             result = 3;
-        } else if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() != 1
+        } else if (joinedOffer.getOfferedby() != request.getUserid() || joinedOffer.getStatus() == 0
+                || joinedOffer.getStatus() == 2 || joinedOffer.getStatus() == 3 || joinedOffer.getOfferuserstatus() == 1
                 || joinedOffer.getOfferusercode() == 0 || joinedOffer.getJoinedusercode() == 0
                 || Math.abs(today.getTime()-joinedOffer.getDatentime().getTime())/1000 > 1800) {
             result = 4;
@@ -895,10 +897,16 @@ public class RideOffer {
         } else if (joinedOffer.getJoinedusercode() != request.getCode()) {
             result = 6;
         } else {
-            result = DatabaseCommunicator.updateOfferUserStatus(request.getUserid(), request.getOfferid(), 1);
+            result = DatabaseCommunicator.updateOfferUserStatus(joinedOffer.getUserid(), request.getOfferid(), 1);
             if (result == 0){
                 //Get payment
-                result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                if (joinedOffer.getStatus() == 4){
+                    result = PointCalculator.getSecondPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                }
+                else {
+                    result = PointCalculator.getPayment(request.getUserid(), joinedOffer.getUserid(), joinedOffer.getPrice(), "Receive payment from ride offer");
+                    DatabaseCommunicator.updateOfferStatus(request.getOfferid(), request.getUserid(), 4);
+                }
                 //DatabaseCommunicator.updateOfferStatus(request.getOfferid(), joinedOffer.getUserid(),4);
             }
         }
