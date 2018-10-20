@@ -83,44 +83,56 @@ $(document).ready(function() {
 	// }
 	// /*============================== TEST DATA END HERE!!!! /*==============================*/
 
-	$.post(
-		"/myRides/myRequest/accepted",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					console.log(res.acceptedrequestlist);
-					if (res.acceptedrequestlist.length == 0) {
-						$("#rideExist").html(
-							'<i class="icons fas fa-users mr-4"> You haven\'t accepted any rides.',
-						);
+	$("#loading").modal({
+		backdrop: "static", //remove ability to close modal with click
+		keyboard: false, //remove option to close with keyboard
+		show: true, // display loader
+	});
+
+	$("#loading").on("shown.bs.modal", function() {
+		$.post(
+			"/myRides/myRequest/accepted",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						console.log(res.acceptedrequestlist);
+						if (res.acceptedrequestlist.length == 0) {
+							$("#rideExist").html(
+								'<i class="icons fas fa-users mr-4"> You haven\'t accepted any rides.',
+							);
+						}
+						generateAcceptedRequestList(res.acceptedrequestlist);
+						$.each(res.acceptedrequestlist, function(i) {
+							if ($("#status" + i).text() == "Ongoing") {
+								$("#request" + i).addClass("border-success");
+								$("#request" + i).css("background", "#7BF08F");
+							}
+							if ($("#status" + i).text() == "Cancelled") {
+								$("#request" + i).addClass("border-danger");
+								$("#request" + i).css("background", "#F07B7B");
+							}
+						});
+
+						$("#loading").modal("hide"); // hide loader
+						break;
 					}
-					generateAcceptedRequestList(res.acceptedrequestlist);
-					$.each(res.acceptedrequestlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing") {
-							$("#request" + i).addClass("border-success");
-							$("#request" + i).css("background", "#7BF08F");
-						}
-						if ($("#status" + i).text() == "Cancelled") {
-							$("#request" + i).addClass("border-danger");
-							$("#request" + i).css("background", "#F07B7B");
-						}
-					});
-					break;
+					case 1: {
+						$("#loading").modal("hide"); // hide loader
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						$("#loading").modal("hide"); // hide loader
+						alert("User not logged in.");
+						break;
+					}
 				}
-				case 1: {
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					alert("User not logged in.");
-					break;
-				}
-			}
-		},
-	);
+			},
+		);
+	});
 
 	$("#editRequestBtn").click(function(data) {
 		data.preventDefault();

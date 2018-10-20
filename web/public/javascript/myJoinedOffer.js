@@ -84,45 +84,57 @@ $(document).ready(function() {
 	// }
 	/*============================== TEST DATA END HERE!!!! /*==============================*/
 
-	$.post(
-		"/myRides/myOffer/joined",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					console.log(res.joinedofferlist);
-					if (res.joinedofferlist.length == 0) {
-						$("#passengerExist").html(
-							'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
-						);
-					}
-					generateJoinedOfferList(res.joinedofferlist);
-					$.each(res.joinedofferlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing") {
-							$("#offer" + i).addClass("border-success");
-							$("#offer" + i).css("background", "#7BF08F");
-						}
+	$("#loading").modal({
+		backdrop: "static", //remove ability to close modal with click
+		keyboard: false, //remove option to close with keyboard
+		show: true, // display loader
+	});
 
-						if ($("#status" + i).text() == "Cancelled") {
-							$("#offer" + i).addClass("border-danger");
-							$("#offer" + i).css("background", "#F07B7B");
+	$("#loading").on("shown.bs.modal", function() {
+		$.post(
+			"/myRides/myOffer/joined",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						console.log(res.joinedofferlist);
+						if (res.joinedofferlist.length == 0) {
+							$("#passengerExist").html(
+								'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
+							);
 						}
-					});
-					break;
+						generateJoinedOfferList(res.joinedofferlist);
+						$.each(res.joinedofferlist, function(i) {
+							if ($("#status" + i).text() == "Ongoing") {
+								$("#offer" + i).addClass("border-success");
+								$("#offer" + i).css("background", "#7BF08F");
+							}
+
+							if ($("#status" + i).text() == "Cancelled") {
+								$("#offer" + i).addClass("border-danger");
+								$("#offer" + i).css("background", "#F07B7B");
+							}
+						});
+
+						$("#loading").modal("hide"); // hide loader
+						break;
+					}
+					case 1: {
+						$("#loading").modal("hide"); // hide loader
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						$("#loading").modal("hide"); // hide loader
+						alert("User not logged in.");
+						break;
+					}
 				}
-				case 1: {
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					alert("User not logged in.");
-					break;
-				}
-			}
-		},
-	);
+			},
+		);
+	});
 
 	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -297,16 +309,24 @@ function generateJoinedOfferList(joinedOfferList) {
 			joinedOfferList[i].status = "Cancelled";
 		}
 
+		travelingtime = moment
+			.duration(joinedOfferList[i].travelingtime, "seconds")
+			.format("h [hrs], m [min]");
+
+		var time = moment.duration("04:00:00");
+		var datentime = moment(joinedOfferList[i].datentime);
+		datentime.subtract(time);
+
 		myRideJoinedOfferList.add({
 			offerid: joinedOfferList[i].offerid,
 			pickuplocation: joinedOfferList[i].pickuplocation,
 			destination: joinedOfferList[i].destination,
-			datentime: joinedOfferList[i].datentime,
+			datentime: datentime.format("hh:mm A MMM DD, YYYY"),
 			smoking: joinedOfferList[i].smoking,
 			ac: joinedOfferList[i].ac,
 			foodndrink: joinedOfferList[i].foodndrink,
 			pets: joinedOfferList[i].pets,
-			travelingtime: joinedOfferList[i].travelingtime,
+			travelingtime: travelingtime,
 			offeredbyname: joinedOfferList[i].offeredbyname,
 			seatleft: joinedOfferList[i].seatleft,
 			luggageleft: joinedOfferList[i].luggageleft,

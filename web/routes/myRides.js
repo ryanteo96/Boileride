@@ -70,7 +70,6 @@ router.post("/myRequest", function(req, res) {
 router.post("/myRequest/accepted", function(req, res) {
 	var data = {
 		userid: req.body.userid,
-		requestid: req.body.requestid,
 	};
 
 	var options = {
@@ -288,7 +287,6 @@ router.post("/myOffer", function(req, res) {
 router.post("/myOffer/joined", function(req, res) {
 	var data = {
 		userid: req.body.userid,
-		requestid: req.body.requestid,
 	};
 
 	var options = {
