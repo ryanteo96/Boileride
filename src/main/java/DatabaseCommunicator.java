@@ -1855,6 +1855,20 @@ public class DatabaseCommunicator {
         return offerlist;
     }
 
+    public static int updateOfferStatusSeatLuggage(int offerid, int seatsleft, int luggagesleft, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEOFFER SET status = " + status + ", seatsleft = " + seatsleft + ", luggagesleft = " + luggagesleft + " WHERE offerid = " + offerid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
+    }
+
     public static int updateRequestStatus(int requestid, int status){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
