@@ -91,88 +91,82 @@ $(document).ready(function() {
 		show: true, // display loader
 	});
 
-	$.post(
-		"/myRides/myOffer",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					// console.log(res.offerlist);
-					generateViewOfferList(res.offerlist);
-					$.each(res.offerlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing") {
-							$("#offer" + i).addClass("border-success");
-							$("#offer" + i).css("background", "#7BF08F");
-						}
+	$("#loading").on("shown.bs.modal", function() {
+		$.post(
+			"/myRides/myOffer",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						// console.log(res.offerlist);
+						generateViewOfferList(res.offerlist);
+						$.each(res.offerlist, function(i) {
+							if ($("#status" + i).text() == "Ongoing") {
+								$("#offer" + i).addClass("border-success");
+								$("#offer" + i).css("background", "#7BF08F");
+							}
 
-						if ($("#status" + i).text() == "Cancelled") {
-							$("#offer" + i).addClass("border-danger");
-							$("#offer" + i).css("background", "#F07B7B");
-						}
-					});
+							if ($("#status" + i).text() == "Cancelled") {
+								$("#offer" + i).addClass("border-danger");
+								$("#offer" + i).css("background", "#F07B7B");
+								``;
+							}
+						});
 
-					$("#firstslide").css("overflow-y", "hidden"); //hide first slide scroll
-
-					$("#loading").on("shown.bs.modal", function() {
+						$("#firstslide").css("overflow-y", "hidden"); //hide first slide scroll
 						$("#loading").modal("hide"); // hide loader
-					});
-					break;
-				}
-				case 1: {
-					$("#loading").on("shown.bs.modal", function() {
+						break;
+					}
+					case 1: {
 						$("#loading").modal("hide"); // hide loader
-					});
-
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					$("#loading").on("shown.bs.modal", function() {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
 						$("#loading").modal("hide"); // hide loader
-					});
+						alert("User not logged in.");
+						break;
+					}
+				}
+			},
+		);
+	});
 
-					alert("User not logged in.");
-					break;
-				}
-			}
-		},
-	);
-
-	$.post(
-		"/myRides/myOffer/pickup",
-		{
-			userid: obj.userid,
-			offerid: edit.offerid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					// $("#headerCode").html("CODEFORPASSENGER");
-					console.log("SUCCESS");
-					$("#headerCode").html(res.code);
-					break;
-				}
-				case 1: {
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					alert("User not logged in.");
-					break;
-				}
-				case 3: {
-					alert("Invalid offerid.");
-					break;
-				}
-				case 4: {
-					alert("Not authorized to get code.");
-					break;
-				}
-			}
-		},
-	);
+	// $.post(
+	// 	"/myRides/myOffer/pickup",
+	// 	{
+	// 		userid: obj.userid,
+	// 		offerid: edit.offerid,
+	// 	},
+	// 	function(res) {
+	// 		switch (res.result) {
+	// 			case 0: {
+	// 				// $("#headerCode").html("CODEFORPASSENGER");
+	// 				console.log("SUCCESS");
+	// 				$("#headerCode").html(res.code);
+	// 				break;
+	// 			}
+	// 			case 1: {
+	// 				alert("Invalid userid.");
+	// 				break;
+	// 			}
+	// 			case 2: {
+	// 				alert("User not logged in.");
+	// 				break;
+	// 			}
+	// 			case 3: {
+	// 				alert("Invalid offerid.");
+	// 				break;
+	// 			}
+	// 			case 4: {
+	// 				alert("Not authorized to get code.");
+	// 				break;
+	// 			}
+	// 		}
+	// 	},
+	// );
 
 	$("#editOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -346,8 +340,12 @@ function generateViewOfferList(offerList) {
 
 		if (offerList[i].status == 0) {
 			offerList[i].status = "Ongoing";
-		} else {
+		} else if (offerList[i].status == 1) {
+			offerList[i].status = "Still Ongoing";
+		} else if (offerList[i].status == 2) {
 			offerList[i].status = "Cancelled";
+		} else if (offerList[i].status == 3) {
+			offerList[i].status = "Ended";
 		}
 
 		travelingtime = moment

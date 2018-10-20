@@ -112,56 +112,59 @@ $(document).ready(function() {
 		show: true, // display loader
 	});
 
-	$.post(
-		"/myPoints",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					$("#currentPoint").text(res.points);
-					$("#reservePoint").text(res.reserve);
-					$("#loading").modal("hide"); // hide loader
-					break;
-				}
-				case 1: {
-					$("#loading").modal("hide");
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					$("#loading").modal("hide");
-					alert("User not logged in.");
-					break;
-				}
-			}
-		},
-	);
+	$("#loading").on("shown.bs.modal", function() {
+		$.post(
+			"/myPoints",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						$("#currentPoint").text(res.points);
+						$("#reservePoint").text(res.reserve);
 
-	$.post(
-		"/myPoints/myTransactions",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					generateTransactionList(res.transactionlist);
-					$("#loading").modal("hide");
-					break;
+						$("#loading").modal("hide"); // hide loader
+						break;
+					}
+					case 1: {
+						$("#loading").modal("hide"); // hide loader
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						$("#loading").modal("hide"); // hide loader
+						alert("User not logged in.");
+						break;
+					}
 				}
-				case 1: {
-					$("#loading").modal("hide");
-					alert("Invalid userid.");
-					break;
+			},
+		);
+
+		$.post(
+			"/myPoints/myTransactions",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						generateTransactionList(res.transactionlist);
+						$("#loading").modal("hide"); // hide loader
+						break;
+					}
+					case 1: {
+						$("#loading").modal("hide"); // hide loader
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						$("#loading").modal("hide"); // hide loader
+						alert("User not logged in.");
+						break;
+					}
 				}
-				case 2: {
-					$("#loading").modal("hide");
-					alert("User not logged in.");
-					break;
-				}
-			}
-		},
-	);
+			},
+		);
+	});
 });

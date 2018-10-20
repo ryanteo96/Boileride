@@ -43,51 +43,44 @@ $(document).ready(function() {
 		show: true, // display loader
 	});
 
-	$.post(
-		"/myRides/myRequest",
-		{
-			userid: obj.userid,
-		},
-		function(res) {
-			switch (res.result) {
-				case 0: {
-					console.log("success");
-					console.log(res.requestlist);
-					generateRequestList(res.requestlist);
-					$.each(res.requestlist, function(i) {
-						if ($("#status" + i).text() == "Ongoing") {
-							$("#request" + i).addClass("border-success");
-							$("#request" + i).css("background", "#7BF08F");
-						}
-						if ($("#status" + i).text() == "Cancelled") {
-							$("#request" + i).addClass("border-danger");
-							$("#request" + i).css("background", "#F07B7B");
-						}
-					});
-					$("#loading").on("shown.bs.modal", function() {
-						$("#loading").modal("hide"); // hide loader
-					});
-					break;
-				}
-				case 1: {
-					$("#loading").on("shown.bs.modal", function() {
-						$("#loading").modal("hide"); // hide loader
-					});
+	$("#loading").on("shown.bs.modal", function() {
+		$.post(
+			"/myRides/myRequest",
+			{
+				userid: obj.userid,
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						generateRequestList(res.requestlist);
+						$.each(res.requestlist, function(i) {
+							if ($("#status" + i).text() == "Ongoing") {
+								$("#request" + i).addClass("border-success");
+								$("#request" + i).css("background", "#7BF08F");
+							}
+							if ($("#status" + i).text() == "Cancelled") {
+								$("#request" + i).addClass("border-danger");
+								$("#request" + i).css("background", "#F07B7B");
+							}
+						});
 
-					alert("Invalid userid.");
-					break;
-				}
-				case 2: {
-					$("#loading").on("shown.bs.modal", function() {
 						$("#loading").modal("hide"); // hide loader
-					});
-
-					alert("User not logged in.");
-					break;
+						break;
+					}
+					case 1: {
+						$("#loading").modal("hide"); // hide loader
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						$("#loading").modal("hide"); // hide loader
+						alert("User not logged in.");
+						break;
+					}
 				}
-			}
-		},
-	);
+			},
+		);
+	});
 
 	$("#editRequestBtn").click(function(data) {
 		data.preventDefault();
