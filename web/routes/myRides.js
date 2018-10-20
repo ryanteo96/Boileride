@@ -115,22 +115,22 @@ router.post("/myRequest/edit", function(req, res) {
 
 	console.log(data);
 
-	// var options = {
-	// 	uri: "http://localhost:8080/ride/update/request",
-	// 	json: data,
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 		Cookie: global.cookie,
-	// 	},
-	// };
+	var options = {
+		uri: "http://localhost:8080/ride/update/request",
+		json: data,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: global.cookie,
+		},
+	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response.body);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response.body);
+		}
+		return;
+	});
 });
 
 //cancel myrequest
