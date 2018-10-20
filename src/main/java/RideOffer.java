@@ -782,30 +782,58 @@ public class RideOffer {
         int buffer = 0;
         LinkedList<Trip> trips = new LinkedList<>();
         PriorityQueue<TmpTrip> heap = new PriorityQueue<>((a, b)->b.getEstimation() - a.getEstimation());
-        TmpTrip start = new TmpTrip();
-        start.setRides(new LinkedList<>());
-        RideOffer first = new RideOffer();
-        first.setDestination(request.getPickuplocation());
-        first.setDatentime(new Date(request.getDatentime().getTime() - 1000 * 60 * buffer));
-        first.setTravelingtime(0);
-        start.getRides().add(first);
-        heap.add(start);
+//        TmpTrip start = new TmpTrip();
+//        start.setRides(new LinkedList<>());
+//        RideOffer first = new RideOffer();
+//        first.setDestination(request.getPickuplocation());
+//        first.setDatentime(new Date(request.getDatentime().getTime() - 1000 * 60 * buffer));
+//        first.setTravelingtime(0);
+//        start.getRides().add(first);
+//        heap.add(start);
+        ArrayList<RideOffer> starts = DatabaseCommunicator.rideOfferFrom(gma.getCity(request.getDestination()),
+                request.getDatentime(), new Date(request.getDatentime().getTime() + 1000 * 60 * request.getDatentimerange()),
+                request.getPassengers(), request.getLuggage(),
+                request.isSmoking(), request.isFoodndrink(),
+                request.isPets(), request.isAc());
+        if (starts == null || starts.size() == 0) {
+            response.setResult(9);
+            return response;
+        }
+        for (RideOffer r : starts) {
+            TmpTrip tmpst = new TmpTrip();
+            tmpst.setRides(new LinkedList<>());
+            tmpst.getRides().addLast(r);
+            tmpst.setDuration(r.getTravelingtime());
+            tmpst.setEstimation(tmpst.getDuration() + gma.estimate(r.getDestination(), request.getDestination()));
+            heap.add(tmpst);
+        }
+
         while (!heap.isEmpty()) {
             TmpTrip curr = heap.poll();
-            if (gma.estimate(request.getDestination(), curr.getRides().getLast().getDestination()) <= request.getDestinationproximity()) {
-                curr.getRides().removeFirst();
-                if (curr.getRides().size() > 0 && curr.getRides().size() <= request.getNumrides()) {
+            if (curr.getRides().size() > 0 && curr.getRides().size() <= request.getNumrides()) {
+                if (gma.estimate(request.getDestination(), curr.getRides().getLast().getDestination()) <= request.getDestinationproximity()) {
                     if (gma.estimate(request.getPickuplocation(), curr.getRides().getFirst().getPickuplocation()) <= request.getPickupproximity()) {
-                        if (request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= curr.getRides().getFirst().getDatentime().getTime()) {
-                            trips.addLast(curr.toTrip());
-                        }
+                        trips.addLast(curr.toTrip());
                     }
+                    continue;
                 }
+            } else {
                 continue;
             }
+//            if (gma.estimate(request.getDestination(), curr.getRides().getLast().getDestination()) <= request.getDestinationproximity()) {
+//                curr.getRides().removeFirst();
+//                if (curr.getRides().size() > 0 && curr.getRides().size() <= request.getNumrides()) {
+//                    if (gma.estimate(request.getPickuplocation(), curr.getRides().getFirst().getPickuplocation()) <= request.getPickupproximity()) {
+//                        if (request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= curr.getRides().getFirst().getDatentime().getTime()) {
+//                            trips.addLast(curr.toTrip());
+//                        }
+//                    }
+//                }
+//                continue;
+//            }
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)), null,
                     request.getPassengers(), request.getLuggage(),
                     request.isSmoking(), request.isFoodndrink(),
                     request.isPets(), request.isAc());
@@ -971,7 +999,7 @@ public class RideOffer {
 
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)),
+                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)), null,
                     request.getPassengers(), request.getLuggage(),
                     request.isSmoking(), request.isFoodndrink(),
                     request.isPets(), request.isAc());

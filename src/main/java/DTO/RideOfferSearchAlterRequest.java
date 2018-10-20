@@ -23,13 +23,17 @@ public class RideOfferSearchAlterRequest {
     private boolean pets;
     private boolean ac;
 
+//    public RideOfferSearchAlterRequest() {
+//
+//    }
+
     public RideOfferSearchAlterRequest(int userid,
                                        int startofferid,
                                        int endofferid,
                                        Trip trip,
-                                       String originalpickuplocation,
-                                       String originaldestination,
-                                       Date originaldatentime,
+                                       String pickuplocation,
+                                       String destination,
+                                       Date datentime,
                                        double pickupproximity,
                                        double destinationproximity,
                                        int datentimerange,
@@ -44,9 +48,9 @@ public class RideOfferSearchAlterRequest {
         this.startofferid = startofferid;
         this.endofferid = endofferid;
         this.trip = trip;
-        this.originalpickuplocation = originalpickuplocation;
-        this.originaldestination = originaldestination;
-        this.originaldatentime = originaldatentime;
+        this.originalpickuplocation = pickuplocation;
+        this.originaldestination = destination;
+        this.originaldatentime = datentime;
         this.pickupproximity = pickupproximity;
         this.destinationproximity = destinationproximity;
         this.datentimerange = datentimerange;
