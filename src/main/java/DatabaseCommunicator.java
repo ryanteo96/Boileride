@@ -673,7 +673,7 @@ public class DatabaseCommunicator {
             ArrayList<Integer> offeruserstatus = new ArrayList<Integer>();
 
             while (rs.next()) {
-                if (offerid != rs.getInt("offerid")){
+                if (offerid != rs.getInt("offerid")) {
                     if (offerid != -1) {
                         Date datentime = null;
                         try {
@@ -714,24 +714,23 @@ public class DatabaseCommunicator {
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
                     offeruserstatus.add(rs.getInt("offeruserstatus"));
-                }
-                else{
+                } else {
                     joinedby.add(rs.getInt("joinedby"));
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
                     offeruserstatus.add(rs.getInt("offeruserstatus"));
                 }
-            }
-            Date datentime = null;
-            try {
-                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
-                    luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
-            offerlist.add(rideOffer);
 
+                Date datentime = null;
+                try {
+                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
+                offerlist.add(rideOffer);
+            }
             rs.close();
             stmt.close();
         }
