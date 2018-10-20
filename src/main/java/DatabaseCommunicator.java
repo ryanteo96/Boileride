@@ -1390,7 +1390,7 @@ public class DatabaseCommunicator {
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    joindate = format.parse(datentimeStr);
+                    joindate = format.parse(joindateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1464,7 +1464,7 @@ public class DatabaseCommunicator {
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    joindate = format.parse(datentimeStr);
+                    joindate = format.parse(joindateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1662,7 +1662,7 @@ public class DatabaseCommunicator {
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    joindate = format.parse(datentimeStr);
+                    joindate = format.parse(joindateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1869,7 +1869,7 @@ public class DatabaseCommunicator {
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    joindate = format.parse(datentimeStr);
+                    joindate = format.parse(joindateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
