@@ -724,7 +724,7 @@ public class RideOffer {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {
                 result = 4;
-            } else if (rideOffer.getOfferedby() != request.getUserid()) {
+            } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 3 || rideOffer.getStatus() == 4) {
                 result = 3;
             } else if (rideOffer.getStatus() == 2) {
                 result = 5;
@@ -771,7 +771,7 @@ public class RideOffer {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {
                 result = 4;
-            } else if (rideOffer.getOfferedby() != request.getUserid()) {
+            } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 3 || rideOffer.getStatus() == 4) {
                 result = 3;
             } else if (rideOffer.getStatus() == 2) {
                 result = 5;

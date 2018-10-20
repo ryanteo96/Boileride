@@ -478,7 +478,7 @@ public class RideRequest {
             RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
             if (rideRequest == null) {
                 result = 4;
-            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+            } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() == 3) {
                 result = 3;
             } else if (rideRequest.getStatus() == 2) {
                 result = 5;
@@ -526,7 +526,7 @@ public class RideRequest {
             RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
             if (rideRequest == null) {
                 result = 4;
-            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+            } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() == 3) {
                 result = 3;
             } else if (rideRequest.getStatus() == 2) {
                 result = 5;
