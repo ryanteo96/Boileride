@@ -22,7 +22,10 @@ const settings = require("./routes/settings");
 const createRideOffer = require("./routes/createRideOffer");
 const createRideRequest = require("./routes/createRideRequest");
 const searchRideOffer = require("./routes/searchRideOffer");
+const searchRideOfferResults = require("./routes/searchRideOfferResults");
+const searchRideOfferTripDetails = require("./routes/searchRideOfferTripDetails");
 const searchRideRequest = require("./routes/searchRideRequest");
+const searchRideRequestResults = require("./routes/searchRideRequestResults");
 const myPoints = require("./routes/myPoints");
 const authLoggedIn = require("./routes/authLoggedIn");
 
@@ -44,7 +47,10 @@ app.use("/settings", settings);
 app.use("/createRideOffer", createRideOffer);
 app.use("/createRideRequest", createRideRequest);
 app.use("/searchRideOffer", searchRideOffer);
+app.use("/searchRideOfferResults", searchRideOfferResults);
+app.use("/searchRideOfferTripDetails", searchRideOfferTripDetails);
 app.use("/searchRideRequest", searchRideRequest);
+app.use("/searchRideRequestResults", searchRideRequestResults);
 app.use("/myPoints", myPoints);
 app.use("/authLoggedIn", authLoggedIn);
 

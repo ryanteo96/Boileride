@@ -82,8 +82,14 @@ let test = [
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	generateViewOfferList(test);
+	// generateViewOfferList(test);
 	console.log(obj.userid);
+
+	$("#loading").modal({
+		backdrop: "static", //remove ability to close modal with click
+		keyboard: false, //remove option to close with keyboard
+		show: true, // display loader
+	});
 
 	$.post(
 		"/myRides/myOffer",
@@ -94,7 +100,7 @@ $(document).ready(function() {
 			switch (res.result) {
 				case 0: {
 					// console.log(res.offerlist);
-					// generateViewOfferList(res.offerlist);
+					generateViewOfferList(res.offerlist);
 					$.each(res.offerlist, function(i) {
 						if ($("#status" + i).text() == "Ongoing") {
 							$("#offer" + i).addClass("border-success");
@@ -108,13 +114,25 @@ $(document).ready(function() {
 					});
 
 					$("#firstslide").css("overflow-y", "hidden"); //hide first slide scroll
+
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
 					break;
 				}
 				case 1: {
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
+
 					alert("Invalid userid.");
 					break;
 				}
 				case 2: {
+					$("#loading").on("shown.bs.modal", function() {
+						$("#loading").modal("hide"); // hide loader
+					});
+
 					alert("User not logged in.");
 					break;
 				}
@@ -368,6 +386,12 @@ function generateViewOfferList(offerList) {
 		//assign dynamic id
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
+
+		// the status i saw in db is 1
+		// which means someone joined
+		// 2 mean cancel
+		// 3 mean over
+		// 4 mean someone confirmed
 	}
 }
 
