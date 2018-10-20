@@ -14,6 +14,9 @@ public class GoogleMapAPI {
     }
 
     public int estimate(String address1, String address2) throws InterruptedException, ApiException, IOException {
+        if (BoilerideServer.estimateCache.containsKey(address1 + address2)) {
+            return BoilerideServer.estimateCache.get(address1 + address2);
+        }
         DistanceMatrixApiRequest req = new DistanceMatrixApiRequest(ctx);
         DistanceMatrix res = req.origins(address1)
                 .destinations(address2)
@@ -22,7 +25,9 @@ public class GoogleMapAPI {
         if (res == null) {
             System.out.println("not getting result from google map api, check with inputs");
         }
-        return (int) res.rows[0].elements[0].duration.inSeconds / 60;
+        int est = (int) res.rows[0].elements[0].duration.inSeconds / 60;
+        BoilerideServer.estimateCache.put(address1 + address2, est);
+        return est;
     }
 
     public int[] getDistTime(String address1, String address2) throws InterruptedException, ApiException, IOException {
@@ -47,6 +52,9 @@ public class GoogleMapAPI {
     }
 
     public String getCity(String address) throws InterruptedException, ApiException, IOException {
+        if (BoilerideServer.cityCache.containsKey(address)) {
+            return BoilerideServer.cityCache.get(address);
+        }
         String city = "";
         GeocodingApiRequest req = new GeocodingApiRequest(ctx);
         GeocodingResult res = req.address(address).await()[0];
@@ -58,6 +66,7 @@ public class GoogleMapAPI {
                 }
             }
         }
+        BoilerideServer.cityCache.put(address, city);
         return city;
     }
 }

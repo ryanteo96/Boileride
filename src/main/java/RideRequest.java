@@ -584,12 +584,16 @@ public class RideRequest {
     public static RideRequestSearchResponse search (RideRequestSearchRequest request) throws InterruptedException, ApiException, IOException {
         RideRequestSearchResponse response = new RideRequestSearchResponse();
         GoogleMapAPI gma = new GoogleMapAPI();
-        // todo: add validation on query
 
+        if (request.getPickupproximity() < 0 || request.getDestinationproximity() < 0 || request.getDatentime().before(new Date())||
+                request.getDatentimerange() < 0 || request.getSeats() < 1 || request.getLuggage() < 0) {
+            response.setResult(98);
+            return response;
+        }
 
         ArrayList<DtoRideRequest> rides = new ArrayList<>();
         ArrayList<RideRequest> rs = DatabaseCommunicator.rideRequestFromTo(gma.getCity(request.getPickuplocation()),
-                gma.getCity(request.getDestination()), request.getDatentime(),
+                gma.getCity(request.getDestination()), request.getDatentime(), new Date(request.getDatentime().getTime() + 1000 * 60 * request.getDatentimerange()),
                 request.getSeats(), request.getLuggage(),
                 request.isSmoking(), request.isFoodndrink(),
                 request.isPets(), request.isAc());
@@ -599,14 +603,7 @@ public class RideRequest {
         }
         for (RideRequest r : rs) {
             if (gma.estimate(r.getPickuplocation(), request.getPickuplocation()) <= request.getPickupproximity() &&
-                    gma.estimate(r.getDestination(), request.getDestination()) <= request.getDestinationproximity() &&
-                    request.getDatentime().getTime() + request.getDatentimerange() * 60 * 1000 >= r.getDatentime().getTime() &&
-                    r.getPassengers() <= request.getSeats() &&
-                    r.getLuggage() <= request.getLuggage() &&
-                    r.isSmoking() == request.isSmoking() &&
-                    r.isFoodndrink() == request.isFoodndrink() &&
-                    r.isPets() == request.isPets() &&
-                    r.isAc() == request.isAc()) {
+                    gma.estimate(r.getDestination(), request.getDestination()) <= request.getDestinationproximity()) {
                 rides.add(r.toDtoRideRequest());
             }
         }

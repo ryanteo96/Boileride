@@ -1130,7 +1130,7 @@ public class DatabaseCommunicator {
         return res;
     }
 
-    public static ArrayList<RideRequest> rideRequestFromTo(String city1, String city2, Date date, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
+    public static ArrayList<RideRequest> rideRequestFromTo(String city1, String city2, Date date, Date before, int qpassenger, int qluggage, boolean qsmoking, boolean qfoodndrink, boolean qpets, boolean qac) {
         ArrayList<RideRequest> res = new ArrayList<>();
 
         int requestid = -1;
@@ -1159,12 +1159,15 @@ public class DatabaseCommunicator {
                     "AND pickuplocation like '%%%s%%' " +
                     "AND destination like '%%%s%%' " +
                     "AND datentime >= '%s' " +
+                    "AND datentime <= '%s' " +
                     "AND passenger >= %d " +
                     "AND luggage >= %d " +
                     "AND smoking = %d " +
                     "AND foodndrink = %d " +
                     "AND pets = %d " +
-                    "AND ac = %d", city1, city2, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    "AND ac = %d", city1, city2,
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm").format(before),
                     qpassenger, qluggage, qsmoking ? 1 : 0, qfoodndrink ? 1 : 0, qpets ? 1 : 0, qac ? 1 : 0);
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){

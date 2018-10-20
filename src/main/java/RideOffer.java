@@ -774,7 +774,7 @@ public class RideOffer {
         if (request.getPickupproximity() < 0 || request.getDestinationproximity() < 0 ||
                 request.getDatentimerange() < 0 || request.getNumrides() < 1 ||
                 request.getPassengers() < 1 || request.getLuggage() < 0) {
-            response.setResult(1);
+            response.setResult(98);
             return response;
         }
 
@@ -923,7 +923,7 @@ public class RideOffer {
                 request.getPickupproximity() < 0 || request.getDestinationproximity() < 0 ||
                 request.getDatentimerange() < 0 || request.getNumrides() < 1 ||
                 request.getPassengers() < 1 || request.getLuggage() < 0) {
-            response.setResult(1);
+            response.setResult(98);
             return response;
         }
 
