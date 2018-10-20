@@ -2066,8 +2066,9 @@ public class DatabaseCommunicator {
                 return 1;
             }
             else {
+                Timestamp timestamp = new java.sql.Timestamp(joinDate.getTime());
                 stmt.executeUpdate("INSERT INTO JOINEDRIDEOFFER (userid, offerid, passenger, luggage, triporder, offerusercode, joinedusercode, offeruserstatus, joineduserstatus, joinedstatus, joindate) " +
-                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+joinDate+"');");
+                        "VALUES ("+userid+", "+offerid+", "+passenger+", "+luggage+", "+tripOrder+", "+offerUserCode+", "+joinedUserCode+", "+offerUserStatus+", "+joinedUserStatus+", "+joinedStatus+", '"+timestamp+"');");
             }
 
             rs.close();
