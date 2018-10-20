@@ -24,8 +24,9 @@ $(document).ready(function() {
 								email: obj.email,
 							}),
 						);
+						console.log("USER ID: " + res.userid);
 
-						if (obj.userid) {
+						if (res.userid) {
 							window.location.href = "/settings";
 						} else {
 							window.location.href = "/home";
