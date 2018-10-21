@@ -136,6 +136,13 @@ google.maps.event.addDomListener(window, "load", init);
 $(document).ready(function() {
 	$("#confirmEditBtn").prop("disabled", true);
 	loadOriginalValue();
+
+	$("#passengers").change(function() {
+		var priceOutput = document.getElementById("price");
+		priceOutput.value = basePrice * $("#passengers").val();
+		price = basePrice * $("#passengers").val();
+	});
+
 	$("#editRideRequestForm").submit(function(data) {
 		data.preventDefault();
 
@@ -197,18 +204,23 @@ $(document).ready(function() {
 					}
 					case 7: {
 						alert("Invalid destination.");
+						break;
 					}
 					case 8: {
 						alert("Invalid datentime.");
+						break;
 					}
 					case 9: {
 						alert("Not enough points.");
+						break;
 					}
 					case 10: {
 						alert("Invalid price.");
+						break;
 					}
 					case 11: {
 						alert("Invalid traveling time.");
+						break;
 					}
 				}
 			},

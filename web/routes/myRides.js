@@ -250,12 +250,12 @@ router.post("/myRequest/accepted/cancel", function(req, res) {
 	console.log("myRequest accepted cancel: ");
 	console.log(data);
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 // myrequest get pickup code
@@ -523,12 +523,12 @@ router.post("/myOffer/joined/edit", function(req, res) {
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 //cancel myOffer
@@ -551,12 +551,12 @@ router.post("/myOffer/joined/cancel", function(req, res) {
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 // myoffer get pickup code

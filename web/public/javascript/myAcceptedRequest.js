@@ -60,6 +60,18 @@ $(document).ready(function() {
 								'<i class="icons fas fa-users mr-4"> You haven\'t accepted any rides.',
 							);
 						}
+
+						res.body.acceptedrequestlist.sort(function(a, b) {
+							var dateA = new Date(a.datentime),
+								dateB = new Date(b.datentime);
+
+							if (a.status - b.status) {
+								return a.status - b.status;
+							} else {
+								return dateA - dateB;
+							}
+						});
+
 						generateAcceptedRequestList(
 							res.body.acceptedrequestlist,
 						);
@@ -354,9 +366,6 @@ function generateAcceptedRequestList(acceptedRequestList) {
 			status: acceptedRequestList[i].status,
 			statustext: statustext,
 		});
-
-		myRideAcceptedRequestList.sort("datentime", { order: "asc" });
-		myRideAcceptedRequestList.sort("status", { order: "asc" });
 
 		$("#status").attr("id", "status" + i);
 		$("#request").attr("id", "request" + i);

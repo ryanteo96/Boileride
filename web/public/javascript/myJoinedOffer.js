@@ -32,41 +32,6 @@ $.post(
 	},
 );
 
-/*============================== TEST DATA START HERE!!!! /*==============================*/
-let test = [
-	{
-		datentime: 2020 / 8 / 10,
-		pickuplocation: "my house",
-		destination: "your house",
-		smoking: "true",
-		ac: "true",
-		foodndrink: "false",
-		pets: "true",
-		travelingtime: "100000000",
-		offeredbyname: "Shinigami",
-		seatleft: 5,
-		luggageleft: 2,
-		price: 9000,
-		status: "Ongoing",
-	},
-	{
-		datentime: 9999 / 8 / 10,
-		pickuplocation: "your house",
-		destination: "my house",
-		smoking: "true",
-		ac: "true",
-		foodndrink: "false",
-		pets: "true",
-		travelingtime: "57564651",
-		offeredbyname: "shingekinokyojin",
-		seatleft: 5,
-		luggageleft: 2,
-		price: 98987987,
-		status: "Cancelled",
-	},
-];
-/*============================== TEST DATA END HERE!!!! /*==============================*/
-
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
@@ -95,6 +60,18 @@ $(document).ready(function() {
 								'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
 							);
 						}
+
+						res.body.joinedofferlist.sort(function(a, b) {
+							var dateA = new Date(a.datentime),
+								dateB = new Date(b.datentime);
+
+							if (a.status - b.status) {
+								return a.status - b.status;
+							} else {
+								return dateA - dateB;
+							}
+						});
+
 						generateJoinedOfferList(res.body.joinedofferlist);
 						$.each(res.body.joinedofferlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
@@ -186,15 +163,19 @@ $(document).ready(function() {
 					}
 					case 3: {
 						alert("Not authorized to update.");
+						break;
 					}
 					case 4: {
 						alert("Ride not exist.");
+						break;
 					}
 					case 5: {
 						alert("Invalid number of passenger(s).");
+						break;
 					}
 					case 6: {
 						alert("Invalid number of luggage(s).");
+						break;
 					}
 				}
 			},
@@ -211,10 +192,10 @@ $(document).ready(function() {
 		var edit = JSON.parse(editOffer);
 
 		console.log(obj.userid);
-		console.log(obj.offerid);
+		console.log(edit.offerid);
 
 		$.post(
-			"/myRides/myOffer/cancel",
+			"/myRides/myOffer/joined/cancel",
 			{
 				userid: obj.userid,
 				cookie: obj.cookie,
@@ -236,12 +217,11 @@ $(document).ready(function() {
 					}
 					case 3: {
 						alert("Not authorized to cancel.");
+						break;
 					}
 					case 4: {
 						alert("Ride not exist.");
-					}
-					case 5: {
-						alert("Ride already cancelled.");
+						break;
 					}
 				}
 			},
@@ -452,9 +432,6 @@ function generateJoinedOfferList(joinedOfferList) {
 			status: joinedOfferList[i].status,
 			statustext: statustext,
 		});
-
-		myRideJoinedOfferList.sort("datentime", { order: "asc" });
-		myRideJoinedOfferList.sort("status", { order: "asc" });
 
 		$("#status").attr("id", "status" + i);
 		$("#offer").attr("id", "offer" + i);
