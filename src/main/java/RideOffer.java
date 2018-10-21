@@ -590,7 +590,7 @@ public class RideOffer {
                             }
                             else
                             {
-                                if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
+                                if(rideOffer.getSeatleft()+joinedOffer.getPassenger() >= seatsWant && rideOffer.getLuggageleft()+joinedOffer.getLuggage() >= luggagesWant)
                                 {
 
 
@@ -602,7 +602,7 @@ public class RideOffer {
                                     if(updateOfferResult == 0)
                                     {
                                         //int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
-                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeats()-seatsWant, rideOffer.getLuggage()-luggagesWant, 1);
+                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger()-seatsWant, rideOffer.getLuggageleft()+joinedOffer.getLuggage()-luggagesWant, 1);
                                         if(result == 0)
                                         {
                                             updatedOffers ++;
