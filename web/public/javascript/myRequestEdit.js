@@ -204,6 +204,12 @@ $(document).ready(function() {
 					case 9: {
 						alert("Not enough points.");
 					}
+					case 10: {
+						alert("Invalid price.");
+					}
+					case 11: {
+						alert("Invalid traveling time.");
+					}
 				}
 			},
 		);

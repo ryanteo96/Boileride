@@ -178,19 +178,39 @@ $(document).ready(function() {
 						break;
 					}
 					case 3: {
-						alert("Invalid pickup location.");
+						alert("Not authorized to update.");
 						break;
 					}
 					case 4: {
-						alert("Invalid destination.");
+						alert("Ride does not exist.");
 						break;
 					}
 					case 5: {
-						alert("Invalid datentime.");
+						alert("Ride cancelled.");
 						break;
 					}
 					case 6: {
+						alert("Invalid pickup location.");
+						break;
+					}
+					case 7: {
+						alert("Invalid destination.");
+						break;
+					}
+					case 8: {
+						alert("Invalid datentime.");
+						break;
+					}
+					case 9: {
 						alert("Not enough points.");
+						break;
+					}
+					case 10: {
+						alert("Invalid price.");
+						break;
+					}
+					case 8: {
+						alert("Invalid traveling time.");
 						break;
 					}
 				}
