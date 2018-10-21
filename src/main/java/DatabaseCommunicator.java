@@ -382,7 +382,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT r.*, u.nickname, a FROM RIDEREQUEST WHERE requestedby = " + userid);
             ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone, a.requestuserstatus from RIDEREQUEST r " +
-                    "JOIN USER u1 on r.requestedby = u1.userid LEFT JOIN ACCEPTEDRIDEREQUEST a on r.requestid = a.requestid LEFT JOIN USER u2 on a.userid = u2.userid WHERE requestedby = " + userid);
+                    "LEFT JOIN USER u1 on r.requestedby = u1.userid LEFT JOIN ACCEPTEDRIDEREQUEST a on r.requestid = a.requestid LEFT JOIN USER u2 on a.userid = u2.userid WHERE requestedby = " + userid);
 //            ResultSet rs = stmt.executeQuery("select r.*, u1.nickname as requestedbyname, u2.nickname as acceptedbyname, a.userid as acceptedby, u2.phone, a.requestuserstatus " +
 //                    "FROM RIDEREQUEST r, USER u1, USER u2, ACCEPTEDRIDEREQUEST a WHERE r.requestedby = u1.userid and r.requestid = a.requestid and " +
 //                    "a.userid = u2.userid and r.requestedby = " + userid);
@@ -648,7 +648,7 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             //ResultSet rs = stmt.executeQuery("SELECT * FROM RIDEOFFER WHERE offeredby = " + userid);
             ResultSet rs = stmt.executeQuery("SELECT r.*, u1.nickname as offeredbyname, u2.nickname as joinedbyname, j.userid as joinedby, u2.phone, j.offeruserstatus from RIDEOFFER r " +
-                    "JOIN USER u1 on r.offeredby = u1.userid LEFT JOIN JOINEDRIDEOFFER j on r.offerid = j.offerid LEFT JOIN USER u2 on j.userid = u2.userid WHERE r.offeredby = " + userid + " ORDER BY offerid");
+                    "LEFT JOIN USER u1 on r.offeredby = u1.userid LEFT JOIN JOINEDRIDEOFFER j on r.offerid = j.offerid LEFT JOIN USER u2 on j.userid = u2.userid WHERE r.offeredby = " + userid + " ORDER BY offerid");
 //            ResultSet rs = stmt.executeQuery("SELECT r.*, u1.nickname as offeredbyname, u2.nickname as joinedbyname, j.userid as joinedby, u2.phone, j.offeruserstatus " +
 //                    "FROM RIDEOFFER r, USER u1, USER u2, JOINEDRIDEOFFER j WHERE r.offeredby = u1.userid and r.offerid = j.offerid and j.userid = u2.userid " +
 //                    "and r.offeredby = "+ userid + " ORDER BY offerid");
@@ -723,7 +723,8 @@ public class DatabaseCommunicator {
                     phone.add(rs.getString("phone"));
                     offeruserstatus.add(rs.getInt("offeruserstatus"));
                 }
-
+            }
+            if (datentimeStr != null) {
                 Date datentime = null;
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
