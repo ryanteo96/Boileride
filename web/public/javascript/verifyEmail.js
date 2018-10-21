@@ -27,9 +27,9 @@ $(document).ready(function() {
 						);
 
 						if (res.body.userid) {
-							window.location.href = "/settings";
-						} else {
 							window.location.href = "/home";
+						} else {
+							window.location.href = "/settings";
 						}
 
 						break;
