@@ -15,7 +15,7 @@ router.post("/", function(req, res) {
 
 	var offset = moment.duration("04:00:00");
 	var datentime = moment(date + " " + time);
-	// datentime.add(offset);
+	datentime.add(offset);
 
 	var data = {
 		userid: req.body.userid,

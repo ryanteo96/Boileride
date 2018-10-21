@@ -13,7 +13,7 @@ router.post("/", function(req, res) {
 	let date = req.body.date;
 	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
 
-	var offset = moment.duration("08:00:00");
+	var offset = moment.duration("04:00:00");
 	var datentime = moment(date + " " + time);
 	datentime.add(offset);
 

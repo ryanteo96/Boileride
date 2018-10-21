@@ -354,10 +354,11 @@ $(document).ready(function() {
 						localStorage.setItem(
 							"code",
 							JSON.stringify({
-								// code: res.code,
-								codefordriver: "CODEFORDRIVER",
+								code: res.body.code,
 							}),
 						);
+
+						$("#headerCode").html(res.body.code);
 
 						break;
 					}
