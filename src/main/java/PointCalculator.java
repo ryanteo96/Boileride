@@ -112,15 +112,15 @@ public class PointCalculator {
                     AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(rideRequest.getRequestid());
                     if (acceptedRequest == null) {
                         DatabaseCommunicator.updatePointReserve(userid, rideRequest.getPrice(), rideRequest.getPrice() * -1);
-                        System.out.println("charge fail ride request: " + rideRequest.getRequestid() + " points: " + rideRequest.getPrice() + " reserve: " + rideRequest.getPrice()*-1);
+                        System.out.println("charge fail ride request 1: " + rideRequest.getRequestid() + " points: " + rideRequest.getPrice() + " reserve: " + rideRequest.getPrice()*-1);
                     } else {
                         if (acceptedRequest.getRequestuserstatus() == 0 && acceptedRequest.getRequestusercode() != 0) {
                             DatabaseCommunicator.updatePointReserve(userid, rideRequest.getPrice(), rideRequest.getPrice() * -1);
-                            System.out.println("charge fail ride request: " + rideRequest.getRequestid() + " points: " + rideRequest.getPrice() + " reserve: " + rideRequest.getPrice()*-1);
+                            System.out.println("charge fail ride request 2: " + rideRequest.getRequestid() + " points: " + rideRequest.getPrice() + " reserve: " + rideRequest.getPrice()*-1);
                         } else if (acceptedRequest.getRequestuserstatus() == 0 && acceptedRequest.getRequestusercode() == 0) {
                             DatabaseCommunicator.updatePointReserve(userid, 0, rideRequest.getPrice() * -1);
                             recordTransaction(0, userid, today, rideRequest.getPrice(), "Fail ride request pickup charge");
-                            System.out.println("charge fail ride request: " + rideRequest.getRequestid() + " points: " + 0 + " reserve: " + rideRequest.getPrice()*-1);
+                            System.out.println("charge fail ride request 3: " + rideRequest.getRequestid() + " points: " + 0 + " reserve: " + rideRequest.getPrice()*-1);
                         }
                     }
                     DatabaseCommunicator.updateRequestStatus(rideRequest.getRequestid(), 3);
@@ -144,7 +144,7 @@ public class PointCalculator {
                         ArrayList<JoinedOffer> joinedOffers = DatabaseCommunicator.selectJoinedOfferByOfferid(rideOffer.getOfferid());
                         if (joinedOffers.isEmpty()) {
                             DatabaseCommunicator.updatePointReserve(userid, rideOffer.getPrice(), rideOffer.getPrice() * -1);
-                            System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
+                            System.out.println("charge fail ride offer1: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
                         } else {
                             for (JoinedOffer joinedOffer : joinedOffers) {
                                 if (joinedOffer.getOfferusercode() != 0) {
@@ -156,11 +156,11 @@ public class PointCalculator {
                             }
                             if (hasGetCode && !hasPickedUpSomeone) {
                                 DatabaseCommunicator.updatePointReserve(userid, rideOffer.getPrice(), rideOffer.getPrice() * -1);
-                                System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
+                                System.out.println("charge fail ride offer2: " + rideOffer.getOfferid() + " points: " + rideOffer.getPrice() + " reserve: " + rideOffer.getPrice() * -1);
                             } else if (!hasGetCode && !hasPickedUpSomeone) {
                                 DatabaseCommunicator.updatePointReserve(userid, 0, rideOffer.getPrice() * -1);
                                 recordTransaction(0, userid, today, rideOffer.getPrice(), "Fail ride offer pickup charge");
-                                System.out.println("charge fail ride offer: " + rideOffer.getOfferid() + " points: " + 0 + " reserve: " + rideOffer.getPrice() * -1);
+                                System.out.println("charge fail ride offer3: " + rideOffer.getOfferid() + " points: " + 0 + " reserve: " + rideOffer.getPrice() * -1);
                             }
                         }
                     }
@@ -179,12 +179,12 @@ public class PointCalculator {
                 if ((today.getTime() - acceptedRequest.getDatentime().getTime()) / 1000 > 1800) {
                     if (acceptedRequest.getAcceptedstatus() == 0 && acceptedRequest.getAcceptedusercode() != 0){
                         DatabaseCommunicator.updatePointReserve(userid, acceptedRequest.getPrice(), acceptedRequest.getPrice()*-1);
-                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + acceptedRequest.getPrice() + " reserve: " + acceptedRequest.getPrice()*-1);
+                        System.out.println("charge fail accepted request 1: " + acceptedRequest.requestid + " points: " + acceptedRequest.getPrice() + " reserve: " + acceptedRequest.getPrice()*-1);
                     }
                     else if (acceptedRequest.getAcceptedstatus() == 0 && acceptedRequest.getAcceptedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, acceptedRequest.getPrice()*-1);
                         recordTransaction(0, userid, today, acceptedRequest.getPrice(), "Fail accepted ride request pickup charge");
-                        System.out.println("charge fail accepted request: " + acceptedRequest.requestid + " points: " + 0 + " reserve: " + acceptedRequest.getPrice()*-1);
+                        System.out.println("charge fail accepted request 2: " + acceptedRequest.requestid + " points: " + 0 + " reserve: " + acceptedRequest.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateAcceptedStatus(acceptedRequest.requestid, 1);
                 }
@@ -200,12 +200,12 @@ public class PointCalculator {
                 if ((today.getTime() - joinedOffer.getDatentime().getTime()) / 1000 > 1800) {
                     if (joinedOffer.getJoinedstatus() == 0 && joinedOffer.getJoinedusercode() != 0){
                         DatabaseCommunicator.updatePointReserve(userid, joinedOffer.getPrice(), joinedOffer.getPrice()*-1);
-                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + joinedOffer.getPrice() + " reserve: " + joinedOffer.getPrice()*-1);
+                        System.out.println("charge fail joined offer 1: " + joinedOffer.offerid + " points: " + joinedOffer.getPrice() + " reserve: " + joinedOffer.getPrice()*-1);
                     }
                     else if (joinedOffer.getJoinedstatus() == 0 && joinedOffer.getJoinedusercode() == 0){
                         DatabaseCommunicator.updatePointReserve(userid, 0, joinedOffer.getPrice()*-1);
                         recordTransaction(0, userid, today, joinedOffer.getPrice(), "Fail joined ride offer pickup charge");
-                        System.out.println("charge fail joined offer: " + joinedOffer.offerid + " points: " + 0 + " reserve: " + joinedOffer.getPrice()*-1);
+                        System.out.println("charge fail joined offer 2: " + joinedOffer.offerid + " points: " + 0 + " reserve: " + joinedOffer.getPrice()*-1);
                     }
                     DatabaseCommunicator.updateJoinedStatus(joinedOffer.offerid, userid, 1);
                 }

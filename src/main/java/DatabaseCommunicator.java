@@ -1427,6 +1427,8 @@ public class DatabaseCommunicator {
             Statement stmt = BoilerideServer.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT j.*, r.offeredby, r.datentime, r.price, r.status " +
                     "FROM JOINEDRIDEOFFER j, RIDEOFFER r WHERE j.offerid = r.offerid and j.offerid = " + offerid);
+//            ResultSet rs = stmt.executeQuery("SELECT j.*, r.offeredby, r.datentime, r.price, r.status " +
+//                    "FROM JOINEDRIDEOFFER j LEFT JOIN RIDEOFFER r on j.offerid = r.offerid WHERE j.offerid = " + offerid);
 
             while (rs.next()) {
 
