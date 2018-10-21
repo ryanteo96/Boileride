@@ -180,6 +180,7 @@ public class JoinedOffer {
     }
 
     public RideViewJoinedOfferResponse viewJoinedOfferfromDB(RideViewJoinedOfferRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         ArrayList<DtoJoinedOffer> joinedofferlist = new ArrayList<DtoJoinedOffer>();
         joinedofferlist = DatabaseCommunicator.selectJoinedOfferList(request.getUserid());

@@ -665,6 +665,7 @@ public class RideOffer {
 
 
     public RideViewOfferResponse viewRideOfferfromDB(RideViewOfferRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         ArrayList<DtoRideOffer> offerlist = new ArrayList<DtoRideOffer>();
         User user = DatabaseCommunicator.selectUser(request.getUserid());

@@ -423,6 +423,7 @@ public class RideRequest {
         return  response;
     }
     public RideViewRequestResponse viewRideRequestfromDB(RideViewRequestRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         ArrayList<DtoRideRequest> requestlist = new ArrayList<DtoRideRequest>();
         User user = DatabaseCommunicator.selectUser(request.getUserid());

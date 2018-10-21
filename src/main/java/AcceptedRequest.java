@@ -140,6 +140,7 @@ public class AcceptedRequest {
     }
 
     public RideViewAcceptedRequestResponse viewAcceptedRequestfromDB(RideViewAcceptedRequestRequest request){
+        PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         ArrayList<DtoAcceptedRequest> acceptedRequestlist = new ArrayList<DtoAcceptedRequest>();
         acceptedRequestlist = DatabaseCommunicator.selectAcceptedRequestList(request.getUserid());
