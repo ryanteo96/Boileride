@@ -113,7 +113,7 @@ function generateSearchOfferList(searchlist) {
 
 		var time = moment.duration("04:00:00");
 		var datentime = moment(searchlist[i].rides[0].datentime);
-		datentime.subtract(time);
+		// datentime.subtract(time);
 
 		offerlist.add({
 			tripid: i,

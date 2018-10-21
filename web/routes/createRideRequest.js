@@ -15,13 +15,13 @@ router.post("/", function(req, res) {
 
 	var offset = moment.duration("04:00:00");
 	var datentime = moment(date + " " + time);
-	datentime.add(offset);
+	// datentime.add(offset);
 
 	var data = {
 		userid: req.body.userid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
-		datentime: datentime,
+		datentime: datentime.format("YYYY-MM-DD HH:mm"),
 		passengers: req.body.passengers,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,

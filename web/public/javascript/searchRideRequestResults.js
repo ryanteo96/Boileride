@@ -160,7 +160,7 @@ function generateSearchRequestList(searchlist) {
 
 		var time = moment.duration("04:00:00");
 		var datentime = moment(searchlist[i].datentime);
-		datentime.subtract(time);
+		// datentime.add(time);
 
 		requestlist.add({
 			requestid: searchlist[i].requestid,
