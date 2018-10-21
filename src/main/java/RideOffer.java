@@ -568,7 +568,7 @@ public class RideOffer {
                         if( passengers.contains(user.getUserid()) )
                         {
                             JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
-                            DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), rideOffer.getStatus());
+//                            DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), rideOffer.getStatus());
 
 
 
@@ -597,7 +597,8 @@ public class RideOffer {
 
                                     if(updateOfferResult == 0)
                                     {
-                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
+                                        //int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
+                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeats()-seatsWant, rideOffer.getLuggage()-luggagesWant, 1);
                                         if(result == 0)
                                         {
                                             updatedOffers ++;
