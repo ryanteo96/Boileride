@@ -70,12 +70,16 @@ router.post("/myRequest/edit", function(req, res) {
 	let date = req.body.date;
 	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
 
+	var offset = moment.duration("04:00:00");
+	var datentime = moment(date + " " + time);
+	datentime.add(offset);
+
 	var data = {
 		userid: req.body.userid,
 		requestid: req.body.requestid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
-		datentime: date + " " + time,
+		datentime: datentime,
 		passengers: req.body.passengers,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,
@@ -333,12 +337,16 @@ router.post("/myOffer/edit", function(req, res) {
 	let date = req.body.date;
 	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
 
+	var offset = moment.duration("04:00:00");
+	var datentime = moment(date + " " + time);
+	datentime.add(offset);
+
 	var data = {
 		userid: req.body.userid,
 		offerid: req.body.offerid,
 		pickuplocation: req.body.pickuplocation,
 		destination: req.body.destination,
-		datentime: date + " " + time,
+		datentime: datentime,
 		seats: req.body.seats,
 		luggage: req.body.luggage,
 		smoking: req.body.smoking,
