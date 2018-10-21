@@ -1556,7 +1556,7 @@ public class DatabaseCommunicator {
     public static int updatePointReserve(int userid, int pointAmount, int reserveAmount){
         try {
             Statement stmt = BoilerideServer.conn.createStatement();
-            stmt.executeUpdate("UPDATE USER SET points = points+" + pointAmount + ", reserve = reserve+" + reserveAmount + " WHERE userid = " + userid);
+            stmt.executeUpdate("UPDATE USER SET points = points+" + pointAmount + ", reserve = GREATEST(reserve+" + reserveAmount + ", 0) WHERE userid = " + userid);
 
             stmt.close();
         }
