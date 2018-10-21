@@ -25,7 +25,7 @@ public class GoogleMapAPI {
         if (res == null) {
             System.out.println("not getting result from google map api, check with inputs");
         }
-        int est = (int) res.rows[0].elements[0].duration.inSeconds / 60;
+        int est = (int) res.rows[0].elements[0].duration.inSeconds;
         BoilerideServer.estimateCache.put(address1 + address2, est);
         return est;
     }
