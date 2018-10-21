@@ -11,9 +11,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -237,6 +238,9 @@ $(document).ready(function() {
 	var search = localStorage.getItem("search");
 	var searchObj = JSON.parse(search);
 
+	var credentials = localStorage.getItem("credentials");
+	var credObj = JSON.parse(credentials);
+
 	console.log(obj.rides);
 
 	$("#numrides").text("Number of Rides: " + obj.numrides);
@@ -286,6 +290,7 @@ $(document).ready(function() {
 				"/searchRideOfferTripDetails/edit",
 				{
 					userid: searchObj[0].userid,
+					cookie: credObj.cookie,
 					startofferid: startofferid,
 					endofferid: endofferid,
 					pickuplocation: searchObj[0].pickuplocation,
@@ -305,13 +310,13 @@ $(document).ready(function() {
 					trip: JSON.stringify(obj.rides),
 				},
 				function(res) {
-					switch (res.result) {
+					switch (res.body.result) {
 						case 0: {
-							console.log(res.trips);
+							console.log(res.body.trips);
 							localStorage.key = "searchResults";
 							localStorage.setItem(
 								"searchResults",
-								JSON.stringify(res.trips),
+								JSON.stringify(res.body.trips),
 							);
 
 							$("#loading").modal("hide"); // hide loader
@@ -382,12 +387,13 @@ $(document).ready(function() {
 			"/searchRideOfferTripDetails/join",
 			{
 				userid: searchObj[0].userid,
+				cookie: credObj.cookie,
 				offeridlist: JSON.stringify(obj.rides),
 				passenger: $("#numPassenger").val(),
 				luggage: $("#numLuggage").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						$("#loading").modal("hide"); // hide loader
 						alert("Success.");

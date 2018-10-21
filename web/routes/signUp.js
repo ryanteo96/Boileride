@@ -17,6 +17,7 @@ router.post("/", function(req, res) {
 		phone: req.body.phone,
 	};
 
+	console.log("signUp: ");
 	console.log(data);
 
 	var options = {

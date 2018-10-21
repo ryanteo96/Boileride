@@ -13,9 +13,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -48,18 +49,21 @@ $(document).ready(function() {
 			"/myRides/myRequest/accepted",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						console.log(res.acceptedrequestlist);
-						if (res.acceptedrequestlist.length == 0) {
+						console.log(res.body.acceptedrequestlist);
+						if (res.body.acceptedrequestlist.length == 0) {
 							$("#rideExist").html(
 								'<i class="icons fas fa-users mr-4"> You haven\'t accepted any rides.',
 							);
 						}
-						generateAcceptedRequestList(res.acceptedrequestlist);
-						$.each(res.acceptedrequestlist, function(i) {
+						generateAcceptedRequestList(
+							res.body.acceptedrequestlist,
+						);
+						$.each(res.body.acceptedrequestlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
 								$("#request" + i).addClass("border-info");
 								$("#request" + i).addClass("bg-info");
@@ -119,10 +123,11 @@ $(document).ready(function() {
 			"/myRides/myRequest/accepted/cancel",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myRequest/accepted";
 						break;
@@ -163,10 +168,11 @@ $(document).ready(function() {
 			"/myRides/myRequest/pickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						//store the code so can display it in confirm myRequestPickup
 						localStorage.key = "code";
@@ -215,11 +221,12 @@ $(document).ready(function() {
 			"/myRides/myRequest/accepted/confirmpickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer/joined";
 						break;

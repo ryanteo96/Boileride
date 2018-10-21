@@ -5,8 +5,6 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
-		console.log(obj);
-
 		$.post(
 			"/verifyEmail",
 			{
@@ -14,19 +12,21 @@ $(document).ready(function() {
 				code: $("#verifyCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						localStorage.key = "credentials";
 						localStorage.setItem(
 							"credentials",
 							JSON.stringify({
-								userid: res.userid,
+								userid: res.body.userid,
 								email: obj.email,
+								cookie: JSON.stringify(
+									res.headers["set-cookie"],
+								),
 							}),
 						);
-						console.log("USER ID: " + res.userid);
 
-						if (res.userid) {
+						if (res.body.userid) {
 							window.location.href = "/settings";
 						} else {
 							window.location.href = "/home";

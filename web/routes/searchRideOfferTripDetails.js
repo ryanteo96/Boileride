@@ -32,6 +32,7 @@ router.post("/edit", function(req, res) {
 		trip: req.body.trip,
 	};
 
+	console.log("searchRideOffer edit: ");
 	console.log(data);
 
 	var options = {
@@ -40,13 +41,13 @@ router.post("/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -66,6 +67,7 @@ router.post("/join", function(req, res) {
 		luggage: req.body.luggage,
 	};
 
+	console.log("searchRideOffer join: ");
 	console.log(data);
 
 	var options = {
@@ -74,13 +76,13 @@ router.post("/join", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});

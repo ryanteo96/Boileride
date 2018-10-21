@@ -11,14 +11,15 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
-				$("#newNickname").val(res.nickname);
-				$("#newEmail").val(res.email);
-				$("#newPhone").val(res.phone);
+				$("#newNickname").val(res.body.nickname);
+				$("#newEmail").val(res.body.email);
+				$("#newPhone").val(res.body.phone);
 				break;
 			}
 			case 2: {
@@ -27,9 +28,9 @@ $.post(
 			}
 			default: {
 				$("html").show();
-				$("#newNickname").val(res.nickname);
-				$("#newEmail").val(res.email);
-				$("#newPhone").val(res.phone);
+				$("#newNickname").val(res.body.nickname);
+				$("#newEmail").val(res.body.email);
+				$("#newPhone").val(res.body.phone);
 				break;
 			}
 		}
@@ -49,10 +50,11 @@ $(document).ready(function() {
 			"/settings/changeNickname",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				nickname: $("#newNickname").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Nickname successfully changed.");
 						break;
@@ -89,17 +91,21 @@ $(document).ready(function() {
 			"/settings/changeEmail",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				email: $("#newEmail").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						localStorage.key = "credentials";
 						localStorage.setItem(
 							"credentials",
 							JSON.stringify({
-								userid: res.userid,
+								userid: res.body.userid,
 								email: $("#newEmail").val(),
+								cookie: JSON.stringify(
+									res.headers["set-cookie"],
+								),
 							}),
 						);
 
@@ -139,10 +145,11 @@ $(document).ready(function() {
 			{
 				userid: obj.userid,
 				email: obj.email,
+				cookie: obj.cookie,
 				newpassword: $("#newPassword").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Password successfully changed.");
 						break;
@@ -179,10 +186,11 @@ $(document).ready(function() {
 			"/settings/changePhone",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				phone: $("#newPhone").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Phone Number successfully changed.");
 						break;

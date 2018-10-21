@@ -14,6 +14,7 @@ router.post("/", function(req, res) {
 		code: req.body.code,
 	};
 
+	console.log("verifyEmail: ");
 	console.log(data);
 
 	var options = {
@@ -26,9 +27,8 @@ router.post("/", function(req, res) {
 	};
 
 	request(options, function(error, response) {
-		global.cookie = response.headers["set-cookie"];
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});

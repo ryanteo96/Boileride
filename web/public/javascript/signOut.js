@@ -5,15 +5,14 @@ $(document).ready(function() {
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
 
-		console.log(obj.userid);
-
 		$.post(
 			"/signOut",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						localStorage.clear();
 

@@ -11,9 +11,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -51,10 +52,11 @@ $(document).ready(function() {
 			"/searchRideRequest/accept",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: req.requestid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Success");
 						window.location.href = "/home";

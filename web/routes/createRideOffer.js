@@ -32,6 +32,7 @@ router.post("/", function(req, res) {
 		price: req.body.price,
 	};
 
+	console.log("createRideOffer: ");
 	console.log(data);
 
 	var options = {
@@ -40,13 +41,13 @@ router.post("/", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});

@@ -51,15 +51,16 @@ router.post("/myRequest", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -90,6 +91,7 @@ router.post("/myRequest/edit", function(req, res) {
 		price: req.body.price,
 	};
 
+	console.log("myRequest edit: ");
 	console.log(data);
 
 	var options = {
@@ -98,13 +100,13 @@ router.post("/myRequest/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -126,15 +128,16 @@ router.post("/myRequest/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest cancel: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -153,15 +156,16 @@ router.post("/myRequest/pickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest pickup: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -175,6 +179,7 @@ router.post("/myRequest/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
+	console.log("myRequest confirm pickup: ");
 	console.log(data);
 
 	var options = {
@@ -183,13 +188,13 @@ router.post("/myRequest/confirmpickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
-	// 		res.send(response.body);
+	// 		res.send(response);
 	// 	}
 	// 	return;
 	// });
@@ -207,15 +212,16 @@ router.post("/myRequest/accepted", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest accepted: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -237,15 +243,16 @@ router.post("/myRequest/accepted/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest accepted cancel: ");
 	console.log(data);
 
 	// request(options, function(error, response) {
 	// 	if (response) {
-	// 		res.send(response.body);
+	// 		res.send(response);
 	// 	}
 	// 	return;
 	// });
@@ -264,15 +271,16 @@ router.post("/myRequest/accepted/pickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myRequest accepted pickup: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -286,6 +294,7 @@ router.post("/myRequest/accepted/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
+	console.log("myRequest accepted confirmpickup: ");
 	console.log(data);
 
 	var options = {
@@ -294,13 +303,13 @@ router.post("/myRequest/accepted/confirmpickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
-	// 		res.send(response.body);
+	// 		res.send(response);
 	// 	}
 	// 	return;
 	// });
@@ -312,6 +321,7 @@ router.post("/myOffer", function(req, res) {
 		userid: req.body.userid,
 	};
 
+	console.log("myOffer: ");
 	console.log(data);
 
 	var options = {
@@ -320,13 +330,13 @@ router.post("/myOffer", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -357,6 +367,7 @@ router.post("/myOffer/edit", function(req, res) {
 		price: req.body.price,
 	};
 
+	console.log("myOffer edit: ");
 	console.log(data);
 
 	var options = {
@@ -365,13 +376,13 @@ router.post("/myOffer/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -383,6 +394,8 @@ router.post("/myOffer/cancel", function(req, res) {
 		userid: req.body.userid,
 		offerid: req.body.offerid,
 	};
+
+	console.log("myOffer cancel: ");
 	console.log(data);
 
 	var options = {
@@ -391,13 +404,13 @@ router.post("/myOffer/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -410,6 +423,7 @@ router.post("/myOffer/pickup", function(req, res) {
 		offerid: req.body.offerid,
 	};
 
+	console.log("myOffer pickup: ");
 	console.log(data);
 
 	var options = {
@@ -418,13 +432,13 @@ router.post("/myOffer/pickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -439,6 +453,7 @@ router.post("/myOffer/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
+	console.log("myOffer confirmpickup: ");
 	console.log(data);
 
 	var options = {
@@ -447,16 +462,16 @@ router.post("/myOffer/confirmpickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response.body);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 // view joined offer
@@ -471,15 +486,16 @@ router.post("/myOffer/joined", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
+	console.log("myOffer joined: ");
 	console.log(data);
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -493,6 +509,8 @@ router.post("/myOffer/joined/edit", function(req, res) {
 		passenger: req.body.passenger,
 		luggage: req.body.luggage,
 	};
+
+	console.log("myOffer joined edit: ");
 	console.log(data);
 
 	var options = {
@@ -501,13 +519,13 @@ router.post("/myOffer/joined/edit", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
-	// 		res.send(response.body);
+	// 		res.send(response);
 	// 	}
 	// 	return;
 	// });
@@ -519,6 +537,8 @@ router.post("/myOffer/joined/cancel", function(req, res) {
 		userid: req.body.userid,
 		offerid: req.body.offerid,
 	};
+
+	console.log("myOffer joined cancel: ");
 	console.log(data);
 
 	var options = {
@@ -527,13 +547,13 @@ router.post("/myOffer/joined/cancel", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	// request(options, function(error, response) {
 	// 	if (response) {
-	// 		res.send(response.body);
+	// 		res.send(response);
 	// 	}
 	// 	return;
 	// });
@@ -546,6 +566,7 @@ router.post("/myOffer/joined/pickup", function(req, res) {
 		offerid: req.body.offerid,
 	};
 
+	console.log("myOffer joined pickup: ");
 	console.log(data);
 
 	var options = {
@@ -554,13 +575,13 @@ router.post("/myOffer/joined/pickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -574,6 +595,7 @@ router.post("/myOffer/joined/confirmpickup", function(req, res) {
 		code: req.body.code,
 	};
 
+	console.log("myOffer joined confirmpickup: ");
 	console.log(data);
 
 	var options = {
@@ -582,16 +604,16 @@ router.post("/myOffer/joined/confirmpickup", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response.body);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 module.exports = router;

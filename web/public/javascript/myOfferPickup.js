@@ -11,9 +11,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -49,12 +50,13 @@ $(document).ready(function() {
 			"/myRides/myOffer/confirmpickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 				joineduserid: "something",
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer";
 						alert("Pick up confirmed!");

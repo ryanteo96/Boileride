@@ -16,9 +16,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -139,6 +140,7 @@ $(document).ready(function() {
 		$.post(
 			"/createRideOffer",
 			{
+				cookie: obj.cookie,
 				userid: obj.userid,
 				pickuplocation: pickup.value,
 				destination: destination.value,
@@ -154,7 +156,7 @@ $(document).ready(function() {
 				price: price,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Ride Offer successfully created.");
 						window.location.href = "/home";

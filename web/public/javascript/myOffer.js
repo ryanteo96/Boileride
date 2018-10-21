@@ -15,9 +15,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -51,11 +52,12 @@ $(document).ready(function() {
 			"/myRides/myOffer",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						res.offerlist.sort(function(a, b) {
+						res.body.offerlist.sort(function(a, b) {
 							var dateA = new Date(a.datentime),
 								dateB = new Date(b.datentime);
 
@@ -66,9 +68,9 @@ $(document).ready(function() {
 							}
 						});
 
-						generateViewOfferList(res.offerlist);
+						generateViewOfferList(res.body.offerlist);
 
-						$.each(res.offerlist, function(i) {
+						$.each(res.body.offerlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
 								$("#offer" + i).addClass("border-info");
 								$("#offer" + i).addClass("bg-info");
@@ -130,10 +132,11 @@ $(document).ready(function() {
 			"/myRides/myOffer/cancel",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer/";
 						break;
@@ -347,14 +350,15 @@ function getItem(item) {
 		"/myRides/myOffer/pickup",
 		{
 			userid: obj.userid,
+			cookie: obj.cookie,
 			offerid: myRideOfferList.get("offerid", offerid)[0]._values.offerid,
 		},
 		function(res) {
-			switch (res.result) {
+			switch (res.body.result) {
 				case 0: {
 					// $("#headerCode").html("CODEFORPASSENGER");
 					console.log("SUCCESS");
-					$("#headerCode").html(res.code);
+					$("#headerCode").html(res.body.code);
 					break;
 				}
 				case 1: {
@@ -474,12 +478,13 @@ function getPassengerCode(item) {
 			"/myRides/myOffer/confirmPickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 				joineduserid: joinedby,
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer/";
 						break;

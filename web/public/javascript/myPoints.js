@@ -11,9 +11,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -117,23 +118,25 @@ $(document).ready(function() {
 			"/myPoints",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						$("#currentPoint").text(res.points);
-						$("#reservePoint").text(res.reserve);
+						$("#currentPoint").text(res.body.points);
+						$("#reservePoint").text(res.body.reserve);
 
 						$.post(
 							"/myPoints/myTransactions",
 							{
 								userid: obj.userid,
+								cookie: obj.cookie,
 							},
 							function(res) {
-								switch (res.result) {
+								switch (res.body.result) {
 									case 0: {
 										generateTransactionList(
-											res.transactionlist,
+											res.body.transactionlist,
 										);
 										$("#loading").modal("hide"); // hide loader
 										break;

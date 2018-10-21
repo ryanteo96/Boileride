@@ -13,9 +13,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				break;
 			}
@@ -83,18 +84,19 @@ $(document).ready(function() {
 			"/myRides/myOffer/joined",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						console.log(res.joinedofferlist);
-						if (res.joinedofferlist.length == 0) {
+						console.log(res.body.joinedofferlist);
+						if (res.body.joinedofferlist.length == 0) {
 							$("#passengerExist").html(
 								'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
 							);
 						}
-						generateJoinedOfferList(res.joinedofferlist);
-						$.each(res.joinedofferlist, function(i) {
+						generateJoinedOfferList(res.body.joinedofferlist);
+						$.each(res.body.joinedofferlist, function(i) {
 							if ($("#status" + i).text() == "Ongoing") {
 								$("#offer" + i).addClass("border-info");
 								$("#offer" + i).addClass("bg-info");
@@ -146,51 +148,58 @@ $(document).ready(function() {
 		$("#numLuggage").val(edit.luggage);
 	});
 
-	// $("#editOfferDetailsBtn").click(function(data) {
-	// 	data.preventDefault();
+	$("#editOfferDetailsBtn").click(function(data) {
+		data.preventDefault();
 
-	// 	var credentials = localStorage.getItem("credentials");
-	// 	var obj = JSON.parse(credentials);
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
 
-	// 	var editOffer = localStorage.getItem("editOffer");
-	// 	var edit = JSON.parse(editOffer);
+		var editOffer = localStorage.getItem("editOffer");
+		var edit = JSON.parse(editOffer);
 
-	// 	console.log(obj.userid);
-	// 	console.log(obj.offerid);
+		var offeridlist = [];
+		offeridlist.push(edit.offerid);
+		console.log(offeridlist);
 
-	// 	$.post(
-	// 		"/myRides/myOffer/edit",
-	// 		{
-	// 			userid: obj.userid,
-	// 			offerid: edit.offerid,
-	// 		},
-	// 		function(res) {
-	// 			switch (res.result) {
-	// 				case 0: {
-	// 					window.location.href = "/myRides/myOffer/";
-	// 					break;
-	// 				}
-	// 				case 1: {
-	// 					alert("Invalid userid.");
-	// 					break;
-	// 				}
-	// 				case 2: {
-	// 					alert("User not logged in.");
-	// 					break;
-	// 				}
-	// 				case 3: {
-	// 					alert("Not authorized to cancel.");
-	// 				}
-	// 				case 4: {
-	// 					alert("Ride not exist.");
-	// 				}
-	// 				case 5: {
-	// 					alert("Ride already cancelled.");
-	// 				}
-	// 			}
-	// 		},
-	// 	);
-	// });
+		$.post(
+			"/myRides/myOffer/joined/edit",
+			{
+				userid: obj.userid,
+				cookie: obj.cookie,
+				offeridlist: JSON.stringify(offeridlist),
+				passenger: $("#numPassenger").val(),
+				luggage: $("#numLuggage").val(),
+			},
+			function(res) {
+				switch (res.body.result) {
+					case 0: {
+						window.location.href = "/myRides/myOffer/";
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Not authorized to update.");
+					}
+					case 4: {
+						alert("Ride not exist.");
+					}
+					case 5: {
+						alert("Invalid number of passenger(s).");
+					}
+					case 6: {
+						alert("Invalid number of luggage(s).");
+					}
+				}
+			},
+		);
+	});
 
 	$("#cancelOfferBtn").click(function(data) {
 		data.preventDefault();
@@ -208,10 +217,11 @@ $(document).ready(function() {
 			"/myRides/myOffer/cancel",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer/";
 						break;
@@ -249,23 +259,25 @@ $(document).ready(function() {
 		$("#confirmCodeModal").modal("show");
 
 		$.post(
-			"/myRides/myOffer/pickup",
+			"/myRides/myOffer/joined/pickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						//store the code so can display it in confirm myRequestPickup
 						localStorage.key = "code";
 						localStorage.setItem(
 							"code",
 							JSON.stringify({
-								// code: res.code,
-								codeforpassenger: "CODEFORPASSENGER",
+								code: res.body.code,
 							}),
 						);
+
+						$("#headerCode").html(res.body.code);
 						break;
 					}
 					case 1: {
@@ -304,11 +316,12 @@ $(document).ready(function() {
 			"/myRides/myOffer/joined/confirmpickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offerid: edit.offerid,
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myOffer/joined";
 						break;

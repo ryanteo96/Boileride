@@ -15,9 +15,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -216,6 +217,7 @@ $(document).ready(function() {
 			"/searchRideOffer",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				pickuplocation: pickup.value,
 				destination: destination.value,
 				pickupproximity: $("#pickupproximity").val(),
@@ -232,13 +234,13 @@ $(document).ready(function() {
 				ac: $("#ac").prop("checked"),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						console.log(res.trips);
+						console.log(res.body.trips);
 						localStorage.key = "searchResults";
 						localStorage.setItem(
 							"searchResults",
-							JSON.stringify(res.trips),
+							JSON.stringify(res.body.trips),
 						);
 
 						$("#loading").modal("hide"); // hide loader
@@ -305,12 +307,13 @@ $(document).ready(function() {
 			"/searchRideOffer/accept",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				offeridlist: "temp",
 				passenger: $("#numPassenger").val(),
 				luggage: $("#numLuggage").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Success.");
 						break;

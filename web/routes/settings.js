@@ -18,6 +18,7 @@ router.post("/changeNickname", function(req, res) {
 		phone: "",
 	};
 
+	console.log("changeNickname: ");
 	console.log(data);
 
 	var options = {
@@ -26,13 +27,13 @@ router.post("/changeNickname", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -47,6 +48,7 @@ router.post("/changeEmail", function(req, res) {
 		phone: "",
 	};
 
+	console.log("changeEmail: ");
 	console.log(data);
 
 	var options = {
@@ -55,13 +57,13 @@ router.post("/changeEmail", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -76,6 +78,7 @@ router.post("/changePassword", function(req, res) {
 		phone: "",
 	};
 
+	console.log("changePassword: ");
 	console.log(data);
 
 	var options = {
@@ -84,13 +87,13 @@ router.post("/changePassword", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});
@@ -105,6 +108,7 @@ router.post("/changePhone", function(req, res) {
 		phone: req.body.phone,
 	};
 
+	console.log("changePhone: ");
 	console.log(data);
 
 	var options = {
@@ -113,13 +117,13 @@ router.post("/changePhone", function(req, res) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			Cookie: global.cookie,
+			Cookie: JSON.parse(req.body.cookie),
 		},
 	};
 
 	request(options, function(error, response) {
 		if (response) {
-			res.send(response.body);
+			res.send(response);
 		}
 		return;
 	});

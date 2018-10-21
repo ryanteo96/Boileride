@@ -13,9 +13,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -220,11 +221,12 @@ $(document).ready(function() {
 			"/myRides/myRequest",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
-						res.requestlist.sort(function(a, b) {
+						res.body.requestlist.sort(function(a, b) {
 							var dateA = new Date(a.datentime),
 								dateB = new Date(b.datentime);
 
@@ -235,8 +237,8 @@ $(document).ready(function() {
 							}
 						});
 
-						generateRequestList(res.requestlist);
-						$.each(res.requestlist, function(i) {
+						generateRequestList(res.body.requestlist);
+						$.each(res.body.requestlist, function(i) {
 							if ($("#status" + i).text() == "Accepted") {
 								$("#request" + i).addClass("border-success");
 								$("#request" + i).addClass("bg-success");
@@ -296,10 +298,11 @@ $(document).ready(function() {
 			"/myRides/myRequest/cancel",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myRequest/";
 						break;
@@ -340,10 +343,11 @@ $(document).ready(function() {
 			"/myRides/myRequest/pickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						//store the code so can display it in confirm myRequestPickup
 						localStorage.key = "code";
@@ -393,11 +397,12 @@ $(document).ready(function() {
 			"/myRides/myRequest/confirmPickup",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 				code: $("#verifyPickupCode").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						window.location.href = "/myRides/myRequest/";
 						break;

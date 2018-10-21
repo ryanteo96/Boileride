@@ -11,13 +11,13 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
-				console.log("nickname: " + res.nickname);
 				$("html").show();
-				$("#nickname").text("Hello, " + res.nickname + "!");
+				$("#nickname").text("Hello, " + res.body.nickname + "!");
 				break;
 			}
 			case 1: {
@@ -30,7 +30,7 @@ $.post(
 			}
 			default: {
 				$("html").show();
-				$("#nickname").text("Hello, " + res.nickname);
+				$("#nickname").text("Hello, " + res.body.nickname);
 				break;
 			}
 		}

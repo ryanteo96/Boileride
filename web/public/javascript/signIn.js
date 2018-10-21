@@ -9,14 +9,17 @@ $(document).ready(function() {
 				password: $("#passwordSignIn").val(),
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						localStorage.key = "credentials";
 						localStorage.setItem(
 							"credentials",
 							JSON.stringify({
-								userid: res.userid,
+								userid: res.body.userid,
 								email: $("#emailSignIn").val(),
+								cookie: JSON.stringify(
+									res.headers["set-cookie"],
+								),
 							}),
 						);
 

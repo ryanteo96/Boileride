@@ -17,9 +17,10 @@ $.post(
 	"/authLoggedIn",
 	{
 		userid: obj.userid,
+		cookie: obj.cookie,
 	},
 	function(res) {
-		switch (res.result) {
+		switch (res.body.result) {
 			case 0: {
 				$("html").show();
 				break;
@@ -148,6 +149,7 @@ $(document).ready(function() {
 			"/myRides/myRequest/edit",
 			{
 				userid: obj.userid,
+				cookie: obj.cookie,
 				requestid: edit.requestid,
 				pickuplocation: pickup.value,
 				destination: destination.value,
@@ -163,7 +165,7 @@ $(document).ready(function() {
 				price: price,
 			},
 			function(res) {
-				switch (res.result) {
+				switch (res.body.result) {
 					case 0: {
 						alert("Ride Request successfully updated.");
 						window.location.href = "/myRides/myRequest";
