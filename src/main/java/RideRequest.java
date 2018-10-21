@@ -384,7 +384,8 @@ public class RideRequest {
                 if(rideRequest != null)
                 {
                     int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestID());
-                    if(removeResult == 0)
+                    AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(req.getRequestID());
+                    if(removeResult == 0 && acceptedRequest.getAcceptedstatus() == 0)
                     {
                         int result = DatabaseCommunicator.cancelRideRequest(req.getRequestID());
                         if(result == 0)

@@ -478,10 +478,10 @@ public class RideOffer {
                     {
                         passengers.add(passengersArr[j]);
                     }
-
-                    if( passengers.contains(user.getUserid()))
+                    JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(), req.getOfferid());
+                    if( passengers.contains(user.getUserid()) && joinedOffer.getJoinedstatus() == 0)
                     {
-                        JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(), req.getOfferid());
+
                         rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
                         rideOffer.setLuggageleft(rideOffer.getLuggageleft() + joinedOffer.getLuggage());
 
@@ -516,6 +516,8 @@ public class RideOffer {
                         {
                             System.out.println("Failed to update the joinedOffer status in DB");
                         }
+
+
                     }
                     else
                     {
@@ -556,7 +558,7 @@ public class RideOffer {
                 {
                     RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(offers[i]);
 
-                    if(rideOffer != null)
+                    if(rideOffer != null && rideOffer.getStatus() != 2 && rideOffer.getStatus() != 3)
                     {
                         ArrayList<Integer> passengers = new ArrayList<Integer>();
                         int[] passengersArr= DatabaseCommunicator.selectUsersFromOfferList(offers[i]);
@@ -565,13 +567,12 @@ public class RideOffer {
                         {
                             passengers.add(passengersArr[j]);
                         }
-                        if( passengers.contains(user.getUserid()) )
+
+                        JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
+                        if( passengers.contains(user.getUserid()) && joinedOffer.getJoinedstatus() == 0)
                         {
-                            JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
+
 //                            DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), rideOffer.getStatus());
-
-
-
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
                             if (joinedOffer.getJoinedstatus() != 0){
@@ -629,6 +630,9 @@ public class RideOffer {
                                     System.out.println("Cant join the offer since the seatsLeft or LuggageLeft is not enough");
                                 }
                             }
+
+
+
 
                         }
 
