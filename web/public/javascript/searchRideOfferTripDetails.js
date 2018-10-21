@@ -244,7 +244,7 @@ $(document).ready(function() {
 	console.log(obj.rides);
 
 	$("#numrides").text("Number of Rides: " + obj.numrides);
-	$("#travelingtime").text("Total Travel Time: " + obj.duration);
+	$("#travelingtime").text("Total Travel Time: " + obj.durationtext);
 	$("#price").text("Price: " + obj.price);
 
 	generateTripRideList(obj.rides);
@@ -277,14 +277,21 @@ $(document).ready(function() {
 			for (var i = 0; i < obj.numrides; i++) {
 				if ($("#" + i).is(":checked")) {
 					if (first) {
-						startofferid = obj.rides[i].offertid;
+						startofferid = obj.rides[i].offerid;
 						first = false;
 					} else {
-						endofferid = obj.rides[i].offertid;
+						endofferid = obj.rides[i].offerid;
 						first = true;
 					}
 				}
 			}
+
+			trip = {
+				duration: obj.duration,
+				rides: obj.rides,
+			};
+
+			console.log(trip);
 
 			$.post(
 				"/searchRideOfferTripDetails/edit",
@@ -307,7 +314,7 @@ $(document).ready(function() {
 					foodndrink: searchObj[0].foodndrink,
 					pets: searchObj[0].pets,
 					ac: searchObj[0].ac,
-					trip: JSON.stringify(obj.rides),
+					trip: JSON.stringify(trip),
 				},
 				function(res) {
 					switch (res.body.result) {

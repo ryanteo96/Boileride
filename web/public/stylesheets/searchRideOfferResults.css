@@ -42,6 +42,10 @@
 	justify-content: center;
 }
 
+#searchText {
+	align-items: center;
+}
+
 .values {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		"Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",

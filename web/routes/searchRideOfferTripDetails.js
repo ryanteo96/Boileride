@@ -12,6 +12,13 @@ router.get("/", function(req, res) {
 });
 
 router.post("/edit", function(req, res) {
+	let date = req.body.date;
+	let time = moment(req.body.time, "HH:mm").format("HH:mm:ss");
+
+	var offset = moment.duration("04:00:00");
+	var datentime = moment(date + " " + time);
+	datentime.add(offset);
+
 	var data = {
 		userid: req.body.userid,
 		startofferid: req.body.startofferid,
@@ -20,7 +27,7 @@ router.post("/edit", function(req, res) {
 		destination: req.body.destination,
 		pickupproximity: req.body.pickupproximity,
 		destinationproximity: req.body.destinationproximity,
-		datentime: req.body.datentime,
+		datentime: datentime.format("YYYY-MM-DD HH:mm"),
 		datentimerange: req.body.datentimerange,
 		numrides: req.body.numrides,
 		passengers: req.body.passengers,
@@ -29,7 +36,7 @@ router.post("/edit", function(req, res) {
 		foodndrink: req.body.foodndrink,
 		pets: req.body.pets,
 		ac: req.body.ac,
-		trip: req.body.trip,
+		trip: JSON.parse(req.body.trip),
 	};
 
 	console.log("searchRideOffer edit: ");

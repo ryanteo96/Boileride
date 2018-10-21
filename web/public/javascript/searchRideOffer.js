@@ -236,7 +236,21 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.body.result) {
 					case 0: {
+						res.body.trips.sort(function(a, b) {
+							var dateA = new Date(a.rides[0].datentime),
+								dateB = new Date(b.rides[0].datentime);
+
+							console.log(a.rides[0].datentime);
+
+							if (a.duration - b.duration) {
+								return a.duration - b.duration;
+							} else {
+								return dateA - dateB;
+							}
+						});
+
 						console.log(res.body.trips);
+
 						localStorage.key = "searchResults";
 						localStorage.setItem(
 							"searchResults",

@@ -36,9 +36,11 @@ function generateSearchOfferList(searchlist) {
 		valueNames: [
 			{ data: ["tripid"] },
 			"duration",
+			"durationtext",
 			"rides",
 			"offeredby",
 			"datentime",
+			"datentimetext",
 			"pickuplocation",
 			"destination",
 			"seats",
@@ -64,11 +66,11 @@ function generateSearchOfferList(searchlist) {
 			'<h5 class="mb-1 pickuplocation col text-left"></h5>' +
 			'<i class="fas fa-arrow-right col-1 icons text-center"></i>' +
 			'<h5 class="mb-1 destination col text-right"></h5>' +
-			'<small class="datentime col-2 text-right"></small>' +
+			'<small class="datentimetext col-2 text-right"></small>' +
 			"</div>" +
 			'<div class="row d-flex w-100 justify-content-around">' +
 			'<i class="icons fas fa-car p-2 col text-center"><small class="values numrides p-2"></small></i>' +
-			'<i class="icons fas fa-stopwatch p-2 col text-center"><small class="values duration p-2"></small></i>' +
+			'<i class="icons fas fa-stopwatch p-2 col text-center"><small class="values durationtext p-2"></small></i>' +
 			'<i class="icons fas fa-money-bill p-2 col text-center"><small class="values price p-2"></small></i>' +
 			// '<i class="icons fas fa-users p-2 col text-center"><small class="values seatsleft p-2"></small></i>' +
 			// '<i class="icons fas fa-suitcase p-2 col text-center"><small class="values luggage p-2"></small></i>' +
@@ -117,16 +119,28 @@ function generateSearchOfferList(searchlist) {
 
 		offerlist.add({
 			tripid: i,
-			duration: duration,
+			duration: searchlist[i].duration,
+			durationtext: duration,
 			rides: searchlist[i].rides,
 			pickuplocation: searchlist[i].rides[0].pickuplocation,
 			destination:
 				searchlist[i].rides[searchlist[i].rides.length - 1].destination,
 			numrides: searchlist[i].rides.length,
-			datentime: datentime.format("hh:mm A MMM DD, YYYY"),
+			datentime: datentime.format("YYYY-MM-DD HH:mm"),
+			datentimetext: datentime.format("hh:mm A MMM DD, YYYY"),
 			price: totalprice,
 		});
 	}
+
+	offerlist.sort("duration", { order: "asc" });
+
+	$("#travelingTimeBtn").click(function() {
+		offerlist.sort("duration", { order: "asc" });
+	});
+
+	$("#datentimeBtn").click(function() {
+		offerlist.sort("datentime", { order: "asc" });
+	});
 }
 
 function getItem(item) {
