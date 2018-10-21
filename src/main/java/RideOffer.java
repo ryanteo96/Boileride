@@ -748,13 +748,18 @@ public class RideOffer {
         PointCalculator.chargeFailConfirmationFee(request.getUserid());
         int result = 0;
         User user = DatabaseCommunicator.selectUser(request.getUserid());
+        RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
         int userResult = verifyUserid(user);
         int desResult = verifyDestination(request.getPickuplocation(), request.getDestination());
         int dateResult = verifyDatentime(request.getDatentime());
         int seatResult = verifySeats(request.getSeats());
         int luggageResult = verifyLuggage(request.getLuggage());
-        int priceResult = isEnoughPoints(user, request.getPrice());
-        int distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
+        int priceResult = 0;
+        int distTimeResult = 0;
+        if (request.getPrice() != rideOffer.getPrice()) {
+            priceResult = isEnoughPoints(user, request.getPrice());
+            distTimeResult = verifyTimePrice(request.getPickuplocation(), request.getDestination(), request.getPrice(), request.getTravelingtime());
+        }
         if (userResult > 0) result = userResult;
         else if (desResult > 0) result = 7;
         else if (dateResult == 1) result = 8;
@@ -765,7 +770,6 @@ public class RideOffer {
         else if (distTimeResult == 2) result = 10;
         else if (distTimeResult == 3) result = 11;
         else {
-            RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {
                 result = 4;
             } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 3 || rideOffer.getStatus() == 4) {
