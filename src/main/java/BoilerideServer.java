@@ -1294,8 +1294,8 @@ public class BoilerideServer {
 
     public static void main(String[] args) throws Exception{
 
-        BoilerideServer server = new BoilerideServer();
-        server.connect();
+//        BoilerideServer server = new BoilerideServer();
+//        server.connect();
 
 
 //        conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -1306,25 +1306,32 @@ public class BoilerideServer {
 //        RideOfferSearchRequest query2 = new RideOfferSearchRequest(234, "Purdue Memorial Union, Grant Street, West Lafayette, IN, USA", 0, "2415 Sagamore Pkwy S, Lafayette, IN, USA", 0,
 //                sdf.parse("2018-10-20 01:45:10"), 10, 10, 1, 1, true, true, true, true);
 //
-//        try {
-//            RideRequestSearchResponse r1 = RideRequest.search(query1);
-//            System.out.println(new Gson().toJson(r1));
+//        RideOfferSearchRequest query5 = new RideOfferSearchRequest(234, "Purdue Memorial Union, Grant Street, West Lafayette, IN, USA", 0, "Indianapolis, IN, USA", 0,
+//                sdf.parse("2018-11-01 11:00:00"), 10, 10, 1, 1, true, true, true, true);
 //
-//            RideOfferSearchResponse r2 = RideOffer.search(query2);
-//            System.out.println(new Gson().toJson(r2));
+//
+//        try {
+////            RideRequestSearchResponse r1 = RideRequest.search(query1);
+////            System.out.println(new Gson().toJson(r1));
+//
+////            RideOfferSearchResponse r2 = RideOffer.search(query2);
+////            System.out.println(new Gson().toJson(r2));
+//
+//            RideOfferSearchResponse r5 = RideOffer.search(query5);
+//            System.out.println(new Gson().toJson(r5));
 //
 ////            RideOfferSearchResponse r22 = RideOffer.search(query2);
 ////            System.out.println(new Gson().toJson(r22));
 ////            RideOfferSearchResponse r222 = RideOffer.search(query2);
 ////            System.out.println(new Gson().toJson(r222));
 //
-//            Trip t = r2.getTrips().get(0);
-//            RideOfferSearchAlterRequest q3 = new RideOfferSearchAlterRequest(234, 28, 28, t,
-//                    "PMU, Grant Street, West Lafayette, IN", "2415 Sagamore Pkwy S, Lafayette, IN, USA",
-//                    sdf.parse("2018-10-20 01:45:10"), 0, 0, 10, 10,
-//                    1, 1, true, true, true, true);
-//            RideOfferSearchAlterResponse r3 = RideOffer.searchAlter(q3);
-//            System.out.println(new Gson().toJson(r3));
+////            Trip t = r2.getTrips().get(0);
+////            RideOfferSearchAlterRequest q3 = new RideOfferSearchAlterRequest(234, 28, 28, t,
+////                    "PMU, Grant Street, West Lafayette, IN", "2415 Sagamore Pkwy S, Lafayette, IN, USA",
+////                    sdf.parse("2018-10-20 01:45:10"), 0, 0, 10, 10,
+////                    1, 1, true, true, true, true);
+////            RideOfferSearchAlterResponse r3 = RideOffer.searchAlter(q3);
+////            System.out.println(new Gson().toJson(r3));
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        } catch (ApiException e) {

@@ -837,7 +837,7 @@ public class RideOffer {
 //        first.setTravelingtime(0);
 //        start.getRides().add(first);
 //        heap.add(start);
-        ArrayList<RideOffer> starts = DatabaseCommunicator.rideOfferFrom(gma.getCity(request.getDestination()),
+        ArrayList<RideOffer> starts = DatabaseCommunicator.rideOfferFrom(gma.getCity(request.getPickuplocation()),
                 request.getDatentime(), new Date(request.getDatentime().getTime() + 1000 * 60 * request.getDatentimerange()),
                 request.getPassengers(), request.getLuggage(),
                 request.isSmoking(), request.isFoodndrink(),
@@ -880,7 +880,7 @@ public class RideOffer {
 //            }
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)), null,
+                    new Date(lro.getDatentime().getTime() + 1000 * (lro.getTravelingtime() + buffer)), null,
                     request.getPassengers(), request.getLuggage(),
                     request.isSmoking(), request.isFoodndrink(),
                     request.isPets(), request.isAc());
@@ -996,7 +996,7 @@ public class RideOffer {
         if (a > 0) {
             suborigin = request.getTrip().getRides().get(a - 1).getDestination();
             subdeparture = new Date(request.getTrip().getRides().get(a - 1).getDatentime().getTime() +
-                    request.getTrip().getRides().get(a - 1).getTravelingtime() * 60 * 1000);
+                    request.getTrip().getRides().get(a - 1).getTravelingtime() * 1000);
         } else {
             suborigin = request.getOriginalpickuplocation();
             subdeparture = request.getTrip().getRides().get(a).getDatentime();
@@ -1019,7 +1019,7 @@ public class RideOffer {
         start.setRides(new LinkedList<>());
         RideOffer first = new RideOffer();
         first.setDestination(suborigin);
-        first.setDatentime(new Date(subdeparture.getTime() - 1000 * 60 * buffer));
+        first.setDatentime(new Date(subdeparture.getTime() - 1000 * buffer));
         first.setTravelingtime(0);
         start.getRides().add(first);
         heap.add(start);
@@ -1032,7 +1032,7 @@ public class RideOffer {
                 // check if number of rides exceeds
                 if (curr.getRides().size() <= subnumrides && curr.getRides().size() > 0) {
                     // check if arrives before the next ride
-                    if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000 * 60) {
+                    if (subarrival.getTime() > curr.getRides().getLast().getDatentime().getTime() + curr.getRides().getLast().getTravelingtime() * 1000) {
                         // if the first ride of the original trip is also changed and if pick up location is within proximity
                         if ((a == 0 && gma.estimate(curr.getRides().getFirst().getPickuplocation(), suborigin) <= request.getPickupproximity()
                                 && request.getOriginaldatentime().getTime() + request.getDatentimerange() * 1000 * 60 > curr.getRides().getFirst().getDatentime().getTime())
@@ -1046,7 +1046,7 @@ public class RideOffer {
 
             RideOffer lro = curr.getRides().getLast();
             ArrayList<RideOffer> rs = DatabaseCommunicator.rideOfferFrom(gma.getCity(lro.getDestination()),
-                    new Date(lro.getDatentime().getTime() + 1000 * 60 * (lro.getTravelingtime() + buffer)), null,
+                    new Date(lro.getDatentime().getTime() + 1000 * (lro.getTravelingtime() + buffer)), null,
                     request.getPassengers(), request.getLuggage(),
                     request.isSmoking(), request.isFoodndrink(),
                     request.isPets(), request.isAc());
