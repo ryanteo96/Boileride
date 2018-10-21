@@ -457,7 +457,55 @@ function getItem(item) {
 		}
 	}
 }
+
 function getPassengerCode(item) {
 	$("#confirmCodeModal").modal("show");
 	var joinedby = $(item).data("joinedby");
+
+	$("#pickUpForm").submit(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		console.log($("#verifyPickupCode").val());
+
+		$.post(
+			"/myRides/myOffer/confirmPickup",
+			{
+				userid: obj.userid,
+				offerid: edit.offerid,
+				joineduserid: joinedby,
+				code: $("#verifyPickupCode").val(),
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						window.location.href = "/myRides/myOffer/";
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid offerid.");
+					}
+					case 4: {
+						alert("Not authorized to confirm code.");
+					}
+					case 5: {
+						alert("Already confirmed.");
+					}
+					case 6: {
+						alert("Wrong code.");
+					}
+				}
+			},
+		);
+	});
 }
