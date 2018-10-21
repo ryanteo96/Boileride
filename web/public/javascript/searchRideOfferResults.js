@@ -87,19 +87,19 @@ function generateSearchOfferList(searchlist) {
 	offerlist = new List("searchRideOfferList", options);
 
 	for (var i = 0; i < searchlist.length; i++) {
-		if (searchlist[i].smoking == "true") {
+		if (searchlist[i].smoking == true) {
 			searchlist[i].smoking = "Yes";
 		} else searchlist[i].smoking = "No";
 
-		if (searchlist[i].ac == "true") {
+		if (searchlist[i].ac == true) {
 			searchlist[i].ac = "Yes";
 		} else searchlist[i].ac = "No";
 
-		if (searchlist[i].foodndrink == "true") {
+		if (searchlist[i].foodndrink == true) {
 			searchlist[i].foodndrink = "Yes";
 		} else searchlist[i].foodndrink = "No";
 
-		if (searchlist[i].pets == "true") {
+		if (searchlist[i].pets == true) {
 			searchlist[i].pets = "Yes";
 		} else searchlist[i].pets = "No";
 

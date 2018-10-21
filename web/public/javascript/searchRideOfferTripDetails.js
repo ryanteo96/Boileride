@@ -83,19 +83,19 @@ function generateTripRideList(trip) {
 	ridelist = new List("tripRideList", options);
 
 	for (var i = 0; i < trip.length; i++) {
-		if (trip[i].smoking == "true") {
+		if (trip[i].smoking == true) {
 			trip[i].smoking = "Yes";
 		} else trip[i].smoking = "No";
 
-		if (trip[i].ac == "true") {
+		if (trip[i].ac == true) {
 			trip[i].ac = "Yes";
 		} else trip[i].ac = "No";
 
-		if (trip[i].foodndrink == "true") {
+		if (trip[i].foodndrink == true) {
 			trip[i].foodndrink = "Yes";
 		} else trip[i].foodndrink = "No";
 
-		if (trip[i].pets == "true") {
+		if (trip[i].pets == true) {
 			trip[i].pets = "Yes";
 		} else trip[i].pets = "No";
 

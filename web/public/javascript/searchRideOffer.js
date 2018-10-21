@@ -213,102 +213,107 @@ $(document).ready(function() {
 		localStorage.key = "search";
 		localStorage.setItem("search", JSON.stringify(search));
 
-		$.post(
-			"/searchRideOffer",
-			{
-				userid: obj.userid,
-				cookie: obj.cookie,
-				pickuplocation: pickup.value,
-				destination: destination.value,
-				pickupproximity: $("#pickupproximity").val(),
-				destinationproximity: $("#destinationproximity").val(),
-				date: $("#date").val(),
-				time: $("#time").val(),
-				datentimerange: $("#datentimerange").val(),
-				passengers: $("#passengers").val(),
-				numrides: $("#numrides").val(),
-				luggage: $("#luggage").val(),
-				smoking: $("#smoking").prop("checked"),
-				foodndrink: $("#foodndrink").prop("checked"),
-				pets: $("#pets").prop("checked"),
-				ac: $("#ac").prop("checked"),
-			},
-			function(res) {
-				switch (res.body.result) {
-					case 0: {
-						res.body.trips.sort(function(a, b) {
-							var dateA = new Date(a.rides[0].datentime),
-								dateB = new Date(b.rides[0].datentime);
+		$("#loading").on("shown.bs.modal", function() {
+			$.post(
+				"/searchRideOffer",
+				{
+					userid: obj.userid,
+					cookie: obj.cookie,
+					pickuplocation: pickup.value,
+					destination: destination.value,
+					pickupproximity: $("#pickupproximity").val(),
+					destinationproximity: $("#destinationproximity").val(),
+					date: $("#date").val(),
+					time: $("#time").val(),
+					datentimerange: $("#datentimerange").val(),
+					passengers: $("#passengers").val(),
+					numrides: $("#numrides").val(),
+					luggage: $("#luggage").val(),
+					smoking: $("#smoking").prop("checked"),
+					foodndrink: $("#foodndrink").prop("checked"),
+					pets: $("#pets").prop("checked"),
+					ac: $("#ac").prop("checked"),
+				},
+				function(res) {
+					switch (res.body.result) {
+						case 0: {
+							res.body.trips.sort(function(a, b) {
+								var dateA = new Date(a.rides[0].datentime),
+									dateB = new Date(b.rides[0].datentime);
 
-							console.log(a.rides[0].datentime);
+								console.log(a.rides[0].datentime);
 
-							if (a.duration - b.duration) {
-								return a.duration - b.duration;
-							} else {
-								return dateA - dateB;
-							}
-						});
+								if (a.duration - b.duration) {
+									return a.duration - b.duration;
+								} else {
+									return dateA - dateB;
+								}
+							});
 
-						console.log(res.body.trips);
+							localStorage.key = "searchResults";
+							localStorage.setItem(
+								"searchResults",
+								JSON.stringify(res.body.trips),
+							);
 
-						localStorage.key = "searchResults";
-						localStorage.setItem(
-							"searchResults",
-							JSON.stringify(res.body.trips),
-						);
-
-						$("#loading").modal("hide"); // hide loader
-						window.location.href = "/searchRideOfferResults";
-						break;
+							$("#loading").modal("hide"); // hide loader
+							window.location.href = "/searchRideOfferResults";
+							break;
+						}
+						case 1: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid userid.");
+							break;
+						}
+						case 2: {
+							$("#loading").modal("hide"); // hide loader
+							alert("User not logged in.");
+							break;
+						}
+						case 3: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid pickup location.");
+							break;
+						}
+						case 4: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid destination.");
+							break;
+						}
+						case 5: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid pickup proximity.");
+							break;
+						}
+						case 6: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid destination proximity.");
+							break;
+						}
+						case 7: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid datentime.");
+							break;
+						}
+						case 8: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid datentime range.");
+							break;
+						}
+						case 9: {
+							$("#loading").modal("hide"); // hide loader
+							alert("No results found.");
+							break;
+						}
+						default: {
+							$("#loading").modal("hide"); // hide loader
+							alert("Invalid request.");
+							break;
+						}
 					}
-					case 1: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid userid.");
-						break;
-					}
-					case 2: {
-						$("#loading").modal("hide"); // hide loader
-						alert("User not logged in.");
-						break;
-					}
-					case 3: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid pickup location.");
-						break;
-					}
-					case 4: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid destination.");
-						break;
-					}
-					case 5: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid pickup proximity.");
-						break;
-					}
-					case 6: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid destination proximity.");
-						break;
-					}
-					case 7: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid datentime.");
-						break;
-					}
-					case 8: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid datentime range.");
-						break;
-					}
-					case 9: {
-						$("#loading").modal("hide"); // hide loader
-						alert("No results found.");
-						break;
-					}
-				}
-			},
-		);
+				},
+			);
+		});
 	});
 
 	$("#joinRideBtn").click(function(data) {
