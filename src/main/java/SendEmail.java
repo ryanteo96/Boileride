@@ -22,7 +22,7 @@ public class SendEmail {
      */
     public static int sendEmail(String recipient, String subject, String msg){
         String sender = "boilerideboileride@gmail.com";
-        String password = "Boileride18!";
+        String password = "boileride18!";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "true");

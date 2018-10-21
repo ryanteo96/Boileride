@@ -7,6 +7,7 @@ import DTO.*;
 import com.google.gson.Gson;
 import com.google.maps.errors.ApiException;
 
+import javax.jws.soap.SOAPBinding;
 import javax.xml.crypto.Data;
 
 /**
@@ -367,12 +368,9 @@ public class RideOffer {
                                             if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
                                             {
 
-                                                rideOffer.setStatus(1);
-                                                rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
-                                                rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
-
+//
                                                 PointCalculator.reservePoints(user.getUserid(), rideOffer.getPrice());
-                                                int updateOfferResult = DatabaseCommunicator.updateRideOffer(offers[i], rideOffer);
+                                                int updateOfferResult = DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i],rideOffer.getSeatleft()- seatsWant, rideOffer.getLuggageleft() - luggagesWant, 1);
 
                                                 if(updateOfferResult == 0)
                                                 {
@@ -380,6 +378,11 @@ public class RideOffer {
                                                     if(addOfferResult == 0)
                                                     {
                                                         joinedOffers ++;
+
+                                                        User owner = DatabaseCommunicator.selectUser(rideOffer.getOfferedby());
+
+                                                        SendEmail sender = new SendEmail();
+                                                        sender.sendEmail(owner.getEmail(), "Your offer has been joined by someone.", user.getNickname()+ "has just joined your offer. \nDetail info:\nNickname: " + user.getNickname() + "\nEmail: " + user.getEmail() );
                                                     }
                                                     else if(addOfferResult == 1)
                                                     {
@@ -494,6 +497,8 @@ public class RideOffer {
                                 {
                                     PointCalculator.chargeCancellationFee(user.getUserid(), rideOffer.getDatentime(), rideOffer.getPrice(),"Charging cancellation fee");
                                     response.setResult(0);
+                                    SendEmail sender = new SendEmail();
+                                    sender.sendEmail(user.getEmail(), "You have cancelled your offer.", "You have cancelled your offer.");
                                 }
                                 else
                                 {
@@ -563,8 +568,9 @@ public class RideOffer {
                         if( passengers.contains(user.getUserid()) )
                         {
                             JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(user.getUserid(),offers[i]);
-                            rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
-                            rideOffer.setLuggageleft(rideOffer.getLuggageleft()+joinedOffer.getLuggage());
+                            DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), rideOffer.getStatus());
+
+
 
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
@@ -583,9 +589,7 @@ public class RideOffer {
                                 if(rideOffer.getSeatleft() >= seatsWant && rideOffer.getLuggageleft() >= luggagesWant)
                                 {
 
-                                    rideOffer.setStatus(1);
-                                    rideOffer.setSeatleft(rideOffer.getSeatleft()- seatsWant);
-                                    rideOffer.setLuggageleft(rideOffer.getLuggageleft() - luggagesWant );
+
 
                                     PointCalculator.updatePoints(user.getUserid(),rideOffer.getPrice()*seatsWant, rideOffer.getPrice()*joinedOffer.getPassenger());
 
@@ -593,10 +597,16 @@ public class RideOffer {
 
                                     if(updateOfferResult == 0)
                                     {
-                                        int result = DatabaseCommunicator.updateRideOffer(offers[i],rideOffer);
+                                        int result =   DatabaseCommunicator.updateOfferStatusSeatLuggage(offers[i], rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
                                         if(result == 0)
                                         {
                                             updatedOffers ++;
+
+                                            User owner = DatabaseCommunicator.selectUser(rideOffer.getOfferedby());
+
+                                            SendEmail sender = new SendEmail();
+
+                                            sender.sendEmail(owner.getEmail(), "Someone has updated their needs", user.getNickname() + " has updated his/hers needs.\n Detail info:\nNickname: " + user.getNickname() + "\nEmail: " + user.getEmail()+ "\nSeats requirment: " + req.getPassenger() + "\nLuggages requirment:  " + req.getLuggage() );
                                         }
                                         else if(result == 99)
                                         {
@@ -710,7 +720,7 @@ public class RideOffer {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {
                 result = 4;
-            } else if (rideOffer.getOfferedby() != request.getUserid()) {
+            } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 3 || rideOffer.getStatus() == 4) {
                 result = 3;
             } else if (rideOffer.getStatus() == 2) {
                 result = 5;
@@ -757,7 +767,7 @@ public class RideOffer {
             RideOffer rideOffer = DatabaseCommunicator.selectRideOffer(request.getOfferid());
             if (rideOffer == null) {
                 result = 4;
-            } else if (rideOffer.getOfferedby() != request.getUserid()) {
+            } else if (rideOffer.getOfferedby() != request.getUserid() || rideOffer.getStatus() == 3 || rideOffer.getStatus() == 4) {
                 result = 3;
             } else if (rideOffer.getStatus() == 2) {
                 result = 5;

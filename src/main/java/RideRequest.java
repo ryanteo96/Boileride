@@ -309,14 +309,18 @@ public class RideRequest {
 
                             if(user.getPoints() >= rideRequest.getPrice() )
                             {
-                                rideRequest.setStatus(1);
-                                if(DatabaseCommunicator.updateRideRequest(req.getRequestid(), rideRequest) == 0)
+                                
+                                if(DatabaseCommunicator.updateRequestStatus(req.getRequestid(), 1) == 0)
                                 {
                                     int addRequestResult = DatabaseCommunicator.insertNewAcceptedRequest(user.getUserid(), req.getRequestid(), 0, 0, 0, 0, 0);
                                     if(addRequestResult == 0)
                                     {
                                         PointCalculator.reservePoints(req.getUserid(), rideRequest.getPrice());
                                         response.setResult(0);
+
+                                        User owner = DatabaseCommunicator.selectUser(rideRequest.getRequestedby());
+                                        SendEmail sender = new SendEmail();
+                                        sender.sendEmail(owner.getEmail(), "Your request has been accepted", "Your request is accepted by" + user.getEmail());
                                     }
                                     else if(addRequestResult == 1)
                                     {
@@ -387,6 +391,8 @@ public class RideRequest {
                         {
                             PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");
                             response.setResult(0);
+                            SendEmail sender = new SendEmail();
+                            sender.sendEmail(user.getEmail(),"You have cancelled your request.", "Your request has been cancelled.");
                         }
                         else
                         {
@@ -472,7 +478,7 @@ public class RideRequest {
             RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
             if (rideRequest == null) {
                 result = 4;
-            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+            } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() == 3) {
                 result = 3;
             } else if (rideRequest.getStatus() == 2) {
                 result = 5;
@@ -520,7 +526,7 @@ public class RideRequest {
             RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(request.getRequestid());
             if (rideRequest == null) {
                 result = 4;
-            } else if (rideRequest.getRequestedby() != request.getUserid()) {
+            } else if (rideRequest.getRequestedby() != request.getUserid() || rideRequest.getStatus() == 3) {
                 result = 3;
             } else if (rideRequest.getStatus() == 2) {
                 result = 5;

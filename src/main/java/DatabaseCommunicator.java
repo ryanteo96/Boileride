@@ -3,6 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import DTO.*;
 /**
@@ -354,7 +355,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -533,7 +536,7 @@ public class DatabaseCommunicator {
         boolean ac = request.isAc();
         int travellingtime = request.getTravelingtime();
         int price = request.getPrice();
-        int status = request.getStatus();
+        //int status = request.getStatus();
         String pickuplocation = request.getPickuplocation();
         String destination = request.getDestination();
         Date datentime = request.getDatentime();
@@ -545,7 +548,7 @@ public class DatabaseCommunicator {
         try {
             //took out status (remy says requestedby, status shouldn't be updated)
             String query = "UPDATE RIDEREQUEST SET pickuplocation = ?, destination = ?, datentime = ?, passenger = ?, luggage = ?, " +
-                    "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, price = ?, status = ? WHERE requestid = ?";
+                    "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, price = ? WHERE requestid = ?";
             PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
 
             stmt.setString(1, pickuplocation);
@@ -559,8 +562,8 @@ public class DatabaseCommunicator {
             stmt.setBoolean(9,ac);
             stmt.setInt(10,travellingtime);
             stmt.setInt(11,price);
-            stmt.setInt(12, status);
-            stmt.setInt(13, requestid);
+            //stmt.setInt(12, status);
+            stmt.setInt(12, requestid);
 
 
             stmt.executeUpdate();
@@ -673,7 +676,7 @@ public class DatabaseCommunicator {
             ArrayList<Integer> offeruserstatus = new ArrayList<Integer>();
 
             while (rs.next()) {
-                if (offerid != rs.getInt("offerid")){
+                if (offerid != rs.getInt("offerid")) {
                     if (offerid != -1) {
                         Date datentime = null;
                         try {
@@ -714,24 +717,25 @@ public class DatabaseCommunicator {
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
                     offeruserstatus.add(rs.getInt("offeruserstatus"));
-                }
-                else{
+                } else {
                     joinedby.add(rs.getInt("joinedby"));
                     joinedbyname.add(rs.getString("joinedbyname"));
                     phone.add(rs.getString("phone"));
                     offeruserstatus.add(rs.getInt("offeruserstatus"));
                 }
-            }
-            Date datentime = null;
-            try {
-                datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
-                    luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
-            offerlist.add(rideOffer);
 
+                Date datentime = null;
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                DtoRideOffer rideOffer = new DtoRideOffer(offerid, offeredby, offeredbyname, pickuplocation, destination, datentime, seats,
+                        luggage, smoke, food, pet, ac, travellingtime, price, seatsleft, luggagesleft, status, joinedby, joinedbyname, phone, offeruserstatus);
+                offerlist.add(rideOffer);
+            }
             rs.close();
             stmt.close();
         }
@@ -764,7 +768,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -845,7 +851,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -894,9 +902,7 @@ public class DatabaseCommunicator {
         boolean ac = offer.isAc();
         int travellingtime = offer.getTravelingtime();
         int price = offer.getPrice();
-        int status = offer.getStatus();
-        int seatsleft = offer.getSeatleft();
-        int luggagesleft = offer.getLuggageleft();
+        //int status = offer.getStatus();
         String pickuplocation = offer.getPickuplocation();
         String destination = offer.getDestination();
         Date datentime = offer.getDatentime();
@@ -910,7 +916,7 @@ public class DatabaseCommunicator {
             String query = "UPDATE RIDEOFFER SET pickuplocation = ?, destination = ?, datentime = ?, " +
                     "seatsleft = seatsleft + (? - seats), luggagesleft = luggagesleft + (? - luggage), " +
                     "seats = ?, luggage = ?, " + "smoking = ?, foodndrink = ?, pets = ?, AC = ?, travellingtime = ?, " +
-                    "price = ?, status = ?, seatsleft = ?, luggagesleft = ? WHERE offerid = ?";
+                    "price = ? WHERE offerid = ?";
             PreparedStatement stmt =  BoilerideServer.conn.prepareStatement(query);
 
 
@@ -934,11 +940,12 @@ public class DatabaseCommunicator {
             stmt.setBoolean(11,ac);
             stmt.setInt(12,travellingtime);
             stmt.setInt(13,price);
-            stmt.setInt(14,status);
-            stmt.setInt(15,seatsleft);
-            stmt.setInt(16,luggagesleft);
-            stmt.setInt(17, offerid);
+//            stmt.setInt(14,status);
+//            stmt.setInt(15,seatsleft);
+//            stmt.setInt(16,luggagesleft);
+            stmt.setInt(14, offerid);
 
+            System.out.println(stmt.toString());
             stmt.executeUpdate();
 
             stmt.close();
@@ -1109,7 +1116,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1201,7 +1210,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1316,7 +1327,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1375,14 +1388,18 @@ public class DatabaseCommunicator {
 
                 Date joindate = null;
                 try {
-                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    joindate = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1445,14 +1462,18 @@ public class DatabaseCommunicator {
 
                 Date joindate = null;
                 try {
-                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    joindate = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1576,7 +1597,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1637,14 +1660,18 @@ public class DatabaseCommunicator {
 
                 Date joindate = null;
                 try {
-                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    joindate = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1700,7 +1727,7 @@ public class DatabaseCommunicator {
                 pickuplocation = rs.getString("pickuplocation");
                 destination = rs.getString("destination");
                 datentimeStr = rs.getString("datentime");
-                passengers = rs.getInt("passengers");
+                passengers = rs.getInt("passenger");
                 luggage = rs.getInt("luggage");
                 smoking = rs.getInt("smoking");
                 foodndrink = rs.getInt("foodndrink");
@@ -1730,7 +1757,9 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1829,14 +1858,18 @@ public class DatabaseCommunicator {
 
                 Date datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
                 Date joindate = null;
                 try {
-                    joindate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(joindateStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    joindate = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1855,6 +1888,20 @@ public class DatabaseCommunicator {
             return null;
         }
         return offerlist;
+    }
+
+    public static int updateOfferStatusSeatLuggage(int offerid, int seatsleft, int luggagesleft, int status){
+        try {
+            Statement stmt = BoilerideServer.conn.createStatement();
+            stmt.executeUpdate("UPDATE RIDEOFFER SET status = " + status + ", seatsleft = " + seatsleft + ", luggagesleft = " + luggagesleft + " WHERE offerid = " + offerid);
+
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return 99;
+        }
+        return 0;
     }
 
     public static int updateRequestStatus(int requestid, int status){
@@ -1944,7 +1991,9 @@ public class DatabaseCommunicator {
 
                 datentime = null;
                 try {
-                    datentime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datentimeStr);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    datentime = format.parse(datentimeStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
