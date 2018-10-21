@@ -199,6 +199,55 @@ $(document).ready(function() {
 			},
 		);
 	});
+
+	$("#pickUpForm").submit(function(data) {
+		data.preventDefault();
+
+		var credentials = localStorage.getItem("credentials");
+		var obj = JSON.parse(credentials);
+
+		var editRequest = localStorage.getItem("editRequest");
+		var edit = JSON.parse(editRequest);
+
+		console.log($("#verifyPickupCode").val());
+
+		$.post(
+			"/myRides/myRequest/accepted/confirmpickup",
+			{
+				userid: obj.userid,
+				requestid: edit.requestid,
+				code: $("#verifyPickupCode").val(),
+			},
+			function(res) {
+				switch (res.result) {
+					case 0: {
+						window.location.href = "/myRides/myOffer/joined";
+						break;
+					}
+					case 1: {
+						alert("Invalid userid.");
+						break;
+					}
+					case 2: {
+						alert("User not logged in.");
+						break;
+					}
+					case 3: {
+						alert("Invalid offerid.");
+					}
+					case 4: {
+						alert("Not authorized to confirm code.");
+					}
+					case 5: {
+						alert("Already confirmed.");
+					}
+					case 6: {
+						alert("Wrong code.");
+					}
+				}
+			},
+		);
+	});
 });
 
 function generateAcceptedRequestList(acceptedRequestList) {
