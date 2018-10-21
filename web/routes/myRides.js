@@ -192,12 +192,12 @@ router.post("/myRequest/confirmpickup", function(req, res) {
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 // view accepted request
@@ -307,12 +307,12 @@ router.post("/myRequest/accepted/confirmpickup", function(req, res) {
 		},
 	};
 
-	// request(options, function(error, response) {
-	// 	if (response) {
-	// 		res.send(response);
-	// 	}
-	// 	return;
-	// });
+	request(options, function(error, response) {
+		if (response) {
+			res.send(response);
+		}
+		return;
+	});
 });
 
 //view myOffer
