@@ -92,7 +92,7 @@ public class BoilerideServer {
                 res = user.verifyEmailCode(req);
                 if (res.getResult() == 0) {
                     HttpSession session = servletReq.getSession();
-                    session.setAttribute("name",1);
+                    session.setAttribute("userid",res.getUserid());
                     session.setMaxInactiveInterval(60*60);
                 }
             }
@@ -1086,122 +1086,98 @@ public class BoilerideServer {
             System.out.println("Request " + uri + " received");
 
             BufferedReader in = new BufferedReader(servletReq.getReader());
-
-            JsonObject request = (JsonObject) new JsonParser().parse(in);
-            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
-
+            JsonObject request = null;
+            Gson gson = null;
+            try {
+                request = (JsonObject) new JsonParser().parse(in);
+                gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
+            } catch (Exception e){
+                System.out.println("Null instream");
+            }
             String response = null;
 
-            if (uri.equals("/user/signup")){
-                response = handleSignup(gson, request);
-            }
-            else if (uri.equals("/user/verifyemail")){
-                response = handleVerifyemail(gson, request, servletReq);
-            }
-            else if (uri.equals("/user/login")){
-                response = handleLogin(gson, request, servletReq, servletResp);
-            }
-            else if (uri.equals("/user/forgotpassword")){
-                response = handleForgotpassword(gson, request);
-            }
-            else if (uri.equals("/user/resetpassword")){
-                response = handleResetpassword(gson, request);
-            }
-            else if (uri.equals("/user/viewaccount")){
-                response = handleViewaccount(gson, request, servletReq);
-            }
-            else if (uri.equals("/user/update")){
-                response = handleUserupdate(gson, request, servletReq);
-            }
-            else if (uri.equals("/user/view/points")){
-                response = handleViewPoints(gson, request, servletReq);
-            }
-            else if (uri.equals("/user/view/transaction")){
-                response = handleViewTransaction(gson, request, servletReq);
-            }
-            else if (uri.equals("/user/logout")){
-                response = handleLogout(gson, request, servletReq, servletResp);
-            }
-            else if (uri.equals("/ride/view/request")){
-                response = handleViewRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/view/offer")){
-                response = handleViewOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/view/acceptedrequest")){
-                response = handleViewAcceptedrequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/view/joinedoffer")){
-                response = handleViewJoinedOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/request")){
-                response = handleRideRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/cancel/request")){
-                response = handleCancelRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/update/request")){
-                response = handleUpdateRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/offer")){
-                response = handleRideOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/cancel/offer")){
-                response = handleCancelOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/update/offer")){
-                response = handleUpdateOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/search/request")){
-                response = handleSearchRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/search/offer")){
-                response = handleSearchOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/search/offer/alter")){
-                response = handleSearchOfferAlter(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/accept/request")){
-                response = handleAcceptRequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/cancel/acceptedrequest")){
-                response = handleCancelAcceptedrequest(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/join/offer")){
-                response = handleJoinOffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/cancel/joinedoffer")){
-                response = handleCancelJoinedoffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/update/joinedoffer")){
-                response = handleUpdateJoinedoffer(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/request/pickup")){
-                response = handleRequestPickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/offer/pickup")){
-                response = handleOfferPickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/acceptedrequest/pickup")){
-                response = handleAcceptedrequestPickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/joinedoffer/pickup")){
-                response = handleJoinedofferPickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/request/confirmpickup")){
-                response = handleRequestComfirmpickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/offer/confirmpickup")){
-                response = handleOfferComfirmpickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/acceptedrequest/confirmpickup")){
-                response = handleAcceptedrequestComfirmpickup(gson, request, servletReq);
-            }
-            else if (uri.equals("/ride/joinedoffer/confirmpickup")){
-                response = handleJoinedofferComfirmpickup(gson, request, servletReq);
+            if (request!=null) {
+                if (uri.equals("/user/signup")) {
+                    response = handleSignup(gson, request);
+                } else if (uri.equals("/user/verifyemail")) {
+                    response = handleVerifyemail(gson, request, servletReq);
+                } else if (uri.equals("/user/login")) {
+                    response = handleLogin(gson, request, servletReq, servletResp);
+                } else if (uri.equals("/user/forgotpassword")) {
+                    response = handleForgotpassword(gson, request);
+                } else if (uri.equals("/user/resetpassword")) {
+                    response = handleResetpassword(gson, request);
+                } else if (uri.equals("/user/viewaccount")) {
+                    response = handleViewaccount(gson, request, servletReq);
+                } else if (uri.equals("/user/update")) {
+                    response = handleUserupdate(gson, request, servletReq);
+                } else if (uri.equals("/user/view/points")) {
+                    response = handleViewPoints(gson, request, servletReq);
+                } else if (uri.equals("/user/view/transaction")) {
+                    response = handleViewTransaction(gson, request, servletReq);
+                } else if (uri.equals("/user/logout")) {
+                    response = handleLogout(gson, request, servletReq, servletResp);
+                } else if (uri.equals("/ride/view/request")) {
+                    response = handleViewRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/view/offer")) {
+                    response = handleViewOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/view/acceptedrequest")) {
+                    response = handleViewAcceptedrequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/view/joinedoffer")) {
+                    response = handleViewJoinedOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/request")) {
+                    response = handleRideRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/cancel/request")) {
+                    response = handleCancelRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/update/request")) {
+                    response = handleUpdateRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/offer")) {
+                    response = handleRideOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/cancel/offer")) {
+                    response = handleCancelOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/update/offer")) {
+                    response = handleUpdateOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/search/request")) {
+                    response = handleSearchRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/search/offer")) {
+                    response = handleSearchOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/search/offer/alter")) {
+                    response = handleSearchOfferAlter(gson, request, servletReq);
+                } else if (uri.equals("/ride/accept/request")) {
+                    response = handleAcceptRequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/cancel/acceptedrequest")) {
+                    response = handleCancelAcceptedrequest(gson, request, servletReq);
+                } else if (uri.equals("/ride/join/offer")) {
+                    response = handleJoinOffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/cancel/joinedoffer")) {
+                    response = handleCancelJoinedoffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/update/joinedoffer")) {
+                    response = handleUpdateJoinedoffer(gson, request, servletReq);
+                } else if (uri.equals("/ride/request/pickup")) {
+                    response = handleRequestPickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/offer/pickup")) {
+                    response = handleOfferPickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/acceptedrequest/pickup")) {
+                    response = handleAcceptedrequestPickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/joinedoffer/pickup")) {
+                    response = handleJoinedofferPickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/request/confirmpickup")) {
+                    response = handleRequestComfirmpickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/offer/confirmpickup")) {
+                    response = handleOfferComfirmpickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/acceptedrequest/confirmpickup")) {
+                    response = handleAcceptedrequestComfirmpickup(gson, request, servletReq);
+                } else if (uri.equals("/ride/joinedoffer/confirmpickup")) {
+                    response = handleJoinedofferComfirmpickup(gson, request, servletReq);
+                } else {
+                    System.out.println("Request " + uri + " is unknown");
+                    JsonObject responseObj = new JsonObject();
+                    responseObj.addProperty("result", 98);
+                    response = responseObj.toString();
+                }
             }
             else {
-                System.out.println("Request " + uri + " is unknown");
+                System.out.println("Empty Request");
                 JsonObject responseObj = new JsonObject();
                 responseObj.addProperty("result", 98);
                 response = responseObj.toString();
