@@ -505,7 +505,7 @@ router.post("/myOffer/joined", function(req, res) {
 router.post("/myOffer/joined/edit", function(req, res) {
 	var data = {
 		userid: req.body.userid,
-		offeridlist: req.body.offeridlist,
+		offeridlist: JSON.parse(req.body.offeridlist),
 		passenger: req.body.passenger,
 		luggage: req.body.luggage,
 	};

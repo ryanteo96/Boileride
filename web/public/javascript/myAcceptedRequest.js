@@ -154,12 +154,11 @@ $(document).ready(function() {
 					}
 					case 3: {
 						alert("Not authorized to cancel.");
+						break;
 					}
 					case 4: {
 						alert("Ride not exist.");
-					}
-					case 5: {
-						alert("Ride already cancelled.");
+						break;
 					}
 				}
 			},
@@ -250,15 +249,19 @@ $(document).ready(function() {
 					}
 					case 3: {
 						alert("Invalid offerid.");
+						break;
 					}
 					case 4: {
 						alert("Not authorized to confirm code.");
+						break;
 					}
 					case 5: {
 						alert("Already confirmed.");
+						break;
 					}
 					case 6: {
 						alert("Wrong code.");
+						break;
 					}
 				}
 			},

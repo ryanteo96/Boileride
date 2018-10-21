@@ -121,7 +121,7 @@ $(document).ready(function() {
 		var editOffer = localStorage.getItem("editOffer");
 		var edit = JSON.parse(editOffer);
 
-		$("#numPassengers").val(edit.seats);
+		$("#numPassenger").val(edit.seats);
 		$("#numLuggage").val(edit.luggage);
 	});
 
@@ -150,7 +150,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.body.result) {
 					case 0: {
-						window.location.href = "/myRides/myOffer/";
+						window.location.href = "/myRides/myOffer/joined";
 						break;
 					}
 					case 1: {
@@ -204,7 +204,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.body.result) {
 					case 0: {
-						window.location.href = "/myRides/myOffer/";
+						window.location.href = "/myRides/myOffer/joined";
 						break;
 					}
 					case 1: {
