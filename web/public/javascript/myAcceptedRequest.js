@@ -165,7 +165,7 @@ $(document).ready(function() {
 		$("#confirmCodeModal").modal("show");
 
 		$.post(
-			"/myRides/myRequest/pickup",
+			"/myRides/myRequest/accepted/pickup",
 			{
 				userid: obj.userid,
 				cookie: obj.cookie,
@@ -179,10 +179,11 @@ $(document).ready(function() {
 						localStorage.setItem(
 							"code",
 							JSON.stringify({
-								// code: res.code,
-								codefordriver: "CODEFORDRIVER",
+								code: res.body.code,
 							}),
 						);
+
+						$("#headerCode").html(res.body.code);
 						break;
 					}
 					case 1: {
@@ -194,11 +195,7 @@ $(document).ready(function() {
 						break;
 					}
 					case 3: {
-						alert("Invalid requestid.");
-						break;
-					}
-					case 4: {
-						// alert("Not authorized to get code.");
+						alert("Not authorized to get code.");
 						break;
 					}
 				}
@@ -228,7 +225,7 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.body.result) {
 					case 0: {
-						window.location.href = "/myRides/myOffer/joined";
+						window.location.href = "/myRides/myRequest/accepted";
 						break;
 					}
 					case 1: {

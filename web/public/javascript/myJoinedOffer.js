@@ -289,11 +289,7 @@ $(document).ready(function() {
 						break;
 					}
 					case 3: {
-						alert("Invalid offerid.");
-						break;
-					}
-					case 4: {
-						// alert("Not authorized to get code.");
+						alert("Not authorized to get code.");
 						break;
 					}
 				}
