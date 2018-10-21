@@ -574,7 +574,11 @@ public class RideOffer {
 
                             int seatsWant = req.getPassenger();
                             int luggagesWant = req.getLuggage();
-                            if(verifySeats(seatsWant) != 0)
+                            if (joinedOffer.getJoinedstatus() != 0){
+                                response.setResult(3);
+                                break;
+                            }
+                            else if(verifySeats(seatsWant) != 0)
                             {
                                 response.setResult(6);
                                 break;
