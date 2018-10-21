@@ -81,18 +81,25 @@ public class PointCalculator {
             result = DatabaseCommunicator.updatePointReserve(userid, (int) (price * 0.5), price * -1);
             System.out.println("charge cancel: " + userid + " points: " + price*0.5 + " reserve: " + price*-1);
             msg += " (50% late penalty)";
+            if (result == 0){
+                recordTransaction(0, userid, today, price, msg);
+            }
         } else if (diff <= 172800 && diff > 86400) {
             result = DatabaseCommunicator.updatePointReserve(userid, (int) (price * 0.25), price * -1);
             System.out.println("charge cancel: " + userid + " points: " + price*0.25 + " reserve: " + price*-1);
             msg += " (75% late penalty)";
+            if (result == 0){
+                recordTransaction(0, userid, today, price, msg);
+            }
         } else {
             result = DatabaseCommunicator.updatePointReserve(userid, 0, price * -1);
             System.out.println("charge cancel: " + userid + " points: " + 0 + " reserve: " + price*-1);
             msg += " (100% late penalty)";
+            if (result == 0){
+                recordTransaction(0, userid, today, price, msg);
+            }
         }
-        if (result == 0){
-            recordTransaction(0, userid, today, price, msg);
-        }
+
         return result;
     }
 
