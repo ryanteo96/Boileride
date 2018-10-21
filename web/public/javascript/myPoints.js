@@ -124,33 +124,34 @@ $(document).ready(function() {
 						$("#currentPoint").text(res.points);
 						$("#reservePoint").text(res.reserve);
 
-						$("#loading").modal("hide"); // hide loader
-						break;
-					}
-					case 1: {
-						$("#loading").modal("hide"); // hide loader
-						alert("Invalid userid.");
-						break;
-					}
-					case 2: {
-						$("#loading").modal("hide"); // hide loader
-						alert("User not logged in.");
-						break;
-					}
-				}
-			},
-		);
+						$.post(
+							"/myPoints/myTransactions",
+							{
+								userid: obj.userid,
+							},
+							function(res) {
+								switch (res.result) {
+									case 0: {
+										generateTransactionList(
+											res.transactionlist,
+										);
+										$("#loading").modal("hide"); // hide loader
+										break;
+									}
+									case 1: {
+										$("#loading").modal("hide"); // hide loader
+										alert("Invalid userid.");
+										break;
+									}
+									case 2: {
+										$("#loading").modal("hide"); // hide loader
+										alert("User not logged in.");
+										break;
+									}
+								}
+							},
+						);
 
-		$.post(
-			"/myPoints/myTransactions",
-			{
-				userid: obj.userid,
-			},
-			function(res) {
-				switch (res.result) {
-					case 0: {
-						generateTransactionList(res.transactionlist);
-						$("#loading").modal("hide"); // hide loader
 						break;
 					}
 					case 1: {
