@@ -1294,8 +1294,8 @@ public class BoilerideServer {
 
     public static void main(String[] args) throws Exception{
 
-//        BoilerideServer server = new BoilerideServer();
-//        server.connect();
+        BoilerideServer server = new BoilerideServer();
+        server.connect();
 
 
 //        conn = DriverManager.getConnection(DB_URL, USER, PASS);
