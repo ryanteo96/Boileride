@@ -199,4 +199,27 @@ public class RideOfferSearchAlterRequest {
     public void setAc(boolean ac) {
         this.ac = ac;
     }
+
+    @Override
+    public String toString() {
+        return "RideOfferSearchAlterRequest{" +
+                "userid=" + userid +
+                ", startofferid=" + startofferid +
+                ", endofferid=" + endofferid +
+                ", trip=" + trip +
+                ", originalpickuplocation='" + originalpickuplocation + '\'' +
+                ", originaldestination='" + originaldestination + '\'' +
+                ", originaldatentime=" + originaldatentime +
+                ", pickupproximity=" + pickupproximity +
+                ", destinationproximity=" + destinationproximity +
+                ", datentimerange=" + datentimerange +
+                ", numrides=" + numrides +
+                ", passengers=" + passengers +
+                ", luggage=" + luggage +
+                ", smoking=" + smoking +
+                ", foodndrink=" + foodndrink +
+                ", pets=" + pets +
+                ", ac=" + ac +
+                '}';
+    }
 }
