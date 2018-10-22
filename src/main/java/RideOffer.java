@@ -482,10 +482,13 @@ public class RideOffer {
                     if( passengers.contains(user.getUserid()) && joinedOffer.getJoinedstatus() == 0)
                     {
 
-                        rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
-                        rideOffer.setLuggageleft(rideOffer.getLuggageleft() + joinedOffer.getLuggage());
-
-
+//                        rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
+//                        rideOffer.setLuggageleft(rideOffer.getLuggageleft() + joinedOffer.getLuggage());
+                        int updateResult =   DatabaseCommunicator.updateOfferStatusSeatLuggage(req.getOfferid(), rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
+                        if(updateResult != 0)
+                        {
+                            System.out.println("Failed to update offer status, seats, and luggages in cancel offer ");
+                        }
                         int removeResult = DatabaseCommunicator.removeJoinedOffer(user.getUserid(), req.getOfferid());
                         if(removeResult == 0)
                         {
