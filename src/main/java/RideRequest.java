@@ -380,14 +380,14 @@ public class RideRequest {
         {
             if(user.getStatus() == 1)
             {
-                RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(req.getRequestID());
+                RideRequest rideRequest = DatabaseCommunicator.selectRideRequest(req.getRequestid());
                 if(rideRequest != null)
                 {
-                    int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestID());
-                    AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(req.getRequestID());
+                    int removeResult = DatabaseCommunicator.removeAcceptedRequest(user.getUserid(), req.getRequestid());
+                    AcceptedRequest acceptedRequest = DatabaseCommunicator.selectAcceptedRequest(req.getRequestid());
                     if(removeResult == 0 && acceptedRequest.getAcceptedstatus() == 0)
                     {
-                        int result = DatabaseCommunicator.cancelRideRequest(req.getRequestID());
+                        int result = DatabaseCommunicator.cancelRideRequest(req.getRequestid());
                         if(result == 0)
                         {
                             PointCalculator.chargeCancellationFee(req.getUserid(), rideRequest.getDatentime(), rideRequest.getPrice(), "");

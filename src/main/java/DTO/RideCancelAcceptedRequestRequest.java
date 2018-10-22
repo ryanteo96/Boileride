@@ -11,12 +11,11 @@ package DTO;
 
 public class RideCancelAcceptedRequestRequest {
     private int userid;
-    private int getUserid;
-    private int requestID;
+    private int requestid;
+
     public RideCancelAcceptedRequestRequest(int userid, int getUserid, int requestID) {
         this.userid = userid;
-        this.getUserid = getUserid;
-        this.requestID = requestID;
+        this.requestid = requestID;
     }
 
     public int getUserid() {
@@ -27,29 +26,20 @@ public class RideCancelAcceptedRequestRequest {
         this.userid = userid;
     }
 
-    public int getGetUserid() {
-        return getUserid;
-    }
-
-    public void setGetUserid(int getUserid) {
-        this.getUserid = getUserid;
-    }
-
-    public int getRequestID()
+    public int getRequestid()
     {
-        return requestID;
+        return requestid;
     }
-    public void setRequestID(int requestID)
+    public void setRequestid(int requestID)
     {
-        this.requestID = requestID;
+        this.requestid = requestID;
     }
 
     @Override
     public String toString() {
         return "RideCancelAcceptedRequestRequest{" +
                 "userid=" + userid +
-                ", getUserid=" + getUserid +
-                ", requestID=" + requestID +
+                ", requestid=" + requestid +
                 '}';
     }
 }
