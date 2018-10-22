@@ -193,7 +193,7 @@ public class JoinedOffer {
         int code = 0;
         Date today = new Date();
         JoinedOffer joinedOffer = DatabaseCommunicator.selectJoinedOffer(request.getUserid(), request.getOfferid());
-        if (joinedOffer == null || joinedOffer.getUserid() != request.getUserid() || joinedOffer.getStatus() == 0 || joinedOffer.getStatus() == 2
+        if (joinedOffer == null || joinedOffer.getUserid() != request.getUserid() || joinedOffer.getStatus() == 0 || joinedOffer.getStatus() == 2 || joinedOffer.getJoinedstatus() == 1
                 || Math.abs(today.getTime()-joinedOffer.getDatentime().getTime())/1000 > 1800) {
             result = 3;
         } else {
