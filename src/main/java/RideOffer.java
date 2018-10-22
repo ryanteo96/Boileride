@@ -485,6 +485,7 @@ public class RideOffer {
 //                        rideOffer.setSeatleft(rideOffer.getSeatleft()+joinedOffer.getPassenger());
 //                        rideOffer.setLuggageleft(rideOffer.getLuggageleft() + joinedOffer.getLuggage());
                         int updateResult =   DatabaseCommunicator.updateOfferStatusSeatLuggage(req.getOfferid(), rideOffer.getSeatleft()+joinedOffer.getPassenger(), rideOffer.getLuggageleft()+joinedOffer.getLuggage(), 1);
+                        rideOffer = DatabaseCommunicator.selectRideOffer(req.getOfferid());
                         if(updateResult != 0)
                         {
                             System.out.println("Failed to update offer status, seats, and luggages in cancel offer ");
@@ -494,7 +495,12 @@ public class RideOffer {
                         {
                             if(rideOffer.getSeats() == rideOffer.getSeatleft())
                             {
-                                rideOffer.setStatus(0);
+//                                rideOffer.setStatus(0);
+                                int updateOfferStatus = DatabaseCommunicator.updateOfferStatus(req.getOfferid(),rideOffer.getOfferedby(),0);
+                                if(updateOfferStatus != 0)
+                                {
+                                    System.out.println("Failed to update offer status");
+                                }
                                 int result = DatabaseCommunicator.updateRideOffer(req.getOfferid(), rideOffer);
                                 if(result == 0)
                                 {
