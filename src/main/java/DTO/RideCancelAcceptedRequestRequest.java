@@ -13,7 +13,7 @@ public class RideCancelAcceptedRequestRequest {
     private int userid;
     private int requestid;
 
-    public RideCancelAcceptedRequestRequest(int userid, int getUserid, int requestID) {
+    public RideCancelAcceptedRequestRequest(int userid, int requestID) {
         this.userid = userid;
         this.requestid = requestID;
     }
