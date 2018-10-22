@@ -241,8 +241,6 @@ $(document).ready(function() {
 								var dateA = new Date(a.rides[0].datentime),
 									dateB = new Date(b.rides[0].datentime);
 
-								console.log(a.rides[0].datentime);
-
 								if (a.duration - b.duration) {
 									return a.duration - b.duration;
 								} else {

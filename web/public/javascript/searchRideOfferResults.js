@@ -159,6 +159,5 @@ $(document).ready(function() {
 	var searchResults = localStorage.getItem("searchResults");
 	var obj = JSON.parse(searchResults);
 
-	console.log(obj);
 	generateSearchOfferList(obj);
 });

@@ -208,7 +208,6 @@ function getItem(item) {
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	console.log(obj.userid);
 
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
@@ -291,8 +290,6 @@ $(document).ready(function() {
 
 		var editRequest = localStorage.getItem("editRequest");
 		var edit = JSON.parse(editRequest);
-
-		console.log(obj.userid);
 
 		$.post(
 			"/myRides/myRequest/cancel",
@@ -391,8 +388,6 @@ $(document).ready(function() {
 
 		var editRequest = localStorage.getItem("editRequest");
 		var edit = JSON.parse(editRequest);
-
-		console.log($("#verifyPickupCode").val());
 
 		$.post(
 			"/myRides/myRequest/confirmPickup",

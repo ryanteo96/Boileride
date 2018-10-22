@@ -44,7 +44,6 @@ $(document).ready(function() {
 		var editRequest = localStorage.getItem("editRequest");
 		var edit = JSON.parse(editRequest);
 
-		console.log(obj);
 		//click submit to confirm the pickup
 		$.post(
 			"/myRides/myOffer/confirmpickup",

@@ -36,8 +36,6 @@ $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
 
-	console.log(obj.userid);
-
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
 		keyboard: false, //remove option to close with keyboard
@@ -54,7 +52,6 @@ $(document).ready(function() {
 			function(res) {
 				switch (res.body.result) {
 					case 0: {
-						console.log(res.body.joinedofferlist);
 						if (res.body.joinedofferlist.length == 0) {
 							$("#passengerExist").html(
 								'<i class="icons fas fa-car mr-4"> You haven\'t joined any rides.',
@@ -136,7 +133,6 @@ $(document).ready(function() {
 
 		var offeridlist = [];
 		offeridlist.push(edit.offerid);
-		console.log(offeridlist);
 
 		$.post(
 			"/myRides/myOffer/joined/edit",
@@ -190,9 +186,6 @@ $(document).ready(function() {
 
 		var editOffer = localStorage.getItem("editOffer");
 		var edit = JSON.parse(editOffer);
-
-		console.log(obj.userid);
-		console.log(edit.offerid);
 
 		$.post(
 			"/myRides/myOffer/joined/cancel",
@@ -285,8 +278,6 @@ $(document).ready(function() {
 
 		var editOffer = localStorage.getItem("editOffer");
 		var edit = JSON.parse(editOffer);
-
-		console.log($("#verifyPickupCode").val());
 
 		$.post(
 			"/myRides/myOffer/joined/confirmpickup",

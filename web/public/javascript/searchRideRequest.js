@@ -87,7 +87,6 @@ $(document).ready(function() {
 				function(res) {
 					switch (res.body.result) {
 						case 0: {
-							console.log(res.body.rides);
 							localStorage.key = "searchResults";
 							localStorage.setItem(
 								"searchResults",

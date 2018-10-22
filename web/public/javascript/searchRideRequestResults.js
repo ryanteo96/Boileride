@@ -46,8 +46,6 @@ $(document).ready(function() {
 		var request = localStorage.getItem("currentRequest");
 		var req = JSON.parse(request);
 
-		console.log(obj.userid);
-
 		$.post(
 			"/searchRideRequest/accept",
 			{

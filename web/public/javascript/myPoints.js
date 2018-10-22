@@ -105,8 +105,6 @@ $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
 
-	console.log(obj.userid);
-
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
 		keyboard: false, //remove option to close with keyboard

@@ -35,7 +35,6 @@ $(document).ready(function() {
 	var codePickup = localStorage.getItem("code");
 	var objCode = JSON.parse(codePickup);
 	$("#headerCode").html(objCode.codefordriver);
-	console.log("code for driver is: " + objCode.codefordriver);
 
 	$("#pickUpForm").submit(function(data) {
 		data.preventDefault();
@@ -45,7 +44,6 @@ $(document).ready(function() {
 		var editRequest = localStorage.getItem("editRequest");
 		var edit = JSON.parse(editRequest);
 
-		console.log(obj);
 		//click submit to confirm the pickup
 		$.post(
 			"/myRides/myRequest/confirmpickup",

@@ -127,8 +127,6 @@ function generateTripRideList(trip) {
 			status: trip[i].status,
 		});
 
-		console.log(trip[i]);
-
 		ridelist.sort("datentime", { order: "asc" });
 		ridelist.sort("status", { order: "desc" });
 	}
@@ -241,8 +239,6 @@ $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var credObj = JSON.parse(credentials);
 
-	console.log(obj.rides);
-
 	$("#numrides").text("Number of Rides: " + obj.numrides);
 	$("#travelingtime").text("Total Travel Time: " + obj.durationtext);
 	$("#price").text("Price: " + obj.price);
@@ -291,8 +287,6 @@ $(document).ready(function() {
 				rides: obj.rides,
 			};
 
-			console.log(trip);
-
 			$.post(
 				"/searchRideOfferTripDetails/edit",
 				{
@@ -319,7 +313,6 @@ $(document).ready(function() {
 				function(res) {
 					switch (res.body.result) {
 						case 0: {
-							console.log(res.body.trips);
 							localStorage.key = "searchResults";
 							localStorage.setItem(
 								"searchResults",

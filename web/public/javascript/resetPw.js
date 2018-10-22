@@ -16,8 +16,6 @@ $(document).ready(function() {
 	var resetPwEmail = localStorage.getItem("resetPwEmail");
 	var obj = JSON.parse(resetPwEmail);
 
-	console.log(obj);
-
 	$("#resetPwForm").submit(function(data) {
 		data.preventDefault();
 		$.post(

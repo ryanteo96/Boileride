@@ -38,8 +38,6 @@ $.post(
 $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
-	// generateViewOfferList(test);
-	console.log(obj.userid);
 
 	$("#loading").modal({
 		backdrop: "static", //remove ability to close modal with click
@@ -125,9 +123,6 @@ $(document).ready(function() {
 		var editOffer = localStorage.getItem("editOffer");
 		var edit = JSON.parse(editOffer);
 
-		console.log(obj.userid);
-		console.log(obj.offerid);
-
 		$.post(
 			"/myRides/myOffer/cancel",
 			{
@@ -165,8 +160,6 @@ $(document).ready(function() {
 });
 
 function generateViewOfferList(offerList) {
-	console.log(offerList);
-
 	$("#confirmCodeModal").modal("hide");
 	var options = {
 		valueNames: [
@@ -356,8 +349,6 @@ function getItem(item) {
 		function(res) {
 			switch (res.body.result) {
 				case 0: {
-					// $("#headerCode").html("CODEFORPASSENGER");
-					console.log("SUCCESS");
 					$("#headerCode").html(res.body.code);
 					break;
 				}
@@ -407,11 +398,6 @@ function getItem(item) {
 	passengersList = new List("passengersList", passengers);
 	passengersList.clear();
 
-	// passengers list inside modal
-	console.log(
-		"Joined passengers:" +
-			myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname,
-	);
 	var temparray;
 	temparray = myRideOfferList.get("offerid", offerid)[0]._values.joinedbyname;
 	//if its null then show no passenger
@@ -452,11 +438,6 @@ function getItem(item) {
 					.joinedbyname[j],
 				offeruserstatus: "Status: " + tempString,
 			});
-			console.log(
-				"STATUS: " +
-					myRideOfferList.get("offerid", offerid)[0]._values
-						.offeruserstatus[j],
-			);
 			$("#joined").attr("id", "joined" + j);
 		}
 	}
@@ -471,8 +452,6 @@ function getPassengerCode(item) {
 
 		var credentials = localStorage.getItem("credentials");
 		var obj = JSON.parse(credentials);
-
-		console.log($("#verifyPickupCode").val());
 
 		$.post(
 			"/myRides/myOffer/confirmPickup",

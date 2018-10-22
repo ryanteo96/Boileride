@@ -55,7 +55,6 @@ function init() {
 		pickup_autocomplete,
 		"place_changed",
 		function() {
-			console.log(pickup_autocomplete.getPlace());
 			if (destination.value) {
 				service.getDistanceMatrix(
 					{
@@ -284,7 +283,6 @@ function loadOriginalValue() {
 
 				var results = response.rows[0].elements;
 
-				console.log(results);
 				travelTimeOutput.value = results[0].duration.text;
 
 				priceOutput.value = parseInt(results[0].distance.text);

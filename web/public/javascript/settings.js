@@ -41,8 +41,6 @@ $(document).ready(function() {
 	var credentials = localStorage.getItem("credentials");
 	var obj = JSON.parse(credentials);
 
-	console.log(obj);
-
 	$("#changeNicknameForm").submit(function(data) {
 		data.preventDefault();
 
